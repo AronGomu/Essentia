@@ -23,9 +23,9 @@ styling:
 	magic-sevenhalf:
 		text_box_mana_symbols: magic-mana-small.mse-symbol-font
 include_file: card ash blossom  joyous spring
-include_file: card d.d crow
+include_file: card d.d. crow
 include_file: card effect veiler
-include_file: card maxx  c
+include_file: card maxx c
 version_control:
 	type: none
 apprentice_code: 

@@ -1,4 +1,4 @@
-#!/usr/bin/env pythonw
+#!/mnt/data/Softwares/Full-Magic-Pack-main/python-tk/bin/python3
 """Native no-terminal launcher for the Yu-Gi-Oh x Magic Cube MSE projects.
 
 Double-click this .pyw file on Windows to open a small GUI. Buttons launch each
@@ -252,10 +252,34 @@ def build_gui(projects: list[dict[str, object]]) -> None:
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
-    def on_mousewheel(event: tk.Event) -> None:
-        canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+    def on_mousewheel(event: tk.Event) -> str | None:
+        # Windows/macOS: <MouseWheel> + delta. Linux/X11: <Button-4>/<Button-5>.
+        num = getattr(event, "num", None)
+        delta = getattr(event, "delta", 0)
+        if num == 4:
+            canvas.yview_scroll(-1, "units")
+        elif num == 5:
+            canvas.yview_scroll(1, "units")
+        elif delta:
+            if sys.platform == "darwin":
+                canvas.yview_scroll(int(-1 * delta), "units")
+            else:
+                canvas.yview_scroll(int(-1 * (delta / 120)), "units")
+        return "break"
 
+    # bind_all so wheel works over nested card widgets, not only bare canvas.
     canvas.bind_all("<MouseWheel>", on_mousewheel)
+    canvas.bind_all("<Button-4>", on_mousewheel)
+    canvas.bind_all("<Button-5>", on_mousewheel)
+
+    def _unbind_mousewheel(event: tk.Event) -> None:
+        if event.widget is not root:
+            return
+        canvas.unbind_all("<MouseWheel>")
+        canvas.unbind_all("<Button-4>")
+        canvas.unbind_all("<Button-5>")
+
+    root.bind("<Destroy>", _unbind_mousewheel)
 
     visible_projects: list[dict[str, object]] = []
 

@@ -1,0 +1,24 @@
+﻿mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: 03_non_archetype_creature.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-24 13:53:09
+	name: Maxx “C”
+	casting_cost: G
+	image: mse_images/image2.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Insect</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> Maxx “C”; if 1 Creature has already entered the Field under the control of an opponent this turn, until the end of the turn, <b>Draw</b> 1 card <b>On Opponent Creature Enter</b>.
+	flavor_text: <i-flavor></i-flavor>
+	power: 0
+	toughness: 1
+	card_code_text: 004/004 C
+	card_code_text_2: 004/004 C
+	card_code_text_3: 004/004 C
