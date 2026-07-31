@@ -1,0 +1,64 @@
+﻿mse_version: 2.0.2
+game: magic
+game_version: 2025-06-14
+stylesheet: m15-sketch
+stylesheet_version: 2024-09-01
+set_info:
+	title: YGO x MTG -- Synchro Staples
+	description: Generic Extra Deck staples popular throughout competitive Yu-Gi-Oh! history, adapted for the cube.
+	artist: DRAFT
+	set_code: YSS
+	set_language: EN
+	symbol: 
+	masterpiece_symbol: 
+	card_language: English
+	automatic_reminder_text: 
+	automatic_copyright: yes
+	automatic_card_numbers: yes
+styling:
+	magic-genevensis-00-main:
+		casting_cost_mana_symbols: magic-mana-genevensis-large.mse-symbol-font
+		text_box_mana_symbols: magic-mana-genevensis-small.mse-symbol-font
+	magic-kasu-eldrazi_750:
+		overlay:
+		casting_cost_mana_symbols: magic-mana-large.mse-symbol-font
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+	magic-m15:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay:
+	magic-m15-showcase-kamigawa-ninja:
+		overlay:
+		casting_cost_mana_symbols: magic-mana-large.mse-symbol-font
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+	magic-m15-showcase-tarkir-ghostfire:
+		overlay:
+		casting_cost_mana_symbols: magic-mana-large.mse-symbol-font
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+	magic-m15-showcase-thunder-junction-vault:
+		overlay:
+		casting_cost_mana_symbols: magic-mana-large.mse-symbol-font
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+	magic-m15-sketch:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay: 
+	magic-m15-spellbook:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay:
+include_file: card ancient fairy dragon
+include_file: card black rose dragon
+include_file: card black rose moonlight dragon
+include_file: card brionac dragon of the ice barrier
+include_file: card chaos angel
+include_file: card coral dragon
+include_file: card formula synchron
+include_file: card goyo guardian
+include_file: card herald of the arc light
+include_file: card hot red dragon archfiend abyss
+include_file: card red supernova dragon
+include_file: card scarlight red dragon archfiend
+include_file: card stardust dragon
+include_file: card t.g. hyper librarian
+include_file: card trishula dragon of the ice barrier
+version_control:
+	type: none
+apprentice_code: 

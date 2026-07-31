@@ -1,0 +1,22 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/10_burning_abyss/CONTEXT.md
+	time_created: 2026-07-11 01:36:28
+	time_modified: 2026-07-24 13:53:09
+	name: Burning Abyss - Fire Lake
+	casting_cost: B
+	image: mse_images/image16.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Trap Instant</word-list-type-en>
+	sub_type: 
+	rarity: common
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Sacrifice</b> 2 <i-auto>“Burning Abyss”</i-auto> Creatures and <b>Target</b> up to 3 nonland permanents; <b>Destroy</b> them.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 014/030 C
+	card_code_text_2: 014/030 C
+	card_code_text_3: 014/030 C

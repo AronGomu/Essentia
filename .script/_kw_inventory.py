@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Regenerate canonical English MSE keyword inventory.
+"""Regenerate accepted keyword inventory evidence from current drafts.
 
-Manifest-only. Frozen French archives and orphan card files are excluded.
+Manifest-only. Orphan card files and immutable historical versions are excluded.
 """
 
 from __future__ import annotations
@@ -13,7 +13,8 @@ from pathlib import Path
 import lint_mse_card_style as style
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "docs" / "_keyword_inventory_report.md"
+OUTPUT = ROOT / "docs" / "ADR" / "accepted" / "0005-keyword-inventory-evidence.md"
+DRAFTS_ROOT = ROOT / "cards_mse" / "00_drafts"
 
 EVERGREEN = {
     "Flying",
@@ -56,7 +57,7 @@ def classify(keyword: str) -> str:
     raise ValueError(f"unmapped keyword taxonomy: {keyword}")
 
 
-def collect(projects_root: Path = style.PROJECTS_ROOT) -> tuple[int, collections.Counter[str], dict[str, str]]:
+def collect(projects_root: Path = DRAFTS_ROOT) -> tuple[int, collections.Counter[str], dict[str, str]]:
     counts: collections.Counter[str] = collections.Counter()
     evidence: dict[str, str] = {}
     cards = list(style.card_paths(projects_root))
@@ -74,9 +75,9 @@ def render(card_count: int, counts: collections.Counter[str], evidence: dict[str
     lines = [
         "# Keyword inventory — canonical English MSE cards",
         "",
-        f"Generated from {card_count} manifest-included cards. Frozen `MSE_projects/French/` is excluded.",
+        f"Generated from {card_count} manifest-included draft cards under `cards_mse/00_drafts/`.",
         "",
-        "Controlling rules: `docs/context.md` and `docs/02_rules_keywords_card_design.md`. Enforcement: `python .script/lint_mse_card_style.py`.",
+        "Controlling rules: `docs/KEYWORDS.md` plus linked keyword modules. Enforcement: `python .script/lint_mse_card_style.py`.",
         "",
         "## Closed formatting contract",
         "",
@@ -103,14 +104,14 @@ def render(card_count: int, counts: collections.Counter[str], evidence: dict[str
             "- Standalone bold zones: 0.",
             "- Unknown bold phrases: 0.",
             "- Unitalicized detected name references: 0.",
-            "- Open doubtful words: 0; decisions recorded in `rule_reviews/2026-07-24-keyword-bold-italics-taxonomy.md`.",
+            "- Open doubtful words: 0; decisions recorded in `docs/ADR/accepted/0005-keyword-taxonomy-and-markup.md`.",
             "",
         ]
     )
     return "\n".join(lines)
 
 
-def generate(projects_root: Path = style.PROJECTS_ROOT, output: Path = OUTPUT) -> int:
+def generate(projects_root: Path = DRAFTS_ROOT, output: Path = OUTPUT) -> int:
     findings = style.lint(projects_root)
     if findings:
         for finding in findings:

@@ -1,0 +1,30 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/13_spellbook/CONTEXT.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-24 13:53:09
+	name: The Grand Spellbook Tower
+	casting_cost: U
+	image: mse_images/image16.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Legendary Enchantment</word-list-type-en>
+	super_type_2: <word-list-type-en></word-list-type-en>
+	super_type_3: <word-list-type-en></word-list-type-en>
+	super_type_4: <word-list-type-en></word-list-type-en>
+	sub_type: <word-list-enchantment>Land</word-list-enchantment><soft><atom-sep> </atom-sep></soft><word-list-enchantment></word-list-enchantment>
+	sub_type_2:
+	sub_type_3:
+	sub_type_4:
+	rarity: common
+	rule_text:
+		<i-auto>(1 - Triggered Soft)</i-auto> <b>On Upkeep</b> — You may put 1 <i-auto>“Spellbook”</i-auto> from Grave on the bottom of Deck. If you do, <b>Draw</b> 1 card.
+		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Leave Field</b> — You may <b>Summon</b> 1 <i-auto>“Spellbook”</i-auto> Creature from Deck.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 016/016 C
+	card_code_text_2: 016/016 C
+	card_code_text_3: 016/016 C

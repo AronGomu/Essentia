@@ -1,9 +1,22 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { catalog, cardsById } from '../../src/lib/catalog';
 
-describe('English publication graph', () => {
-  it('registers ten sections in required navigation order', () => {
-    expect(catalog.sections.map((section) => section.label)).toEqual([
+const content = (name: string) =>
+  JSON.parse(
+    readFileSync(new URL(`../../content/${name}`, import.meta.url), 'utf8'),
+  );
+
+describe('immutable publication graph', () => {
+  it('keeps section presentation metadata in navigation order', () => {
+    expect(
+      content('sections.json')
+        .sections.toSorted(
+          (left: { order: number }, right: { order: number }) =>
+            left.order - right.order,
+        )
+        .map((section: { label: string }) => section.label),
+    ).toEqual([
       'Creatures',
       'Fusion',
       'Synchro',
@@ -16,67 +29,54 @@ describe('English publication graph', () => {
       'Spellbook',
     ]);
   });
-  it('uses requested archetype hero cards', () => {
+
+  it('uses source references rather than duplicated card names in identities', () => {
+    const identities = content('identities.json');
+    expect(identities.schemaVersion).toBe(2);
+    expect(identities.cards.length).toBeGreaterThan(100);
     expect(
-      catalog.sections.find((section) => section.slug === 'burning-abyss')
-        ?.iconicId,
-    ).toBe('burning-abyss-dante');
-    expect(
-      catalog.sections.find((section) => section.slug === 'shaddoll')?.iconicId,
-    ).toBe('el-shaddoll-construct');
+      identities.cards.every(
+        (identity: Record<string, unknown>) =>
+          typeof identity.stableId === 'string' &&
+          Array.isArray(identity.sources) &&
+          !Object.hasOwn(identity, 'name'),
+      ),
+    ).toBe(true);
   });
-  it('publishes globally unique card ids and names', () => {
+
+  it('publishes no draft-only content', () => {
+    expect(catalog.schemaVersion).toBe(3);
+    expect(catalog.releases).toEqual([]);
+    expect(catalog.sections).toEqual([]);
+    expect(catalog.cards).toEqual([]);
+    expect(catalog.cardVersions).toEqual([]);
+    expect(catalog.updates).toEqual([]);
+  });
+
+  it('keeps current cards and versions internally linked', () => {
     expect(new Set(catalog.cards.map((card) => card.id)).size).toBe(
       catalog.cards.length,
     );
-    expect(new Set(catalog.cards.map((card) => card.name)).size).toBe(
-      catalog.cards.length,
-    );
+    for (const card of catalog.cards) {
+      expect(cardsById.get(card.id)).toBe(card);
+      expect(card.versionIds).toContain(card.packageId);
+      expect(
+        catalog.cardVersions.some(
+          (version) =>
+            version.id === card.id && version.packageId === card.packageId,
+        ),
+      ).toBe(true);
+    }
   });
-  it('resolves known ownership collisions to archetype projects', () => {
-    expect(
-      catalog.cards.find((card) => card.name === 'Herald of the Arc Light')
-        ?.sectionSlug,
-    ).toBe('nekroz');
-    expect(
-      catalog.cards.find((card) => card.name === 'Downerd Magician')
-        ?.sectionSlug,
-    ).toBe('burning-abyss');
-    expect(
-      catalog.cards.find((card) => card.name === 'Leviair the Sea Dragon')
-        ?.sectionSlug,
-    ).toBe('burning-abyss');
-  });
-  it('derives updates from snapshot selections instead of full baselines', () => {
-    expect(catalog.updates).toHaveLength(151);
-    expect(
-      catalog.updates.some(
-        (update) => update.cardId === 'herald-of-the-arc-light',
-      ),
-    ).toBe(false);
-    expect(
-      catalog.updates.find((update) => update.cardId === 'nekroz-trishula')
-        ?.status,
-    ).toBe('new');
-  });
-  it('pins first Nekroz snapshot to 19 baseline and 15 selected cards', () => {
-    const snapshot = catalog.snapshots[0]!;
-    expect(snapshot.id).toBe('001-2026-07-17');
-    expect(snapshot.baseline).toHaveLength(19);
-    expect(snapshot.selected).toHaveLength(15);
-    expect(snapshot.baseline.every((item) => cardsById.has(item.id))).toBe(
-      true,
-    );
-  });
-  it('withholds incomplete source cards fail-closed', () => {
-    expect(catalog.publicationDiagnostics).toHaveLength(26);
-    expect(catalog.publicationDiagnostics).toContainEqual({
-      sectionSlug: 'link',
-      sourceFile: 'card cross sheep',
-      reason: 'missing super_type; card withheld fail-closed',
-    });
-    expect(catalog.cards.some((card) => card.name === 'Cross-Sheep')).toBe(
-      false,
-    );
+
+  it('exposes immutable release and card-version routes only', () => {
+    for (const release of catalog.releases) {
+      expect(release.route).toMatch(/^\/releases\/(alpha|beta|release)\//);
+    }
+    for (const version of catalog.cardVersions) {
+      expect(version.versionRoute).toBe(
+        `/cards/${version.id}/versions/${version.packageId}/`,
+      );
+    }
   });
 });

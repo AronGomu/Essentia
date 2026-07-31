@@ -20,17 +20,17 @@ Use the neighboring workflows instead when appropriate:
 
 ## Accepted input and scope
 
-Accept one checked-in input beneath `MSE_projects/`:
+Accept one checked-in input beneath `cards_mse/`:
 
-- `MSE_projects/<project>.mse-set/card <slug>`: normalize that card only;
-- `MSE_projects/<project>.mse-set/set`: normalize every `include_file:` card;
-- `MSE_projects/<project>.mse-set/`: normalize every `include_file:` card.
+- `cards_mse/00_drafts/<group>/<project>.mse-set/card <slug>`: normalize that card only;
+- `cards_mse/00_drafts/<group>/<project>.mse-set/set`: normalize every `include_file:` card;
+- `cards_mse/00_drafts/<group>/<project>.mse-set/`: normalize every `include_file:` card.
 
 A project means **all cards included by its manifest**. Do not silently limit project scope to modified cards.
 
 If the user omits a path, use an exact uniquely named project/card from the request. Otherwise, select a unique modified MSE card/project from `git status --short`; if there is no unique safe scope, stop without editing and report the candidate paths.
 
-Canonical projects are folder-form `.mse-set` saves, not zip archives. Do not edit an archive in place. Never include nested backups, diagnostic projects, or export folders as cards. Reject any scope under `MSE_projects/French/`, `docs/French/`, `rule_reviews/French/`, or `mse/French/`; these are frozen snapshots and must also be excluded from render and proxy-PDF discovery.
+Canonical projects are folder-form `.mse-set` saves, not zip archives. Do not edit an archive in place. Never include nested backups, diagnostic projects, or export folders as cards. Editable scope is limited to mutable stages `00_drafts`, `01_pre_alpha`, `03_pre_beta`, and `05_pre_release`. Reject `02_alpha`, `04_beta`, `06_released`, and every generated `_all_cards.mse-set` aggregate.
 
 ## Phase 0 — Protect the working tree
 
@@ -39,7 +39,7 @@ Canonical projects are folder-form `.mse-set` saves, not zip archives. Do not ed
    ```bash
    git rev-parse --show-toplevel
    git status --short
-   git diff --name-status -- MSE_projects docs
+   git diff --name-status -- cards_mse docs
    ```
 
 2. Record exact input, parent project, manifest, scoped cards, and owning numbered archetype document.
@@ -50,14 +50,14 @@ Canonical projects are folder-form `.mse-set` saves, not zip archives. Do not ed
 
 Read these files **completely on every invocation**, because this skill exists specifically to apply their latest state:
 
-1. `docs/context.md`;
-2. `docs/02_rules_keywords_card_design.md`;
-3. the numbered archetype document matching project;
+1. `docs/rules/TEMPLATING.md`;
+2. `docs/RULES.md`;
+3. the matching archetype `CONTEXT.md`, `DESIGN.md`, `RULES.md`, and `KEYWORDS.md` modules;
 4. two or three complete sibling card files demonstrating each relevant card type/frame;
-5. `CONTEXT.md` under `MSE_ROOT`, if it exists, after loading `MSEConfig` from `mse_config.py`;
+5. `CONTEXT.md` under `MSE_ROOT`, if it exists, after loading `MSEConfig` from `launcher/mse_config.py`;
 6. any project-specific tests or generator/synchronizer that can rewrite the scoped cards.
 
-Treat `docs/02_rules_keywords_card_design.md` as the concrete card-design/templating source and `docs/context.md` as the broader mandatory project contract. Apply rules dynamically from the files, not from a remembered copy or only from the examples below. If the two current files directly contradict each other, do not guess or rewrite mechanics: preserve the affected text and report the contradiction with `path:line` evidence.
+Treat `docs/RULES.md` as the index. Follow its links to the single owning rule module; use `docs/rules/TEMPLATING.md` for syntax/PSCT and `docs/KEYWORDS.md` for keyword taxonomy. Apply rules dynamically from current files. If modules contradict, do not guess or rewrite mechanics: preserve affected text and report `path:line` evidence.
 
 Build a short rules checklist before editing. It must cover every applicable current rule for:
 
@@ -132,7 +132,7 @@ Never silently change:
 - card name, mana value, color, type, material requirement, or numeric stats;
 - the definition or behavior of a keyword.
 
-If a proposed grammar/templating correction crosses this boundary, leave the original mechanic unchanged and add it to an unresolved semantic ledger. This skill does not evolve `docs/context.md` or `docs/02_rules_keywords_card_design.md`; route those entries through `fix-mse-cards`.
+If a proposed grammar/templating correction crosses this boundary, leave the original mechanic unchanged and add it to an unresolved semantic ledger. This skill does not evolve `docs/rules/TEMPLATING.md` or `docs/RULES.md`; route those entries through `fix-mse-cards`.
 
 If a scoped effect would perform a normally illegal Summon, especially from the Sideboard without the required invocation method, call `AskUserQuestion` for that card before editing and ask whether to add `ignoring the restrictions of Summon`. Offer exactly: **Add the explicit permission**, **Keep Summon restrictions**, and **Send a message** with custom text enabled. Never infer or insert the bypass silently. The permission makes the Summon legal but does not make it a proper summon.
 
@@ -169,42 +169,28 @@ python -m unittest discover -s tests
 git diff --check
 ```
 
-The card-style linter is mandatory after every canonical English MSE update and must pass before export. Never run it against frozen French archives.
+The card-style linter is mandatory after every MSE update and must pass before export.
 
 Compile any changed Python generators/synchronizers with `python -m py_compile <paths>`.
 
 ## Phase 6 — Prove MSE export and update renders
 
-Load executable paths only through `MSEConfig.load()` from `mse_config.py`. Never hardcode a local MSE path. If configuration is missing or invalid, report `python setup_mse.py` as the required blocker and do not claim export success.
+Load executable paths only through `MSEConfig.load()` from `launcher/mse_config.py`. Never hardcode a local MSE path. If configuration is missing or invalid, report `python launcher/setup_mse.py` as the required blocker and do not claim export success.
 
 1. Export to a temporary directory **outside** the active `.mse-set` folder.
 2. Require a direct MSE CLI process exit code of `0` and a decodable PNG count equal to:
    - `1` for an isolated single-card export; or
    - the manifest count for a project export.
-3. If the CLI reports `3221225477` / `0xC0000005`, follow the mono-card diagnostic procedure in `docs/context.md` and retry directly from the shell before declaring corruption.
+3. If the CLI reports `3221225477` / `0xC0000005`, follow the mono-card diagnostic procedure in `docs/rules/TEMPLATING.md` and retry directly from the shell before declaring corruption.
 4. Confirm every PNG opens successfully and inspect the changed renders when image analysis is available for missing art/symbols and text overflow.
 5. Copy successful final renders into the project's canonical `render/` folder and name each image from the exact MSE `name:` value. For project scope, remove only stale generated render images proven not to correspond to a current card. For card scope, replace only that card's render.
 6. Delete temporary exports and caches; never leave them inside the project.
 
 Structural validation plus a successful direct export proves automated readability/renderability. It does **not** prove GUI Save/Save As compatibility. If GUI automation is available, open the project with `MSEConfig.executable` and perform a real Save/Save As. Otherwise, report that exact manual check as remaining instead of claiming complete non-corruption.
 
-## Phase 7 — Produce print work
+## Phase 7 — Defer package print work
 
-After successful render export, create a print-and-cut proxy PDF with the repository helper.
-
-For project scope:
-
-```bash
-python .script/create_proxy_pdf.py --input "MSE_projects/<project>.mse-set/render"
-```
-
-For card scope, place only the scoped rendered PNG in a temporary folder outside the `.mse-set`, then run:
-
-```bash
-python .script/create_proxy_pdf.py --input "<temporary-single-card-render-folder>" --output "print/<safe-card-name>_proxies.pdf"
-```
-
-Delete the temporary folder afterward. Unless the user requests another quantity, keep the helper default of three copies per card. Require the PDF to exist, be non-empty, and report its page count/output path. Do not print to a physical printer automatically.
+Do not create draft PDFs. Printable PDFs are generated only during immutable package promotion by `.script/release_package.py`; output sits directly beside aggregate MSE project. Temporary diagnostic renders must be deleted after validation.
 
 ## Final response
 

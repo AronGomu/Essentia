@@ -1,0 +1,43 @@
+﻿mse_version: 2.0.2
+game: magic
+game_version: 2025-06-14
+stylesheet: sevenhalf
+stylesheet_version: 2024-05-30
+set_info:
+	title: YGO x MTG -- Non-Archetype Noncreatures
+	description: English canonical noncreature cards for the Yu-Gi-Oh! x Magic cube.
+	artist: DRAFT
+	set_code: YNN
+	set_language: EN
+	symbol: 
+	masterpiece_symbol: 
+	card_language: English
+	automatic_reminder_text: 
+	automatic_copyright: yes
+	automatic_card_numbers: yes
+styling:
+	magic-m15:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay:
+	magic-sevenhalf:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+include_file: card allure of darkness
+include_file: card book of eclipse
+include_file: card book of moon
+include_file: card breakthrough skill
+include_file: card compulsory evacuation device
+include_file: card dark hole
+include_file: card foolish burial
+include_file: card instant fusion
+include_file: card karma cut
+include_file: card monster reborn
+include_file: card mystical space typhoon
+include_file: card phoenix wing wind blast
+include_file: card raigeki
+include_file: card super polymerization
+include_file: card torrential tribute
+include_file: card twin twisters
+include_file: card upstart goblin
+version_control:
+	type: none
+apprentice_code: 

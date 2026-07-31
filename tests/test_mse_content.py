@@ -130,7 +130,7 @@ class MSEContentTests(unittest.TestCase):
         self.assertIn("name: One", updated)
 
     def test_live_necroz_manifest_has_19_cards(self) -> None:
-        cards = mse_content.load_manifest(ROOT / "MSE_projects/12_YGO_Necroz.mse-set")
+        cards = mse_content.load_manifest(ROOT / "cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set")
         self.assertEqual(len(cards), 19)
         self.assertEqual(cards[14].name, "Nekroz - Trishula")
 

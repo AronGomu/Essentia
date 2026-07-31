@@ -1,0 +1,30 @@
+﻿mse_version: 2.0.2
+game: magic
+game_version: 2025-06-14
+stylesheet: sevenhalf
+stylesheet_version: 2024-05-30
+set_info:
+	title: YGO x MTG -- Non-Archetype Creatures
+	description: English canonical non-archetype creatures for the Yu-Gi-Oh! x Magic cube.
+	artist: DRAFT
+	set_code: YNC
+	set_language: EN
+	symbol: 
+	masterpiece_symbol: 
+	card_language: English
+	automatic_reminder_text: 
+	automatic_copyright: yes
+	automatic_card_numbers: yes
+styling:
+	magic-m15:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay:
+	magic-sevenhalf:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+include_file: card ash blossom  joyous spring
+include_file: card d.d. crow
+include_file: card effect veiler
+include_file: card maxx c
+version_control:
+	type: none
+apprentice_code: 

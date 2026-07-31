@@ -1,0 +1,32 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/11_shaddoll/CONTEXT.md
+	time_created: 2026-07-11 00:33:44
+	time_modified: 2026-07-24 13:53:09
+	name: Nael Shaddoll - Ariel
+	casting_cost: U
+	image: image6.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Creature</word-list-type-en>
+	super_type_2: <word-list-type-en></word-list-type-en>
+	super_type_3: <word-list-type-en></word-list-type-en>
+	super_type_4: <word-list-type-en></word-list-type-en>
+	sub_type: <word-list-race-en>Psychic</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: common
+	rule_text:
+		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Target</b> 1 of your exiled <i-auto>“Shaddoll”</i-auto> Creatures; <b>Release</b> the target face down.
+		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Target</b> 3 cards in Grave; <b>Exile</b> them.
+	flavor_text: <i-flavor></i-flavor>
+	power: 2
+	toughness: 3
+	card_code_text: 011/025 C
+	card_code_text_2: 011/025 C
+	card_code_text_3: 011/025 C

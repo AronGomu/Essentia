@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {
+      "group": "03_non_archetype_creatures",
+      "slug": "creatures",
+      "label": "Creatures",
+      "kind": "non-archetype",
+      "order": 3,
+      "accent": "relic",
+      "doc": "docs/DESIGN.md",
+      "iconicId": null
+    },
+    {
+      "group": "05_fusion_staples",
+      "slug": "fusions",
+      "label": "Fusion",
+      "kind": "non-archetype",
+      "order": 5,
+      "accent": "ember",
+      "doc": "docs/design/FRAMES.md",
+      "iconicId": null
+    },
+    {
+      "group": "06_synchro_staples",
+      "slug": "synchro",
+      "label": "Synchro",
+      "kind": "non-archetype",
+      "order": 6,
+      "accent": "ice",
+      "doc": "docs/design/FRAMES.md",
+      "iconicId": null
+    },
+    {
+      "group": "07_xyz_staples",
+      "slug": "xyz",
+      "label": "Xyz",
+      "kind": "non-archetype",
+      "order": 7,
+      "accent": "gold",
+      "doc": "docs/design/FRAMES.md",
+      "iconicId": null
+    },
+    {
+      "group": "08_link_staples",
+      "slug": "link",
+      "label": "Link",
+      "kind": "non-archetype",
+      "order": 8,
+      "accent": "aether",
+      "doc": "docs/design/FRAMES.md",
+      "iconicId": null
+    },
+    {
+      "group": "09_non_archetype_non_creatures",
+      "slug": "non-creature",
+      "label": "Non-creature",
+      "kind": "non-archetype",
+      "order": 9,
+      "accent": "relic",
+      "doc": "docs/DESIGN.md",
+      "iconicId": null
+    },
+    {
+      "group": "10_burning_abyss",
+      "slug": "burning-abyss",
+      "label": "Burning Abyss",
+      "kind": "archetype",
+      "order": 10,
+      "accent": "ember",
+      "doc": "docs/10_burning_abyss/DESIGN.md",
+      "iconicId": "burning-abyss-dante"
+    },
+    {
+      "group": "11_shaddoll",
+      "slug": "shaddoll",
+      "label": "Shaddoll",
+      "kind": "archetype",
+      "order": 12,
+      "accent": "shadow",
+      "doc": "docs/11_shaddoll/DESIGN.md",
+      "iconicId": "el-shaddoll-construct"
+    },
+    {
+      "group": "12_nekroz",
+      "slug": "nekroz",
+      "label": "Nekroz",
+      "kind": "archetype",
+      "order": 11,
+      "accent": "ice",
+      "doc": "docs/12_nekroz/DESIGN.md",
+      "iconicId": "nekroz-trishula"
+    },
+    {
+      "group": "13_spellbook",
+      "slug": "spellbook",
+      "label": "Spellbook",
+      "kind": "archetype",
+      "order": 13,
+      "accent": "aether",
+      "doc": "docs/13_spellbook/DESIGN.md",
+      "iconicId": "high-priestess-of-prophecy"
+    }
+  ]
+}

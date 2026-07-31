@@ -10,10 +10,8 @@ export const GET: APIRoute = ({ site }) => {
     '/feed.xml',
     ...catalog.sections.map((section) => section.route),
     ...catalog.cards.map((card) => card.route),
-    ...catalog.snapshots.map(
-      (snapshot) =>
-        `/archetypes/${snapshot.sectionSlug}/snapshots/${snapshot.id}/`,
-    ),
+    ...catalog.cardVersions.map((card) => card.versionRoute),
+    ...catalog.releases.map((release) => release.route),
   ];
   const base = import.meta.env.BASE_URL.replace(/^\/+|\/+$/g, '');
   const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>${new URL([base, route.replace(/^\//, '')].filter(Boolean).join('/'), site)}</loc></url>`).join('')}</urlset>`;

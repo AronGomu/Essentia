@@ -17,7 +17,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "content:check": "node scripts/build-content.mjs --check",
-    "snapshots:check": "node scripts/check-snapshot-immutability.mjs",
+    "immutability:check": "\"${PYTHON:-python}\" ../.script/check_immutable_stages.py",
     "links:check": "node scripts/check-links.mjs",
     "budgets:check": "node scripts/check-budgets.mjs",
     "audit:deps": "npm audit --audit-level=high && npm run licenses:check",
@@ -28,8 +28,11 @@
   "dependencies": {
     "@astrojs/svelte": "9.0.1",
     "astro": "7.1.1",
-    "sharp": "0.34.5",
+    "sharp": "0.35.3",
     "svelte": "5.56.6"
+  },
+  "overrides": {
+    "brace-expansion": "5.0.9"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.6",

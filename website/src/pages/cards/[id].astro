@@ -33,6 +33,12 @@ const related = sectionCards
 const base = import.meta.env.BASE_URL;
 const render = withBase(base, card.render);
 const explanation = catalog.explanations[card.id];
+const versions = catalog.cardVersions
+  .filter((version) => version.id === card.id)
+  .sort(
+    (a, b) =>
+      b.stageRank - a.stageRank || b.releasedOn.localeCompare(a.releasedOn),
+  );
 ---
 
 <BaseLayout
@@ -100,12 +106,27 @@ const explanation = catalog.explanations[card.id];
         )
       }
       <div class="card-facts">
-        <span>Rarity: {card.rarity}</span><span
-          >Collection: {card.collectionNumber}</span
-        ><span>Modified {formatDate(card.modified)}</span>{
-          card.support && <span>Support card</span>
-        }
+        <span>Current: {card.stageLabel} {card.version}</span>
+        <span>Published {formatDate(card.releasedOn)}</span>
+        <span>Rarity: {card.rarity}</span>
+        <span>Collection: {card.collectionNumber}</span>
+        {card.support && <span>Support card</span>}
       </div>
+      <section>
+        <h2>Release history</h2>
+        <ul>
+          {
+            versions.map((version) => (
+              <li>
+                <a href={withBase(base, version.versionRoute)}>
+                  {version.stageLabel} {version.version} ·{' '}
+                  {formatDate(version.releasedOn)}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
       <nav class="card-pager" aria-label="Cards in manifest order">
         <a href={withBase(base, previous.route)}>← {previous.name}</a><a
           href={withBase(base, next.route)}>{next.name} →</a

@@ -1,1400 +1,1303 @@
 {
-  "schemaVersion": 1,
   "cards": [
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card aa-zeus - sky thunder"],
       "stableId": "aa-zeus-sky-thunder",
-      "currentName": "AA-ZEUS - Sky Thunder",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card absolute king back jack"],
       "stableId": "absolute-king-back-jack",
-      "currentName": "Absolute King Back Jack",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["08_YGO_Staples_Link.mse-set/card accesscode talker"],
       "stableId": "accesscode-talker",
-      "currentName": "Accesscode Talker",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card allure of darkness"
+      ],
       "stableId": "allure-of-darkness",
-      "currentName": "Allure of Darkness",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card ancient fairy dragon"],
       "stableId": "ancient-fairy-dragon",
-      "currentName": "Ancient Fairy Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "08_YGO_Staples_Link.mse-set/card apollousa bow of the goddess"
+      ],
       "stableId": "apollousa-bow-of-the-goddess",
-      "currentName": "Apollousa, Bow of the Goddess",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "03_YGO_Non_Archetype_Creatures.mse-set/card ash blossom  joyous spring",
+        "01_YGO_Legend_of_Alpha.mse-set/card ash blossom  joyous spring"
+      ],
       "stableId": "ash-blossom-and-joyous-spring",
-      "currentName": "Ash Blossom & Joyous Spring",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card bagooska",
+        "01_YGO_Legend_of_Alpha.mse-set/card bagooska"
+      ],
       "stableId": "bagooska",
-      "currentName": "Bagooska",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card bamboozling gossip shadow"],
       "stableId": "bamboozling-gossip-shadow",
-      "currentName": "Bamboozling Gossip Shadow",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card beatrice lady of the eternal"
+      ],
       "stableId": "beatrice-lady-of-the-eternal",
-      "currentName": "Beatrice, Lady of the Eternal",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card big eye"],
       "stableId": "big-eye",
-      "currentName": "Big Eye",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card black rose dragon"],
       "stableId": "black-rose-dragon",
-      "currentName": "Black Rose Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "06_YGO_Staples_Synchro.mse-set/card black rose moonlight dragon"
+      ],
       "stableId": "black-rose-moonlight-dragon",
-      "currentName": "Black Rose Moonlight Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card book of eclipse"
+      ],
       "stableId": "book-of-eclipse",
-      "currentName": "Book of Eclipse",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card book of moon"
+      ],
       "stableId": "book-of-moon",
-      "currentName": "Book of Moon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["08_YGO_Staples_Link.mse-set/card borrelsword dragon"],
       "stableId": "borrelsword-dragon",
-      "currentName": "Borrelsword Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card breakthrough skill"
+      ],
       "stableId": "breakthrough-skill",
-      "currentName": "Breakthrough Skill",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "06_YGO_Staples_Synchro.mse-set/card brionac dragon of the ice barrier"
+      ],
       "stableId": "brionac-dragon-of-the-ice-barrier",
-      "currentName": "Brionac, Dragon of the Ice Barrier",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - alich",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - alich"
+      ],
       "stableId": "burning-abyss-alich",
-      "currentName": "Burning Abyss - Alich",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - barbar",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - barbar"
+      ],
       "stableId": "burning-abyss-barbar",
-      "currentName": "Burning Abyss - Barbar",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - cagna"],
       "stableId": "burning-abyss-cagna",
-      "currentName": "Burning Abyss - Cagna",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - calcab",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - calcab"
+      ],
       "stableId": "burning-abyss-calcab",
-      "currentName": "Burning Abyss - Calcab",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - cherubini"
+      ],
       "stableId": "burning-abyss-cherubini",
-      "currentName": "Burning Abyss - Cherubini",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - cir",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - cir"
+      ],
       "stableId": "burning-abyss-cir",
-      "currentName": "Burning Abyss - Cir",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - dante",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - dante"
+      ],
       "stableId": "burning-abyss-dante",
-      "currentName": "Burning Abyss - Dante",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - dante pilgrim"
+      ],
       "stableId": "burning-abyss-dante-pilgrim",
-      "currentName": "Burning Abyss - Dante, Pilgrim",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - draghig"],
       "stableId": "burning-abyss-draghig",
-      "currentName": "Burning Abyss - Draghig",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - farfa",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - farfa"
+      ],
       "stableId": "burning-abyss-farfa",
-      "currentName": "Burning Abyss - Farfa",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - fire lake"
+      ],
       "stableId": "burning-abyss-fire-lake",
-      "currentName": "Burning Abyss - Fire Lake",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - good  evil"
+      ],
       "stableId": "burning-abyss-good-and-evil",
-      "currentName": "Burning Abyss - Good & Evil",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - graff",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - graff"
+      ],
       "stableId": "burning-abyss-graff",
-      "currentName": "Burning Abyss - Graff",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - libic"],
       "stableId": "burning-abyss-libic",
-      "currentName": "Burning Abyss - Libic",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - malacoda"],
       "stableId": "burning-abyss-malacoda",
-      "currentName": "Burning Abyss - Malacoda",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - rubic",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - rubic"
+      ],
       "stableId": "burning-abyss-rubic",
-      "currentName": "Burning Abyss - Rubic",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - scarm",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - scarm"
+      ],
       "stableId": "burning-abyss-scarm",
-      "currentName": "Burning Abyss - Scarm",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - terminus"],
       "stableId": "burning-abyss-terminus",
-      "currentName": "Burning Abyss - Terminus",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - traveler"
+      ],
       "stableId": "burning-abyss-traveler",
-      "currentName": "Burning Abyss - Traveler",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card burning abyss - virgil",
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - virgil"
+      ],
       "stableId": "burning-abyss-virgil",
-      "currentName": "Burning Abyss - Virgil",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card chaos angel"],
       "stableId": "chaos-angel",
-      "currentName": "Chaos Angel",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card compulsory evacuation device"
+      ],
       "stableId": "compulsory-evacuation-device",
-      "currentName": "Compulsory Evacuation Device",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card constellar pleiades"],
       "stableId": "constellar-pleiades",
-      "currentName": "Constellar Pleiades",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card coordius the triphasic dealmon"
+      ],
       "stableId": "coordius-the-triphasic-dealmon",
-      "currentName": "Coordius the Triphasic Dealmon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card coral dragon"],
       "stableId": "coral-dragon",
-      "currentName": "Coral Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card crane crane"],
       "stableId": "crane-crane",
-      "currentName": "Crane Crane",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card curse of the shadow prison"],
       "stableId": "curse-of-the-shadow-prison",
-      "currentName": "Curse of the Shadow Prison",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "03_YGO_Non_Archetype_Creatures.mse-set/card d.d. crow",
+        "01_YGO_Legend_of_Alpha.mse-set/card d.d. crow"
+      ],
       "stableId": "d-d-crow",
-      "currentName": "D.D. Crow",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card daigusto emeral",
+        "01_YGO_Legend_of_Alpha.mse-set/card daigusto emeral"
+      ],
       "stableId": "daigusto-emeral",
-      "currentName": "Daigusto Emeral",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card dark hole",
+        "01_YGO_Legend_of_Alpha.mse-set/card dark hole"
+      ],
       "stableId": "dark-hole",
-      "currentName": "Dark Hole",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card downerd magician",
+        "10_YGO_Burning_Abyss.mse-set/card downerd magician",
+        "01_YGO_Legend_of_Alpha.mse-set/card downerd magician"
+      ],
       "stableId": "downerd-magician",
-      "currentName": "Downerd Magician",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card dugares the timeless"],
       "stableId": "dugares-the-timeless",
-      "currentName": "Dugares the Timeless",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "03_YGO_Non_Archetype_Creatures.mse-set/card effect veiler",
+        "01_YGO_Legend_of_Alpha.mse-set/card effect veiler"
+      ],
       "stableId": "effect-veiler",
-      "currentName": "Effect Veiler",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - anoyatyllis"],
       "stableId": "el-shaddoll-anoyatyllis",
-      "currentName": "El Shaddoll - Anoyatyllis",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - apkallone"],
       "stableId": "el-shaddoll-apkallone",
-      "currentName": "El Shaddoll - Apkallone",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - construct"],
       "stableId": "el-shaddoll-construct",
-      "currentName": "El Shaddoll - Construct",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - fusion"],
       "stableId": "el-shaddoll-fusion",
-      "currentName": "El Shaddoll - Fusion",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - grysta"],
       "stableId": "el-shaddoll-grysta",
-      "currentName": "El Shaddoll - Grysta",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - shekhinaga"],
       "stableId": "el-shaddoll-shekhinaga",
-      "currentName": "El Shaddoll - Shekhinaga",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - wendigo"],
       "stableId": "el-shaddoll-wendigo",
-      "currentName": "El Shaddoll - Wendigo",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - winda"],
       "stableId": "el-shaddoll-winda",
-      "currentName": "El Shaddoll - Winda",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["05_YGO_Staples_Fusion.mse-set/card elder entity ntss"],
       "stableId": "elder-entity-n-tss",
-      "currentName": "Elder Entity N'tss",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card evilswarm exciton knight",
+        "01_YGO_Legend_of_Alpha.mse-set/card evilswarm exciton knight"
+      ],
       "stableId": "evilswarm-exciton-knight",
-      "currentName": "Evilswarm Exciton Knight",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card fiend griefing"],
       "stableId": "fiend-griefing",
-      "currentName": "Fiend Griefing",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card fiendish rhino warrior"],
       "stableId": "fiendish-rhino-warrior",
-      "currentName": "Fiendish Rhino Warrior",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card foolish burial",
+        "01_YGO_Legend_of_Alpha.mse-set/card foolish burial"
+      ],
       "stableId": "foolish-burial",
-      "currentName": "Foolish Burial",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card formula synchron"],
       "stableId": "formula-synchron",
-      "currentName": "Formula Synchron",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card gagaga cowboy",
+        "01_YGO_Legend_of_Alpha.mse-set/card gagaga cowboy"
+      ],
       "stableId": "gagaga-cowboy",
-      "currentName": "Gagaga Cowboy",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card garura wings of resonant life"
+      ],
       "stableId": "garura-wings-of-resonant-life",
-      "currentName": "Garura, Wings of Resonant Life",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card goyo guardian"],
       "stableId": "goyo-guardian",
-      "currentName": "Goyo Guardian",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["05_YGO_Staples_Fusion.mse-set/card guardian chimera"],
       "stableId": "guardian-chimera",
-      "currentName": "Guardian Chimera",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card hel shaddoll - hollow"],
       "stableId": "hel-shaddoll-hollow",
-      "currentName": "Hel Shaddoll - Hollow",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "06_YGO_Staples_Synchro.mse-set/card herald of the arc light",
+        "12_YGO_Necroz.mse-set/card herald of the arc light",
+        "01_YGO_Legend_of_Alpha.mse-set/card herald of the arc light"
+      ],
       "stableId": "herald-of-the-arc-light",
-      "currentName": "Herald of the Arc Light",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card high priestess of prophecy"],
       "stableId": "high-priestess-of-prophecy",
-      "currentName": "High Priestess of Prophecy",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card hope harbinger dragon"],
       "stableId": "hope-harbinger-dragon",
-      "currentName": "Hope Harbinger Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "06_YGO_Staples_Synchro.mse-set/card hot red dragon archfiend abyss"
+      ],
       "stableId": "hot-red-dragon-archfiend-abyss",
-      "currentName": "Hot Red Dragon Archfiend Abyss",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card instant fusion"
+      ],
       "stableId": "instant-fusion",
-      "currentName": "Instant Fusion",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card justice of prophecy"],
       "stableId": "justice-of-prophecy",
-      "currentName": "Justice of Prophecy",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card karma cut",
+        "01_YGO_Legend_of_Alpha.mse-set/card karma cut"
+      ],
       "stableId": "karma-cut",
-      "currentName": "Karma Cut",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card leviair the sea dragon",
+        "10_YGO_Burning_Abyss.mse-set/card leviair the sea dragon",
+        "01_YGO_Legend_of_Alpha.mse-set/card leviair the sea dragon"
+      ],
       "stableId": "leviair-the-sea-dragon",
-      "currentName": "Leviair the Sea Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card lyrilusc - assembled nightingale"
+      ],
       "stableId": "lyrilusc-assembled-nightingale",
-      "currentName": "Lyrilusc - Assembled Nightingale",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card manju of the ten thousand hands",
+        "01_YGO_Legend_of_Alpha.mse-set/card manju of the ten thousand hands"
+      ],
       "stableId": "manju-of-the-ten-thousand-hands",
-      "currentName": "Manju of the Ten Thousand Hands",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["10_YGO_Burning_Abyss.mse-set/card mathematician"],
       "stableId": "mathematician",
-      "currentName": "Mathematician",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "03_YGO_Non_Archetype_Creatures.mse-set/card maxx c",
+        "01_YGO_Legend_of_Alpha.mse-set/card maxx c"
+      ],
       "stableId": "maxx-c",
-      "currentName": "Maxx “C”",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card monster reborn"
+      ],
       "stableId": "monster-reborn",
-      "currentName": "Monster Reborn",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["05_YGO_Staples_Fusion.mse-set/card mudragon of the swamp"],
       "stableId": "mudragon-of-the-swamp",
-      "currentName": "Mudragon of the Swamp",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card mysterion the dragon crown"
+      ],
       "stableId": "mysterion-the-dragon-crown",
-      "currentName": "Mysterion the Dragon Crown",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card mystical space typhoon"
+      ],
       "stableId": "mystical-space-typhoon",
-      "currentName": "Mystical Space Typhoon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card nael shaddoll - ariel"],
       "stableId": "nael-shaddoll-ariel",
-      "currentName": "Nael Shaddoll - Ariel",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - brionac",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - brionac"
+      ],
       "stableId": "nekroz-brionac",
-      "currentName": "Nekroz - Brionac",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - catastor",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - catastor"
+      ],
       "stableId": "nekroz-catastor",
-      "currentName": "Nekroz - Catastor",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - clausolas",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - clausolas"
+      ],
       "stableId": "nekroz-clausolas",
-      "currentName": "Nekroz - Clausolas",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - cycle",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - cycle"
+      ],
       "stableId": "nekroz-cycle",
-      "currentName": "Nekroz - Cycle",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - dance princess",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - dance princess"
+      ],
       "stableId": "nekroz-dance-princess",
-      "currentName": "Nekroz - Dance Princess",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - decisive armor",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - decisive armor"
+      ],
       "stableId": "nekroz-decisive-armor",
-      "currentName": "Nekroz - Decisive Armor",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - exa",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - exa"
+      ],
       "stableId": "nekroz-exa",
-      "currentName": "Nekroz - Exa",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - great sorcerer",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - great sorcerer"
+      ],
       "stableId": "nekroz-great-sorcerer",
-      "currentName": "Nekroz - Great Sorcerer",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - gungnir",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - gungnir"
+      ],
       "stableId": "nekroz-gungnir",
-      "currentName": "Nekroz - Gungnir",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - kaleidoscope",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - kaleidoscope"
+      ],
       "stableId": "nekroz-kaleidoscope",
-      "currentName": "Nekroz - Kaleidoscope",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - mirror",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - mirror"
+      ],
       "stableId": "nekroz-mirror",
-      "currentName": "Nekroz - Mirror",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - shurit",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - shurit"
+      ],
       "stableId": "nekroz-shurit",
-      "currentName": "Nekroz - Shurit",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - trishula",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - trishula"
+      ],
       "stableId": "nekroz-trishula",
-      "currentName": "Nekroz - Trishula",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - unicore",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - unicore"
+      ],
       "stableId": "nekroz-unicore",
-      "currentName": "Nekroz - Unicore",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card nekroz - valkyrus",
+        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - valkyrus"
+      ],
       "stableId": "nekroz-valkyrus",
-      "currentName": "Nekroz - Valkyrus",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["05_YGO_Staples_Fusion.mse-set/card panzer dragon"],
       "stableId": "panzer-dragon",
-      "currentName": "Panzer Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card phoenix wing wind blast"
+      ],
       "stableId": "phoenix-wing-wind-blast",
-      "currentName": "Phoenix Wing Wind Blast",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card predaplant dragostapelia"
+      ],
       "stableId": "predaplant-dragostapelia",
-      "currentName": "Predaplant Dragostapelia",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card predaplant triphyoverutum"
+      ],
       "stableId": "predaplant-triphyoverutum",
-      "currentName": "Predaplant Triphyoverutum",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card preparation of rites",
+        "01_YGO_Legend_of_Alpha.mse-set/card preparation of rites"
+      ],
       "stableId": "preparation-of-rites",
-      "currentName": "Preparation of Rites",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card puru shaddoll - aeon"],
       "stableId": "puru-shaddoll-aeon",
-      "currentName": "Puru Shaddoll - Aeon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card qad shaddoll - keios"],
       "stableId": "qad-shaddoll-keios",
-      "currentName": "Qad Shaddoll - Keios",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["09_YGO_Non_Archetype_Non_Creatures.mse-set/card raigeki"],
       "stableId": "raigeki",
-      "currentName": "Raigeki",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card red supernova dragon"],
       "stableId": "red-supernova-dragon",
-      "currentName": "Red Supernova Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card ree shaddoll - wendi"],
       "stableId": "ree-shaddoll-wendi",
-      "currentName": "Ree Shaddoll - Wendi",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card resh shaddoll - incarnation"],
       "stableId": "resh-shaddoll-incarnation",
-      "currentName": "Resh Shaddoll - Incarnation",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "06_YGO_Staples_Synchro.mse-set/card scarlight red dragon archfiend"
+      ],
       "stableId": "scarlight-red-dragon-archfiend",
-      "currentName": "Scarlight Red Dragon Archfiend",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["05_YGO_Staples_Fusion.mse-set/card sea monster of theseus"],
       "stableId": "sea-monster-of-theseus",
-      "currentName": "Sea Monster of Theseus",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "12_YGO_Necroz.mse-set/card senju of the thousand hands",
+        "01_YGO_Legend_of_Alpha.mse-set/card senju of the thousand hands"
+      ],
       "stableId": "senju-of-the-thousand-hands",
-      "currentName": "Senju of the Thousand Hands",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - beast"],
       "stableId": "shaddoll-beast",
-      "currentName": "Shaddoll - Beast",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - core"],
       "stableId": "shaddoll-core",
-      "currentName": "Shaddoll - Core",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - dragon"],
       "stableId": "shaddoll-dragon",
-      "currentName": "Shaddoll - Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - falco"],
       "stableId": "shaddoll-falco",
-      "currentName": "Shaddoll - Falco",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - fusion"],
       "stableId": "shaddoll-fusion",
-      "currentName": "Shaddoll - Fusion",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - hedgehog"],
       "stableId": "shaddoll-hedgehog",
-      "currentName": "Shaddoll - Hedgehog",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - hound"],
       "stableId": "shaddoll-hound",
-      "currentName": "Shaddoll - Hound",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - schism"],
       "stableId": "shaddoll-schism",
-      "currentName": "Shaddoll - Schism",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - squamata"],
       "stableId": "shaddoll-squamata",
-      "currentName": "Shaddoll - Squamata",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card silent honor ark",
+        "01_YGO_Legend_of_Alpha.mse-set/card silent honor ark"
+      ],
       "stableId": "silent-honor-ark",
-      "currentName": "Silent Honor ARK",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["11_YGO_Shaddoll.mse-set/card sinister shadow games"],
       "stableId": "sinister-shadow-games",
-      "currentName": "Sinister Shadow Games",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "13_YGO_Spellbook.mse-set/card spellbook library of the crescent"
+      ],
       "stableId": "spellbook-library-of-the-crescent",
-      "currentName": "Spellbook Library of the Crescent",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "13_YGO_Spellbook.mse-set/card spellbook magician of prophecy"
+      ],
       "stableId": "spellbook-magician-of-prophecy",
-      "currentName": "Spellbook Magician of Prophecy",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of eternity"],
       "stableId": "spellbook-of-eternity",
-      "currentName": "Spellbook of Eternity",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of fate"],
       "stableId": "spellbook-of-fate",
-      "currentName": "Spellbook of Fate",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of judgment"],
       "stableId": "spellbook-of-judgment",
-      "currentName": "Spellbook of Judgment",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of knowledge"],
       "stableId": "spellbook-of-knowledge",
-      "currentName": "Spellbook of Knowledge",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of life"],
       "stableId": "spellbook-of-life",
-      "currentName": "Spellbook of Life",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of miracles"],
       "stableId": "spellbook-of-miracles",
-      "currentName": "Spellbook of Miracles",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of power"],
       "stableId": "spellbook-of-power",
-      "currentName": "Spellbook of Power",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of secrets"],
       "stableId": "spellbook-of-secrets",
-      "currentName": "Spellbook of Secrets",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of the master"],
       "stableId": "spellbook-of-the-master",
-      "currentName": "Spellbook of the Master",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of wisdom"],
       "stableId": "spellbook-of-wisdom",
-      "currentName": "Spellbook of Wisdom",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card spellbook star hall"],
       "stableId": "spellbook-star-hall",
-      "currentName": "Spellbook Star Hall",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card stardust dragon"],
       "stableId": "stardust-dragon",
-      "currentName": "Stardust Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card starving venom fusion dragon"
+      ],
       "stableId": "starving-venom-fusion-dragon",
-      "currentName": "Starving Venom Fusion Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card stealth kragen",
+        "01_YGO_Legend_of_Alpha.mse-set/card stealth kragen"
+      ],
       "stableId": "stealth-kragen",
-      "currentName": "Stealth Kragen",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card super polymerization"
+      ],
       "stableId": "super-polymerization",
-      "currentName": "Super Polymerization",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["06_YGO_Staples_Synchro.mse-set/card t.g. hyper librarian"],
       "stableId": "t-g-hyper-librarian",
-      "currentName": "T.G. Hyper Librarian",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["13_YGO_Spellbook.mse-set/card the grand spellbook tower"],
       "stableId": "the-grand-spellbook-tower",
-      "currentName": "The Grand Spellbook Tower",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card time thief redoer"],
       "stableId": "time-thief-redoer",
-      "currentName": "Time Thief Redoer",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "07_YGO_Staples_Xyz.mse-set/card tornado dragon",
+        "01_YGO_Legend_of_Alpha.mse-set/card tornado dragon"
+      ],
       "stableId": "tornado-dragon",
-      "currentName": "Tornado Dragon",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card torrential tribute"
+      ],
       "stableId": "torrential-tribute",
-      "currentName": "Torrential Tribute",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "10_YGO_Burning_Abyss.mse-set/card tour guide from the underworld",
+        "01_YGO_Legend_of_Alpha.mse-set/card tour guide from the underworld"
+      ],
       "stableId": "tour-guide-from-the-underworld",
-      "currentName": "Tour Guide From the Underworld",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": ["07_YGO_Staples_Xyz.mse-set/card traptrix rafflesia"],
       "stableId": "traptrix-rafflesia",
-      "currentName": "Traptrix Rafflesia",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "06_YGO_Staples_Synchro.mse-set/card trishula dragon of the ice barrier"
+      ],
       "stableId": "trishula-dragon-of-the-ice-barrier",
-      "currentName": "Trishula, Dragon of the Ice Barrier",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card twin twisters"
+      ],
       "stableId": "twin-twisters",
-      "currentName": "Twin Twisters",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
+      "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card upstart goblin"
+      ],
       "stableId": "upstart-goblin",
-      "currentName": "Upstart Goblin",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
-      "retired": false,
       "withdrawn": false
     },
     {
-      "stableId": "world-chalice-guardragon-almarduke",
-      "currentName": "World Chalice Guardragon Almarduke",
-      "formerNames": [],
-      "formerFilenames": [],
-      "routeAliases": [],
       "retired": false,
+      "routeAliases": [],
+      "sources": [
+        "05_YGO_Staples_Fusion.mse-set/card world chalice guardragon almarduke"
+      ],
+      "stableId": "world-chalice-guardragon-almarduke",
       "withdrawn": false
     }
-  ]
+  ],
+  "schemaVersion": 2
 }

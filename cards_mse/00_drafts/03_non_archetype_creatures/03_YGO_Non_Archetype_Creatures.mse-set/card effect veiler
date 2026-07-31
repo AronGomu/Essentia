@@ -1,0 +1,22 @@
+﻿mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: 03_non_archetype_creature.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-28 18:22:36
+	name: Effect Veiler
+	casting_cost: W
+	image: image3
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Tuner Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> <i-auto>Effect Veiler</i-auto> and <b>Target</b> 1 Creature on the Field; until the end of the turn, the target loses all its abilities. <b>Counter</b> all of its abilities on the Stack.
+	flavor_text: <i-flavor></i-flavor>
+	power: 0
+	toughness: 1
+	card_code_text: 003/004 C

@@ -17,7 +17,7 @@ export const GET: APIRoute = ({ site }) => {
       .href;
   const items = catalog.updates.slice(0, 50).map((update) => {
     const card = cardsById.get(update.cardId)!;
-    return `<item><title>${xml(card.name)}</title><link>${xml(absolute(card.route))}</link><guid isPermaLink="true">${xml(absolute(card.route))}</guid><pubDate>${new Date(`${update.modified.slice(0, 10)}T12:00:00Z`).toUTCString()}</pubDate><description>${xml(card.ruleTextPlain.slice(0, 300))}</description></item>`;
+    return `<item><title>${xml(card.name)}</title><link>${xml(absolute(update.versionRoute))}</link><guid isPermaLink="true">${xml(absolute(update.versionRoute))}</guid><pubDate>${new Date(`${update.modified.slice(0, 10)}T12:00:00Z`).toUTCString()}</pubDate><description>${xml(update.summary)}</description></item>`;
   });
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>YGO × MTG card updates</title><link>${xml(absolute('/updates/'))}</link><description>New and meaningfully updated cards.</description>${items.join('')}</channel></rss>`,

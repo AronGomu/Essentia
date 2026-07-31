@@ -1,0 +1,22 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/11_shaddoll/CONTEXT.md
+	time_created: 2026-07-11 00:33:44
+	time_modified: 2026-07-24 13:53:09
+	name: Shaddoll - Fusion
+	casting_cost: B/G
+	image: mse_images/image18.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Fusion Summon Sorcery</word-list-type-en>
+	sub_type:
+	rarity: common
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Fusion Summon</b> 1 Creature using Creatures from your Hand or Field as materials. If an opponent controls a Creature that started the game in a Sideboard, you can also use Creatures from your Deck.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 020/025 C
+	card_code_text_2: 020/025 C
+	card_code_text_3: 020/025 C

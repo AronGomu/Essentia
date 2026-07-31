@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { catalog, formatDate, withBase } from '../../../lib/catalog';
+
+export function getStaticPaths() {
+  return catalog.releases.map((release) => ({
+    params: {
+      stage: release.stage,
+      package: `${release.setId}-${release.version.replaceAll('.', '-')}`,
+    },
+    props: { release },
+  }));
+}
+const { release } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const versions = catalog.cardVersions
+  .filter((card) => card.packageId === release.id)
+  .sort((a, b) => a.name.localeCompare(b.name));
+const byId = new Map(versions.map((card) => [card.id, card]));
+---
+
+<BaseLayout
+  title={`${release.setName} ${release.stageLabel} ${release.version} — YGO × MTG`}
+  description={`Immutable ${release.stageLabel} ${release.version} package containing ${release.count} cards.`}
+  accent="relic"
+>
+  <article class="page-shell prose-page">
+    <p class="eyebrow">Immutable release package</p>
+    <h1>{release.setName}</h1>
+    <p>
+      <strong>{release.stageLabel} {release.version}</strong> · Published{' '}
+      {formatDate(release.releasedOn)} · {release.count} cards
+    </p>
+
+    <h2>Cards</h2>
+    <ul>
+      {
+        versions.map((card) => (
+          <li>
+            <a href={withBase(base, card.versionRoute)}>{card.name}</a>{' '}
+            <small>{card.sectionLabel}</small>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      release.decks.length > 0 && (
+        <>
+          <h2>Decks</h2>
+          {release.decks.map((deck) => (
+            <section>
+              <h3>{deck.id}</h3>
+              <ul>
+                {deck.cards.map((id) => {
+                  const card = byId.get(id);
+                  return card ? (
+                    <li>
+                      <a href={withBase(base, card.versionRoute)}>
+                        {card.name}
+                      </a>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            </section>
+          ))}
+        </>
+      )
+    }
+
+    {
+      release.contentPosts.length > 0 && (
+        <>
+          <h2>Related posts</h2>
+          <ul>
+            {release.contentPosts.map((url) => (
+              <li>
+                <a href={url}>{url}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </article>
+</BaseLayout>

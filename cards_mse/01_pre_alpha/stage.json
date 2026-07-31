@@ -1,0 +1,73 @@
+{
+  "contentPosts": [],
+  "decks": [
+    {
+      "cards": [
+        "burning-abyss-graff",
+        "burning-abyss-cir",
+        "burning-abyss-scarm",
+        "tour-guide-from-the-underworld",
+        "burning-abyss-farfa",
+        "burning-abyss-rubic",
+        "burning-abyss-calcab",
+        "burning-abyss-alich",
+        "burning-abyss-barbar",
+        "foolish-burial",
+        "burning-abyss-traveler",
+        "burning-abyss-fire-lake",
+        "karma-cut",
+        "burning-abyss-dante",
+        "burning-abyss-virgil",
+        "downerd-magician",
+        "daigusto-emeral",
+        "stealth-kragen",
+        "leviair-the-sea-dragon",
+        "tornado-dragon",
+        "gagaga-cowboy",
+        "d-d-crow",
+        "effect-veiler",
+        "maxx-c",
+        "ash-blossom-and-joyous-spring",
+        "dark-hole"
+      ],
+      "id": "burning-abyss"
+    },
+    {
+      "cards": [
+        "manju-of-the-ten-thousand-hands",
+        "senju-of-the-thousand-hands",
+        "preparation-of-rites",
+        "nekroz-brionac",
+        "nekroz-clausolas",
+        "nekroz-unicore",
+        "nekroz-shurit",
+        "nekroz-dance-princess",
+        "nekroz-trishula",
+        "nekroz-valkyrus",
+        "nekroz-mirror",
+        "nekroz-cycle",
+        "nekroz-kaleidoscope",
+        "herald-of-the-arc-light",
+        "daigusto-emeral",
+        "stealth-kragen",
+        "leviair-the-sea-dragon",
+        "tornado-dragon",
+        "gagaga-cowboy",
+        "bagooska",
+        "evilswarm-exciton-knight",
+        "silent-honor-ark",
+        "nekroz-catastor",
+        "nekroz-great-sorcerer",
+        "nekroz-gungnir",
+        "nekroz-decisive-armor",
+        "nekroz-exa"
+      ],
+      "id": "nekroz"
+    }
+  ],
+  "schemaVersion": 1,
+  "setId": "legend-of-alpha",
+  "setName": "Legend of Alpha",
+  "stage": "pre-alpha",
+  "version": "0.1"
+}

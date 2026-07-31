@@ -1,0 +1,34 @@
+mse_version: 2.5.8
+card:
+	stylesheet: genevensis-00-main
+	stylesheet_version: 2022-02-22
+	has_styling: false
+	notes: Source: docs/11_shaddoll/CONTEXT.md
+	time_created: 2026-07-11 00:33:44
+	time_modified: 2026-07-24 13:53:09
+	name: El Shaddoll - Anoyatyllis
+	casting_cost: 2U
+	image: image3.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Fusion Creature</word-list-type-en>
+	super_type_2: <word-list-type-en></word-list-type-en>
+	super_type_3: <word-list-type-en></word-list-type-en>
+	super_type_4: <word-list-type-en></word-list-type-en>
+	sub_type: <word-list-race-en>Fiend</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: common
+	rule_text:
+		<i>1 “Shaddoll” Creature + 1 blue Creature</i>
+		<i-auto>(1 - Static)</i-auto> If a Creature would enter the Field without having been cast from a Hand or a Grave, <b>Exile</b> it instead.
+		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Shaddoll Recovery</b>
+	flavor_text: <i-flavor></i-flavor>
+	power: 5
+	toughness: 5
+	card_code_text: 002/025 C
+	card_code_text_2: 002/025 C
+	card_code_text_3: 002/025 C
+	copyright: 

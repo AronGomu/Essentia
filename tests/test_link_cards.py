@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PROJECT = REPO_ROOT / "MSE_projects" / "08_YGO_Staples_Link.mse-set"
+PROJECT = REPO_ROOT / "cards_mse/00_drafts/08_link_staples/08_YGO_Staples_Link.mse-set"
 UPDATED_CARDS = {
     "card accesscode talker": (
         "casting_cost: RRWW",
@@ -84,11 +84,11 @@ class LinkCardContentTests(unittest.TestCase):
                     self.assertNotIn(f"\n\t{field}", text)
 
     def test_link_summon_keyword_is_documented(self) -> None:
-        rules = (REPO_ROOT / "docs" / "02_rules_keywords_card_design.md").read_text(
+        events = (REPO_ROOT / "docs/keywords/EVENTS.md").read_text(
             encoding="utf-8-sig"
         )
-        self.assertIn("### On Link Summon", rules)
-        self.assertIn("only triggers when a `Link Creature`", rules)
+        self.assertIn("**On Link Summon**", events)
+        self.assertIn("Link Creature enters via own Link Summon", events)
 
 
 if __name__ == "__main__":

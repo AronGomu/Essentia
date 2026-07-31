@@ -4,28 +4,44 @@ Yu-Gi-Oh! cards adapted as Magic: The Gathering cards and saved as Magic Set Edi
 
 ## Source of truth
 
-English card data lives in `MSE_projects/*.mse-set/`; English project documentation lives in `docs/`. Frozen French snapshots live in `MSE_projects/French/`, `docs/French/`, `rule_reviews/French/`, and `mse/French/` and are not authoritative.
+Card fields live only in folder-form MSE projects under [`cards_mse/`](cards_mse/). Current editable projects are drafts under `cards_mse/00_drafts/`. ALPHA, BETA, and Release packages are immutable publication history. Documentation starts at [`docs/CONTEXT.md`](docs/CONTEXT.md).
 
-## First-time setup
-
-This repository does not commit machine-specific Magic Set Editor paths. After every fresh clone:
+## First-time MSE setup
 
 ```bash
-python setup_mse.py
+python launcher/setup_mse.py
 ```
 
-Enter the root of your Magic Set Editor installation when prompted. The setup script works with paths from any operating system and verifies:
+Setup validates executable, data/style packages, symbol fonts, Magic fonts, and recursive `cards_mse/` projects. It writes ignored `launcher/.env`. Re-run after moving repository or MSE install.
 
-- the MSE executable;
-- the `data` directory and every game, frame, and symbol-font package referenced by the checked-in `.mse-set` projects;
-- the bundled Magic fonts required by those frames;
-- this repository's `MSE_projects` directory.
+Unattended setup:
 
-A successful run creates a gitignored `.env` containing `MSE_ROOT`, `MSE_EXECUTABLE`, `MSE_CLI`, `MSE_DATA_DIR`, `MSE_FONTS_DIR`, and `MSE_PROJECTS_DIR`. Run the setup again if either the repository or MSE installation is moved.
+```bash
+python launcher/setup_mse.py --mse-root "/path/to/Magic Set Editor"
+```
+
+Browse projects by lifecycle/group/set:
+
+```bash
+python launcher/mse_project_menu.pyw --list
+```
+
+Double-click `launcher/mse_project_menu.pyw` for GUI. Diagnostics write to ignored `launcher/.mse_launcher.log`.
+
+## Lifecycle tooling
+
+```bash
+python .script/release_package.py validate
+python .script/release_package.py promote --from-stage 01_pre_alpha --to-stage 02_alpha --released-on YYYY-MM-DD
+python .script/release_package.py prepare-next cards_mse/02_alpha/<set_version> --to-stage 03_pre_beta
+python .script/check_immutable_stages.py --base <merge-base>
+```
+
+See [`docs/RELEASES.md`](docs/RELEASES.md) and [`docs/MSE.md`](docs/MSE.md). Legend of Alpha 0.1 decklists are defined in [`docs/rules/DECKLISTS_ALPHA_0.1.md`](docs/rules/DECKLISTS_ALPHA_0.1.md); their 48 unique custom cards are assembled in Pre-ALPHA. No immutable ALPHA package exists yet.
 
 ## Showcase website
 
-`website/` contains the English-only static Astro + Svelte showcase. It derives allowlisted public data and metadata-stripped image variants from manifest-included cards; it never edits MSE source. Setup, content, testing, render export, snapshot, rights, and deployment procedures live in [`website/README.md`](website/README.md).
+`website/` contains read-only Astro + Svelte publication UI. It reads only immutable `02_alpha`, `04_beta`, and `06_released` packages. Draft-only repository builds valid empty catalog.
 
 ```bash
 cd website
@@ -33,16 +49,13 @@ npm ci
 npm run dev
 ```
 
-Canonical render validation/export uses `.script/export_mse_renders.py`; shared source fingerprints and meaningful timestamp behavior live in `.script/mse_content.py`. Public deployment remains blocked until `website/content/asset-rights.json` records owner approval and per-asset hashes.
+Website setup, checks, rights, history, and deployment live in [`website/README.md`](website/README.md).
 
-For unattended setup, pass the installation directly:
+## Verification
 
 ```bash
-python setup_mse.py --mse-root "/path/to/Magic Set Editor"
+python -m unittest discover -s tests
+python .script/lint_mse_card_style.py
+python .script/release_package.py validate
+cd website && npm run ci && npm run test:e2e
 ```
-
-After setup, run `mse_project_menu.pyw` to browse and open the projects with the configured MSE executable.
-
-## MSE launch diagnostics
-
-The GUI launcher writes configuration and process-launch events (`config.mse.*` and `spawn.mse.*`) to the gitignored `.mse_launcher.log` file in the repository root. Check that file when MSE does not open or exits unexpectedly.

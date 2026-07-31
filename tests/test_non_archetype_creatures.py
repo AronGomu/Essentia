@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "MSE_projects" / "03_YGO_Non_Archetype_Creatures.mse-set"
+PROJECT = ROOT / "cards_mse/00_drafts/03_non_archetype_creatures/03_YGO_Non_Archetype_Creatures.mse-set"
 
 EXPECTED_CARDS = {
     "card ash blossom  joyous spring": (
@@ -20,7 +20,7 @@ EXPECTED_CARDS = {
         "toughness: 1",
         "card_code_text: 001/004 C",
     ),
-    "card d.d crow": (
+    "card d.d. crow": (
         "name: D.D. Crow",
         "casting_cost: B",
         "sub_type: <word-list-race-en>Bird</word-list-race-en>",
@@ -35,7 +35,7 @@ EXPECTED_CARDS = {
         "the target loses all its abilities",
         "card_code_text: 003/004 C",
     ),
-    "card maxx  c": (
+    "card maxx c": (
         "name: Maxx “C”",
         "casting_cost: G",
         "sub_type: <word-list-race-en>Insect</word-list-race-en>",
@@ -66,17 +66,15 @@ class NonArchetypeCreatureTests(unittest.TestCase):
         self.assertIn("card_language: English", set_text)
 
     def test_on_opponent_creature_enter_is_documented(self) -> None:
-        rules = (ROOT / "docs/02_rules_keywords_card_design.md").read_text(encoding="utf-8-sig")
-        context = (ROOT / "docs/context.md").read_text(encoding="utf-8-sig")
-        self.assertIn("### On Opponent Creature Enter", rules)
-        self.assertIn("**On Opponent Creature Enter** means", context)
+        events = (ROOT / "docs/keywords/EVENTS.md").read_text(encoding="utf-8-sig")
+        self.assertIn("**On Opponent Creature Enter**", events)
+        self.assertIn("opponent control", events)
 
-    def test_legacy_aggregate_cannot_restore_card_data(self) -> None:
-        self.assertFalse((ROOT / "mse/set").exists())
-        self.assertTrue((ROOT / "mse/French/set").is_file())
+    def test_retired_generator_cannot_restore_card_data(self) -> None:
+        self.assertFalse((ROOT / "mse").exists())
         generator = (ROOT / ".script/create_archetype_projects.py").read_text(encoding="utf-8-sig")
         self.assertIn("Retired", generator)
-        self.assertIn("English folder-form projects", generator)
+        self.assertIn("Folder-form projects", generator)
 
     def test_all_image_references_resolve(self) -> None:
         for filename in EXPECTED_CARDS:

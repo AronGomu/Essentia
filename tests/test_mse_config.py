@@ -4,8 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from mse_config import MSEConfig, load_env_file, write_env_file
-from setup_mse import configure, find_required_assets, validate_mse_root
+from launcher.mse_config import MSEConfig, load_env_file, write_env_file
+from launcher.setup_mse import configure, find_required_assets, validate_mse_root
 
 
 class EnvFileTests(unittest.TestCase):

@@ -1,0 +1,24 @@
+﻿mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: 03_non_archetype_creature.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-28 18:22:15
+	name: Ash Blossom & Joyous Spring
+	casting_cost: R
+	image: image2
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Tuner Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Zombie</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> <i-auto>“Ash Blossom”</i-auto> and <b>Target</b> 1 Spell or ability whose effect interacts with the Deck <i-auto>(draw, <b>Mill X</b>, search, etc.)</i-auto>; <b>Counter</b> it.
+	flavor_text: <i-flavor></i-flavor>
+	power: 0
+	toughness: 1
+	card_code_text: 001/004 C
+	card_code_text_2: 001/004 C
+	card_code_text_3: 001/004 C

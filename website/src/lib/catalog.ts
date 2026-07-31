@@ -1,14 +1,14 @@
-import catalogJson from '../generated/catalog.json';
+import catalogData from '../generated/catalog';
 
-export interface CatalogCard {
+export interface CardVersion {
   id: string;
+  packageId: string;
   sectionSlug: string;
+  sectionLabel: string;
+  sectionAccent: string;
+  sectionRoute: string;
   manifestIndex: number;
   name: string;
-  matchNames: string[];
-  formerFilenames: string[];
-  routeAliases: string[];
-  retired: boolean;
   castingCost: string;
   superType: string;
   subType: string;
@@ -24,13 +24,28 @@ export interface CatalogCard {
   modified: string;
   support: boolean;
   sourceHash: string;
-  route: string;
+  renderHash: string;
   width: number;
   height: number;
-  renderHash: string;
   render: string;
   galleryWebp: string;
   galleryAvif: string;
+  releasedOn: string;
+  stage: 'alpha' | 'beta' | 'release';
+  stageLabel: 'ALPHA' | 'BETA' | 'Release';
+  stageRank: number;
+  version: string;
+  versionRoute: string;
+  releaseRoute: string;
+}
+
+export interface CatalogCard extends CardVersion {
+  matchNames: string[];
+  formerFilenames: string[];
+  routeAliases: string[];
+  retired: boolean;
+  route: string;
+  versionIds: string[];
 }
 
 export type GalleryCard = Pick<
@@ -61,36 +76,45 @@ export interface CatalogSection {
   iconicId: string;
   route: string;
   count: number;
-  latestModified: string | null;
+  latestModified: string;
   image: string;
   cardIds: string[];
 }
 
-export interface Snapshot {
-  schemaVersion: number;
+export interface ReleasePackage {
   id: string;
-  sectionSlug: string;
-  parent: string | null;
-  createdOn: string;
-  head: boolean;
-  baseline: Array<{ id: string; sourceHash: string; renderHash: string }>;
-  selected: Array<CatalogCard & { status: 'new' | 'updated' }>;
-  hash: string;
+  setId: string;
+  setName: string;
+  version: string;
+  stage: 'alpha' | 'beta' | 'release';
+  stageLabel: 'ALPHA' | 'BETA' | 'Release';
+  stageRank: number;
+  releasedOn: string;
+  route: string;
+  decks: Array<{ id: string; cards: string[] }>;
+  contentPosts: string[];
+  cardIds: string[];
+  sectionSlugs: string[];
+  count: number;
 }
 
 export interface Catalog {
-  schemaVersion: number;
+  schemaVersion: 3;
   generatedAt: string;
   sections: CatalogSection[];
   cards: CatalogCard[];
+  cardVersions: CardVersion[];
+  releases: ReleasePackage[];
   explanations: Record<string, string>;
   updates: Array<{
     cardId: string;
     sectionSlug: string;
     status: 'new' | 'updated';
     modified: string;
+    summary: string;
+    packageId: string;
+    versionRoute: string;
   }>;
-  snapshots: Snapshot[];
   publicationDiagnostics: Array<{
     sectionSlug: string;
     sourceFile: string;
@@ -98,8 +122,14 @@ export interface Catalog {
   }>;
 }
 
-export const catalog = catalogJson as Catalog;
+export const catalog = catalogData as unknown as Catalog;
 export const cardsById = new Map(catalog.cards.map((card) => [card.id, card]));
+export const cardVersionsByKey = new Map(
+  catalog.cardVersions.map((card) => [`${card.id}:${card.packageId}`, card]),
+);
+export const releasesById = new Map(
+  catalog.releases.map((release) => [release.id, release]),
+);
 export const sectionsBySlug = new Map(
   catalog.sections.map((section) => [section.slug, section]),
 );
@@ -146,10 +176,7 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
 export function formatDate(value: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value);
   if (!match) throw new Error(`Invalid local date: ${value}`);
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
   return new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(
-    new Date(year, month - 1, day),
+    new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])),
   );
 }

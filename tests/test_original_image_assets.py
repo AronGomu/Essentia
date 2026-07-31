@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MSE_PROJECTS = REPO_ROOT / "MSE_projects"
+MSE_PROJECTS = REPO_ROOT / "cards_mse" / "00_drafts"
 ORIGINAL_CARDS = REPO_ROOT / "original_cards"
 ORIGINAL_IMAGES = REPO_ROOT / "original_images"
 sys.path.insert(0, str(REPO_ROOT / ".script"))
@@ -18,7 +18,7 @@ from original_image_assets import card_filename, card_type_folder, original_imag
 class OriginalImageAssetTests(unittest.TestCase):
     def test_original_art_is_centralized_outside_mse_projects(self) -> None:
         self.assertTrue(ORIGINAL_IMAGES.is_dir())
-        for project in MSE_PROJECTS.glob("*.mse-set"):
+        for project in MSE_PROJECTS.glob("*/*.mse-set"):
             with self.subTest(project=project.name):
                 self.assertFalse((project / "original_images").exists())
                 self.assertFalse((project / "images").exists())
@@ -73,7 +73,7 @@ class OriginalImageAssetTests(unittest.TestCase):
         self.assertEqual(card_filename('Maxx "C"', ".md"), "Maxx 'C'.md")
 
     def test_mse_cards_only_reference_project_local_images(self) -> None:
-        for project in MSE_PROJECTS.glob("*.mse-set"):
+        for project in MSE_PROJECTS.glob("*/*.mse-set"):
             for card_file in project.glob("card *"):
                 text = card_file.read_text(encoding="utf-8-sig", errors="replace")
                 match = re.search(r"(?m)^\s*image:\s*(.*?)\s*$", text)

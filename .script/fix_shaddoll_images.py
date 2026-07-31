@@ -6,8 +6,8 @@ from PIL import Image, ImageOps
 from original_image_assets import original_image_path, safe_slug
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ROOT = REPO_ROOT / 'MSE_projects'
-PROJECTS = [ROOT / '11_YGO_Shaddoll.mse-set']
+ROOT = REPO_ROOT / 'cards_mse' / '00_drafts'
+PROJECTS = [ROOT / '11_shaddoll' / '11_YGO_Shaddoll.mse-set']
 API = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?name='
 
 NAME_MAP = {

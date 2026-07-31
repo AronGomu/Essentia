@@ -1,8 +1,8 @@
 """Retired aggregate-to-project generator.
 
-English folder-form projects under ``MSE_projects/*.mse-set`` are card source of
-truth. Regenerating them from frozen retired aggregate ``mse/French/set`` would overwrite
-validated card text, artwork, frames, and numbering.
+Folder-form projects under ``cards_mse/00_drafts/*/*.mse-set`` are card source of
+truth. Regenerating them from a retired aggregate would overwrite validated card text,
+artwork, frames, and numbering.
 """
 
 raise SystemExit(

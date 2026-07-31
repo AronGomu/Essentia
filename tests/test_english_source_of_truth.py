@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import hashlib
 import importlib.util
+import json
 import re
 import unittest
 from pathlib import Path
@@ -9,9 +9,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECTS = ROOT / "MSE_projects"
-FRENCH_PROJECTS = PROJECTS / "French"
-ARCHIVE_MANIFEST = ROOT / "FRENCH_ARCHIVE_SHA256SUMS"
+DRAFTS = ROOT / "cards_mse" / "00_drafts"
 INTENTIONAL_UNINCLUDED_CARDS = {
     "07_YGO_Staples_Xyz.mse-set": {"card aa zeus sky thunder"},
     "12_YGO_Necroz.mse-set": {
@@ -32,7 +30,6 @@ INTENTIONAL_UNINCLUDED_CARDS = {
         "card shurit strategist of the nekroz",
     },
 }
-
 FRENCH_MARKERS = re.compile(
     r"[àâçéèêëîïôùûüÿœæ]|"
     r"\b(?:votre|depuis|ciblez|carte|cartes|créature|créatures|détruisez|"
@@ -43,13 +40,11 @@ FRENCH_MARKERS = re.compile(
 )
 
 
-def archive_digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def card_name(card_path: Path) -> str:
     text = card_path.read_text(encoding="utf-8-sig")
-    return re.search(r"(?m)^\tname:\s*(.+)$", text).group(1).strip()  # type: ignore[union-attr]
+    match = re.search(r"(?m)^\tname:\s*(.+)$", text)
+    assert match is not None
+    return match.group(1).strip()
 
 
 def render_name(name: str) -> str:
@@ -58,38 +53,33 @@ def render_name(name: str) -> str:
 
 
 class EnglishSourceOfTruthTests(unittest.TestCase):
-    def test_french_archive_matches_pinned_content_manifest(self) -> None:
-        pinned: dict[str, str] = {}
-        for line in ARCHIVE_MANIFEST.read_text(encoding="utf-8").splitlines():
-            digest, relative = line.split("  ", 1)
-            pinned[relative] = digest
+    def test_requested_legacy_roots_are_absent(self) -> None:
+        for relative in (
+            "MSE_projects",
+            "mse",
+            "print",
+            "rule_reviews",
+            "docs/French",
+            "FRENCH_ARCHIVE_SHA256SUMS",
+            "website_implementation_plan.md",
+            "website_validation_report.md",
+            "DECKLISTS_ALPHA_0.1.md",
+        ):
+            self.assertFalse((ROOT / relative).exists(), relative)
 
-        roots = (
-            ROOT / "MSE_projects/French",
-            ROOT / "docs/French",
-            ROOT / "rule_reviews/French",
-            ROOT / "mse/French",
-        )
-        archived = {
-            path.relative_to(ROOT).as_posix()
-            for root in roots
-            for path in root.rglob("*")
-            if path.is_file()
-        }
-        self.assertEqual(set(pinned), archived)
-        for relative, expected in pinned.items():
-            with self.subTest(path=relative):
-                self.assertEqual(archive_digest(ROOT / relative), expected)
-
-    def test_canonical_manifests_and_renders_are_english_and_complete(self) -> None:
-        for project in sorted(PROJECTS.glob("*.mse-set")):
+    def test_ten_draft_projects_are_english_and_complete(self) -> None:
+        projects = sorted(DRAFTS.glob("*/*.mse-set"))
+        self.assertEqual(len(projects), 10)
+        for project in projects:
             with self.subTest(project=project.name):
                 set_text = (project / "set").read_text(encoding="utf-8-sig")
                 self.assertIn("set_language: EN", set_text)
                 self.assertIn("card_language: English", set_text)
                 self.assertRegex(set_text, r"(?m)^\ttitle: YGO x MTG -- ")
+                self.assertRegex(set_text, r"(?m)^\tartist: DRAFT$")
                 includes = re.findall(r"(?m)^include_file:\s*(.+)$", set_text)
                 self.assertEqual(len(includes), len(set(includes)))
+                self.assertTrue(includes)
                 for include in includes:
                     self.assertTrue((project / include).is_file(), include)
                 all_cards = {path.name for path in project.glob("card *")}
@@ -97,63 +87,59 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
                     all_cards - set(includes),
                     INTENTIONAL_UNINCLUDED_CARDS.get(project.name, set()),
                 )
-                expected_renders = {
-                    render_name(card_name(project / include)) for include in includes
-                }
-                render_paths = list((project / "render").glob("*.png"))
-                self.assertEqual(expected_renders, {path.name for path in render_paths})
-                for render in render_paths:
-                    with Image.open(render) as image:
-                        image.verify()
-                    with Image.open(render) as image:
-                        self.assertGreater(image.width, 0)
-                        self.assertGreater(image.height, 0)
                 for card_path in project.glob("card *"):
                     text = card_path.read_text(encoding="utf-8-sig")
-                    match = re.search(r"(?m)^\timage:\s*(.+)$", text)
-                    if match and match.group(1).strip():
-                        image_path = project / match.group(1).strip()
+                    self.assertNotRegex(text, FRENCH_MARKERS)
+                    image = re.search(r"(?m)^\timage:\s*(.+)$", text)
+                    if image and image.group(1).strip():
+                        image_path = project / image.group(1).strip()
                         self.assertTrue(image_path.is_file(), image_path)
-                        with Image.open(image_path) as image:
-                            image.verify()
+                        with Image.open(image_path) as value:
+                            value.verify()
+                render_paths = list((project / "render").glob("*.png"))
+                if render_paths:
+                    expected = {render_name(card_name(project / name)) for name in includes}
+                    self.assertEqual(expected, {path.name for path in render_paths})
 
-    def test_canonical_cards_have_no_french_prose_or_malformed_tags(self) -> None:
-        for card_path in PROJECTS.glob("*.mse-set/card *"):
-            with self.subTest(card=card_path):
-                text = card_path.read_text(encoding="utf-8-sig")
-                self.assertNotRegex(text, FRENCH_MARKERS)
-                stack: list[str] = []
-                for match in re.finditer(r"<(/?)([a-z][a-z0-9-]*)(?::[^>]*)?>", text, re.I):
-                    closing, tag = match.group(1), match.group(2).lower()
-                    if not closing:
-                        stack.append(tag)
-                    else:
-                        self.assertTrue(stack, f"unexpected </{tag}>")
-                        self.assertEqual(stack.pop(), tag)
-                self.assertEqual(stack, [])
-
-    def test_canonical_docs_and_reviews_are_english(self) -> None:
-        canonical_docs = {
-            path.name
-            for path in (ROOT / "docs").glob("*.md")
-            if not path.name.startswith("_")
+    def test_modular_docs_and_adrs_exist(self) -> None:
+        required = {
+            "CONTEXT.md",
+            "DESIGN.md",
+            "RULES.md",
+            "KEYWORDS.md",
+            "RELEASES.md",
+            "MSE.md",
+            "design/CONVERSION.md",
+            "design/BALANCE.md",
+            "design/FRAMES.md",
+            "rules/DECK_BUILDING.md",
+            "rules/ZONES.md",
+            "rules/CARD_TYPES.md",
+            "rules/SUMMONING.md",
+            "rules/TEMPLATING.md",
+            "keywords/ACTIONS.md",
+            "keywords/EVENTS.md",
+            "keywords/ABILITIES.md",
+            "keywords/COSTS_AND_PROCEDURES.md",
+            "ADR/README.md",
         }
-        self.assertIn("01_cube_overview.md", canonical_docs)
-        self.assertNotIn("01_presentation_generale_regles_du_cube.md", canonical_docs)
-        for name in canonical_docs:
-            self.assertNotRegex(
-                (ROOT / "docs" / name).read_text(encoding="utf-8-sig"),
-                FRENCH_MARKERS,
+        self.assertTrue(all((ROOT / "docs" / path).is_file() for path in required))
+        for archetype in ("10_burning_abyss", "11_shaddoll", "12_nekroz", "13_spellbook"):
+            self.assertEqual(
+                {"CONTEXT.md", "DESIGN.md", "RULES.md", "KEYWORDS.md"},
+                {path.name for path in (ROOT / "docs" / archetype).glob("*.md")},
             )
+            self.assertFalse((ROOT / "docs" / archetype / "CHANGELOG.md").exists())
+        accepted = ROOT / "docs" / "ADR" / "accepted"
+        proposed = ROOT / "docs" / "ADR" / "proposed"
+        self.assertEqual(len(list(accepted.glob("000*.md"))), 5)
+        self.assertTrue((proposed / "0003-nekroz-reconciliation.md").is_file())
+        self.assertIn(
+            "Status: AWAITING_USER",
+            (proposed / "0003-nekroz-reconciliation.md").read_text(encoding="utf-8"),
+        )
 
-        reviews = {path.name for path in (ROOT / "rule_reviews").glob("*.md")}
-        for name in reviews:
-            self.assertNotRegex(
-                (ROOT / "rule_reviews" / name).read_text(encoding="utf-8-sig"),
-                FRENCH_MARKERS,
-            )
-
-    def test_card_workflows_protect_french_archives(self) -> None:
+    def test_card_workflows_reject_immutable_stages(self) -> None:
         for skill in (
             "add-ygo-card",
             "fix-mse-cards",
@@ -163,51 +149,30 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             text = (ROOT / f".agents/skills/{skill}/SKILL.md").read_text(
                 encoding="utf-8-sig"
             )
-            self.assertIn("MSE_projects/French/", text)
-            self.assertRegex(text, r"(?i)never edit|never write|reject any scope")
+            for stage in ("02_alpha", "04_beta", "06_released"):
+                self.assertIn(stage, text)
+            self.assertRegex(text, r"(?i)never edit|reject")
 
-    def test_proxy_pdf_defaults_exclude_french_archive(self) -> None:
-        script = ROOT / ".script/create_proxy_pdf.py"
+    def test_proxy_pdf_defaults_read_immutable_packages_only(self) -> None:
+        script = ROOT / ".script" / "create_proxy_pdf.py"
         spec = importlib.util.spec_from_file_location("create_proxy_pdf", script)
-        self.assertIsNotNone(spec)
-        self.assertIsNotNone(spec.loader if spec else None)
-        module = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
-        spec.loader.exec_module(module)  # type: ignore[union-attr]
+        assert spec and spec.loader
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
         folders = module.discover_render_folders([])
-        expected = sorted(
-            (project / "render")
-            for project in PROJECTS.glob("*.mse-set")
-            if (project / "render").is_dir()
+        self.assertTrue(
+            all(path.parent.parent.name in {"02_alpha", "04_beta", "06_released"} for path in folders)
         )
-        self.assertEqual(folders, expected)
-        self.assertTrue(all("French" not in path.parts for path in folders))
-        french_render = FRENCH_PROJECTS / "13_YGO_Spellbook.mse-set/render"
-        with self.assertRaises(ValueError):
-            module.discover_render_folders([french_render])
+        self.assertEqual(folders, [])
 
-    def test_checked_in_proxy_pdfs_are_valid(self) -> None:
-        expected = {
-            "03_non_archetype_creatures_proxies.pdf",
-            "09_non_archetype_non_creatures_proxies.pdf",
-            "11_ygo_shaddoll_proxies.pdf",
-            "13_spellbook_proxies.pdf",
-            "burning_abyss_proxies.pdf",
-            "trap_cards_proxies.pdf",
-        }
-        self.assertEqual(expected, {path.name for path in (ROOT / "print").glob("*.pdf")})
-        for name in expected:
-            data = (ROOT / "print" / name).read_bytes()
-            self.assertTrue(data.startswith(b"%PDF-"), name)
-            self.assertIn(b"%%EOF", data[-1024:], name)
-
-    def test_legacy_sources_and_process_folder_are_absent(self) -> None:
-        self.assertFalse((ROOT / "mse/set").exists())
-        self.assertTrue((ROOT / "mse/French/set").is_file())
-        self.assertFalse((ROOT / "5_processes").exists())
-        for path in ROOT.rglob("*.md"):
-            if "French" in path.parts:
-                continue
-            self.assertNotIn("5_processes", path.read_text(encoding="utf-8-sig"))
+    def test_identity_metadata_does_not_duplicate_card_fields(self) -> None:
+        data = json.loads((ROOT / "website/content/identities.json").read_text())
+        self.assertEqual(data["schemaVersion"], 2)
+        for identity in data["cards"]:
+            self.assertNotIn("currentName", identity)
+            self.assertNotIn("formerNames", identity)
+            self.assertTrue(identity["sources"])
+            self.assertTrue(all("/card " in source for source in identity["sources"]))
 
 
 if __name__ == "__main__":

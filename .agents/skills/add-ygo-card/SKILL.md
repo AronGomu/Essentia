@@ -20,7 +20,7 @@ Then read the generated `original_cards/<type>/<card name>.md` file. Treat that 
 ## Context and precedent
 
 1. Resolve the repository root with `git rev-parse --show-toplevel`.
-2. Read `docs/context.md` and `docs/02_rules_keywords_card_design.md`.
+2. Read `docs/rules/TEMPLATING.md` and `docs/RULES.md`.
 3. Identify the target archetype or utility document and MSE project.
 4. Read the complete target doc and at least three nearby converted cards from the same archetype/type before designing the new card.
 5. Reuse existing archetype wording and mechanics before inventing new ones.
@@ -29,14 +29,14 @@ Then read the generated `original_cards/<type>/<card name>.md` file. Treat that 
 
 Prefer the existing matching MSE project (source of truth for translated card text):
 
-- Utility creatures: `MSE_projects/03_YGO_Non_Archetype_Creatures.mse-set`
-- Fusion/Synchro/Xyz/Link staples: `MSE_projects/05_YGO_Staples_Fusion.mse-set` through `08_YGO_Staples_Link.mse-set`
-- Utility spells/traps: `MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set`
-- Archetypes: matching `MSE_projects/*_YGO_*.mse-set`
+- Utility creatures: `cards_mse/00_drafts/03_non_archetype_creatures/03_YGO_Non_Archetype_Creatures.mse-set`
+- Fusion/Synchro/Xyz/Link staples: `cards_mse/00_drafts/05_fusion_staples/05_YGO_Staples_Fusion.mse-set` through `08_YGO_Staples_Link.mse-set`
+- Utility spells/traps: `cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set`
+- Archetypes: matching `cards_mse/00_drafts/*/*_YGO_*.mse-set`
 
-Archetype design docs under `docs/10_`–`docs/13_` keep identity/mechanics only — do not reintroduce full card blocks there. MSE `name:` uses the cube display name.
+Archetype modules under `docs/10_burning_abyss/` through `docs/13_spellbook/` keep identity/mechanics only — do not reintroduce full card blocks there. MSE `name:` uses cube display name.
 
-Never write to frozen French snapshots under `MSE_projects/French/`, `docs/French/`, `rule_reviews/French/`, or `mse/French/`. They are archival references, not destinations or source-of-truth inputs.
+Write only to mutable lifecycle stages. Default destination is `cards_mse/00_drafts/`. Never edit `02_alpha`, `04_beta`, `06_released`, or generated aggregate projects.
 
 ## Conversion
 
@@ -59,7 +59,7 @@ Use YGOPRODeck only for artwork discovery. Prefer `card_images[0].image_url_crop
 
 - Update archetype Markdown only when card changes reusable identity, mechanics, exceptions, or design rules; never add card block.
 - Match sibling MSE fields, stylesheet, filename style, image path, and `include_file:` convention.
-- If an updater exists under `mse/` or `.script/`, update it so rerunning does not remove the card. Do not run an updater that would overwrite unsynchronized edits.
+- If an updater exists under `.script/`, update it so rerunning does not remove the card. Do not run an updater that would overwrite unsynchronized edits.
 - Preserve unrelated working-tree changes.
 
 ## Verification
@@ -73,11 +73,11 @@ rg -n "Official Yu-Gi-Oh|CARD NAME" original_cards
 2. Confirm MSE card file, set include, image, updater, and any affected archetype rules agree:
 
 ```bash
-rg -n "ORIGINAL NAME|CUBE NAME" docs MSE_projects mse .script
+rg -n "ORIGINAL NAME|CUBE NAME" docs cards_mse .script
 ```
 
-3. Run `python .script/lint_mse_card_style.py`; require pass after every canonical English MSE update and before export. Frozen French archives remain excluded.
-4. Run relevant tests and the project's MSE export verification using the configured `.env`/`mse_config.py`; do not hardcode a machine-specific MSE installation path.
+3. Run `python .script/lint_mse_card_style.py`; require pass after every MSE update and before export.
+4. Run relevant tests and the project's MSE export verification using the configured `.env`/`launcher/mse_config.py`; do not hardcode a machine-specific MSE installation path.
 5. Inspect the exported image when possible and remove temporary exports.
 
 ## Final response

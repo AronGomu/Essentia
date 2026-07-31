@@ -1,0 +1,27 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/13_spellbook/CONTEXT.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-24 13:53:09
+	name: Spellbook of Fate
+	casting_cost: U
+	image: image3.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Sorcery</word-list-type-en>
+	sub_type: 
+	rarity: common
+	rule_text:
+		<b>Spell Affinity</b>
+		<margin:0:0:5><i-auto>(1 - Resolution Hard)</i-auto> <b>Exile</b> 1–3 <i-auto>“Spellbook”</i-auto> from Grave; choose 1 mode based on the number exiled:</margin:0:0:5>
+		<li><bullet>• </bullet>1 — <b>Flip</b> 1 Creature face down.
+		</li><li><bullet>• </bullet>2 — <b>Bounce</b> 1 nonland permanent.
+		</li><li><bullet>• </bullet>3 — <b>Exile</b> 1 nonland permanent.</li>
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 006/016 C
+	card_code_text_2: 006/016 C
+	card_code_text_3: 006/016 C

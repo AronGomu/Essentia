@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "publicationStatus": "pending-owner-approval",
-  "scope": "MSE_projects canonical renders and referenced artwork",
-  "policy": "Local builds are allowed. Public deployment remains blocked until owner approval and per-asset hashes are recorded.",
+  "scope": "Immutable cards_mse release-package renders",
+  "policy": "Empty publication builds need no asset approval. Non-empty public deployment remains blocked until owner approval and per-release render hashes are recorded.",
   "approvedAt": null,
   "approvedBy": null,
   "assets": []

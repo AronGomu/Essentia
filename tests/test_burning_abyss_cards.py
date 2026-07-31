@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "MSE_projects/10_YGO_Burning_Abyss.mse-set"
-DOCUMENT = ROOT / "docs/10_archetype_burning_abyss.md"
+PROJECT = ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set"
+DOCS = ROOT / "docs/10_burning_abyss"
 
 
 class BurningAbyssCardTests(unittest.TestCase):
@@ -96,17 +96,15 @@ class BurningAbyssCardTests(unittest.TestCase):
             self.assertIn("super_type: <word-list-type-en>Xyz Creature</word-list-type-en>", text)
 
     def test_accepted_general_rules_are_documented_in_english(self) -> None:
-        context = (ROOT / "docs/context.md").read_text(encoding="utf-8-sig")
-        general = (ROOT / "docs/02_rules_keywords_card_design.md").read_text(encoding="utf-8-sig")
-        archetype = DOCUMENT.read_text(encoding="utf-8-sig")
-        self.assertIn("**Summon** means", context)
-        self.assertIn("**Reclaim** means", context)
-        self.assertIn("**On Opponent Creature Enter** means", context)
-        self.assertIn("### Summon", general)
-        self.assertIn("### Reclaim", general)
-        self.assertIn("### On Opponent Creature Enter", general)
-        self.assertIn("## Card source of truth", archetype)
-        self.assertIn("Card-by-card values for this archetype exist only", archetype)
+        actions = (ROOT / "docs/keywords/ACTIONS.md").read_text(encoding="utf-8-sig")
+        events = (ROOT / "docs/keywords/EVENTS.md").read_text(encoding="utf-8-sig")
+        context = (DOCS / "CONTEXT.md").read_text(encoding="utf-8-sig")
+        design = (DOCS / "DESIGN.md").read_text(encoding="utf-8-sig")
+        self.assertIn("### Summon / Hand Summon", actions)
+        self.assertIn("### Salvage / Reclaim / Release", actions)
+        self.assertIn("**On Opponent Creature Enter**", events)
+        self.assertIn("Card-by-card values live only in MSE", context)
+        self.assertIn("Aristocrats / Graveyard / Value", design)
 
     def test_skills_reject_illegal_summon_bypass(self) -> None:
         for relative in (

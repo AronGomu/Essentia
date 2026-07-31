@@ -5,14 +5,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TRAP_CARDS = (
-    ROOT / "MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set/card breakthrough skill",
-    ROOT / "MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set/card compulsory evacuation device",
-    ROOT / "MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set/card karma cut",
-    ROOT / "MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set/card phoenix wing wind blast",
-    ROOT / "MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set/card torrential tribute",
-    ROOT / "MSE_projects/10_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
-    ROOT / "MSE_projects/10_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
-    ROOT / "MSE_projects/10_YGO_Burning_Abyss.mse-set/card fiend griefing",
+    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card breakthrough skill",
+    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card compulsory evacuation device",
+    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card karma cut",
+    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card phoenix wing wind blast",
+    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card torrential tribute",
+    ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
+    ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
+    ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card fiend griefing",
 )
 
 
@@ -26,31 +26,25 @@ class TrapSupertypeTests(unittest.TestCase):
                 self.assertNotIn("<b>Trap</b>", card)
 
     def test_trap_references_use_current_english_vocabulary(self) -> None:
-        rafflesia = (ROOT / "MSE_projects/07_YGO_Staples_Xyz.mse-set/card traptrix rafflesia").read_text(encoding="utf-8-sig")
+        rafflesia = (ROOT / "cards_mse/00_drafts/07_xyz_staples/07_YGO_Staples_Xyz.mse-set/card traptrix rafflesia").read_text(encoding="utf-8-sig")
         self.assertIn("<i>2 Creatures MV 1</i>", rafflesia)
         self.assertIn("<b>Send</b> 1 Trap from your Deck to Grave", rafflesia)
         self.assertNotIn("error-spelling", rafflesia)
 
-        back_jack = (ROOT / "MSE_projects/10_YGO_Burning_Abyss.mse-set/card absolute king back jack").read_text(encoding="utf-8-sig")
+        back_jack = (ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card absolute king back jack").read_text(encoding="utf-8-sig")
         self.assertIn("If it is a Trap, <b>Set</b> the card face down on the Field", back_jack)
         self.assertIn("you may <b>Cast</b> it this turn", back_jack)
 
-    def test_rules_and_archive_preserve_trap_contract(self) -> None:
-        context = (ROOT / "docs/context.md").read_text(encoding="utf-8-sig")
-        detailed = (ROOT / "docs/02_rules_keywords_card_design.md").read_text(encoding="utf-8-sig")
-        for rules in (context, detailed):
-            self.assertIn("Super-type Trap", rules)
-            self.assertIn("`Trap Instant`", rules)
-            self.assertIn("cast it from", rules)
+    def test_rules_preserve_trap_contract(self) -> None:
+        rules = (ROOT / "docs/rules/CARD_TYPES.md").read_text(encoding="utf-8-sig")
+        self.assertIn("## Trap", rules)
+        self.assertIn("`Trap Instant`", rules)
+        self.assertIn("cast from Field", rules)
 
         generator = (ROOT / ".script/create_archetype_projects.py").read_text(encoding="utf-8-sig")
         self.assertIn("Retired", generator)
         self.assertNotIn("shutil.copy2", generator)
-
-        self.assertFalse((ROOT / "mse/set").exists())
-        aggregate = (ROOT / "mse/French/set").read_text(encoding="utf-8-sig")
-        self.assertGreaterEqual(aggregate.count("\tsuper type: Trap"), 5)
-        self.assertNotIn("\tsub type: Trap", aggregate)
+        self.assertFalse((ROOT / "mse").exists())
 
 
 if __name__ == "__main__":

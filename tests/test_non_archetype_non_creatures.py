@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set"
+PROJECT = ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set"
 
 EXPECTED = {
     "card allure of darkness": ("<b>Draw</b> 2 cards", "<b>Exile</b> 1 black card"),

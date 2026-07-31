@@ -1,0 +1,24 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/10_burning_abyss/CONTEXT.md
+	time_created: 2026-07-11 16:40:30
+	time_modified: 2026-07-24 13:53:09
+	name: Crane Crane
+	casting_cost: G
+	image: mse_images/crane_crane.jpg
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Winged</word-list-race-en><atom-sep> </atom-sep><word-list-class-en>Beast</word-list-class-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text: <i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Target</b> 1 Creature with MV 1 in your Grave; <b>Reanimate</b> the target. The target loses its abilities on the Field.
+	flavor_text: <i-flavor></i-flavor>
+	power: 1
+	toughness: 2
+	card_code_text: 024/030 C
+	card_code_text_2: 024/030 C
+	card_code_text_3: 024/030 C

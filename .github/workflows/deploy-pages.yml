@@ -65,6 +65,6 @@ jobs:
         env:
           SITE: ${{ steps.deployment.outputs.page_url }}
         run: |
-          for route in '' 'archetypes/nekroz/' 'sections/non-archetype/creatures/' 'cards/nekroz-trishula/' 'updates/' 'archetypes/nekroz/snapshots/001-2026-07-17/' 'robots.txt' '404.html'; do
+          for route in '' 'updates/' 'rules/' 'philosophy/' 'legal/' 'robots.txt' '404.html'; do
             curl --fail --location --retry 4 --retry-all-errors "${SITE}${route}" >/dev/null
           done

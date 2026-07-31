@@ -4,9 +4,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 UPDATE_RULES = ROOT / ".agents/skills/update-rules/SKILL.md"
 VALIDATE_MSE = ROOT / ".agents/skills/fix-mse-cards/SKILL.md"
-CONTEXT = ROOT / "docs/context.md"
-RULES = ROOT / "docs/02_rules_keywords_card_design.md"
-SHADDOLL = ROOT / "docs/11_archetype_shaddoll.md"
+CONTEXT = ROOT / "docs/CONTEXT.md"
+RULES = ROOT / "docs/rules/TEMPLATING.md"
+SHADDOLL = ROOT / "docs/11_shaddoll/RULES.md"
 
 
 class UpdateRulesSkillTest(unittest.TestCase):
@@ -19,7 +19,7 @@ class UpdateRulesSkillTest(unittest.TestCase):
         cls.shaddoll = SHADDOLL.read_text(encoding="utf-8-sig")
 
     def test_rule_skill_uses_markdown_review_gate_instead_of_questions(self) -> None:
-        self.assertIn("rule_reviews/YYYY-MM-DD-<scope-slug>.md", self.skill)
+        self.assertIn("docs/ADR/proposed/YYYY-MM-DD-<scope-slug>.md", self.skill)
         self.assertIn("## Ruling contradictions — pattern destroyers", self.skill)
         self.assertIn("## New possible rules — pattern makers", self.skill)
         self.assertIn("Status: AWAITING_USER", self.skill)
@@ -42,20 +42,19 @@ class UpdateRulesSkillTest(unittest.TestCase):
         self.assertIn("**Exile from Grave** ; ...", self.skill)
 
     def test_general_and_archetype_rules_have_separate_owners(self) -> None:
-        self.assertIn("contains only the general syntax", self.context)
-        self.assertIn("Each archetype has its own rules", self.context)
-        self.assertNotIn("Shaddoll Creatures retain type", self.context)
-        self.assertIn("## Shaddoll-specific conventions", self.shaddoll)
-        self.assertIn("Shaddoll creatures retain the type", self.shaddoll)
-        self.assertIn("mechanics and exceptions specific to an archetype", self.rules)
-        self.assertIn("Card-by-card values only live in `MSE_projects/*.mse-set/`", self.rules)
+        self.assertIn("Change ownership", self.context)
+        self.assertIn("Archetype documentation", self.context)
+        self.assertNotIn("Shaddoll creatures retain", self.context)
+        self.assertIn("## Naming", self.shaddoll)
+        self.assertIn("Do not standardize race as Puppet", self.shaddoll)
+        self.assertIn("Card-specific value", self.context)
+        self.assertIn("MSE only", self.context)
 
     def test_psct_order_is_documented(self) -> None:
-        for text in (self.context, self.rules):
-            self.assertIn("Problem-Solving Card Text (PSCT)", text)
-            self.assertIn("**condition keyword** —", text)
-            self.assertIn("costs and targets;", text)
-            self.assertIn("**On Send Grave** — **Discard** 1 card", text)
+        self.assertIn("PSCT", self.rules)
+        self.assertIn("**condition keyword** —", self.rules)
+        self.assertIn("costs and targets;", self.rules)
+        self.assertIn("Targeting is activation action, never cost", self.rules)
 
     def test_validate_mse_waits_for_completed_review_file(self) -> None:
         self.assertIn("every pattern destroyer and pattern maker", self.validate_skill)

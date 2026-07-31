@@ -1,6 +1,0 @@
-# Frozen French snapshots: preserve exact bytes and line endings.
-MSE_projects/French/** -text
-docs/French/** -text
-rule_reviews/French/** -text
-mse/French/** -text
-FRENCH_ARCHIVE_SHA256SUMS text eol=lf

@@ -2,9 +2,9 @@
 
 ## Status
 
-Approved architecture plan. First set: **Legend of Alpha**. First planned version: **0.1**.
+Implemented 2026-07-31. Legacy paths below document migration inputs, not current locations. First set: **Legend of Alpha**. First planned version: **0.1**.
 
-Card/deck selection for Legend of Alpha 0.1 remains deferred. User will provide exact Pre-ALPHA card list later.
+Card/deck selection was deferred during restructuring. Burning Abyss and Nekroz selections are now defined in `docs/rules/DECKLISTS_ALPHA_0.1.md` and assembled in Pre-ALPHA.
 
 ## Goals
 

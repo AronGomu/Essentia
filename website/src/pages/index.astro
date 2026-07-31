@@ -8,168 +8,151 @@ const base = import.meta.env.BASE_URL;
 const latest = catalog.updates
   .filter((update) => update.status === 'new')
   .map((update) => ({ ...update, card: cardsById.get(update.cardId)! }));
-const heroSection = catalog.sections.find(
-  (section) => section.slug === 'nekroz',
-)!;
+const heroSection = catalog.sections[0];
+const heroImage = heroSection?.image;
+const heroRoute = heroSection?.route ?? '/';
+const heroLabel = heroSection?.label ?? 'published cards';
+const hasPublication = Boolean(heroSection && catalog.releases.length);
 ---
 
 <BaseLayout
   title="YGO × MTG — The Blackfoil Archive"
   description="Faithful Yu-Gi-Oh! gameplay identities rebuilt as playable Magic cards."
-  image={heroSection.image}
+  {...heroImage ? { image: heroImage } : {}}
   accent="relic"
   theme="home"
 >
-  <section class="hero">
-    <img
-      class="hero-art"
-      src={withBase(base, heroSection.image)}
-      alt="Nekroz of Trishula artwork in icy ritual light"
-      width="1200"
-      height="800"
-      fetchpriority="high"
-    />
-    <div class="hero-content">
-      <h1>Yu-Gi-Oh! feel.<br />Playable under Magic rules.</h1>
-      <p>
-        Enter a source-backed archive of familiar identities rebuilt for a
-        custom cube—canonical renders, readable rules, stable card pages, and
-        visible history.
-      </p>
-      <div class="hero-actions">
-        <a class="primary-link" href={withBase(base, heroSection.route)}
-          >Explore Nekroz</a
-        ><a class="secondary-link" href={withBase(base, '/updates/')}
-          >See what changed</a
-        >
-      </div>
-    </div>
-  </section>
+  {
+    hasPublication ? (
+      <>
+        <section class="hero">
+          <img
+            class="hero-art"
+            src={withBase(base, heroImage ?? '')}
+            alt=""
+            width="1200"
+            height="800"
+            fetchpriority="high"
+          />
+          <div class="hero-content">
+            <h1>
+              Yu-Gi-Oh! feel.
+              <br />
+              Playable under Magic rules.
+            </h1>
+            <p>
+              Source-backed cards, immutable release history, canonical renders,
+              readable rules, and stable card pages.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-link" href={withBase(base, heroRoute)}>
+                Explore {heroLabel}
+              </a>
+              <a class="secondary-link" href={withBase(base, '/updates/')}>
+                See what changed
+              </a>
+            </div>
+          </div>
+        </section>
 
-  <section class="page-shell" aria-labelledby="new-cards-heading">
-    <div class="section-heading">
-      <div>
-        <h2 id="new-cards-heading">New cards</h2><p>
-          New additions, ordered by source modification date. Scroll or use the
-          controls to browse the full row.
-        </p>
-      </div>
-      <div class="carousel-controls" aria-label="New card carousel controls">
-        <button
-          type="button"
-          data-carousel-previous
-          aria-controls="new-card-carousel"
-          aria-label="Previous cards">←</button
-        >
-        <button
-          type="button"
-          data-carousel-next
-          aria-controls="new-card-carousel"
-          aria-label="Next cards">→</button
-        >
-        <a href={withBase(base, '/updates/')}>View all updates</a>
-      </div>
-    </div>
-    <ul
-      id="new-card-carousel"
-      class="update-list new-card-carousel"
-      data-card-carousel
-      tabindex="0"
-      aria-label="New cards"
-    >
-      {
-        latest.map(({ card, status }, index) => (
-          <li class="update-item">
-            <a
-              href={withBase(base, card.route)}
-              data-card-preview={withBase(base, card.render)}
-            >
-              <>
-                <CardPicture card={card} eager={index < 3} />
-                <span class="update-meta">
-                  <>
+        <section class="page-shell" aria-labelledby="new-cards-heading">
+          <div class="section-heading">
+            <div>
+              <h2 id="new-cards-heading">New cards</h2>
+              <p>Latest cards from immutable publication packages.</p>
+            </div>
+            <a href={withBase(base, '/updates/')}>View all updates</a>
+          </div>
+          <ul class="update-list new-card-carousel" aria-label="New cards">
+            {latest.map(({ card, status }, index) => (
+              <li class="update-item">
+                <a
+                  href={withBase(base, card.route)}
+                  data-card-preview={withBase(base, card.render)}
+                >
+                  <CardPicture card={card} eager={index < 3} />
+                  <span class="update-meta">
                     <span>
-                      <>
-                        <strong>{card.name}</strong>
-                        <small>{formatDate(card.modified)}</small>
-                      </>
+                      <strong>{card.name}</strong>
+                      <small>{formatDate(card.releasedOn)}</small>
                     </span>
                     <StatusBadge status={status} />
-                  </>
-                </span>
-              </>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-  <section aria-labelledby="catalog-heading">
-    <div class="page-shell section-heading">
-      <div>
-        <h2 id="catalog-heading">Ten sections. One cube.</h2><p>
-          Non-Archetype staples come first; defined archetypes follow as
-          complete mechanical packages. Shared structure keeps every gallery
-          legible while artwork controls its atmosphere.
-        </p>
-      </div>
-    </div>
-    <div class="section-menu">
-      {
-        catalog.sections.map((section) => (
-          <a class="section-tile" href={withBase(base, section.route)}>
-            <>
-              <img
-                src={withBase(base, section.image)}
-                alt=""
-                width="1200"
-                height="800"
-                loading="lazy"
-              />
-              <div>
-                <>
+        <section aria-labelledby="catalog-heading">
+          <div class="page-shell section-heading">
+            <div>
+              <h2 id="catalog-heading">Published sections</h2>
+              <p>Current card versions selected from lifecycle metadata.</p>
+            </div>
+          </div>
+          <div class="section-menu">
+            {catalog.sections.map((section) => (
+              <a class="section-tile" href={withBase(base, section.route)}>
+                <img
+                  src={withBase(base, section.image)}
+                  alt=""
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                />
+                <div>
                   <h3>{section.label}</h3>
                   <p>
                     {section.count} published cards · Updated{' '}
-                    {section.latestModified
-                      ? formatDate(section.latestModified)
-                      : '—'}
+                    {formatDate(section.latestModified)}
                   </p>
-                </>
-              </div>
-            </>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      </>
+    ) : (
+      <section
+        class="page-shell empty-publication"
+        aria-labelledby="empty-title"
+      >
+        <p class="eyebrow">Publication archive</p>
+        <h1 id="empty-title">No immutable releases published yet.</h1>
+        <p>
+          Editable staging projects exist, but this website publishes only
+          ALPHA, BETA, and Release packages. Legend of Alpha 0.1 is assembled in
+          Pre-ALPHA.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-link" href={withBase(base, '/philosophy/')}>
+            Read design philosophy
           </a>
-        ))
-      }
-    </div>
-  </section>
+          <a class="secondary-link" href={withBase(base, '/rules/')}>
+            Read cube rules
+          </a>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
 
-<script>
-  const carousel = document.querySelector<HTMLElement>('[data-card-carousel]');
-  const scroll = (direction: number) => {
-    carousel?.scrollBy({
-      left: direction * Math.max(288, carousel.clientWidth * 0.8),
-      behavior: 'smooth',
-    });
-  };
-  document
-    .querySelector('[data-carousel-previous]')
-    ?.addEventListener('click', () => scroll(-1));
-  document
-    .querySelector('[data-carousel-next]')
-    ?.addEventListener('click', () => scroll(1));
-  carousel?.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      event.preventDefault();
-      scroll(event.key === 'ArrowLeft' ? -1 : 1);
-    } else if (event.key === 'Home' || event.key === 'End') {
-      event.preventDefault();
-      carousel.scrollTo({
-        left: event.key === 'Home' ? 0 : carousel.scrollWidth,
-        behavior: 'smooth',
-      });
-    }
-  });
-</script>
+<style>
+  .empty-publication {
+    min-height: 60vh;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 1rem;
+    max-width: 54rem;
+  }
+  .empty-publication h1,
+  .empty-publication p {
+    margin: 0;
+  }
+  .empty-publication > p:not(.eyebrow) {
+    max-width: 44rem;
+    color: var(--muted);
+  }
+</style>

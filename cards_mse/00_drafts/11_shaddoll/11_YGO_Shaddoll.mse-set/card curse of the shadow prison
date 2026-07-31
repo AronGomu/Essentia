@@ -1,0 +1,24 @@
+mse_version: 2.5.8
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/11_shaddoll/CONTEXT.md
+	time_created: 2026-07-11 00:33:44
+	time_modified: 2026-07-24 13:53:09
+	name: Curse of the Shadow Prison
+	casting_cost: B
+	image: mse_images/image24.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Legendary Enchantment</word-list-type-en>
+	sub_type: <word-list-enchantment></word-list-enchantment>
+	rarity: common
+	rule_text:
+		<i-auto>(1 - Static)</i-auto> If 1+ <i-auto>“Shaddoll”</i-auto> cards are put into your Grave by a card effect, put 1 Magic counter on this card.
+		<i-auto>(2 - Static)</i-auto> If you choose materials for a <i-auto>“Shaddoll”</i-auto> <b>Fusion Summon</b>, you may remove 3 Magic counters from this card. If you do, you may use 1 Creature an opponent controls as material for that summon.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 001/025 C
+	card_code_text_2: 001/025 C
+	card_code_text_3: 001/025 C

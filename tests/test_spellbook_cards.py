@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "MSE_projects/13_YGO_Spellbook.mse-set"
-DOC = ROOT / "docs/13_archetype_spellbook.md"
+PROJECT = ROOT / "cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set"
+DOCS = ROOT / "docs/13_spellbook"
 
 BOOK_AFFINITY = "<b>Book Affinity</b>"
 SPELL_AFFINITY = "<b>Spell Affinity</b>"
@@ -90,23 +90,23 @@ class SpellbookCardTests(unittest.TestCase):
         subtype = next(line.removeprefix("\tsub_type: ") for line in tower.splitlines() if line.startswith("\tsub_type: "))
         self.assertEqual(" ".join(re.sub(r"<[^>]+>", "", subtype).split()), "Land")
 
-    def test_archetype_doc_keeps_affinity_rules_not_card_blocks(self) -> None:
-        doc = DOC.read_text(encoding="utf-8-sig")
-        self.assertIn("**Book Affinity** is retired", doc)
-        self.assertIn("**Alternative Cost**", doc)
-        self.assertIn("**Spell Affinity**", doc)
-        self.assertIn("printed, opt-in keyword", doc)
-        self.assertIn("## Card source of truth", doc)
-        self.assertIn("MSE_projects/13_YGO_Spellbook.mse-set", doc)
-        self.assertNotIn("\nCreature — Wizard Spellbook\n", doc)
+    def test_archetype_docs_keep_affinity_rules_not_card_blocks(self) -> None:
+        context = (DOCS / "CONTEXT.md").read_text(encoding="utf-8-sig")
+        rules = (DOCS / "RULES.md").read_text(encoding="utf-8-sig")
+        keywords = (DOCS / "KEYWORDS.md").read_text(encoding="utf-8-sig")
+        self.assertIn("**Book Affinity** is retired", rules)
+        self.assertIn("**Alternative Cost**", rules)
+        self.assertIn("**Spell Affinity**", keywords)
+        self.assertIn("printed opt-in keyword", rules)
+        self.assertIn("cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set", context)
+        self.assertNotIn("\nCreature — Wizard Spellbook\n", context + rules + keywords)
 
     def test_retired_generator_cannot_overwrite_canonical_project(self) -> None:
         generator = (ROOT / ".script/create_archetype_projects.py").read_text(encoding="utf-8-sig")
         self.assertIn("Retired", generator)
-        self.assertIn("English folder-form projects", generator)
+        self.assertIn("Folder-form projects", generator)
         self.assertNotIn("shutil.rmtree", generator)
-        self.assertFalse((ROOT / "mse/set").exists())
-        self.assertTrue((ROOT / "mse/French/set").is_file())
+        self.assertFalse((ROOT / "mse").exists())
 
     def test_all_images_resolve(self) -> None:
         for filename in EXPECTED_RULES:

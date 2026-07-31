@@ -12,7 +12,7 @@ Add or modify converted cube cards directly from structured Markdown supplied by
 
 The supplied converted card data is the **provisional source of truth** for card mechanics. Preserve it unless the user explicitly classifies a difference as an input error. Correct English spelling, grammar, established vocabulary, and MSE markup, but never silently redesign the mechanic.
 
-Only English canonical projects under `MSE_projects/*.mse-set/` may be destinations. Never edit frozen snapshots under `MSE_projects/French/`, `docs/French/`, `rule_reviews/French/`, or `mse/French/`, and exclude them from render and proxy-PDF discovery.
+Only folder-form projects in mutable lifecycle stages may be destinations; default to `cards_mse/00_drafts/*/*.mse-set/`. Never edit `02_alpha`, `04_beta`, `06_released`, or generated aggregate projects. Draft PDFs are forbidden.
 
 This workflow has two mandatory interview loops, matching `fix-mse-cards`:
 
@@ -67,7 +67,7 @@ Accept harmless variations:
 
 Do not support `[REMOVE]` through this skill. Route removals through `fix-mse-cards` or a dedicated removal workflow because assets and generator references require destructive reconciliation.
 
-If the target MSE project is missing, ambiguous, or outside `MSE_projects/`, use `AskUserQuestion` to select the intended checked-in `.mse-set` folder. If a card block lacks a mechanic-bearing field (name, cost, type, stats when applicable, or effect section), ask for the missing value before editing.
+If the target MSE project is missing, ambiguous, or outside a mutable `cards_mse/` stage, use `AskUserQuestion` to select the intended checked-in `.mse-set` folder. If a card block lacks a mechanic-bearing field (name, cost, type, stats when applicable, or effect section), ask for the missing value before editing.
 
 ## Phase 1 — Protect the working tree and resolve destinations
 
@@ -79,12 +79,12 @@ If the target MSE project is missing, ambiguous, or outside `MSE_projects/`, use
    ```
 
 2. Preserve unrelated changes. Never reset, checkout, clean, or regenerate an entire project over existing work.
-3. Resolve the target under `MSE_projects/` by exact path or exact `.mse-set` filename.
+3. Resolve the target under `cards_mse/` by exact path or exact `.mse-set` filename.
 4. Read completely:
    - target `set` manifest;
    - matching archetype design doc under `docs/` only if mechanics/identity change (no full card text duplication);
-   - `docs/context.md`;
-   - `docs/02_rules_keywords_card_design.md`;
+   - `docs/rules/TEMPLATING.md`;
+   - `docs/RULES.md`;
    - all existing target cards with matching names;
    - 2–3 sibling cards with the same card type/frame;
    - scripts/generators that reference the target project or supplied card names;
@@ -139,9 +139,9 @@ When grammar correction could change mechanics, add it to the difference ledger 
 
 Before classifying differences, confirm the complete Phase 1 reads cover:
 
-- `docs/context.md`;
-- `docs/02_rules_keywords_card_design.md`;
-- the numbered document corresponding to the target MSE project;
+- `docs/rules/TEMPLATING.md`;
+- `docs/RULES.md`;
+- matching archetype `CONTEXT.md`, `DESIGN.md`, `RULES.md`, and `KEYWORDS.md` modules;
 - 2–3 sibling card files that demonstrate each relevant established pattern;
 - any `.script/` generator or updater that names the target project or supplied cards;
 - existing tests covering the affected project.
@@ -206,8 +206,8 @@ After each round, show unresolved IDs and continue interviewing. Phase 4 ends on
 
 For every `update-rule` decision:
 
-1. Update `docs/context.md` with the accepted domain rule, using existing terminology and placing it beside the closest related rule.
-2. Update `docs/02_rules_keywords_card_design.md` when change concerns card syntax, keywords, timing, types, summoning, frames, or templating.
+1. Update `docs/rules/TEMPLATING.md` with the accepted domain rule, using existing terminology and placing it beside the closest related rule.
+2. Update `docs/RULES.md` when change concerns card syntax, keywords, timing, types, summoning, frames, or templating.
 3. Modify or remove old statements that directly contradict the accepted rule; do not append a second contradictory paragraph.
 4. Include scope and exclusions. For example, define whether a trigger is equivalent to `On Enter`, when it does not fire, and which card types it applies to.
 
@@ -273,7 +273,7 @@ After all card edits:
 Search for stale card data:
 
 ```bash
-rg -n "CARD NAME|OLD NAME|OLD EFFECT FRAGMENT" docs MSE_projects mse .script tests
+rg -n "CARD NAME|OLD NAME|OLD EFFECT FRAGMENT" docs cards_mse .script tests
 ```
 
 Update:
@@ -288,7 +288,7 @@ Never run a stale generator against the target project before synchronizing it.
 
 ## Phase 9 — Mine final card data for rule candidates
 
-Analyze the reconciled normalized records, resulting MSE cards, and relevant siblings. Find repeated or structurally meaningful patterns that are not yet captured clearly in `docs/context.md`.
+Analyze the reconciled normalized records, resulting MSE cards, and relevant siblings. Find repeated or structurally meaningful patterns that are not yet captured clearly in `docs/rules/TEMPLATING.md`.
 
 A candidate can be:
 
@@ -326,7 +326,7 @@ For each candidate call `AskUserQuestion` with:
 
 For **Needs revision**, ask a free-form follow-up for the replacement wording, then show that wording back through `AskUserQuestion` with **Validate revised rule** / **Revise again** / **Reject**. Continue until resolved.
 
-Apply validated/revised rules to `docs/context.md` and, when relevant, `docs/02_rules_keywords_card_design.md`. Record rejected candidates in the final report only; do not add them to project docs.
+Apply validated/revised rules to `docs/rules/TEMPLATING.md` and, when relevant, `docs/RULES.md`. Record rejected candidates in the final report only; do not add them to project docs.
 
 After applying answers, rescan the final card data against the final rules. Any new contradiction returns to Phase 4.
 
@@ -342,11 +342,11 @@ Add or update project tests that assert:
 - removed/old names are absent from regeneration sources;
 - validated new keywords are documented and rejected candidates remain absent.
 
-Run `python .script/lint_mse_card_style.py` after every canonical English MSE update; require pass before export and never lint frozen French archives. Then run the complete unittest suite and Python compilation for changed scripts.
+Run `python .script/lint_mse_card_style.py` after every MSE update; require pass before export. Then run complete unittest suite and Python compilation for changed scripts.
 
 ## Phase 12 — MSE verification
 
-Load MSE paths from the gitignored `.env` through `mse_config.py`. Never hardcode a local executable path.
+Load MSE paths from the gitignored `.env` through `launcher/mse_config.py`. Never hardcode a local executable path.
 
 1. Verify all manifest/card/image references structurally.
 2. Run `git diff --check`.

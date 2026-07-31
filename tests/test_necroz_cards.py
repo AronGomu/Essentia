@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "MSE_projects" / "12_YGO_Necroz.mse-set"
-DOC = ROOT / "docs" / "12_archetype_necroz.md"
+PROJECT = ROOT / "cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set"
+DOCS = ROOT / "docs" / "12_nekroz"
 
 INCLUDED = [
     "card herald of the arc light",
@@ -84,11 +84,12 @@ class NecrozCardTests(unittest.TestCase):
             self.assertIn("<b>Nekroz Recovery</b>", text)
             self.assertIn("<b>Search</b> 1 non-Creature <b>Ritual Summon</b> <i-auto>“Nekroz”</i-auto>", text)
 
-    def test_archetype_doc_points_at_mse(self) -> None:
-        doc = DOC.read_text(encoding="utf-8-sig")
-        self.assertIn("MSE_projects/12_YGO_Necroz.mse-set", doc)
-        self.assertIn("**Nekroz Recovery**", doc)
-        self.assertIn("1 non-creature **Ritual Summon** *“Nekroz”*", doc)
+    def test_archetype_docs_point_at_mse(self) -> None:
+        context = (DOCS / "CONTEXT.md").read_text(encoding="utf-8-sig")
+        keywords = (DOCS / "KEYWORDS.md").read_text(encoding="utf-8-sig")
+        self.assertIn("cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set", context)
+        self.assertIn("**Nekroz Recovery**", keywords)
+        self.assertIn("non-Creature **Ritual Summon** *“Nekroz”*", keywords)
 
 
 if __name__ == "__main__":

@@ -33,31 +33,37 @@ const updates = catalog.updates.map((update) => ({
     </header>
     <ul class="update-list">
       {
-        updates.map(({ card, section, status }, index) => (
-          <li class="update-item">
-            <a
-              href={withBase(base, card.route)}
-              data-card-preview={withBase(base, card.render)}
-            >
-              <>
-                <CardPicture {card} eager={index < 3} />
-                <span class="update-meta">
+        updates.length === 0 ? (
+          <li>No immutable releases published yet.</li>
+        ) : (
+          updates.map(
+            ({ card, section, status, modified, versionRoute }, index) => (
+              <li class="update-item">
+                <a
+                  href={withBase(base, versionRoute)}
+                  data-card-preview={withBase(base, card.render)}
+                >
                   <>
-                    <span>
+                    <CardPicture {card} eager={index < 3} />
+                    <span class="update-meta">
                       <>
-                        <strong>{card.name}</strong>
-                        <small>
-                          {section.label} · {formatDate(card.modified)}
-                        </small>
+                        <span>
+                          <>
+                            <strong>{card.name}</strong>
+                            <small>
+                              {section.label} · {formatDate(modified)}
+                            </small>
+                          </>
+                        </span>
+                        <StatusBadge {status} />
                       </>
                     </span>
-                    <StatusBadge {status} />
                   </>
-                </span>
-              </>
-            </a>
-          </li>
-        ))
+                </a>
+              </li>
+            ),
+          )
+        )
       }
     </ul>
   </div>

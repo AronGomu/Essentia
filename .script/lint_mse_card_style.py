@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Lint canonical English MSE rules-text typography.
+"""Lint manifest-included MSE rules-text typography across lifecycle stages.
 
-Read-only. Frozen MSE_projects/French content is intentionally excluded.
+Read-only. Mutable and immutable stages are safe inputs.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECTS_ROOT = ROOT / "MSE_projects"
+PROJECTS_ROOT = ROOT / "cards_mse"
 TAG_RE = re.compile(r"<[^>]+>")
 TOKEN_RE = re.compile(r"(<[^>]+>)")
 QUOTED_NAME_RE = re.compile(r"“[^“”]+”")
@@ -529,8 +529,10 @@ def lint_name_style(
 
 
 def card_paths(projects_root: Path = PROJECTS_ROOT) -> Iterable[Path]:
-    for manifest in sorted(projects_root.glob("*.mse-set/set")):
+    for manifest in sorted(projects_root.rglob("*.mse-set/set")):
         project = manifest.parent
+        if any(parent.name.endswith(".mse-set") for parent in project.parents):
+            continue
         for line in manifest.read_text(encoding="utf-8-sig").splitlines():
             if not line.startswith("include_file: "):
                 continue

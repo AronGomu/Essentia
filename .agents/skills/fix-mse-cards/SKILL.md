@@ -13,23 +13,23 @@ Reconcile hand-edited Magic Set Editor files into the rest of this repository. T
 This workflow has two mandatory decision gates:
 
 1. **Card-conflict interview** — semantic differences in the edited cards are classified as editing errors or accepted card/archetype changes.
-2. **Rule-proposals Markdown** — every pattern destroyer and pattern maker is written into **one** Markdown review file under `rule_reviews/` that lists **all** new or conflicting rule proposals for this run; then `update-rules` owns that file until the user completes it.
+2. **Rule-proposals Markdown** — every pattern destroyer and pattern maker is written into **one** Markdown review file under `docs/ADR/proposed/` that lists **all** new or conflicting rule proposals for this run; then `update-rules` owns that file until the user completes it.
 
 Use `AskUserQuestion` only for direct card-mechanic classifications, missing values, and mandatory Summon-permission rulings. Do not use it to approve general rules. Every picker that remains must have **Send a message** as its third option with custom text enabled. General rule decisions are completed exclusively in the rule-proposals Markdown file (via `update-rules` resume).
 
 ## Project contracts
 
-- MSE projects live in `MSE_projects/*.mse-set/` as folders, not zip archives.
-- A project manifest is `MSE_projects/<project>.mse-set/set`.
+- MSE projects live in `cards_mse/00_drafts/*/*.mse-set/` as folders, not zip archives.
+- A project manifest is `cards_mse/00_drafts/<group>/<project>.mse-set/set`.
 - Cards are `card <slug>` files referenced by `include_file:` entries in `set`.
-- `docs/context.md` contains general syntax, PSCT, formatting, vocabulary, and structural conventions that apply to every card.
-- `docs/02_rules_keywords_card_design.md` details duplicated global card-design and templating rules.
-- Numbered archetype documents own archetype-specific mechanics and exceptions. English MSE projects own card-by-card values; docs do not duplicate them.
+- `docs/rules/TEMPLATING.md` contains general syntax, PSCT, formatting, vocabulary, and structural conventions that apply to every card.
+- `docs/RULES.md` indexes focused global rule modules; each detail has one owner.
+- Archetype `CONTEXT.md`, `DESIGN.md`, `RULES.md`, and `KEYWORDS.md` own local identity/mechanics/exceptions. English MSE projects own card-by-card values; docs do not duplicate them.
 - Generator/update scripts under `.script/` must not be allowed to regenerate stale data over accepted MSE edits.
-- Local MSE paths come from the gitignored `.env` through `mse_config.py`; never hardcode an installation path.
+- Local MSE paths come from the gitignored `.env` through `launcher/mse_config.py`; never hardcode an installation path.
 - Original source illustrations live under `original_images/<card_type>/`, using the same card-type folders and Windows-safe official card names as `original_cards/`; project-local `mse_images/` contains only imported/resized copies used by MSE cards.
 - Preserve unrelated working-tree changes. Do not reset, checkout, or regenerate an entire project over hand edits.
-- Never edit frozen snapshots under `MSE_projects/French/`, `docs/French/`, `rule_reviews/French/`, or `mse/French/`; exclude them from scope, synchronization, generators, renders, and proxy PDFs.
+- Edit only mutable lifecycle stages. Never edit `02_alpha`, `04_beta`, `06_released`, or generated aggregate projects. Never create draft PDFs.
 
 ## Phase 0 — Establish scope and protect the hand edit
 
@@ -37,11 +37,11 @@ Use `AskUserQuestion` only for direct card-mechanic classifications, missing val
 
    ```bash
    git status --short
-   git diff --name-status -- MSE_projects
-   git diff -- MSE_projects
+   git diff --name-status -- cards_mse
+   git diff -- cards_mse
    ```
 
-2. If the user supplied paths, use those paths. Otherwise, scope to modified/untracked files beneath `MSE_projects/*.mse-set/`.
+2. If the user supplied paths, use those paths. Otherwise, scope to modified/untracked files beneath `cards_mse/00_drafts/*/*.mse-set/`.
 3. Separate files into:
    - manifest changes (`set`);
    - card data changes (`card *`);
@@ -85,8 +85,8 @@ At this stage, report facts only. Do not “correct” a hand edit from memory.
 
 Read these files completely before classifying differences:
 
-- `docs/context.md`
-- `docs/02_rules_keywords_card_design.md`
+- `docs/rules/TEMPLATING.md`
+- `docs/RULES.md`
 - the numbered document corresponding to the edited MSE project
 - 2–3 sibling card files that demonstrate the relevant established pattern
 - any `.script/` generator or updater that names the edited project/cards
@@ -209,7 +209,7 @@ Preserve non-content metadata and artwork unless the accepted update removes or 
 Treat the reconciled MSE files as the final data source and update every consumer:
 
 - corresponding English archetype design doc under `docs/` only when mechanics/identity change (never duplicate card text);
-- rule docs already changed through `update-rules`; do not edit `docs/context.md` or `docs/02_rules_keywords_card_design.md` directly in this phase;
+- rule docs already changed through `update-rules`; do not edit `docs/rules/TEMPLATING.md` or `docs/RULES.md` directly in this phase;
 - project manifest `set` and card include order;
 - card numbering/totals where present;
 - `.script/` generators, batch lists, update scripts, and fixtures that could restore old data;
@@ -228,7 +228,7 @@ Search globally for stale values and old names after synchronization.
 
 ## Phase 7 — Mine reconciled data for pattern makers
 
-Analyze the final MSE data across the edited cards and relevant siblings. Find repeated or structurally meaningful patterns that are not yet captured clearly in `docs/context.md`.
+Analyze the final MSE data across the edited cards and relevant siblings. Find repeated or structurally meaningful patterns that are not yet captured clearly in `docs/rules/TEMPLATING.md`.
 
 A candidate must be a pattern maker, such as:
 
@@ -252,14 +252,14 @@ Append each candidate to the **rule-proposals ledger** as `R1`, `R2`, … with: 
 
 **Mandatory output:** if the rule-proposals ledger has **any** `D*` or `R*` item, write **one** complete Markdown file that contains **every** proposal from this run. Never scatter destroyers and makers across multiple files. Never leave proposals only in chat or an internal note.
 
-1. Create `rule_reviews/` if needed.
+1. Create `docs/ADR/proposed/` if needed.
 2. Choose a deterministic path:
 
    ```text
-   rule_reviews/YYYY-MM-DD-<mse-project-slug>-rule-proposals.md
+   docs/ADR/proposed/YYYY-MM-DD-<mse-project-slug>-rule-proposals.md
    ```
 
-   Example: `rule_reviews/2026-07-16-05-ygo-staples-fusion-rule-proposals.md`.
+   Example: `docs/ADR/proposed/2026-07-16-05-ygo-staples-fusion-rule-proposals.md`.
    If that path already exists for a different unfinished review, append `-2`, `-3`, … Never overwrite a user-completed or `APPLIED` review.
 
 3. Write the file using the **same structure as `update-rules` Phase 2**, with:
@@ -275,7 +275,7 @@ Append each candidate to the **rule-proposals ledger** as `R1`, `R2`, … with: 
 4. Hand the file to `update-rules` without re-deriving the items from chat prose:
 
    ```text
-   Skill(skill="update-rules", args="review_file=rule_reviews/<file>.md normalize=false Source: fix-mse-cards generated full rule-proposals Markdown for <scope>. Do not recreate; wait for user continue unless Status already READY.")
+   Skill(skill="update-rules", args="review_file=docs/ADR/proposed/<file>.md normalize=false Source: fix-mse-cards generated full rule-proposals Markdown for <scope>. Do not recreate; wait for user continue unless Status already READY.")
    ```
 
    If `update-rules` would recreate an empty duplicate, it must open the existing path instead. Prefer: this phase **is** the generation step; `update-rules` only resumes/applies after the user says `continue`.
@@ -289,13 +289,13 @@ Append each candidate to the **rule-proposals ledger** as `R1`, `R2`, … with: 
 
 If the ledger is empty (no destroyers and no makers), **do not** create a review file. Explicitly report `No general rule proposals.` and proceed to Phase 9 verification.
 
-Never edit `docs/context.md` or `docs/02_rules_keywords_card_design.md` directly from this skill; all general rule changes go through the rule-proposals file + `update-rules` apply step.
+Never edit `docs/rules/TEMPLATING.md` or `docs/RULES.md` directly from this skill; all general rule changes go through the rule-proposals file + `update-rules` apply step.
 
 ## Phase 9 — Verify
 
 Run all applicable checks:
 
-1. `python .script/lint_mse_card_style.py` after every canonical English MSE update; require pass before export and never lint frozen French archives;
+1. `python .script/lint_mse_card_style.py` after every MSE update; require pass before export;
 2. structural MSE validation (includes, card files, image references, card totals);
 3. repository tests, including project-specific MSE tests;
 4. Python compilation for changed scripts;
@@ -304,7 +304,7 @@ Run all applicable checks:
 7. MSE export using `MSE_CLI` loaded from `.env`, writing to a temporary directory outside the `.mse-set` folder;
 8. confirm expected exported PNG count, then delete all temporary export/cache files.
 
-Never hardcode `mse.exe` or `mse.com`. Load `MSEConfig` from `mse_config.py`. If `.env` is absent or invalid, instruct the user to run `python setup_mse.py`; do not guess an installation path.
+Never hardcode `mse.exe` or `mse.com`. Load `MSEConfig` from `launcher/mse_config.py`. If `.env` is absent or invalid, instruct the user to run `python launcher/setup_mse.py`; do not guess an installation path.
 
 Do not claim GUI save compatibility from CLI export alone. Report GUI Save/Save As as manual verification when it cannot be performed interactively.
 
@@ -314,7 +314,7 @@ Report:
 
 - MSE files treated as source of truth;
 - card-conflict decisions (`restore-rule` versus `accept-card-change`);
-- path of the generated **rule-proposals Markdown** under `rule_reviews/` (or explicit `No general rule proposals.`);
+- path of the generated **rule-proposals Markdown** under `docs/ADR/proposed/` (or explicit `No general rule proposals.`);
 - counts and IDs of `D*` / `R*` items in that file;
 - grammar/style fixes that preserved mechanics;
 - docs/scripts/tests/assets synchronized;
@@ -329,7 +329,7 @@ Report:
 - Never edit a general project rule directly; every pattern destroyer or pattern maker must appear in the rule-proposals Markdown and be applied only through `update-rules`.
 - Never keep rule proposals only in chat: if any `D*` or `R*` exists, the Markdown file is mandatory.
 - Never split one run’s destroyers and makers into multiple review files.
-- Never place archetype-specific card facts in `docs/context.md`.
+- Never place archetype-specific card facts in `docs/rules/TEMPLATING.md`.
 - Never silently treat a semantic discrepancy as grammar cleanup.
 - Never leave a card-conflict ledger or rule-review file partially answered.
 - Never update only the card doc while leaving generators or tests stale.

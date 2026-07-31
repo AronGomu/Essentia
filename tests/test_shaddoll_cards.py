@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "MSE_projects/11_YGO_Shaddoll.mse-set"
-DOC = ROOT / "docs/11_archetype_shaddoll.md"
+PROJECT = ROOT / "cards_mse/00_drafts/11_shaddoll/11_YGO_Shaddoll.mse-set"
+DOCS = ROOT / "docs/11_shaddoll"
 
 
 class ShaddollCardsTest(unittest.TestCase):
@@ -25,13 +25,16 @@ class ShaddollCardsTest(unittest.TestCase):
         self.assertIn("set_language: EN", self.set_text)
         self.assertIn("card_language: English", self.set_text)
 
-    def test_archetype_doc_keeps_identity_not_card_blocks(self) -> None:
-        doc = DOC.read_text(encoding="utf-8-sig")
-        self.assertIn("## Card source of truth", doc)
-        self.assertIn("Card-by-card values for this archetype exist only", doc)
-        self.assertIn("Shaddoll is a **Control / Value / Fusion** deck", doc)
-        self.assertNotIn("#### El Shaddoll - Construct", doc)
-        self.assertNotIn("## Complete card list", doc)
+    def test_archetype_docs_keep_identity_not_card_blocks(self) -> None:
+        context = (DOCS / "CONTEXT.md").read_text(encoding="utf-8-sig")
+        design = (DOCS / "DESIGN.md").read_text(encoding="utf-8-sig")
+        keywords = (DOCS / "KEYWORDS.md").read_text(encoding="utf-8-sig")
+        self.assertIn("Card-by-card values and type lines live only in MSE", context)
+        self.assertIn("Control / Value / Fusion", design)
+        self.assertIn("Shaddoll Recovery", keywords)
+        combined = context + design + keywords
+        self.assertNotIn("#### El Shaddoll - Construct", combined)
+        self.assertNotIn("## Complete card list", combined)
 
     def test_all_rule_text_uses_english_current_vocabulary(self) -> None:
         stale = re.compile(r"\b(?:library|graveyard|GYD|battlefield|Cimetière|Déclenchable|Résolution)\b|\?{2,}", re.I)

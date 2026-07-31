@@ -312,17 +312,19 @@ class MseCardStyleTests(unittest.TestCase):
             self.assertEqual(result, 1)
             self.assertFalse(output.exists())
 
-    def test_french_archive_is_excluded(self) -> None:
+    def test_linter_scans_nested_lifecycle_projects(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            french = root / "French" / "01_Test.mse-set"
-            french.mkdir(parents=True)
-            (french / "set").write_text("include_file: card test\n", encoding="utf-8")
-            (french / "card test").write_text(
+            project = root / "00_drafts" / "01_test" / "01_Test.mse-set"
+            project.mkdir(parents=True)
+            (project / "set").write_text("include_file: card test\n", encoding="utf-8")
+            (project / "card test").write_text(
                 "card:\n\tname: Test Card\n\trule_text: discard from hand\n\tflavor_text:\n",
                 encoding="utf-8",
             )
-            self.assertEqual(LINTER.lint(root), [])
+            findings = LINTER.lint(root)
+            self.assertEqual(len(findings), 1)
+            self.assertEqual(findings[0].rule, "MSE005")
 
 
 if __name__ == "__main__":

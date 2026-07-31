@@ -9,7 +9,7 @@ from PIL import Image, ImageOps
 from original_image_assets import original_image_path, safe_slug
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ROOT = REPO_ROOT / "MSE_projects"
+ROOT = REPO_ROOT / "cards_mse" / "00_drafts"
 API = "https://db.ygoprodeck.com/api/v7/cardinfo.php?name="
 
 NAME_MAP = {
@@ -88,7 +88,7 @@ def resize_cover(source: Path, output: Path, width: int = 316, height: int = 231
 
 errors = []
 updated = 0
-for project in sorted(ROOT.glob("*_YGO_*.mse-set")):
+for project in sorted(ROOT.glob("*/*_YGO_*.mse-set")):
     # Burning Abyss uses reconciled MSE imports and must not be rewritten to source JPG paths.
     if project.name == "10_YGO_Burning_Abyss.mse-set":
         continue
