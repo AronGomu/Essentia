@@ -1,6 +1,6 @@
 ---
 name: normalize-card-formatting
-description: Normalize existing YGO-x-MTG card statistics and rules text to current English templating and formatting rules, using an MSE card file or an entire .mse-set project as input, then synchronize affected archetype rules without duplicating card values, validate MSE integrity, export renders, and build a printable proxy PDF. Use when the user asks to update, refresh, reformat, normalize, or bring MSE card text up to current rules without redesigning cards.
+description: Normalize existing Essentia card statistics and rules text to current English templating and formatting rules, using an MSE card file or an entire .mse-set project as input, then synchronize affected archetype rules without duplicating card values, validate MSE integrity, export renders, and build a printable proxy PDF. Use when the user asks to update, refresh, reformat, normalize, or bring MSE card text up to current rules without redesigning cards.
 compatibility: YGO-x-MTG repository with Python 3, Pillow, and a configured Magic Set Editor installation for render validation.
 metadata:
   project: YGO-x-MTG

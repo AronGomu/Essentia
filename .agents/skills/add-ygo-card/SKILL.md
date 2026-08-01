@@ -1,9 +1,9 @@
 ---
 name: add-ygo-card
-description: Project-specific Yu-Gi-Oh! × Magic cube workflow to add a card from its Yu-Gi-Oh! name. First delegates to fetch-original-ygo-card to persist official Konami card data, then converts that record into concise English Magic-style cube text, updates canonical MSE project and any affected archetype rules, downloads cropped artwork, and verifies result. Use when the user says add, create, import, or convert a Yu-Gi-Oh! card for this cube.
+description: Project-specific Essentia cube workflow to add a card from its Yu-Gi-Oh! name. First delegates to fetch-original-ygo-card to persist official Konami card data, then converts that record into concise English Magic-style cube text, updates canonical MSE project and any affected archetype rules, downloads cropped artwork, and verifies result. Use when the user says add, create, import, or convert a Yu-Gi-Oh! card for this cube.
 ---
 
-# Add Yu-Gi-Oh! Card to the Yu-Gi-Oh! × Magic Cube
+# Add Yu-Gi-Oh! Card to Essentia
 
 Run from the `YGO-x-MTG` repository. User-facing explanations and project prose are English. Original card names, card types, and subtypes remain English.
 
@@ -29,12 +29,12 @@ Then read the generated `original_cards/<type>/<card name>.md` file. Treat that 
 
 Prefer the existing matching MSE project (source of truth for translated card text):
 
-- Utility creatures: `cards_mse/00_drafts/03_non_archetype_creatures/03_YGO_Non_Archetype_Creatures.mse-set`
-- Fusion/Synchro/Xyz/Link staples: `cards_mse/00_drafts/05_fusion_staples/05_YGO_Staples_Fusion.mse-set` through `08_YGO_Staples_Link.mse-set`
-- Utility spells/traps: `cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set`
+- Utility creatures: `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set`
+- Fusion/Synchro/Xyz/Link staples: `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set` through `00_YGO_Non_Archetype.mse-set`
+- Utility spells/traps: `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set`
 - Archetypes: matching `cards_mse/00_drafts/*/*_YGO_*.mse-set`
 
-Archetype modules under `docs/10_burning_abyss/` through `docs/13_spellbook/` keep identity/mechanics only — do not reintroduce full card blocks there. MSE `name:` uses cube display name.
+Archetype modules under `docs/01_burning_abyss/` through `docs/04_spellbook/` keep identity/mechanics only — do not reintroduce full card blocks there. MSE `name:` uses cube display name.
 
 Write only to mutable lifecycle stages. Default destination is `cards_mse/00_drafts/`. Never edit `02_alpha`, `04_beta`, `06_released`, or generated aggregate projects.
 

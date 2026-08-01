@@ -1,6 +1,6 @@
-# YGO-x-MTG
+# Essentia
 
-Yu-Gi-Oh! cards adapted as Magic: The Gathering cards and saved as Magic Set Editor projects.
+**YGO × MTG: Essentia**, usually shortened to **Essentia**, adapts Yu-Gi-Oh! cards as Magic: The Gathering cards and saves them as Magic Set Editor projects. The name reflects the project's goal: preserve the essence of Yu-Gi-Oh! inside Magic's card-game rules.
 
 ## Source of truth
 

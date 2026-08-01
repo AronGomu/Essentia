@@ -1,6 +1,6 @@
 ---
 name: update-card-from-ai
-description: Add or update already designed YGO-x-MTG cards from user-supplied Markdown card blocks, without editing through the Magic Set Editor UI. Uses the named .mse-set project as the destination, treats the supplied card fields and effects as provisional source data, interviews the user about rule conflicts and inferred new or evolved rules, then synchronizes docs, MSE files, artwork, generators, rules, and tests. Use when the user provides formatted [ADD] or [UPDATE] card definitions and names the MSE project to modify.
+description: Add or update already designed Essentia cards from user-supplied Markdown card blocks, without editing through the Magic Set Editor UI. Uses the named .mse-set project as the destination, treats the supplied card fields and effects as provisional source data, interviews the user about rule conflicts and inferred new or evolved rules, then synchronizes docs, MSE files, artwork, generators, rules, and tests. Use when the user provides formatted [ADD] or [UPDATE] card definitions and names the MSE project to modify.
 compatibility: YGO-x-MTG repository with Python 3 and a configured Magic Set Editor installation for export verification.
 metadata:
   project: YGO-x-MTG
@@ -32,7 +32,7 @@ This skill differs from the other project workflows:
 Require a target MSE project filename or path plus card blocks shaped like:
 
 ```markdown
-MSE file: 03_YGO_Non_Archetype_Creatures.mse-set
+MSE file: 00_YGO_Non_Archetype.mse-set
 
 [UPDATE]
 
