@@ -14,7 +14,7 @@ Primary users are English-speaking Yu-Gi-Oh! and Magic: The Gathering players, c
 
 ## Product Purpose
 
-YGO × MTG presents a read-only, source-backed catalog of Yu-Gi-Oh!-inspired Magic cards. It turns MSE project data and canonical renders into an accessible showcase: a browsable living catalog of defined archetypes plus non-archetype staple sections, stable card pages, immutable package history, and a clean presentation mode. Success means visitors can find a card quickly, understand its role, trust that text and visuals match the source projects, and feel the Yu-Gi-Oh! identity survive inside Magic's rules engine.
+**YGO × MTG: Essentia**, usually shortened to **Essentia**, presents a read-only, source-backed catalog of Yu-Gi-Oh!-inspired Magic cards. Its name reflects its purpose: preserve the essence of Yu-Gi-Oh! inside Magic's card-game rules. It turns MSE project data and canonical renders into an accessible showcase: a browsable living catalog of defined archetypes plus non-archetype staple sections, stable card pages, immutable package history, and a clean presentation mode. Success means visitors can find a card quickly, understand its role, trust that text and visuals match the source projects, and feel the Yu-Gi-Oh! identity survive inside Magic's rules engine.
 
 ## Positioning
 

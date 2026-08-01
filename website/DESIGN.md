@@ -1,11 +1,11 @@
 ---
-name: YGO × MTG Showcase
+name: Essentia Showcase
 description: A blackfoil archive for faithful Yu-Gi-Oh! identities rebuilt as playable Magic cards.
 ---
 
 <!-- SEED: re-run $impeccable document once there's code to capture the actual tokens and components. -->
 
-# Design System: YGO × MTG Showcase
+# Design System: Essentia Showcase
 
 ## Overview
 
@@ -65,7 +65,7 @@ Use a full palette with disciplined jurisdiction. Shell neutrals establish one d
 
 **Body Font:** Humanist system sans **[exact stack to be chosen at implementation]**
 
-**Character:** Display type should feel engraved and authoritative without becoming medieval. Body type should feel contemporary, compact, and dependable. Contrast between them carries the YGO × MTG hybrid more credibly than ornamental lettering.
+**Character:** Display type should feel engraved and authoritative without becoming medieval. Body type should feel contemporary, compact, and dependable. Contrast between them carries Essentia's hybrid identity more credibly than ornamental lettering.
 
 ### Hierarchy
 

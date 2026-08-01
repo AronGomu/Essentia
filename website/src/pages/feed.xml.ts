@@ -20,7 +20,7 @@ export const GET: APIRoute = ({ site }) => {
     return `<item><title>${xml(card.name)}</title><link>${xml(absolute(update.versionRoute))}</link><guid isPermaLink="true">${xml(absolute(update.versionRoute))}</guid><pubDate>${new Date(`${update.modified.slice(0, 10)}T12:00:00Z`).toUTCString()}</pubDate><description>${xml(update.summary)}</description></item>`;
   });
   return new Response(
-    `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>YGO × MTG card updates</title><link>${xml(absolute('/updates/'))}</link><description>New and meaningfully updated cards.</description>${items.join('')}</channel></rss>`,
+    `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Essentia card updates</title><link>${xml(absolute('/updates/'))}</link><description>New and meaningfully updated cards.</description>${items.join('')}</channel></rss>`,
     { headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' } },
   );
 };

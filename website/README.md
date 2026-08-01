@@ -1,4 +1,4 @@
-# YGO × MTG showcase
+# Essentia showcase
 
 Read-only Astro + Svelte publication UI for immutable card packages.
 

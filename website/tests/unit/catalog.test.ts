@@ -17,15 +17,10 @@ describe('immutable publication graph', () => {
         )
         .map((section: { label: string }) => section.label),
     ).toEqual([
-      'Creatures',
-      'Fusion',
-      'Synchro',
-      'Xyz',
-      'Link',
-      'Non-creature',
+      'Non-archetype',
       'Burning Abyss',
-      'Nekroz',
       'Shaddoll',
+      'Nekroz',
       'Spellbook',
     ]);
   });

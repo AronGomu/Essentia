@@ -71,9 +71,7 @@
 </button>
 
 <nav class="desktop-catalog" aria-label="Catalog">
-  <a class="brand" href={href('/')} aria-label="YGO × MTG home"
-    ><span>YGO</span><b>×</b><span>MTG</span></a
-  >
+  <a class="brand" href={href('/')} aria-label="Essentia home">Essentia</a>
   <button
     class="nav-group"
     aria-expanded={nonArchetypeOpen}

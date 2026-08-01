@@ -3,21 +3,27 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card aa-zeus - sky thunder"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card aa-zeus - sky thunder"
+      ],
       "stableId": "aa-zeus-sky-thunder",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card absolute king back jack"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card absolute king back jack"
+      ],
       "stableId": "absolute-king-back-jack",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["08_YGO_Staples_Link.mse-set/card accesscode talker"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card accesscode talker"
+      ],
       "stableId": "accesscode-talker",
       "withdrawn": false
     },
@@ -25,7 +31,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card allure of darkness"
+        "00_YGO_Non_Archetype.mse-set/card allure of darkness"
       ],
       "stableId": "allure-of-darkness",
       "withdrawn": false
@@ -33,7 +39,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card ancient fairy dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card ancient fairy dragon"
+      ],
       "stableId": "ancient-fairy-dragon",
       "withdrawn": false
     },
@@ -41,7 +49,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "08_YGO_Staples_Link.mse-set/card apollousa bow of the goddess"
+        "00_YGO_Non_Archetype.mse-set/card apollousa bow of the goddess"
       ],
       "stableId": "apollousa-bow-of-the-goddess",
       "withdrawn": false
@@ -50,7 +58,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "03_YGO_Non_Archetype_Creatures.mse-set/card ash blossom  joyous spring",
+        "00_YGO_Non_Archetype.mse-set/card ash blossom  joyous spring",
         "01_YGO_Legend_of_Alpha.mse-set/card ash blossom  joyous spring"
       ],
       "stableId": "ash-blossom-and-joyous-spring",
@@ -60,7 +68,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card bagooska",
+        "00_YGO_Non_Archetype.mse-set/card bagooska",
         "01_YGO_Legend_of_Alpha.mse-set/card bagooska"
       ],
       "stableId": "bagooska",
@@ -69,7 +77,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card bamboozling gossip shadow"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card bamboozling gossip shadow"
+      ],
       "stableId": "bamboozling-gossip-shadow",
       "withdrawn": false
     },
@@ -77,7 +87,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card beatrice lady of the eternal"
+        "01_YGO_Burning_Abyss.mse-set/card beatrice lady of the eternal"
       ],
       "stableId": "beatrice-lady-of-the-eternal",
       "withdrawn": false
@@ -85,14 +95,18 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card big eye"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card big eye"
+      ],
       "stableId": "big-eye",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card black rose dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card black rose dragon"
+      ],
       "stableId": "black-rose-dragon",
       "withdrawn": false
     },
@@ -100,7 +114,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "06_YGO_Staples_Synchro.mse-set/card black rose moonlight dragon"
+        "00_YGO_Non_Archetype.mse-set/card black rose moonlight dragon"
       ],
       "stableId": "black-rose-moonlight-dragon",
       "withdrawn": false
@@ -109,7 +123,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card book of eclipse"
+        "00_YGO_Non_Archetype.mse-set/card book of eclipse"
       ],
       "stableId": "book-of-eclipse",
       "withdrawn": false
@@ -118,7 +132,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card book of moon"
+        "01_YGO_Legend_of_Alpha.mse-set/card book of moon"
       ],
       "stableId": "book-of-moon",
       "withdrawn": false
@@ -126,7 +140,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["08_YGO_Staples_Link.mse-set/card borrelsword dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card borrelsword dragon"
+      ],
       "stableId": "borrelsword-dragon",
       "withdrawn": false
     },
@@ -134,7 +150,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card breakthrough skill"
+        "00_YGO_Non_Archetype.mse-set/card breakthrough skill"
       ],
       "stableId": "breakthrough-skill",
       "withdrawn": false
@@ -143,7 +159,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "06_YGO_Staples_Synchro.mse-set/card brionac dragon of the ice barrier"
+        "00_YGO_Non_Archetype.mse-set/card brionac dragon of the ice barrier"
       ],
       "stableId": "brionac-dragon-of-the-ice-barrier",
       "withdrawn": false
@@ -152,7 +168,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - alich",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - alich",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - alich"
       ],
       "stableId": "burning-abyss-alich",
@@ -162,7 +178,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - barbar",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - barbar",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - barbar"
       ],
       "stableId": "burning-abyss-barbar",
@@ -171,7 +187,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - cagna"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - cagna"
+      ],
       "stableId": "burning-abyss-cagna",
       "withdrawn": false
     },
@@ -179,7 +197,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - calcab",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - calcab",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - calcab"
       ],
       "stableId": "burning-abyss-calcab",
@@ -189,7 +207,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - cherubini"
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - cherubini"
       ],
       "stableId": "burning-abyss-cherubini",
       "withdrawn": false
@@ -198,7 +216,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - cir",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - cir",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - cir"
       ],
       "stableId": "burning-abyss-cir",
@@ -208,7 +226,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - dante",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - dante",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - dante"
       ],
       "stableId": "burning-abyss-dante",
@@ -218,7 +236,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - dante pilgrim"
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - dante pilgrim"
       ],
       "stableId": "burning-abyss-dante-pilgrim",
       "withdrawn": false
@@ -226,7 +244,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - draghig"],
+      "sources": [
+        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - draghig"
+      ],
       "stableId": "burning-abyss-draghig",
       "withdrawn": false
     },
@@ -234,7 +254,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - farfa",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - farfa",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - farfa"
       ],
       "stableId": "burning-abyss-farfa",
@@ -244,7 +264,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - fire lake"
       ],
       "stableId": "burning-abyss-fire-lake",
@@ -254,7 +274,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - good  evil"
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - good  evil"
       ],
       "stableId": "burning-abyss-good-and-evil",
       "withdrawn": false
@@ -263,7 +283,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - graff",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - graff",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - graff"
       ],
       "stableId": "burning-abyss-graff",
@@ -272,14 +292,18 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - libic"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - libic"
+      ],
       "stableId": "burning-abyss-libic",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - malacoda"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - malacoda"
+      ],
       "stableId": "burning-abyss-malacoda",
       "withdrawn": false
     },
@@ -287,7 +311,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - rubic",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - rubic",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - rubic"
       ],
       "stableId": "burning-abyss-rubic",
@@ -297,7 +321,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - scarm",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - scarm",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - scarm"
       ],
       "stableId": "burning-abyss-scarm",
@@ -306,7 +330,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card burning abyss - terminus"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - terminus"
+      ],
       "stableId": "burning-abyss-terminus",
       "withdrawn": false
     },
@@ -314,7 +340,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - traveler"
       ],
       "stableId": "burning-abyss-traveler",
@@ -324,7 +350,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card burning abyss - virgil",
+        "01_YGO_Burning_Abyss.mse-set/card burning abyss - virgil",
         "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - virgil"
       ],
       "stableId": "burning-abyss-virgil",
@@ -333,7 +359,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card chaos angel"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card chaos angel"
+      ],
       "stableId": "chaos-angel",
       "withdrawn": false
     },
@@ -341,7 +369,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card compulsory evacuation device"
+        "00_YGO_Non_Archetype.mse-set/card compulsory evacuation device"
       ],
       "stableId": "compulsory-evacuation-device",
       "withdrawn": false
@@ -349,7 +377,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card constellar pleiades"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card constellar pleiades"
+      ],
       "stableId": "constellar-pleiades",
       "withdrawn": false
     },
@@ -357,7 +387,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card coordius the triphasic dealmon"
+        "00_YGO_Non_Archetype.mse-set/card coordius the triphasic dealmon"
       ],
       "stableId": "coordius-the-triphasic-dealmon",
       "withdrawn": false
@@ -365,21 +395,27 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card coral dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card coral dragon"
+      ],
       "stableId": "coral-dragon",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card crane crane"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card crane crane"
+      ],
       "stableId": "crane-crane",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card curse of the shadow prison"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card curse of the shadow prison"
+      ],
       "stableId": "curse-of-the-shadow-prison",
       "withdrawn": false
     },
@@ -387,7 +423,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "03_YGO_Non_Archetype_Creatures.mse-set/card d.d. crow",
+        "00_YGO_Non_Archetype.mse-set/card d.d. crow",
         "01_YGO_Legend_of_Alpha.mse-set/card d.d. crow"
       ],
       "stableId": "d-d-crow",
@@ -397,7 +433,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card daigusto emeral",
+        "00_YGO_Non_Archetype.mse-set/card daigusto emeral",
         "01_YGO_Legend_of_Alpha.mse-set/card daigusto emeral"
       ],
       "stableId": "daigusto-emeral",
@@ -407,7 +443,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card dark hole",
+        "00_YGO_Non_Archetype.mse-set/card dark hole",
         "01_YGO_Legend_of_Alpha.mse-set/card dark hole"
       ],
       "stableId": "dark-hole",
@@ -417,8 +453,8 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card downerd magician",
-        "10_YGO_Burning_Abyss.mse-set/card downerd magician",
+        "00_YGO_Non_Archetype.mse-set/card downerd magician",
+        "01_YGO_Burning_Abyss.mse-set/card downerd magician",
         "01_YGO_Legend_of_Alpha.mse-set/card downerd magician"
       ],
       "stableId": "downerd-magician",
@@ -427,7 +463,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card dugares the timeless"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card dugares the timeless"
+      ],
       "stableId": "dugares-the-timeless",
       "withdrawn": false
     },
@@ -435,7 +473,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "03_YGO_Non_Archetype_Creatures.mse-set/card effect veiler",
+        "00_YGO_Non_Archetype.mse-set/card effect veiler",
         "01_YGO_Legend_of_Alpha.mse-set/card effect veiler"
       ],
       "stableId": "effect-veiler",
@@ -444,63 +482,81 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - anoyatyllis"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - anoyatyllis"
+      ],
       "stableId": "el-shaddoll-anoyatyllis",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - apkallone"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - apkallone"
+      ],
       "stableId": "el-shaddoll-apkallone",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - construct"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - construct"
+      ],
       "stableId": "el-shaddoll-construct",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - fusion"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - fusion"
+      ],
       "stableId": "el-shaddoll-fusion",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - grysta"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - grysta"
+      ],
       "stableId": "el-shaddoll-grysta",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - shekhinaga"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - shekhinaga"
+      ],
       "stableId": "el-shaddoll-shekhinaga",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - wendigo"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - wendigo"
+      ],
       "stableId": "el-shaddoll-wendigo",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card el shaddoll - winda"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card el shaddoll - winda"
+      ],
       "stableId": "el-shaddoll-winda",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["05_YGO_Staples_Fusion.mse-set/card elder entity ntss"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card elder entity ntss"
+      ],
       "stableId": "elder-entity-n-tss",
       "withdrawn": false
     },
@@ -508,7 +564,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card evilswarm exciton knight",
+        "00_YGO_Non_Archetype.mse-set/card evilswarm exciton knight",
         "01_YGO_Legend_of_Alpha.mse-set/card evilswarm exciton knight"
       ],
       "stableId": "evilswarm-exciton-knight",
@@ -517,14 +573,18 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card fiend griefing"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card fiend griefing"
+      ],
       "stableId": "fiend-griefing",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card fiendish rhino warrior"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card fiendish rhino warrior"
+      ],
       "stableId": "fiendish-rhino-warrior",
       "withdrawn": false
     },
@@ -532,7 +592,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card foolish burial",
+        "00_YGO_Non_Archetype.mse-set/card foolish burial",
         "01_YGO_Legend_of_Alpha.mse-set/card foolish burial"
       ],
       "stableId": "foolish-burial",
@@ -541,7 +601,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card formula synchron"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card formula synchron"
+      ],
       "stableId": "formula-synchron",
       "withdrawn": false
     },
@@ -549,7 +611,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card gagaga cowboy",
+        "00_YGO_Non_Archetype.mse-set/card gagaga cowboy",
         "01_YGO_Legend_of_Alpha.mse-set/card gagaga cowboy"
       ],
       "stableId": "gagaga-cowboy",
@@ -559,7 +621,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card garura wings of resonant life"
+        "00_YGO_Non_Archetype.mse-set/card garura wings of resonant life"
       ],
       "stableId": "garura-wings-of-resonant-life",
       "withdrawn": false
@@ -567,21 +629,27 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card goyo guardian"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card goyo guardian"
+      ],
       "stableId": "goyo-guardian",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["05_YGO_Staples_Fusion.mse-set/card guardian chimera"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card guardian chimera"
+      ],
       "stableId": "guardian-chimera",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card hel shaddoll - hollow"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card hel shaddoll - hollow"
+      ],
       "stableId": "hel-shaddoll-hollow",
       "withdrawn": false
     },
@@ -589,8 +657,8 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "06_YGO_Staples_Synchro.mse-set/card herald of the arc light",
-        "12_YGO_Necroz.mse-set/card herald of the arc light",
+        "00_YGO_Non_Archetype.mse-set/card herald of the arc light",
+        "03_YGO_Nekroz.mse-set/card herald of the arc light",
         "01_YGO_Legend_of_Alpha.mse-set/card herald of the arc light"
       ],
       "stableId": "herald-of-the-arc-light",
@@ -599,14 +667,18 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card high priestess of prophecy"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card high priestess of prophecy"
+      ],
       "stableId": "high-priestess-of-prophecy",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card hope harbinger dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card hope harbinger dragon"
+      ],
       "stableId": "hope-harbinger-dragon",
       "withdrawn": false
     },
@@ -614,7 +686,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "06_YGO_Staples_Synchro.mse-set/card hot red dragon archfiend abyss"
+        "00_YGO_Non_Archetype.mse-set/card hot red dragon archfiend abyss"
       ],
       "stableId": "hot-red-dragon-archfiend-abyss",
       "withdrawn": false
@@ -623,7 +695,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card instant fusion"
+        "00_YGO_Non_Archetype.mse-set/card instant fusion"
       ],
       "stableId": "instant-fusion",
       "withdrawn": false
@@ -631,7 +703,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card justice of prophecy"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card justice of prophecy"
+      ],
       "stableId": "justice-of-prophecy",
       "withdrawn": false
     },
@@ -639,7 +713,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card karma cut",
+        "00_YGO_Non_Archetype.mse-set/card karma cut",
         "01_YGO_Legend_of_Alpha.mse-set/card karma cut"
       ],
       "stableId": "karma-cut",
@@ -649,8 +723,8 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card leviair the sea dragon",
-        "10_YGO_Burning_Abyss.mse-set/card leviair the sea dragon",
+        "00_YGO_Non_Archetype.mse-set/card leviair the sea dragon",
+        "01_YGO_Burning_Abyss.mse-set/card leviair the sea dragon",
         "01_YGO_Legend_of_Alpha.mse-set/card leviair the sea dragon"
       ],
       "stableId": "leviair-the-sea-dragon",
@@ -660,7 +734,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card lyrilusc - assembled nightingale"
+        "00_YGO_Non_Archetype.mse-set/card lyrilusc - assembled nightingale"
       ],
       "stableId": "lyrilusc-assembled-nightingale",
       "withdrawn": false
@@ -669,7 +743,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card manju of the ten thousand hands",
+        "03_YGO_Nekroz.mse-set/card manju of the ten thousand hands",
         "01_YGO_Legend_of_Alpha.mse-set/card manju of the ten thousand hands"
       ],
       "stableId": "manju-of-the-ten-thousand-hands",
@@ -678,7 +752,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["10_YGO_Burning_Abyss.mse-set/card mathematician"],
+      "sources": [
+        "01_YGO_Burning_Abyss.mse-set/card mathematician"
+      ],
       "stableId": "mathematician",
       "withdrawn": false
     },
@@ -686,7 +762,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "03_YGO_Non_Archetype_Creatures.mse-set/card maxx c",
+        "00_YGO_Non_Archetype.mse-set/card maxx c",
         "01_YGO_Legend_of_Alpha.mse-set/card maxx c"
       ],
       "stableId": "maxx-c",
@@ -696,7 +772,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card monster reborn"
+        "00_YGO_Non_Archetype.mse-set/card monster reborn"
       ],
       "stableId": "monster-reborn",
       "withdrawn": false
@@ -704,7 +780,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["05_YGO_Staples_Fusion.mse-set/card mudragon of the swamp"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card mudragon of the swamp"
+      ],
       "stableId": "mudragon-of-the-swamp",
       "withdrawn": false
     },
@@ -712,7 +790,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card mysterion the dragon crown"
+        "00_YGO_Non_Archetype.mse-set/card mysterion the dragon crown"
       ],
       "stableId": "mysterion-the-dragon-crown",
       "withdrawn": false
@@ -721,7 +799,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card mystical space typhoon"
+        "00_YGO_Non_Archetype.mse-set/card mystical space typhoon"
       ],
       "stableId": "mystical-space-typhoon",
       "withdrawn": false
@@ -729,7 +807,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card nael shaddoll - ariel"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card nael shaddoll - ariel"
+      ],
       "stableId": "nael-shaddoll-ariel",
       "withdrawn": false
     },
@@ -737,7 +817,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - brionac",
+        "03_YGO_Nekroz.mse-set/card nekroz - brionac",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - brionac"
       ],
       "stableId": "nekroz-brionac",
@@ -747,7 +827,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - catastor",
+        "03_YGO_Nekroz.mse-set/card nekroz - catastor",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - catastor"
       ],
       "stableId": "nekroz-catastor",
@@ -757,7 +837,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - clausolas",
+        "03_YGO_Nekroz.mse-set/card nekroz - clausolas",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - clausolas"
       ],
       "stableId": "nekroz-clausolas",
@@ -767,7 +847,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - cycle",
+        "03_YGO_Nekroz.mse-set/card nekroz - cycle",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - cycle"
       ],
       "stableId": "nekroz-cycle",
@@ -777,7 +857,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - dance princess",
+        "03_YGO_Nekroz.mse-set/card nekroz - dance princess",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - dance princess"
       ],
       "stableId": "nekroz-dance-princess",
@@ -787,7 +867,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - decisive armor",
+        "03_YGO_Nekroz.mse-set/card nekroz - decisive armor",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - decisive armor"
       ],
       "stableId": "nekroz-decisive-armor",
@@ -797,7 +877,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - exa",
+        "03_YGO_Nekroz.mse-set/card nekroz - exa",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - exa"
       ],
       "stableId": "nekroz-exa",
@@ -807,7 +887,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - great sorcerer",
+        "03_YGO_Nekroz.mse-set/card nekroz - great sorcerer",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - great sorcerer"
       ],
       "stableId": "nekroz-great-sorcerer",
@@ -817,7 +897,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - gungnir",
+        "03_YGO_Nekroz.mse-set/card nekroz - gungnir",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - gungnir"
       ],
       "stableId": "nekroz-gungnir",
@@ -827,7 +907,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - kaleidoscope",
+        "03_YGO_Nekroz.mse-set/card nekroz - kaleidoscope",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - kaleidoscope"
       ],
       "stableId": "nekroz-kaleidoscope",
@@ -837,7 +917,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - mirror",
+        "03_YGO_Nekroz.mse-set/card nekroz - mirror",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - mirror"
       ],
       "stableId": "nekroz-mirror",
@@ -847,7 +927,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - shurit",
+        "03_YGO_Nekroz.mse-set/card nekroz - shurit",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - shurit"
       ],
       "stableId": "nekroz-shurit",
@@ -857,7 +937,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - trishula",
+        "03_YGO_Nekroz.mse-set/card nekroz - trishula",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - trishula"
       ],
       "stableId": "nekroz-trishula",
@@ -867,7 +947,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - unicore",
+        "03_YGO_Nekroz.mse-set/card nekroz - unicore",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - unicore"
       ],
       "stableId": "nekroz-unicore",
@@ -877,7 +957,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card nekroz - valkyrus",
+        "03_YGO_Nekroz.mse-set/card nekroz - valkyrus",
         "01_YGO_Legend_of_Alpha.mse-set/card nekroz - valkyrus"
       ],
       "stableId": "nekroz-valkyrus",
@@ -886,7 +966,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["05_YGO_Staples_Fusion.mse-set/card panzer dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card panzer dragon"
+      ],
       "stableId": "panzer-dragon",
       "withdrawn": false
     },
@@ -894,7 +976,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card phoenix wing wind blast"
+        "00_YGO_Non_Archetype.mse-set/card phoenix wing wind blast"
       ],
       "stableId": "phoenix-wing-wind-blast",
       "withdrawn": false
@@ -903,7 +985,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card predaplant dragostapelia"
+        "00_YGO_Non_Archetype.mse-set/card predaplant dragostapelia"
       ],
       "stableId": "predaplant-dragostapelia",
       "withdrawn": false
@@ -912,7 +994,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card predaplant triphyoverutum"
+        "00_YGO_Non_Archetype.mse-set/card predaplant triphyoverutum"
       ],
       "stableId": "predaplant-triphyoverutum",
       "withdrawn": false
@@ -921,7 +1003,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card preparation of rites",
+        "03_YGO_Nekroz.mse-set/card preparation of rites",
         "01_YGO_Legend_of_Alpha.mse-set/card preparation of rites"
       ],
       "stableId": "preparation-of-rites",
@@ -930,42 +1012,54 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card puru shaddoll - aeon"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card puru shaddoll - aeon"
+      ],
       "stableId": "puru-shaddoll-aeon",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card qad shaddoll - keios"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card qad shaddoll - keios"
+      ],
       "stableId": "qad-shaddoll-keios",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["09_YGO_Non_Archetype_Non_Creatures.mse-set/card raigeki"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card raigeki"
+      ],
       "stableId": "raigeki",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card red supernova dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card red supernova dragon"
+      ],
       "stableId": "red-supernova-dragon",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card ree shaddoll - wendi"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card ree shaddoll - wendi"
+      ],
       "stableId": "ree-shaddoll-wendi",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card resh shaddoll - incarnation"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card resh shaddoll - incarnation"
+      ],
       "stableId": "resh-shaddoll-incarnation",
       "withdrawn": false
     },
@@ -973,7 +1067,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "06_YGO_Staples_Synchro.mse-set/card scarlight red dragon archfiend"
+        "00_YGO_Non_Archetype.mse-set/card scarlight red dragon archfiend"
       ],
       "stableId": "scarlight-red-dragon-archfiend",
       "withdrawn": false
@@ -981,7 +1075,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["05_YGO_Staples_Fusion.mse-set/card sea monster of theseus"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card sea monster of theseus"
+      ],
       "stableId": "sea-monster-of-theseus",
       "withdrawn": false
     },
@@ -989,7 +1085,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "12_YGO_Necroz.mse-set/card senju of the thousand hands",
+        "03_YGO_Nekroz.mse-set/card senju of the thousand hands",
         "01_YGO_Legend_of_Alpha.mse-set/card senju of the thousand hands"
       ],
       "stableId": "senju-of-the-thousand-hands",
@@ -998,63 +1094,81 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - beast"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - beast"
+      ],
       "stableId": "shaddoll-beast",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - core"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - core"
+      ],
       "stableId": "shaddoll-core",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - dragon"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - dragon"
+      ],
       "stableId": "shaddoll-dragon",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - falco"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - falco"
+      ],
       "stableId": "shaddoll-falco",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - fusion"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - fusion"
+      ],
       "stableId": "shaddoll-fusion",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - hedgehog"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - hedgehog"
+      ],
       "stableId": "shaddoll-hedgehog",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - hound"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - hound"
+      ],
       "stableId": "shaddoll-hound",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - schism"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - schism"
+      ],
       "stableId": "shaddoll-schism",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card shaddoll - squamata"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card shaddoll - squamata"
+      ],
       "stableId": "shaddoll-squamata",
       "withdrawn": false
     },
@@ -1062,7 +1176,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card silent honor ark",
+        "00_YGO_Non_Archetype.mse-set/card silent honor ark",
         "01_YGO_Legend_of_Alpha.mse-set/card silent honor ark"
       ],
       "stableId": "silent-honor-ark",
@@ -1071,7 +1185,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["11_YGO_Shaddoll.mse-set/card sinister shadow games"],
+      "sources": [
+        "02_YGO_Shaddoll.mse-set/card sinister shadow games"
+      ],
       "stableId": "sinister-shadow-games",
       "withdrawn": false
     },
@@ -1079,7 +1195,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "13_YGO_Spellbook.mse-set/card spellbook library of the crescent"
+        "04_YGO_Spellbook.mse-set/card spellbook library of the crescent"
       ],
       "stableId": "spellbook-library-of-the-crescent",
       "withdrawn": false
@@ -1088,7 +1204,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "13_YGO_Spellbook.mse-set/card spellbook magician of prophecy"
+        "04_YGO_Spellbook.mse-set/card spellbook magician of prophecy"
       ],
       "stableId": "spellbook-magician-of-prophecy",
       "withdrawn": false
@@ -1096,84 +1212,108 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of eternity"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of eternity"
+      ],
       "stableId": "spellbook-of-eternity",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of fate"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of fate"
+      ],
       "stableId": "spellbook-of-fate",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of judgment"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of judgment"
+      ],
       "stableId": "spellbook-of-judgment",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of knowledge"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of knowledge"
+      ],
       "stableId": "spellbook-of-knowledge",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of life"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of life"
+      ],
       "stableId": "spellbook-of-life",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of miracles"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of miracles"
+      ],
       "stableId": "spellbook-of-miracles",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of power"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of power"
+      ],
       "stableId": "spellbook-of-power",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of secrets"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of secrets"
+      ],
       "stableId": "spellbook-of-secrets",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of the master"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of the master"
+      ],
       "stableId": "spellbook-of-the-master",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook of wisdom"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook of wisdom"
+      ],
       "stableId": "spellbook-of-wisdom",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card spellbook star hall"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card spellbook star hall"
+      ],
       "stableId": "spellbook-star-hall",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card stardust dragon"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card stardust dragon"
+      ],
       "stableId": "stardust-dragon",
       "withdrawn": false
     },
@@ -1181,7 +1321,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card starving venom fusion dragon"
+        "00_YGO_Non_Archetype.mse-set/card starving venom fusion dragon"
       ],
       "stableId": "starving-venom-fusion-dragon",
       "withdrawn": false
@@ -1190,7 +1330,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card stealth kragen",
+        "00_YGO_Non_Archetype.mse-set/card stealth kragen",
         "01_YGO_Legend_of_Alpha.mse-set/card stealth kragen"
       ],
       "stableId": "stealth-kragen",
@@ -1200,7 +1340,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card super polymerization"
+        "00_YGO_Non_Archetype.mse-set/card super polymerization"
       ],
       "stableId": "super-polymerization",
       "withdrawn": false
@@ -1208,21 +1348,27 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["06_YGO_Staples_Synchro.mse-set/card t.g. hyper librarian"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card t.g. hyper librarian"
+      ],
       "stableId": "t-g-hyper-librarian",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["13_YGO_Spellbook.mse-set/card the grand spellbook tower"],
+      "sources": [
+        "04_YGO_Spellbook.mse-set/card the grand spellbook tower"
+      ],
       "stableId": "the-grand-spellbook-tower",
       "withdrawn": false
     },
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card time thief redoer"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card time thief redoer"
+      ],
       "stableId": "time-thief-redoer",
       "withdrawn": false
     },
@@ -1230,7 +1376,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "07_YGO_Staples_Xyz.mse-set/card tornado dragon",
+        "00_YGO_Non_Archetype.mse-set/card tornado dragon",
         "01_YGO_Legend_of_Alpha.mse-set/card tornado dragon"
       ],
       "stableId": "tornado-dragon",
@@ -1240,7 +1386,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card torrential tribute"
+        "00_YGO_Non_Archetype.mse-set/card torrential tribute"
       ],
       "stableId": "torrential-tribute",
       "withdrawn": false
@@ -1249,7 +1395,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "10_YGO_Burning_Abyss.mse-set/card tour guide from the underworld",
+        "01_YGO_Burning_Abyss.mse-set/card tour guide from the underworld",
         "01_YGO_Legend_of_Alpha.mse-set/card tour guide from the underworld"
       ],
       "stableId": "tour-guide-from-the-underworld",
@@ -1258,7 +1404,9 @@
     {
       "retired": false,
       "routeAliases": [],
-      "sources": ["07_YGO_Staples_Xyz.mse-set/card traptrix rafflesia"],
+      "sources": [
+        "00_YGO_Non_Archetype.mse-set/card traptrix rafflesia"
+      ],
       "stableId": "traptrix-rafflesia",
       "withdrawn": false
     },
@@ -1266,7 +1414,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "06_YGO_Staples_Synchro.mse-set/card trishula dragon of the ice barrier"
+        "00_YGO_Non_Archetype.mse-set/card trishula dragon of the ice barrier"
       ],
       "stableId": "trishula-dragon-of-the-ice-barrier",
       "withdrawn": false
@@ -1275,7 +1423,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card twin twisters"
+        "00_YGO_Non_Archetype.mse-set/card twin twisters"
       ],
       "stableId": "twin-twisters",
       "withdrawn": false
@@ -1284,7 +1432,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "09_YGO_Non_Archetype_Non_Creatures.mse-set/card upstart goblin"
+        "00_YGO_Non_Archetype.mse-set/card upstart goblin"
       ],
       "stableId": "upstart-goblin",
       "withdrawn": false
@@ -1293,7 +1441,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "05_YGO_Staples_Fusion.mse-set/card world chalice guardragon almarduke"
+        "00_YGO_Non_Archetype.mse-set/card world chalice guardragon almarduke"
       ],
       "stableId": "world-chalice-guardragon-almarduke",
       "withdrawn": false

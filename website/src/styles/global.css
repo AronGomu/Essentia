@@ -217,9 +217,6 @@
     font-weight: 700;
     text-decoration: none;
   }
-  .compact-brand span {
-    color: var(--accent);
-  }
   .utility-nav {
     display: flex;
     align-items: center;
@@ -304,10 +301,6 @@
     margin-bottom: 1.6rem;
     padding: 0.4rem 0.4rem 1.4rem;
     text-decoration: none;
-  }
-  .brand b {
-    color: var(--relic);
-    font-size: 1rem;
   }
   .desktop-catalog ul,
   .mobile-drawer ul {
