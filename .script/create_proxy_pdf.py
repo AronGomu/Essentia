@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageOps
 
 REPO = Path(__file__).resolve().parents[1]
 CARDS_ROOT = REPO / "cards_mse"
-IMMUTABLE_STAGES = ("02_alpha", "04_beta", "06_released")
+PUBLIC_STAGES = ("01_alpha", "02_beta", "03_release")
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tif", ".tiff"}
 PAGE_SIZES_IN = {"a4": (8.27, 11.69), "letter": (8.5, 11.0)}
 
@@ -52,7 +52,7 @@ def discover_render_folders(inputs: list[Path]) -> list[Path]:
         ]
     return sorted(
         package / "renders"
-        for stage in IMMUTABLE_STAGES
+        for stage in PUBLIC_STAGES
         for package in (CARDS_ROOT / stage).iterdir()
         if package.is_dir() and (package / "renders").is_dir()
     )
@@ -277,7 +277,7 @@ def main() -> None:
     elif len(folders) == 1:
         output = folders[0].parent / f"{folders[0].parent.name}_print.pdf"
     else:
-        raise ValueError("--output is required for multiple immutable packages")
+        raise ValueError("--output is required for multiple packages")
     manifest = args.manifest or output.with_name("print-manifest.json")
     manifest = manifest if manifest.is_absolute() else REPO / manifest
     plan = copy_plan(images, args.copies)

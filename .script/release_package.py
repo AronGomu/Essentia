@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate, aggregate, and promote Essentia lifecycle packages."""
+"""Validate, aggregate, lock, and advance Essentia lifecycle packages."""
 
 from __future__ import annotations
 
@@ -37,9 +37,9 @@ from mse_content import (  # noqa: E402
 
 CARDS_ROOT = REPO_ROOT / "cards_mse"
 IDENTITIES_PATH = REPO_ROOT / "website" / "content" / "identities.json"
-IMMUTABLE_STAGES = {"02_alpha", "04_beta", "06_released"}
-MUTABLE_STAGES = {"00_drafts", "01_pre_alpha", "03_pre_beta", "05_pre_release"}
-PRE_STAGES = {"01_pre_alpha", "03_pre_beta", "05_pre_release"}
+PUBLIC_STAGES = {"01_alpha", "02_beta", "03_release"}
+DRAFT_STAGE = "00_drafts"
+STATUSES = {"open", "locked"}
 FILE_FIELDS = (
     "image",
     "image_2",
@@ -48,50 +48,45 @@ FILE_FIELDS = (
     "symbol",
     "masterpiece_symbol",
 )
-VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+(?:\.[0-9]+)?$")
+SET_ID_RE = re.compile(r"^[A-Z]{2,8}-\d{4}$")
+VERSION_RE = re.compile(r"^(Alpha|Beta|Release)_([0-9]+\.[0-9]+(?:\.[0-9]+)?)$")
 GROUP_RE = re.compile(r"^[0-9]{2}_[a-z0-9_]+$")
 PROJECT_RE = re.compile(r"^[0-9]{2}_YGO_[A-Za-z0-9_]+\.mse-set$")
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-STAGE_METADATA_KEYS = {
+RELEASE_METADATA_KEYS = {
     "schemaVersion",
     "setId",
     "setName",
     "version",
     "stage",
+    "status",
+    "releasedOn",
+    "components",
     "decks",
     "contentPosts",
 }
-RELEASE_METADATA_KEYS = STAGE_METADATA_KEYS | {"releasedOn", "components"}
+SCHEMA_VERSION = 2
 
 
 @dataclass(frozen=True)
 class Stage:
     directory: str
     metadata_name: str
-    marker_suffix: str
+    version_prefix: str
     public_name: str
     rank: int
-    mutable: bool
 
 
 STAGES = {
-    "00_drafts": Stage("00_drafts", "draft", "", "Draft", 0, True),
-    "01_pre_alpha": Stage("01_pre_alpha", "pre-alpha", "Pre-ALPHA", "Pre-ALPHA", 1, True),
-    "02_alpha": Stage("02_alpha", "alpha", "ALPHA", "ALPHA", 2, False),
-    "03_pre_beta": Stage("03_pre_beta", "pre-beta", "Pre-BETA", "Pre-BETA", 3, True),
-    "04_beta": Stage("04_beta", "beta", "BETA", "BETA", 4, False),
-    "05_pre_release": Stage("05_pre_release", "pre-release", "Pre-Release", "Pre-Release", 5, True),
-    "06_released": Stage("06_released", "release", "Release", "Release", 6, False),
+    "00_drafts": Stage("00_drafts", "draft", "", "Draft", 0),
+    "01_alpha": Stage("01_alpha", "alpha", "Alpha", "Alpha", 1),
+    "02_beta": Stage("02_beta", "beta", "Beta", "Beta", 2),
+    "03_release": Stage("03_release", "release", "Release", "Release", 3),
 }
 STAGE_BY_METADATA = {stage.metadata_name: stage for stage in STAGES.values()}
-PROMOTIONS = {
-    "01_pre_alpha": "02_alpha",
-    "03_pre_beta": "04_beta",
-    "05_pre_release": "06_released",
-}
-NEXT_STAGING = {
-    "02_alpha": "03_pre_beta",
-    "04_beta": "05_pre_release",
+NEXT_STAGE = {
+    "01_alpha": "02_beta",
+    "02_beta": "03_release",
 }
 
 
@@ -99,12 +94,13 @@ class LifecycleError(ValueError):
     """Lifecycle source or package violates contract."""
 
 
-def slugify(value: str) -> str:
-    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", value.casefold())).strip("-")
+def package_folder(set_id: str, version: str) -> str:
+    return f"{set_id}-{version}"
 
 
-def package_stem(set_name: str, version: str) -> str:
-    return f"{re.sub(r'[^A-Za-z0-9]+', '_', set_name).strip('_')}_{version}"
+def package_stem(set_id: str, version: str) -> str:
+    """Artifact stem matches package folder name."""
+    return package_folder(set_id, version)
 
 
 def json_read(path: Path) -> dict:
@@ -153,11 +149,11 @@ def _replace_field(text: str, name: str, value: str) -> str:
 
 
 def expected_marker(stage: Stage, set_name: str | None = None) -> str:
-    if stage.directory == "00_drafts":
+    if stage.directory == DRAFT_STAGE:
         return "DRAFT"
     if not set_name:
         raise LifecycleError(f"setName required for {stage.directory}")
-    return f"{set_name} {stage.marker_suffix}"
+    return f"{set_name} {stage.public_name}"
 
 
 def write_marker(project: Path, marker: str) -> None:
@@ -234,37 +230,38 @@ def _validate_public_metadata_lists(metadata: dict, path: Path) -> None:
         raise LifecycleError(f"invalid content post URL: {path}")
 
 
-def validate_stage_metadata(path: Path, stage: Stage) -> dict:
-    metadata = json_read(path)
-    if (
-        set(metadata) != STAGE_METADATA_KEYS
-        or metadata.get("schemaVersion") != 1
-        or metadata.get("stage") != stage.metadata_name
-        or not isinstance(metadata.get("setName"), str)
-        or not VERSION_RE.fullmatch(str(metadata.get("version", "")))
-    ):
-        raise LifecycleError(f"invalid stage metadata: {path}")
-    expected_id = slugify(metadata["setName"])
-    if metadata.get("setId") != expected_id or not SLUG_RE.fullmatch(expected_id):
-        raise LifecycleError(f"invalid setId in {path}: expected {expected_id}")
-    _validate_public_metadata_lists(metadata, path)
-    return metadata
+def _parse_version(version: str, stage: Stage) -> re.Match[str]:
+    match = VERSION_RE.fullmatch(version)
+    if not match:
+        raise LifecycleError(
+            f"invalid version {version!r}; expected "
+            f"{stage.version_prefix}_X.Y"
+        )
+    if match.group(1) != stage.version_prefix:
+        raise LifecycleError(
+            f"version prefix {match.group(1)!r} does not match stage "
+            f"{stage.metadata_name}"
+        )
+    return match
 
 
 def release_metadata(package: Path, expected_stage: Stage | None = None) -> dict:
     path = package / "release.json"
     metadata = json_read(path)
     stage = STAGE_BY_METADATA.get(str(metadata.get("stage")))
+    status = metadata.get("status")
     if (
         set(metadata) != RELEASE_METADATA_KEYS
-        or metadata.get("schemaVersion") != 1
+        or metadata.get("schemaVersion") != SCHEMA_VERSION
         or stage is None
-        or stage.mutable
+        or stage.directory == DRAFT_STAGE
         or (expected_stage and stage != expected_stage)
+        or status not in STATUSES
         or not isinstance(metadata.get("setName"), str)
-        or not VERSION_RE.fullmatch(str(metadata.get("version", "")))
-        or metadata.get("setId") != slugify(str(metadata.get("setName", "")))
+        or not metadata["setName"].strip()
+        or not SET_ID_RE.fullmatch(str(metadata.get("setId", "")))
         or not isinstance(metadata.get("components"), list)
+        or not metadata["components"]
         or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(metadata.get("releasedOn", "")))
     ):
         raise LifecycleError(f"invalid release metadata: {path}")
@@ -272,8 +269,9 @@ def release_metadata(package: Path, expected_stage: Stage | None = None) -> dict
         date.fromisoformat(metadata["releasedOn"])
     except ValueError as exc:
         raise LifecycleError(f"invalid releasedOn date: {path}") from exc
+    _parse_version(str(metadata.get("version", "")), stage)
     _validate_public_metadata_lists(metadata, path)
-    expected_folder = package_stem(metadata["setName"], metadata["version"])
+    expected_folder = package_folder(metadata["setId"], metadata["version"])
     if package.name not in {expected_folder, f".{expected_folder}.staging"}:
         raise LifecycleError(f"package folder mismatch: {package}; expected {expected_folder}")
     seen: set[str] = set()
@@ -391,7 +389,8 @@ def generate_aggregate(
     stage = STAGE_BY_METADATA[metadata["stage"]]
     marker = expected_marker(stage, metadata["setName"])
     identities = load_identity_registry(identities_path)
-    aggregate_name = f"{package_stem(metadata['setName'], metadata['version'])}_all_cards.mse-set"
+    stem = package_stem(metadata["setId"], metadata["version"])
+    aggregate_name = f"{stem}_all_cards.mse-set"
     aggregate = package / aggregate_name
     if aggregate.exists():
         shutil.rmtree(aggregate)
@@ -464,7 +463,7 @@ def validate_aggregate(package: Path) -> None:
     metadata = release_metadata(package)
     manifest_path = package / "aggregate-manifest.json"
     manifest = json_read(manifest_path)
-    expected_name = f"{package_stem(metadata['setName'], metadata['version'])}_all_cards.mse-set"
+    expected_name = f"{package_stem(metadata['setId'], metadata['version'])}_all_cards.mse-set"
     aggregate = package / expected_name
     if manifest.get("schemaVersion") != 1 or manifest.get("aggregate") != expected_name:
         raise LifecycleError(f"invalid aggregate manifest: {manifest_path}")
@@ -521,12 +520,25 @@ def validate_package_hashes(package: Path) -> None:
         raise LifecycleError(f"package hash mismatch: {manifest_path}")
 
 
-def validate_package(package: Path, require_artifacts: bool = True) -> None:
+def package_is_locked(package: Path) -> bool:
+    path = package / "release.json"
+    if not path.is_file():
+        return False
+    try:
+        return json_read(path).get("status") == "locked"
+    except LifecycleError:
+        return False
+
+
+def validate_package(package: Path, require_artifacts: bool | None = None) -> None:
     stage_key = package.parent.name
     stage = STAGES.get(stage_key)
-    if not stage or stage.mutable:
-        raise LifecycleError(f"package outside immutable stage: {package}")
+    if not stage or stage.directory == DRAFT_STAGE:
+        raise LifecycleError(f"package outside public stage: {package}")
     metadata = release_metadata(package, stage)
+    status = metadata["status"]
+    if require_artifacts is None:
+        require_artifacts = status == "locked"
     marker = expected_marker(stage, metadata["setName"])
     component_names = {entry["project"] for entry in metadata["components"]}
     actual_components = {
@@ -540,9 +552,10 @@ def validate_package(package: Path, require_artifacts: bool = True) -> None:
         )
     for name in sorted(component_names):
         validate_project(_safe_child(package, name, directory=True), marker)
-    validate_aggregate(package)
+    if require_artifacts or (package / "aggregate-manifest.json").exists():
+        validate_aggregate(package)
     if require_artifacts:
-        stem = package_stem(metadata["setName"], metadata["version"])
+        stem = package_stem(metadata["setId"], metadata["version"])
         required = (
             package / "renders",
             package / "render-provenance.json",
@@ -556,19 +569,36 @@ def validate_package(package: Path, require_artifacts: bool = True) -> None:
         validate_package_hashes(package)
 
 
-def _mutable_display_names(cards_root: Path) -> dict[str, list[str]]:
+def _open_package_display_names(cards_root: Path) -> dict[str, list[str]]:
     """Map casefolded display name -> owning mutable project paths."""
     owned: dict[str, list[str]] = {}
-    mutable_roots = ["00_drafts", *sorted(PRE_STAGES)]
-    for stage_key in mutable_roots:
-        root = cards_root / stage_key
-        if not root.is_dir():
-            continue
-        for project in _project_paths(root):
+    draft_root = cards_root / DRAFT_STAGE
+    if draft_root.is_dir():
+        for project in _project_paths(draft_root):
             for card in load_manifest(project, allow_empty=True):
                 owned.setdefault(card.name.casefold(), []).append(
                     f"{project.relative_to(cards_root).as_posix()}/{card.source_name}"
                 )
+    for stage_key in sorted(PUBLIC_STAGES):
+        root = cards_root / stage_key
+        if not root.is_dir():
+            continue
+        for package in sorted(path for path in root.iterdir() if path.is_dir()):
+            if package.name == ".gitkeep" or package.name.startswith("."):
+                continue
+            release_path = package / "release.json"
+            if not release_path.is_file():
+                continue
+            metadata = json_read(release_path)
+            if metadata.get("status") != "open":
+                continue
+            for project in _project_paths(package):
+                if project.name.endswith("_all_cards.mse-set"):
+                    continue
+                for card in load_manifest(project, allow_empty=True):
+                    owned.setdefault(card.name.casefold(), []).append(
+                        f"{project.relative_to(cards_root).as_posix()}/{card.source_name}"
+                    )
     return owned
 
 
@@ -580,31 +610,20 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
         root = cards_root / stage_key
         if not root.is_dir():
             raise LifecycleError(f"missing lifecycle directory: {root}")
-        if stage_key == "00_drafts":
+        if stage_key == DRAFT_STAGE:
             for project in _project_paths(root):
                 relative = project.relative_to(root)
                 if len(relative.parts) != 2 or not GROUP_RE.fullmatch(relative.parts[0]):
                     raise LifecycleError(f"misplaced draft project: {project}")
                 validate_project(project, "DRAFT", allow_empty=True)
-        elif stage_key in PRE_STAGES:
-            projects = _project_paths(root)
-            if not projects:
-                continue
-            metadata = validate_stage_metadata(root / "stage.json", stage)
-            marker = expected_marker(stage, metadata["setName"])
-            for project in projects:
-                relative = project.relative_to(root)
-                if len(relative.parts) != 2 or not GROUP_RE.fullmatch(relative.parts[0]):
-                    raise LifecycleError(f"misplaced staging project: {project}")
-                validate_project(project, marker)
         else:
             for child in sorted(root.iterdir()):
                 if child.name == ".gitkeep":
                     continue
-                if not child.is_dir():
-                    raise LifecycleError(f"unexpected immutable-stage entry: {child}")
+                if not child.is_dir() or child.name.startswith("."):
+                    raise LifecycleError(f"unexpected stage entry: {child}")
                 validate_package(child)
-    for name, owners in sorted(_mutable_display_names(cards_root).items()):
+    for name, owners in sorted(_open_package_display_names(cards_root).items()):
         if len(owners) > 1:
             raise LifecycleError(
                 "duplicate mutable card display name "
@@ -612,21 +631,9 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
             )
 
 
-def _component_entries(stage_root: Path) -> list[dict[str, str]]:
-    result = []
-    for project in _project_paths(stage_root):
-        relative = project.relative_to(stage_root)
-        if len(relative.parts) != 2 or not GROUP_RE.fullmatch(relative.parts[0]):
-            raise LifecycleError(f"misplaced staging project: {project}")
-        result.append({"group": relative.parts[0], "project": project.name})
-    if len({item["project"] for item in result}) != len(result):
-        raise LifecycleError("component project names must be unique within a set")
-    return result
-
-
 def build_artifacts(package: Path, aggregate: Path) -> None:
     metadata = release_metadata(package)
-    stem = package_stem(metadata["setName"], metadata["version"])
+    stem = package_stem(metadata["setId"], metadata["version"])
     renders = package / "renders"
     subprocess.run(
         [
@@ -659,108 +666,115 @@ def build_artifacts(package: Path, aggregate: Path) -> None:
     )
 
 
-def promote(
-    from_stage: str,
-    to_stage: str,
-    released_on: str,
+def rebuild(
+    package: Path,
     *,
-    cards_root: Path = CARDS_ROOT,
     identities_path: Path = IDENTITIES_PATH,
     artifact_builder: Callable[[Path, Path], None] = build_artifacts,
 ) -> Path:
-    if PROMOTIONS.get(from_stage) != to_stage:
-        raise LifecycleError(f"invalid promotion: {from_stage} -> {to_stage}")
-    source_stage = STAGES[from_stage]
+    """Regenerate aggregate/artifacts/hashes for an open package."""
+    package = package.resolve()
+    metadata = release_metadata(package)
+    if metadata["status"] != "open":
+        raise LifecycleError(f"rebuild requires open package: {package}")
+    aggregate = generate_aggregate(package, identities_path)
+    artifact_builder(package, aggregate)
+    write_package_hashes(package)
+    validate_package(package, require_artifacts=True)
+    return package
+
+
+def lock(
+    package: Path,
+    released_on: str | None = None,
+    *,
+    identities_path: Path = IDENTITIES_PATH,
+    artifact_builder: Callable[[Path, Path], None] = build_artifacts,
+) -> Path:
+    """Rebuild artifacts and mark package locked."""
+    package = package.resolve()
+    metadata = release_metadata(package)
+    if metadata["status"] != "open":
+        raise LifecycleError(f"lock requires open package: {package}")
+    if released_on is not None:
+        try:
+            date.fromisoformat(released_on)
+        except ValueError as exc:
+            raise LifecycleError(f"invalid releasedOn date: {released_on}") from exc
+        metadata["releasedOn"] = released_on
+    rebuild(package, identities_path=identities_path, artifact_builder=artifact_builder)
+    metadata = release_metadata(package)
+    metadata["status"] = "locked"
+    json_write(package / "release.json", metadata)
+    write_package_hashes(package)
+    validate_package(package, require_artifacts=True)
+    return package
+
+
+def advance(
+    source_package: Path,
+    to_stage: str,
+    version: str,
+    *,
+    cards_root: Path = CARDS_ROOT,
+) -> Path:
+    """Copy locked package into next stage as a new open package."""
+    source_package = source_package.resolve()
+    source_stage_key = source_package.parent.name
+    if NEXT_STAGE.get(source_stage_key) != to_stage:
+        raise LifecycleError(f"invalid advance: {source_stage_key} -> {to_stage}")
+    validate_package(source_package, require_artifacts=True)
+    release = release_metadata(source_package)
+    if release["status"] != "locked":
+        raise LifecycleError(f"advance requires locked source package: {source_package}")
     target_stage = STAGES[to_stage]
-    source = cards_root / from_stage
-    metadata = validate_stage_metadata(source / "stage.json", source_stage)
-    try:
-        date.fromisoformat(released_on)
-    except ValueError as exc:
-        raise LifecycleError(f"invalid releasedOn date: {released_on}") from exc
-    source_marker = expected_marker(source_stage, metadata["setName"])
-    components = _component_entries(source)
-    for entry in components:
-        validate_project(source / entry["group"] / entry["project"], source_marker)
-    target_parent = cards_root / to_stage
-    target = target_parent / package_stem(metadata["setName"], metadata["version"])
+    _parse_version(version, target_stage)
+    target = cards_root / to_stage / package_folder(release["setId"], version)
     if target.exists():
         raise LifecycleError(f"target package already exists: {target}")
-    staging = target_parent / f".{target.name}.staging"
+    staging = target.parent / f".{target.name}.staging"
     if staging.exists():
         shutil.rmtree(staging)
-    staging.mkdir()
+    staging.mkdir(parents=True)
     try:
-        target_marker = expected_marker(target_stage, metadata["setName"])
-        for entry in components:
-            source_project = source / entry["group"] / entry["project"]
-            target_project = staging / entry["project"]
-            shutil.copytree(source_project, target_project)
-            write_marker(target_project, target_marker)
-        release = {
-            "schemaVersion": 1,
-            "setId": metadata["setId"],
-            "setName": metadata["setName"],
-            "version": metadata["version"],
-            "stage": target_stage.metadata_name,
-            "releasedOn": released_on,
-            "components": components,
-            "decks": metadata.get("decks", []),
-            "contentPosts": metadata.get("contentPosts", []),
-        }
-        json_write(staging / "release.json", release)
-        aggregate = generate_aggregate(staging, identities_path)
-        artifact_builder(staging, aggregate)
-        write_package_hashes(staging)
-        validate_package(staging)
+        marker = expected_marker(target_stage, release["setName"])
+        for entry in release["components"]:
+            shutil.copytree(source_package / entry["project"], staging / entry["project"])
+            write_marker(staging / entry["project"], marker)
+        json_write(
+            staging / "release.json",
+            {
+                "schemaVersion": SCHEMA_VERSION,
+                "setId": release["setId"],
+                "setName": release["setName"],
+                "version": version,
+                "stage": target_stage.metadata_name,
+                "status": "open",
+                "releasedOn": release["releasedOn"],
+                "components": release["components"],
+                "decks": release.get("decks", []),
+                "contentPosts": release.get("contentPosts", []),
+            },
+        )
+        validate_package(staging, require_artifacts=False)
         staging.replace(target)
     except BaseException:
         if staging.exists():
             shutil.rmtree(staging)
         raise
-    for entry in components:
-        shutil.rmtree(source / entry["group"] / entry["project"])
-        try:
-            (source / entry["group"]).rmdir()
-        except OSError:
-            pass
-    (source / "stage.json").unlink()
     return target
 
 
-def prepare_next(
-    source_package: Path, to_stage: str, *, cards_root: Path = CARDS_ROOT
-) -> Path:
-    source_package = source_package.resolve()
-    source_stage_key = source_package.parent.name
-    if NEXT_STAGING.get(source_stage_key) != to_stage:
-        raise LifecycleError(f"invalid next-stage copy: {source_stage_key} -> {to_stage}")
-    validate_package(source_package)
-    release = release_metadata(source_package)
-    target_stage = STAGES[to_stage]
-    target = cards_root / to_stage
-    if _project_paths(target) or (target / "stage.json").exists():
-        raise LifecycleError(f"target staging is not empty: {target}")
-    marker = expected_marker(target_stage, release["setName"])
-    for entry in release["components"]:
-        group = target / entry["group"]
-        group.mkdir(parents=True, exist_ok=True)
-        destination = group / entry["project"]
-        shutil.copytree(source_package / entry["project"], destination)
-        write_marker(destination, marker)
-    json_write(
-        target / "stage.json",
-        {
-            "schemaVersion": 1,
-            "setId": release["setId"],
-            "setName": release["setName"],
-            "version": release["version"],
-            "stage": target_stage.metadata_name,
-            "decks": release.get("decks", []),
-            "contentPosts": release.get("contentPosts", []),
-        },
-    )
-    return target
+def locked_packages(cards_root: Path = CARDS_ROOT) -> list[Path]:
+    found: list[Path] = []
+    for stage_key in sorted(PUBLIC_STAGES):
+        root = cards_root / stage_key
+        if not root.is_dir():
+            continue
+        for child in sorted(root.iterdir()):
+            if child.is_dir() and not child.name.startswith(".") and package_is_locked(child):
+                found.append(child)
+    return found
 
 
 def parse_args() -> argparse.Namespace:
@@ -777,14 +791,19 @@ def parse_args() -> argparse.Namespace:
     hashes = subparsers.add_parser("hash")
     hashes.add_argument("package", type=Path)
 
-    promotion = subparsers.add_parser("promote")
-    promotion.add_argument("--from-stage", choices=sorted(PROMOTIONS), required=True)
-    promotion.add_argument("--to-stage", choices=sorted(IMMUTABLE_STAGES), required=True)
-    promotion.add_argument("--released-on", required=True)
+    rebuild_cmd = subparsers.add_parser("rebuild")
+    rebuild_cmd.add_argument("package", type=Path)
+    rebuild_cmd.add_argument("--identities", type=Path, default=IDENTITIES_PATH)
 
-    next_stage = subparsers.add_parser("prepare-next")
-    next_stage.add_argument("source_package", type=Path)
-    next_stage.add_argument("--to-stage", choices=sorted(PRE_STAGES), required=True)
+    lock_cmd = subparsers.add_parser("lock")
+    lock_cmd.add_argument("package", type=Path)
+    lock_cmd.add_argument("--released-on")
+    lock_cmd.add_argument("--identities", type=Path, default=IDENTITIES_PATH)
+
+    advance_cmd = subparsers.add_parser("advance")
+    advance_cmd.add_argument("source_package", type=Path)
+    advance_cmd.add_argument("--to-stage", choices=sorted(NEXT_STAGE.values()), required=True)
+    advance_cmd.add_argument("--version", required=True)
     return parser.parse_args()
 
 
@@ -804,10 +823,18 @@ def main() -> int:
         write_package_hashes(package)
         validate_package_hashes(package)
         print(f"package hashes written: {package}")
-    elif args.command == "promote":
-        print(promote(args.from_stage, args.to_stage, args.released_on))
-    elif args.command == "prepare-next":
-        print(prepare_next(args.source_package, args.to_stage))
+    elif args.command == "rebuild":
+        print(rebuild(args.package.resolve(), identities_path=args.identities.resolve()))
+    elif args.command == "lock":
+        print(
+            lock(
+                args.package.resolve(),
+                args.released_on,
+                identities_path=args.identities.resolve(),
+            )
+        )
+    elif args.command == "advance":
+        print(advance(args.source_package.resolve(), args.to_stage, args.version))
     return 0
 
 

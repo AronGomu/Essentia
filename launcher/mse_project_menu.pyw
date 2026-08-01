@@ -68,21 +68,15 @@ DOCS_BY_PROJECT = {
 
 TAB_NAMES = (
     "Draft",
-    "Pre-Alpha",
     "Alpha",
-    "Pre-Beta",
     "Beta",
-    "Pre-Release",
     "Release",
 )
 LIFECYCLE = {
     "00_drafts": (0, "Draft"),
-    "01_pre_alpha": (1, "Pre-Alpha"),
-    "02_alpha": (2, "Alpha"),
-    "03_pre_beta": (3, "Pre-Beta"),
-    "04_beta": (4, "Beta"),
-    "05_pre_release": (5, "Pre-Release"),
-    "06_released": (6, "Release"),
+    "01_alpha": (1, "Alpha"),
+    "02_beta": (2, "Beta"),
+    "03_release": (3, "Release"),
 }
 
 
@@ -133,7 +127,7 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, obj
         group = relative.parts[1] if len(relative.parts) > 2 else project.parent.name
         set_name = (
             relative.parts[1]
-            if stage_key in {"02_alpha", "04_beta", "06_released"} and len(relative.parts) > 2
+            if stage_key in {"01_alpha", "02_beta", "03_release"} and len(relative.parts) > 2
             else None
         )
         _sort, doc_number, doc_title = DOCS_BY_PROJECT.get(

@@ -32,7 +32,7 @@ class ReleasePackageTests(unittest.TestCase):
         marker: str,
         cards: list[tuple[str, str]],
     ) -> Path:
-        project = parent / group / name
+        project = parent / group / name if group else parent / name
         project.mkdir(parents=True)
         includes = []
         for source_name, display_name in cards:
@@ -80,27 +80,30 @@ class ReleasePackageTests(unittest.TestCase):
         )
         return path
 
-    def release_package(self, cards: list[tuple[str, str]]) -> tuple[Path, Path]:
-        package = self.root / "02_alpha" / "Test_Set_0.1"
+    def open_package(self, cards: list[tuple[str, str]]) -> tuple[Path, Path]:
+        package = self.root / "01_alpha" / "TEST-0001-Alpha_0.1"
         project = self.project(
             package,
             "",
             "10_YGO_Test.mse-set",
-            "Test Set ALPHA",
+            "Test Set Alpha",
             cards,
         )
         metadata = {
-            "schemaVersion": 1,
-            "setId": "test-set",
+            "schemaVersion": 2,
+            "setId": "TEST-0001",
             "setName": "Test Set",
-            "version": "0.1",
+            "version": "Alpha_0.1",
             "stage": "alpha",
+            "status": "open",
             "releasedOn": "2026-07-31",
             "components": [{"group": "10_test", "project": project.name}],
             "decks": [],
             "contentPosts": [],
         }
-        (package / "release.json").write_text(json.dumps(metadata), encoding="utf-8")
+        (package / "release.json").write_text(
+            json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
         identity_path = self.identities(
             [
                 (
@@ -113,33 +116,22 @@ class ReleasePackageTests(unittest.TestCase):
         return package, identity_path
 
     def fake_artifacts(self, package: Path, _aggregate: Path) -> None:
-        (package / "renders").mkdir()
+        (package / "renders").mkdir(exist_ok=True)
         (package / "renders" / "Card One.png").write_bytes(b"png")
         (package / "render-provenance.json").write_text("{}\n", encoding="utf-8")
         (package / "print-manifest.json").write_text("{}\n", encoding="utf-8")
         metadata = release.release_metadata(package)
-        stem = release.package_stem(metadata["setName"], metadata["version"])
+        stem = release.package_stem(metadata["setId"], metadata["version"])
         (package / f"{stem}_print.pdf").write_bytes(b"%PDF-1.4\n%%EOF\n")
 
-    def test_stage_metadata_rejects_card_fields(self) -> None:
-        path = self.root / "01_pre_alpha" / "stage.json"
-        path.write_text(
-            json.dumps(
-                {
-                    "schemaVersion": 1,
-                    "setId": "test-set",
-                    "setName": "Test Set",
-                    "version": "0.1",
-                    "stage": "pre-alpha",
-                    "decks": [],
-                    "contentPosts": [],
-                    "name": "Card data does not belong here",
-                }
-            ),
-            encoding="utf-8",
-        )
-        with self.assertRaisesRegex(release.LifecycleError, "invalid stage metadata"):
-            release.validate_stage_metadata(path, release.STAGES["01_pre_alpha"])
+    def test_release_metadata_requires_status_and_set_id(self) -> None:
+        package, _ = self.open_package([("card one", "Card One")])
+        path = package / "release.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        del data["status"]
+        path.write_text(json.dumps(data), encoding="utf-8")
+        with self.assertRaisesRegex(release.LifecycleError, "invalid release metadata"):
+            release.release_metadata(package)
 
     def test_draft_marker_mismatch_names_exact_project(self) -> None:
         project = self.project(
@@ -153,7 +145,7 @@ class ReleasePackageTests(unittest.TestCase):
             release.validate_cards_root(self.root)
 
     def test_aggregate_is_deterministic_and_matches_component_union(self) -> None:
-        package, identities = self.release_package(
+        package, identities = self.open_package(
             [("card two", "Card Two"), ("card one", "Card One")]
         )
         aggregate = release.generate_aggregate(package, identities)
@@ -171,11 +163,11 @@ class ReleasePackageTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(release.load_manifest(aggregate)), 2)
         aggregate_set = (aggregate / "set").read_text(encoding="utf-8-sig")
-        self.assertIn("title: Essentia -- Test Set ALPHA", aggregate_set)
+        self.assertIn("title: Essentia -- Test Set Alpha", aggregate_set)
         release.validate_aggregate(package)
 
     def test_duplicate_stable_identity_fails_aggregate(self) -> None:
-        package, _identities = self.release_package(
+        package, _identities = self.open_package(
             [("card one", "Card One"), ("card two", "Card Two")]
         )
         project_name = "10_YGO_Test.mse-set"
@@ -191,7 +183,7 @@ class ReleasePackageTests(unittest.TestCase):
             release.generate_aggregate(package, identities)
 
     def test_aggregate_drift_and_package_hash_mutation_fail(self) -> None:
-        package, identities = self.release_package([("card one", "Card One")])
+        package, identities = self.open_package([("card one", "Card One")])
         aggregate = release.generate_aggregate(package, identities)
         card = aggregate / "card card-1"
         card.write_text(card.read_text() + "\tflavor_text: drift\n", encoding="utf-8")
@@ -205,58 +197,53 @@ class ReleasePackageTests(unittest.TestCase):
         with self.assertRaisesRegex(release.LifecycleError, "package hash mismatch"):
             release.validate_package_hashes(package)
 
-    def test_promotion_is_atomic_empties_staging_and_prepares_next(self) -> None:
-        stage = self.root / "01_pre_alpha"
-        project = self.project(
-            stage,
-            "10_test",
-            "10_YGO_Test.mse-set",
-            "Test Set Pre-ALPHA",
-            [("card one", "Card One")],
-        )
-        (stage / "stage.json").write_text(
-            json.dumps(
-                {
-                    "schemaVersion": 1,
-                    "setId": "test-set",
-                    "setName": "Test Set",
-                    "version": "0.1",
-                    "stage": "pre-alpha",
-                    "decks": [],
-                    "contentPosts": [],
-                }
-            ),
-            encoding="utf-8",
-        )
-        identities = self.identities(
-            [("card-one", [f"{project.name}/card one"])]
-        )
-        package = release.promote(
-            "01_pre_alpha",
-            "02_alpha",
-            "2026-07-31",
-            cards_root=self.root,
+    def test_lock_and_advance_flow(self) -> None:
+        package, identities = self.open_package([("card one", "Card One")])
+        locked = release.lock(
+            package,
             identities_path=identities,
             artifact_builder=self.fake_artifacts,
         )
-        self.assertTrue(package.is_dir())
-        self.assertFalse((stage / "stage.json").exists())
-        self.assertEqual(list(stage.rglob("*.mse-set")), [])
-        release.validate_package(package)
-        source_hashes = release.package_hashes(package)
+        self.assertEqual(release.release_metadata(locked)["status"], "locked")
+        release.validate_package(locked, require_artifacts=True)
+        source_hashes = release.package_hashes(locked)
 
-        target = release.prepare_next(package, "03_pre_beta", cards_root=self.root)
-        copied = target / "10_test" / "10_YGO_Test.mse-set"
+        target = release.advance(
+            locked, "02_beta", "Beta_0.1", cards_root=self.root
+        )
+        self.assertEqual(target.name, "TEST-0001-Beta_0.1")
+        meta = release.release_metadata(target)
+        self.assertEqual(meta["status"], "open")
+        self.assertEqual(meta["stage"], "beta")
+        self.assertEqual(meta["version"], "Beta_0.1")
+        copied = target / "10_YGO_Test.mse-set"
         self.assertTrue(copied.is_dir())
-        self.assertIn("artist: Test Set Pre-BETA", (copied / "set").read_text())
-        self.assertEqual(source_hashes, release.package_hashes(package))
+        self.assertIn("artist: Test Set Beta", (copied / "set").read_text())
+        self.assertEqual(source_hashes, release.package_hashes(locked))
 
-    def test_merge_base_guard_rejects_committed_package_mutation(self) -> None:
+    def test_merge_base_guard_rejects_locked_package_mutation(self) -> None:
         repository = Path(self.temporary.name) / "repo"
-        package = repository / "cards_mse" / "02_alpha" / "Test_Set_0.1"
+        package = repository / "cards_mse" / "01_alpha" / "TEST-0001-Alpha_0.1"
         package.mkdir(parents=True)
         protected = package / "release.json"
-        protected.write_text("original\n", encoding="utf-8")
+        protected.write_text(
+            json.dumps(
+                {
+                    "schemaVersion": 2,
+                    "setId": "TEST-0001",
+                    "setName": "Test Set",
+                    "version": "Alpha_0.1",
+                    "stage": "alpha",
+                    "status": "locked",
+                    "releasedOn": "2026-07-31",
+                    "components": [{"group": "10_test", "project": "10_YGO_Test.mse-set"}],
+                    "decks": [],
+                    "contentPosts": [],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
         subprocess.run(["git", "init", "-q"], cwd=repository, check=True)
         subprocess.run(
             ["git", "config", "user.email", "test@example.invalid"],
@@ -274,51 +261,57 @@ class ReleasePackageTests(unittest.TestCase):
             ["git", "rev-parse", "HEAD"], cwd=repository, text=True
         ).strip()
         protected.write_text("mutated\n", encoding="utf-8")
-        with self.assertRaisesRegex(release.LifecycleError, "immutable"):
+        with self.assertRaisesRegex(release.LifecycleError, "locked packages are immutable"):
             immutable.check_merge_base(base, repo_root=repository)
 
-    def test_failed_artifact_build_keeps_source_staging(self) -> None:
-        stage = self.root / "01_pre_alpha"
-        project = self.project(
-            stage,
-            "10_test",
-            "10_YGO_Test.mse-set",
-            "Test Set Pre-ALPHA",
-            [("card one", "Card One")],
-        )
-        (stage / "stage.json").write_text(
+    def test_open_package_mutation_allowed_by_guard(self) -> None:
+        repository = Path(self.temporary.name) / "repo"
+        package = repository / "cards_mse" / "01_alpha" / "TEST-0001-Alpha_0.1"
+        package.mkdir(parents=True)
+        protected = package / "release.json"
+        protected.write_text(
             json.dumps(
                 {
-                    "schemaVersion": 1,
-                    "setId": "test-set",
+                    "schemaVersion": 2,
+                    "setId": "TEST-0001",
                     "setName": "Test Set",
-                    "version": "0.1",
-                    "stage": "pre-alpha",
+                    "version": "Alpha_0.1",
+                    "stage": "alpha",
+                    "status": "open",
+                    "releasedOn": "2026-07-31",
+                    "components": [{"group": "10_test", "project": "10_YGO_Test.mse-set"}],
                     "decks": [],
                     "contentPosts": [],
                 }
-            ),
+            )
+            + "\n",
             encoding="utf-8",
         )
-        identities = self.identities(
-            [("card-one", [f"{project.name}/card one"])]
+        subprocess.run(["git", "init", "-q"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "test@example.invalid"],
+            cwd=repository,
+            check=True,
         )
-
-        def fail(_package: Path, _aggregate: Path) -> None:
-            raise RuntimeError("export failed")
-
-        with self.assertRaisesRegex(RuntimeError, "export failed"):
-            release.promote(
-                "01_pre_alpha",
-                "02_alpha",
-                "2026-07-31",
-                cards_root=self.root,
-                identities_path=identities,
-                artifact_builder=fail,
-            )
-        self.assertTrue(project.is_dir())
-        self.assertTrue((stage / "stage.json").is_file())
-        self.assertFalse((self.root / "02_alpha" / "Test_Set_0.1").exists())
+        subprocess.run(
+            ["git", "config", "user.name", "Test"], cwd=repository, check=True
+        )
+        subprocess.run(["git", "add", "."], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "-qm", "base"], cwd=repository, check=True
+        )
+        base = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=repository, text=True
+        ).strip()
+        protected.write_text(
+            protected.read_text(encoding="utf-8").replace('"open"', '"open"'),
+            encoding="utf-8",
+        )
+        # actual content change
+        data = json.loads(protected.read_text(encoding="utf-8"))
+        data["setName"] = "Test Set Edited"
+        protected.write_text(json.dumps(data) + "\n", encoding="utf-8")
+        immutable.check_merge_base(base, repo_root=repository)
 
 
 if __name__ == "__main__":

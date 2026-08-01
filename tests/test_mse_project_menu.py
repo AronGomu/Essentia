@@ -21,12 +21,9 @@ class MSEProjectMenuTests(unittest.TestCase):
             root = Path(directory)
             stages = {
                 "00_drafts": "Draft",
-                "01_pre_alpha": "Pre-Alpha",
-                "02_alpha": "Alpha",
-                "03_pre_beta": "Pre-Beta",
-                "04_beta": "Beta",
-                "05_pre_release": "Pre-Release",
-                "06_released": "Release",
+                "01_alpha": "Alpha",
+                "02_beta": "Beta",
+                "03_release": "Release",
             }
             for stage in stages:
                 project = root / stage / "sample" / f"{stage}.mse-set"
@@ -46,7 +43,7 @@ class MSEProjectMenuTests(unittest.TestCase):
     def test_groups_projects_in_fixed_tab_order(self) -> None:
         projects = [
             {"lifecycle": "Release", "name": "release"},
-            {"lifecycle": "Pre-Alpha", "name": "pre-alpha"},
+            {"lifecycle": "Alpha", "name": "alpha"},
             {"lifecycle": "Draft", "name": "draft"},
         ]
 
@@ -56,21 +53,15 @@ class MSEProjectMenuTests(unittest.TestCase):
             MENU.TAB_NAMES,
             (
                 "Draft",
-                "Pre-Alpha",
                 "Alpha",
-                "Pre-Beta",
                 "Beta",
-                "Pre-Release",
                 "Release",
             ),
         )
         self.assertEqual(tuple(grouped), MENU.TAB_NAMES)
         self.assertEqual([item["name"] for item in grouped["Draft"]], ["draft"])
-        self.assertEqual([item["name"] for item in grouped["Pre-Alpha"]], ["pre-alpha"])
-        self.assertEqual(grouped["Alpha"], [])
-        self.assertEqual(grouped["Pre-Beta"], [])
+        self.assertEqual([item["name"] for item in grouped["Alpha"]], ["alpha"])
         self.assertEqual(grouped["Beta"], [])
-        self.assertEqual(grouped["Pre-Release"], [])
         self.assertEqual([item["name"] for item in grouped["Release"]], ["release"])
 
 

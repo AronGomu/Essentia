@@ -128,14 +128,14 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             self.assertFalse((ROOT / "docs" / archetype / "CHANGELOG.md").exists())
         accepted = ROOT / "docs" / "ADR" / "accepted"
         proposed = ROOT / "docs" / "ADR" / "proposed"
-        self.assertEqual(len(list(accepted.glob("000*.md"))), 5)
+        self.assertGreaterEqual(len(list(accepted.glob("000*.md"))), 7)
         self.assertTrue((proposed / "0003-nekroz-reconciliation.md").is_file())
         self.assertIn(
             "Status: AWAITING_USER",
             (proposed / "0003-nekroz-reconciliation.md").read_text(encoding="utf-8"),
         )
 
-    def test_card_workflows_reject_immutable_stages(self) -> None:
+    def test_card_workflows_reject_locked_packages(self) -> None:
         for skill in (
             "add-ygo-card",
             "fix-mse-cards",
@@ -145,11 +145,10 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             text = (ROOT / f".agents/skills/{skill}/SKILL.md").read_text(
                 encoding="utf-8-sig"
             )
-            for stage in ("02_alpha", "04_beta", "06_released"):
-                self.assertIn(stage, text)
+            self.assertRegex(text, r"(?i)locked")
             self.assertRegex(text, r"(?i)never edit|reject")
 
-    def test_proxy_pdf_defaults_read_immutable_packages_only(self) -> None:
+    def test_proxy_pdf_defaults_read_public_packages_only(self) -> None:
         script = ROOT / ".script" / "create_proxy_pdf.py"
         spec = importlib.util.spec_from_file_location("create_proxy_pdf", script)
         assert spec and spec.loader
@@ -157,9 +156,11 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
         spec.loader.exec_module(module)
         folders = module.discover_render_folders([])
         self.assertTrue(
-            all(path.parent.parent.name in {"02_alpha", "04_beta", "06_released"} for path in folders)
+            all(path.parent.parent.name in {"01_alpha", "02_beta", "03_release"} for path in folders)
         )
-        self.assertEqual(folders, [])
+        self.assertTrue(
+            any(path.parent.name == "LOTA-0001-Alpha_0.1" for path in folders)
+        )
 
     def test_identity_metadata_does_not_duplicate_card_fields(self) -> None:
         data = json.loads((ROOT / "website/content/identities.json").read_text())
