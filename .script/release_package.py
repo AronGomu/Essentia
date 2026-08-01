@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate, aggregate, and promote YGO x MTG lifecycle packages."""
+"""Validate, aggregate, and promote Essentia lifecycle packages."""
 
 from __future__ import annotations
 
@@ -180,8 +180,8 @@ def _project_paths(root: Path) -> list[Path]:
     return sorted(projects)
 
 
-def _validate_local_refs(project: Path) -> None:
-    for card in load_manifest(project):
+def _validate_local_refs(project: Path, *, allow_empty: bool = False) -> None:
+    for card in load_manifest(project, allow_empty=allow_empty):
         fields = field_values(read_limited(card.source_path, MAX_CARD_BYTES))
         for field in FILE_FIELDS:
             raw = one_field(fields, field)
@@ -189,7 +189,7 @@ def _validate_local_refs(project: Path) -> None:
                 contained_path(project, raw)
 
 
-def validate_project(project: Path, marker: str) -> None:
+def validate_project(project: Path, marker: str, *, allow_empty: bool = False) -> None:
     if not PROJECT_RE.fullmatch(project.name) and not project.name.endswith("_all_cards.mse-set"):
         raise LifecycleError(f"invalid project folder name: {project}")
     set_path = project / "set"
@@ -202,7 +202,7 @@ def validate_project(project: Path, marker: str) -> None:
             f"stage marker mismatch: {project} expected artist={marker!r}, got {actual!r}"
         )
     try:
-        _validate_local_refs(project)
+        _validate_local_refs(project, allow_empty=allow_empty)
     except MSESourceError as exc:
         raise LifecycleError(f"invalid MSE project {project}: {exc}") from exc
 
@@ -442,7 +442,7 @@ def generate_aggregate(
         (aggregate / card["output"]).write_text(card.pop("text"), encoding="utf-8")
     set_text = _aggregate_set_text(
         base_set_text,
-        f"YGO x MTG -- {metadata['setName']} {stage.public_name}",
+        f"Essentia -- {metadata['setName']} {stage.public_name}",
         marker,
         (card["output"] for card in cards),
     )
@@ -556,6 +556,22 @@ def validate_package(package: Path, require_artifacts: bool = True) -> None:
         validate_package_hashes(package)
 
 
+def _mutable_display_names(cards_root: Path) -> dict[str, list[str]]:
+    """Map casefolded display name -> owning mutable project paths."""
+    owned: dict[str, list[str]] = {}
+    mutable_roots = ["00_drafts", *sorted(PRE_STAGES)]
+    for stage_key in mutable_roots:
+        root = cards_root / stage_key
+        if not root.is_dir():
+            continue
+        for project in _project_paths(root):
+            for card in load_manifest(project, allow_empty=True):
+                owned.setdefault(card.name.casefold(), []).append(
+                    f"{project.relative_to(cards_root).as_posix()}/{card.source_name}"
+                )
+    return owned
+
+
 def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
     unknown = [path for path in cards_root.iterdir() if path.is_dir() and path.name not in STAGES]
     if unknown:
@@ -569,7 +585,7 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
                 relative = project.relative_to(root)
                 if len(relative.parts) != 2 or not GROUP_RE.fullmatch(relative.parts[0]):
                     raise LifecycleError(f"misplaced draft project: {project}")
-                validate_project(project, "DRAFT")
+                validate_project(project, "DRAFT", allow_empty=True)
         elif stage_key in PRE_STAGES:
             projects = _project_paths(root)
             if not projects:
@@ -588,6 +604,12 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
                 if not child.is_dir():
                     raise LifecycleError(f"unexpected immutable-stage entry: {child}")
                 validate_package(child)
+    for name, owners in sorted(_mutable_display_names(cards_root).items()):
+        if len(owners) > 1:
+            raise LifecycleError(
+                "duplicate mutable card display name "
+                f"{name!r}: {', '.join(owners)}"
+            )
 
 
 def _component_entries(stage_root: Path) -> list[dict[str, str]]:

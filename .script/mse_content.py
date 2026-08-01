@@ -151,12 +151,14 @@ def one_field(fields: dict[str, list[str]], name: str) -> str | None:
     return values[0].strip() if values else None
 
 
-def load_manifest(project: Path) -> list[ManifestCard]:
+def load_manifest(project: Path, *, allow_empty: bool = False) -> list[ManifestCard]:
     project = Path(os.path.realpath(project))
     set_path = contained_path(project, "set")
     set_text = read_limited(set_path, MAX_SET_BYTES)
     includes = _INCLUDE_RE.findall(set_text)
     if not includes:
+        if allow_empty:
+            return []
         raise MSESourceError("manifest contains no cards")
     if len(includes) > MAX_CARDS:
         raise MSESourceError(f"manifest exceeds {MAX_CARDS} cards")

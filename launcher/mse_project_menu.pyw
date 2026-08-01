@@ -1,5 +1,5 @@
 #!/mnt/data/Softwares/Full-Magic-Pack-main/python-tk/bin/python3
-"""Native no-terminal launcher for the Yu-Gi-Oh x Magic Cube MSE projects.
+"""Native no-terminal launcher for Essentia MSE projects.
 
 Double-click this .pyw file on Windows to open a small GUI. Buttons launch each
 folder-form .mse-set directly with Magic Set Editor.
@@ -59,26 +59,28 @@ ACCENT_DARK = "#1b1408"
 BLUE = "#8fd6ff"
 
 DOCS_BY_PROJECT = {
-    "03_YGO_Non_Archetype_Creatures.mse-set": (3, "03", "Non-archetype Creature"),
-    "09_YGO_Non_Archetype_Non_Creatures.mse-set": (9, "09", "Non-archetype Non-creature"),
-    "05_YGO_Staples_Fusion.mse-set": (5, "05", "Fusion"),
-    "06_YGO_Staples_Synchro.mse-set": (6, "06", "Synchro"),
-    "07_YGO_Staples_Xyz.mse-set": (7, "07", "Xyz"),
-    "08_YGO_Staples_Link.mse-set": (8, "08", "Link"),
-    "10_YGO_Burning_Abyss.mse-set": (10, "10", "Archetype: Burning Abyss"),
-    "11_YGO_Shaddoll.mse-set": (11, "11", "Archetype: Shaddoll"),
-    "11_YGO_Shaddoll_Fusion.mse-set": (11, "11", "Archetype: Shaddoll"),
-    "12_YGO_Necroz.mse-set": (12, "12", "Archetype: Nekroz"),
-    "12_YGO_Necroz_Synchro.mse-set": (12, "12", "Archetype: Nekroz"),
-    "13_YGO_Spellbook.mse-set": (13, "13", "Archetype: Spellbook"),
+    "00_YGO_Non_Archetype.mse-set": (0, "00", "Non-archetype"),
+    "01_YGO_Burning_Abyss.mse-set": (1, "01", "Archetype: Burning Abyss"),
+    "02_YGO_Shaddoll.mse-set": (2, "02", "Archetype: Shaddoll"),
+    "03_YGO_Nekroz.mse-set": (3, "03", "Archetype: Nekroz"),
+    "04_YGO_Spellbook.mse-set": (4, "04", "Archetype: Spellbook"),
 }
 
+TAB_NAMES = (
+    "Draft",
+    "Pre-Alpha",
+    "Alpha",
+    "Pre-Beta",
+    "Beta",
+    "Pre-Release",
+    "Release",
+)
 LIFECYCLE = {
     "00_drafts": (0, "Draft"),
-    "01_pre_alpha": (1, "Pre-ALPHA"),
-    "02_alpha": (2, "ALPHA"),
-    "03_pre_beta": (3, "Pre-BETA"),
-    "04_beta": (4, "BETA"),
+    "01_pre_alpha": (1, "Pre-Alpha"),
+    "02_alpha": (2, "Alpha"),
+    "03_pre_beta": (3, "Pre-Beta"),
+    "04_beta": (4, "Beta"),
     "05_pre_release": (5, "Pre-Release"),
     "06_released": (6, "Release"),
 }
@@ -124,9 +126,16 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, obj
             continue
         relative = project.relative_to(projects_root)
         stage_key = relative.parts[0] if relative.parts else ""
-        _stage_order, lifecycle = LIFECYCLE.get(stage_key, (999, "Unknown"))
+        lifecycle_entry = LIFECYCLE.get(stage_key)
+        if lifecycle_entry is None:
+            continue
+        _stage_order, lifecycle = lifecycle_entry
         group = relative.parts[1] if len(relative.parts) > 2 else project.parent.name
-        set_name = relative.parts[1] if stage_key in {"02_alpha", "04_beta", "06_released"} and len(relative.parts) > 2 else None
+        set_name = (
+            relative.parts[1]
+            if stage_key in {"02_alpha", "04_beta", "06_released"} and len(relative.parts) > 2
+            else None
+        )
         _sort, doc_number, doc_title = DOCS_BY_PROJECT.get(
             project.name, (999, "?", "Unlinked document")
         )
@@ -145,6 +154,17 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, obj
             }
         )
     return projects
+
+
+def group_projects_by_tab(
+    projects: list[dict[str, object]],
+) -> dict[str, list[dict[str, object]]]:
+    grouped = {tab: [] for tab in TAB_NAMES}
+    for project in projects:
+        lifecycle = str(project["lifecycle"])
+        if lifecycle in grouped:
+            grouped[lifecycle].append(project)
+    return grouped
 
 
 def _observe_process(process: subprocess.Popen[bytes], project_path: Path, started_at: float) -> None:
@@ -207,7 +227,7 @@ def copy_path(root: tk.Tk, value: str) -> None:
 
 def build_gui(projects: list[dict[str, object]]) -> None:
     root = tk.Tk()
-    root.title("Yu-Gi-Oh x Magic Cube - MSE Menu")
+    root.title("Essentia - MSE Menu")
     root.geometry("900x760")
     root.minsize(760, 520)
     root.configure(bg=BG)
@@ -241,24 +261,13 @@ def build_gui(projects: list[dict[str, object]]) -> None:
     ).pack(anchor="w")
     tk.Label(
         header,
-        text="Browse projects by lifecycle, group, and set. Open any folder-form project directly in MSE.",
+        text="Browse Draft through Release, including pre-stages. Open any folder-form project directly in MSE.",
         font=("Segoe UI", 10),
         fg=MUTED,
         bg=BG,
         wraplength=820,
         justify="left",
     ).pack(anchor="w", pady=(6, 0))
-
-    if not projects:
-        tk.Label(
-            root,
-            text=f"No projects found in:\n{PROJECTS_ROOT}",
-            font=("Segoe UI", 12),
-            fg=TEXT,
-            bg=BG,
-        ).pack(padx=24, pady=30)
-        root.mainloop()
-        return
 
     search_frame = tk.Frame(root, bg=BG)
     search_frame.pack(fill="x", padx=24, pady=(6, 4))
@@ -273,22 +282,44 @@ def build_gui(projects: list[dict[str, object]]) -> None:
     search_entry = ttk.Entry(search_frame, textvariable=search_var, font=("Segoe UI", 11))
     search_entry.pack(fill="x", ipady=6)
 
-    container = tk.Frame(root, bg=BG)
-    container.pack(fill="both", expand=True, padx=24, pady=10)
+    grouped_projects = group_projects_by_tab(projects)
+    notebook = ttk.Notebook(root)
+    notebook.pack(fill="both", expand=True, padx=24, pady=10)
 
-    canvas = tk.Canvas(container, bg=BG, highlightthickness=0)
-    scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
-    scroll_frame = tk.Frame(canvas, bg=BG)
+    tab_views: dict[str, tuple[tk.Frame, tk.Canvas]] = {}
+    visible_by_tab: dict[str, list[dict[str, object]]] = {
+        tab: [] for tab in TAB_NAMES
+    }
+    for tab in TAB_NAMES:
+        pane = tk.Frame(notebook, bg=BG)
+        notebook.add(pane, text=tab)
 
-    scroll_frame.bind("<Configure>", lambda _event: canvas.configure(scrollregion=canvas.bbox("all")))
-    canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
-    canvas.configure(yscrollcommand=scrollbar.set)
+        container = tk.Frame(pane, bg=BG)
+        container.pack(fill="both", expand=True, padx=8, pady=10)
+        canvas = tk.Canvas(container, bg=BG, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+        scroll_frame = tk.Frame(canvas, bg=BG)
+        window = canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+        scroll_frame.bind(
+            "<Configure>",
+            lambda _event, value=canvas: value.configure(scrollregion=value.bbox("all")),
+        )
+        canvas.bind(
+            "<Configure>",
+            lambda event, value=canvas, item=window: value.itemconfigure(
+                item, width=event.width
+            ),
+        )
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        tab_views[tab] = (scroll_frame, canvas)
 
-    canvas.pack(side="left", fill="both", expand=True)
-    scrollbar.pack(side="right", fill="y")
+    def active_tab() -> str:
+        return TAB_NAMES[notebook.index(notebook.select())]
 
     def on_mousewheel(event: tk.Event) -> str | None:
-        # Windows/macOS: <MouseWheel> + delta. Linux/X11: <Button-4>/<Button-5>.
+        canvas = tab_views[active_tab()][1]
         num = getattr(event, "num", None)
         delta = getattr(event, "delta", 0)
         if num == 4:
@@ -296,131 +327,137 @@ def build_gui(projects: list[dict[str, object]]) -> None:
         elif num == 5:
             canvas.yview_scroll(1, "units")
         elif delta:
-            if sys.platform == "darwin":
-                canvas.yview_scroll(int(-1 * delta), "units")
-            else:
-                canvas.yview_scroll(int(-1 * (delta / 120)), "units")
+            units = -delta if sys.platform == "darwin" else -(delta / 120)
+            canvas.yview_scroll(int(units), "units")
         return "break"
 
-    # bind_all so wheel works over nested card widgets, not only bare canvas.
-    canvas.bind_all("<MouseWheel>", on_mousewheel)
-    canvas.bind_all("<Button-4>", on_mousewheel)
-    canvas.bind_all("<Button-5>", on_mousewheel)
+    root.bind_all("<MouseWheel>", on_mousewheel)
+    root.bind_all("<Button-4>", on_mousewheel)
+    root.bind_all("<Button-5>", on_mousewheel)
 
     def _unbind_mousewheel(event: tk.Event) -> None:
         if event.widget is not root:
             return
-        canvas.unbind_all("<MouseWheel>")
-        canvas.unbind_all("<Button-4>")
-        canvas.unbind_all("<Button-5>")
+        root.unbind_all("<MouseWheel>")
+        root.unbind_all("<Button-4>")
+        root.unbind_all("<Button-5>")
 
     root.bind("<Destroy>", _unbind_mousewheel)
 
-    visible_projects: list[dict[str, object]] = []
-
     def render_projects(*_args: object) -> None:
-        nonlocal visible_projects
-        for child in scroll_frame.winfo_children():
-            child.destroy()
-
         query = search_var.get().strip().casefold()
-        visible_projects = [
-            project
-            for project in projects
-            if not query
-            or query
-            in " ".join(
-                str(project[field])
-                for field in (
-                    "lifecycle",
-                    "group",
-                    "set_name",
-                    "doc_number",
-                    "doc_title",
-                    "title",
-                    "name",
-                    "path",
+        for tab in TAB_NAMES:
+            scroll_frame, canvas = tab_views[tab]
+            for child in scroll_frame.winfo_children():
+                child.destroy()
+
+            visible = [
+                project
+                for project in grouped_projects[tab]
+                if not query
+                or query
+                in " ".join(
+                    str(project[field])
+                    for field in (
+                        "lifecycle",
+                        "group",
+                        "set_name",
+                        "doc_number",
+                        "doc_title",
+                        "title",
+                        "name",
+                        "path",
+                    )
+                ).casefold()
+            ]
+            visible_by_tab[tab] = visible
+            if not visible:
+                message = (
+                    "No projects match this search."
+                    if query
+                    else f"No {tab} projects found."
                 )
-            ).casefold()
-        ]
-
-        if not visible_projects:
-            tk.Label(
-                scroll_frame,
-                text="No projects match this search.",
-                font=("Segoe UI", 11),
-                fg=MUTED,
-                bg=BG,
-            ).pack(anchor="w", pady=18)
-            return
-
-        prior_group: tuple[str, str, object] | None = None
-        for project in visible_projects:
-            group_key = (
-                str(project["lifecycle"]),
-                str(project["group"]),
-                project["set_name"],
-            )
-            if group_key != prior_group:
-                set_suffix = f" / {group_key[2]}" if group_key[2] else ""
                 tk.Label(
                     scroll_frame,
-                    text=f"{group_key[0]} / {group_key[1]}{set_suffix}",
-                    font=("Segoe UI", 11, "bold"),
-                    fg=ACCENT,
+                    text=message,
+                    font=("Segoe UI", 11),
+                    fg=MUTED,
                     bg=BG,
-                ).pack(anchor="w", pady=(12 if prior_group else 0, 8))
-                prior_group = group_key
+                ).pack(anchor="w", pady=18)
+                canvas.yview_moveto(0)
+                continue
 
-            project_path = project["path"]
-            card = tk.Frame(scroll_frame, bg=PANEL, padx=16, pady=13, highlightbackground="#343747", highlightthickness=1)
-            card.pack(fill="x", pady=(0, 12))
-            card.columnconfigure(0, weight=1)
+            prior_group: tuple[str, object] | None = None
+            for project in visible:
+                group_key = (str(project["group"]), project["set_name"])
+                if group_key != prior_group:
+                    set_suffix = f" / {group_key[1]}" if group_key[1] else ""
+                    tk.Label(
+                        scroll_frame,
+                        text=f"{group_key[0]}{set_suffix}",
+                        font=("Segoe UI", 11, "bold"),
+                        fg=ACCENT,
+                        bg=BG,
+                    ).pack(anchor="w", pady=(12 if prior_group else 0, 8))
+                    prior_group = group_key
 
-            tk.Label(
-                card,
-                text=str(project["title"]),
-                font=("Segoe UI", 12, "bold"),
-                fg=TEXT,
-                bg=PANEL,
-            ).grid(row=0, column=0, sticky="w")
-            tk.Label(
-                card,
-                text=f"{project['doc_title']} · {project['name']} · {project['count']} cards",
-                font=("Segoe UI", 9),
-                fg=MUTED,
-                bg=PANEL,
-            ).grid(row=1, column=0, sticky="w", pady=(4, 0))
-            tk.Label(
-                card,
-                text=str(project["relative"]),
-                font=("Consolas", 8),
-                fg=BLUE,
-                bg=PANEL,
-                wraplength=560,
-                justify="left",
-            ).grid(row=2, column=0, sticky="w", pady=(5, 0))
+                project_path = project["path"]
+                card = tk.Frame(
+                    scroll_frame,
+                    bg=PANEL,
+                    padx=16,
+                    pady=13,
+                    highlightbackground="#343747",
+                    highlightthickness=1,
+                )
+                card.pack(fill="x", pady=(0, 12))
+                card.columnconfigure(0, weight=1)
 
-            button_frame = tk.Frame(card, bg=PANEL)
-            button_frame.grid(row=0, column=1, rowspan=3, padx=(18, 0), sticky="e")
-            ttk.Button(
-                button_frame,
-                text="Open in MSE",
-                style="Accent.TButton",
-                command=lambda path=project_path: open_project(path),
-            ).pack(fill="x")
-            ttk.Button(
-                button_frame,
-                text="Copy path",
-                style="Secondary.TButton",
-                command=lambda path=project_path: copy_path(root, str(path)),
-            ).pack(fill="x", pady=(8, 0))
+                tk.Label(
+                    card,
+                    text=str(project["title"]),
+                    font=("Segoe UI", 12, "bold"),
+                    fg=TEXT,
+                    bg=PANEL,
+                ).grid(row=0, column=0, sticky="w")
+                tk.Label(
+                    card,
+                    text=f"{project['doc_title']} · {project['name']} · {project['count']} cards",
+                    font=("Segoe UI", 9),
+                    fg=MUTED,
+                    bg=PANEL,
+                ).grid(row=1, column=0, sticky="w", pady=(4, 0))
+                tk.Label(
+                    card,
+                    text=str(project["relative"]),
+                    font=("Consolas", 8),
+                    fg=BLUE,
+                    bg=PANEL,
+                    wraplength=560,
+                    justify="left",
+                ).grid(row=2, column=0, sticky="w", pady=(5, 0))
 
-        canvas.yview_moveto(0)
+                button_frame = tk.Frame(card, bg=PANEL)
+                button_frame.grid(row=0, column=1, rowspan=3, padx=(18, 0), sticky="e")
+                ttk.Button(
+                    button_frame,
+                    text="Open in MSE",
+                    style="Accent.TButton",
+                    command=lambda path=project_path: open_project(path),
+                ).pack(fill="x")
+                ttk.Button(
+                    button_frame,
+                    text="Copy path",
+                    style="Secondary.TButton",
+                    command=lambda path=project_path: copy_path(root, str(path)),
+                ).pack(fill="x", pady=(8, 0))
+
+            canvas.yview_moveto(0)
 
     def open_first_result(_event: tk.Event | None = None) -> None:
-        if visible_projects:
-            open_project(visible_projects[0]["path"])
+        visible = visible_by_tab[active_tab()]
+        if visible:
+            open_project(visible[0]["path"])
 
     def clear_search(_event: tk.Event | None = None) -> None:
         search_var.set("")

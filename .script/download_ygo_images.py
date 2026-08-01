@@ -90,7 +90,7 @@ errors = []
 updated = 0
 for project in sorted(ROOT.glob("*/*_YGO_*.mse-set")):
     # Burning Abyss uses reconciled MSE imports and must not be rewritten to source JPG paths.
-    if project.name == "10_YGO_Burning_Abyss.mse-set":
+    if project.name == "01_YGO_Burning_Abyss.mse-set":
         continue
     for card_file in sorted(project.glob("card *")):
         text = card_file.read_text(encoding="utf-8-sig", errors="replace")

@@ -1,8 +1,8 @@
 """Retired French Extra Deck staple generator.
 
-English projects ``05_YGO_Staples_Fusion.mse-set`` through
-``08_YGO_Staples_Link.mse-set`` are source of truth. Embedded generated card
-lists were removed because rerunning them would replace canonical cards.
+``00_YGO_Non_Archetype.mse-set`` is source of truth for English generic Extra
+Deck staples. Embedded generated card lists were removed because rerunning them
+would replace canonical cards.
 """
 
 raise SystemExit(

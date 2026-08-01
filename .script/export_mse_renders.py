@@ -68,7 +68,6 @@ def validate_export_name(name: str) -> None:
         or "/" in name
         or "\\" in name
         or any(ord(character) < 32 for character in name)
-        or re.match(r"^[A-Za-z]:", name)
     ):
         raise MSESourceError(f"unsafe card name for MSE export: {name!r}")
 

@@ -195,7 +195,7 @@ def _prompt_for_root() -> Path:
         config, errors = validate_mse_root(root)
         if config is not None:
             return root
-        print("This installation is not ready for YGO-x-MTG:", file=sys.stderr)
+        print("This installation is not ready for Essentia:", file=sys.stderr)
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
         print("Try another path.\n", file=sys.stderr)
