@@ -59,7 +59,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card ash blossom  joyous spring",
-        "01_YGO_Legend_of_Alpha.mse-set/card ash blossom  joyous spring"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card ash blossom  joyous spring"
       ],
       "stableId": "ash-blossom-and-joyous-spring",
       "withdrawn": false
@@ -69,7 +69,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card bagooska",
-        "01_YGO_Legend_of_Alpha.mse-set/card bagooska"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card bagooska"
       ],
       "stableId": "bagooska",
       "withdrawn": false
@@ -132,7 +132,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "01_YGO_Legend_of_Alpha.mse-set/card book of moon"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card book of moon"
       ],
       "stableId": "book-of-moon",
       "withdrawn": false
@@ -169,7 +169,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - alich",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - alich"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - alich"
       ],
       "stableId": "burning-abyss-alich",
       "withdrawn": false
@@ -179,7 +179,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - barbar",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - barbar"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - barbar"
       ],
       "stableId": "burning-abyss-barbar",
       "withdrawn": false
@@ -198,7 +198,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - calcab",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - calcab"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - calcab"
       ],
       "stableId": "burning-abyss-calcab",
       "withdrawn": false
@@ -217,7 +217,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - cir",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - cir"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - cir"
       ],
       "stableId": "burning-abyss-cir",
       "withdrawn": false
@@ -227,7 +227,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - dante",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - dante"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - dante"
       ],
       "stableId": "burning-abyss-dante",
       "withdrawn": false
@@ -245,7 +245,7 @@
       "retired": false,
       "routeAliases": [],
       "sources": [
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - draghig"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - draghig"
       ],
       "stableId": "burning-abyss-draghig",
       "withdrawn": false
@@ -255,7 +255,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - farfa",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - farfa"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - farfa"
       ],
       "stableId": "burning-abyss-farfa",
       "withdrawn": false
@@ -265,7 +265,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - fire lake"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - fire lake"
       ],
       "stableId": "burning-abyss-fire-lake",
       "withdrawn": false
@@ -284,7 +284,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - graff",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - graff"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - graff"
       ],
       "stableId": "burning-abyss-graff",
       "withdrawn": false
@@ -312,7 +312,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - rubic",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - rubic"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - rubic"
       ],
       "stableId": "burning-abyss-rubic",
       "withdrawn": false
@@ -322,7 +322,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - scarm",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - scarm"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - scarm"
       ],
       "stableId": "burning-abyss-scarm",
       "withdrawn": false
@@ -341,7 +341,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - traveler"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - traveler"
       ],
       "stableId": "burning-abyss-traveler",
       "withdrawn": false
@@ -351,7 +351,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card burning abyss - virgil",
-        "01_YGO_Legend_of_Alpha.mse-set/card burning abyss - virgil"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - virgil"
       ],
       "stableId": "burning-abyss-virgil",
       "withdrawn": false
@@ -424,7 +424,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card d.d. crow",
-        "01_YGO_Legend_of_Alpha.mse-set/card d.d. crow"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card d.d. crow"
       ],
       "stableId": "d-d-crow",
       "withdrawn": false
@@ -434,7 +434,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card daigusto emeral",
-        "01_YGO_Legend_of_Alpha.mse-set/card daigusto emeral"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card daigusto emeral"
       ],
       "stableId": "daigusto-emeral",
       "withdrawn": false
@@ -444,7 +444,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card dark hole",
-        "01_YGO_Legend_of_Alpha.mse-set/card dark hole"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card dark hole"
       ],
       "stableId": "dark-hole",
       "withdrawn": false
@@ -455,7 +455,7 @@
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card downerd magician",
         "01_YGO_Burning_Abyss.mse-set/card downerd magician",
-        "01_YGO_Legend_of_Alpha.mse-set/card downerd magician"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card downerd magician"
       ],
       "stableId": "downerd-magician",
       "withdrawn": false
@@ -474,7 +474,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card effect veiler",
-        "01_YGO_Legend_of_Alpha.mse-set/card effect veiler"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card effect veiler"
       ],
       "stableId": "effect-veiler",
       "withdrawn": false
@@ -565,7 +565,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card evilswarm exciton knight",
-        "01_YGO_Legend_of_Alpha.mse-set/card evilswarm exciton knight"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card evilswarm exciton knight"
       ],
       "stableId": "evilswarm-exciton-knight",
       "withdrawn": false
@@ -593,7 +593,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card foolish burial",
-        "01_YGO_Legend_of_Alpha.mse-set/card foolish burial"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card foolish burial"
       ],
       "stableId": "foolish-burial",
       "withdrawn": false
@@ -612,7 +612,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card gagaga cowboy",
-        "01_YGO_Legend_of_Alpha.mse-set/card gagaga cowboy"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card gagaga cowboy"
       ],
       "stableId": "gagaga-cowboy",
       "withdrawn": false
@@ -659,7 +659,7 @@
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card herald of the arc light",
         "03_YGO_Nekroz.mse-set/card herald of the arc light",
-        "01_YGO_Legend_of_Alpha.mse-set/card herald of the arc light"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card herald of the arc light"
       ],
       "stableId": "herald-of-the-arc-light",
       "withdrawn": false
@@ -714,7 +714,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card karma cut",
-        "01_YGO_Legend_of_Alpha.mse-set/card karma cut"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card karma cut"
       ],
       "stableId": "karma-cut",
       "withdrawn": false
@@ -725,7 +725,7 @@
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card leviair the sea dragon",
         "01_YGO_Burning_Abyss.mse-set/card leviair the sea dragon",
-        "01_YGO_Legend_of_Alpha.mse-set/card leviair the sea dragon"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card leviair the sea dragon"
       ],
       "stableId": "leviair-the-sea-dragon",
       "withdrawn": false
@@ -744,7 +744,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card manju of the ten thousand hands",
-        "01_YGO_Legend_of_Alpha.mse-set/card manju of the ten thousand hands"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card manju of the ten thousand hands"
       ],
       "stableId": "manju-of-the-ten-thousand-hands",
       "withdrawn": false
@@ -763,7 +763,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card maxx c",
-        "01_YGO_Legend_of_Alpha.mse-set/card maxx c"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card maxx c"
       ],
       "stableId": "maxx-c",
       "withdrawn": false
@@ -818,7 +818,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - brionac",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - brionac"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - brionac"
       ],
       "stableId": "nekroz-brionac",
       "withdrawn": false
@@ -828,7 +828,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - catastor",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - catastor"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - catastor"
       ],
       "stableId": "nekroz-catastor",
       "withdrawn": false
@@ -838,7 +838,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - clausolas",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - clausolas"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - clausolas"
       ],
       "stableId": "nekroz-clausolas",
       "withdrawn": false
@@ -848,7 +848,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - cycle",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - cycle"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - cycle"
       ],
       "stableId": "nekroz-cycle",
       "withdrawn": false
@@ -858,7 +858,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - dance princess",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - dance princess"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - dance princess"
       ],
       "stableId": "nekroz-dance-princess",
       "withdrawn": false
@@ -868,7 +868,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - decisive armor",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - decisive armor"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - decisive armor"
       ],
       "stableId": "nekroz-decisive-armor",
       "withdrawn": false
@@ -878,7 +878,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - exa",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - exa"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - exa"
       ],
       "stableId": "nekroz-exa",
       "withdrawn": false
@@ -888,7 +888,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - great sorcerer",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - great sorcerer"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - great sorcerer"
       ],
       "stableId": "nekroz-great-sorcerer",
       "withdrawn": false
@@ -898,7 +898,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - gungnir",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - gungnir"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - gungnir"
       ],
       "stableId": "nekroz-gungnir",
       "withdrawn": false
@@ -908,7 +908,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - kaleidoscope",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - kaleidoscope"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - kaleidoscope"
       ],
       "stableId": "nekroz-kaleidoscope",
       "withdrawn": false
@@ -918,7 +918,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - mirror",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - mirror"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - mirror"
       ],
       "stableId": "nekroz-mirror",
       "withdrawn": false
@@ -928,7 +928,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - shurit",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - shurit"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - shurit"
       ],
       "stableId": "nekroz-shurit",
       "withdrawn": false
@@ -938,7 +938,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - trishula",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - trishula"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - trishula"
       ],
       "stableId": "nekroz-trishula",
       "withdrawn": false
@@ -948,7 +948,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - unicore",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - unicore"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - unicore"
       ],
       "stableId": "nekroz-unicore",
       "withdrawn": false
@@ -958,7 +958,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card nekroz - valkyrus",
-        "01_YGO_Legend_of_Alpha.mse-set/card nekroz - valkyrus"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - valkyrus"
       ],
       "stableId": "nekroz-valkyrus",
       "withdrawn": false
@@ -1004,7 +1004,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card preparation of rites",
-        "01_YGO_Legend_of_Alpha.mse-set/card preparation of rites"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card preparation of rites"
       ],
       "stableId": "preparation-of-rites",
       "withdrawn": false
@@ -1086,7 +1086,7 @@
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card senju of the thousand hands",
-        "01_YGO_Legend_of_Alpha.mse-set/card senju of the thousand hands"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card senju of the thousand hands"
       ],
       "stableId": "senju-of-the-thousand-hands",
       "withdrawn": false
@@ -1177,7 +1177,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card silent honor ark",
-        "01_YGO_Legend_of_Alpha.mse-set/card silent honor ark"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card silent honor ark"
       ],
       "stableId": "silent-honor-ark",
       "withdrawn": false
@@ -1331,7 +1331,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card stealth kragen",
-        "01_YGO_Legend_of_Alpha.mse-set/card stealth kragen"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card stealth kragen"
       ],
       "stableId": "stealth-kragen",
       "withdrawn": false
@@ -1377,7 +1377,7 @@
       "routeAliases": [],
       "sources": [
         "00_YGO_Non_Archetype.mse-set/card tornado dragon",
-        "01_YGO_Legend_of_Alpha.mse-set/card tornado dragon"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card tornado dragon"
       ],
       "stableId": "tornado-dragon",
       "withdrawn": false
@@ -1396,7 +1396,7 @@
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card tour guide from the underworld",
-        "01_YGO_Legend_of_Alpha.mse-set/card tour guide from the underworld"
+        "01_YGO_Legend_of_the_Alpha.mse-set/card tour guide from the underworld"
       ],
       "stableId": "tour-guide-from-the-underworld",
       "withdrawn": false

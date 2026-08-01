@@ -8,12 +8,12 @@ test('production preview serves draft-only empty archive', async ({ page }) => {
   expect(response?.ok()).toBe(true);
   await expect(
     page.getByRole('heading', {
-      name: 'No immutable releases published yet.',
+      name: 'No release packages published yet.',
       exact: true,
     }),
   ).toBeVisible();
   await expect(
-    page.getByText(/Legend of Alpha 0.1 is assembled in Pre-ALPHA/),
+    page.getByText(/Legend of the Alpha (LOTA-0001) Alpha_0.1 is open under alpha/),
   ).toBeVisible();
   await expect(page.locator('.gallery-card')).toHaveCount(0);
 });

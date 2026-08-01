@@ -41,7 +41,7 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
               Playable under Magic rules.
             </h1>
             <p>
-              Source-backed cards, immutable release history, canonical renders,
+              Source-backed cards, release history, canonical renders,
               readable rules, and stable card pages.
             </p>
             <div class="hero-actions">
@@ -59,7 +59,7 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
           <div class="section-heading">
             <div>
               <h2 id="new-cards-heading">New cards</h2>
-              <p>Latest cards from immutable publication packages.</p>
+              <p>Latest cards from alpha/beta/release packages.</p>
             </div>
             <a href={withBase(base, '/updates/')}>View all updates</a>
           </div>
@@ -119,11 +119,11 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
         aria-labelledby="empty-title"
       >
         <p class="eyebrow">Publication archive</p>
-        <h1 id="empty-title">No immutable releases published yet.</h1>
+        <h1 id="empty-title">No release packages published yet.</h1>
         <p>
           Editable staging projects exist, but this website publishes only
-          ALPHA, BETA, and Release packages. Legend of Alpha 0.1 is assembled in
-          Pre-ALPHA.
+          Alpha, Beta, and Release packages. Legend of the Alpha (LOTA-0001)
+          Alpha_0.1 is open under alpha.
         </p>
         <div class="hero-actions">
           <a class="primary-link" href={withBase(base, '/philosophy/')}>

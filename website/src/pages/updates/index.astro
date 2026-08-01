@@ -34,7 +34,7 @@ const updates = catalog.updates.map((update) => ({
     <ul class="update-list">
       {
         updates.length === 0 ? (
-          <li>No immutable releases published yet.</li>
+          <li>No release packages published yet.</li>
         ) : (
           updates.map(
             ({ card, section, status, modified, versionRoute }, index) => (

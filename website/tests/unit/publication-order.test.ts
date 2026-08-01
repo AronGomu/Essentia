@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  compareLifecycleVersion,
   compareSemanticVersion,
   selectCurrentVersion,
 } from '../../scripts/publication-order.mjs';
@@ -18,31 +19,32 @@ const version = (
 });
 
 describe('publication order', () => {
-  it('uses lifecycle rank before semantic version', () => {
+  it('uses lifecycle rank before version string', () => {
     expect(
       selectCurrentVersion([
-        version('alpha', 2, '9.0'),
-        version('beta', 4, '1.0'),
+        version('alpha', 1, 'Alpha_9.0'),
+        version('beta', 2, 'Beta_1.0'),
       ]).stage,
     ).toBe('beta');
   });
 
-  it('uses semantic version inside one lifecycle', () => {
+  it('uses numeric part inside one lifecycle', () => {
     expect(
       selectCurrentVersion([
-        version('beta', 4, '0.9'),
-        version('beta', 4, '0.10'),
+        version('beta', 2, 'Beta_0.9'),
+        version('beta', 2, 'Beta_0.10'),
       ]).version,
-    ).toBe('0.10');
+    ).toBe('Beta_0.10');
     expect(compareSemanticVersion('1.0', '1.0.1')).toBeLessThan(0);
+    expect(compareLifecycleVersion('Alpha_0.1', 'Alpha_0.2')).toBeLessThan(0);
   });
 
   it('rejects duplicate lifecycle/version entries', () => {
     expect(() =>
       selectCurrentVersion([
-        version('alpha', 2, '0.1', 'one'),
-        version('alpha', 2, '0.1', 'two'),
+        version('alpha', 1, 'Alpha_0.1', 'one'),
+        version('alpha', 1, 'Alpha_0.1', 'two'),
       ]),
-    ).toThrow('Duplicate lifecycle/version: alpha:0.1');
+    ).toThrow('Duplicate lifecycle/version: alpha:Alpha_0.1');
   });
 });

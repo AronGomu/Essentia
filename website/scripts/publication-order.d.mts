@@ -6,7 +6,13 @@ export interface PublicationVersion {
   packageId: string;
 }
 
+export function parseLifecycleVersion(value: string): {
+  prefix: string;
+  prefixRank: number;
+  numbers: number[];
+};
 export function compareSemanticVersion(left: string, right: string): number;
+export function compareLifecycleVersion(left: string, right: string): number;
 export function comparePublicationVersion(
   left: PublicationVersion,
   right: PublicationVersion,

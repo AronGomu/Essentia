@@ -39,13 +39,19 @@ describe('immutable publication graph', () => {
     ).toBe(true);
   });
 
-  it('publishes no draft-only content', () => {
+  it('publishes open/locked packages, never drafts', () => {
     expect(catalog.schemaVersion).toBe(3);
-    expect(catalog.releases).toEqual([]);
-    expect(catalog.sections).toEqual([]);
-    expect(catalog.cards).toEqual([]);
-    expect(catalog.cardVersions).toEqual([]);
-    expect(catalog.updates).toEqual([]);
+    expect(catalog.releases.length).toBeGreaterThan(0);
+    expect(catalog.cards.length).toBeGreaterThan(0);
+    expect(catalog.cardVersions.length).toBeGreaterThan(0);
+    expect(
+      catalog.releases.every((release) =>
+        ['alpha', 'beta', 'release'].includes(release.stage),
+      ),
+    ).toBe(true);
+    expect(catalog.releases.some((release) => release.setId === 'LOTA-0001')).toBe(
+      true,
+    );
   });
 
   it('keeps current cards and versions internally linked', () => {

@@ -1,16 +1,16 @@
 # Essentia showcase
 
-Read-only Astro + Svelte publication UI for immutable card packages.
+Read-only Astro + Svelte publication UI for alpha/beta/release card packages.
 
 ## Publication source
 
 Build reads only release packages under:
 
-- `../cards_mse/02_alpha/`
-- `../cards_mse/04_beta/`
-- `../cards_mse/06_released/`
+- `../cards_mse/01_alpha/`
+- `../cards_mse/02_beta/`
+- `../cards_mse/03_release/`
 
-Draft, Pre-ALPHA, and Pre-BETA projects never enter website catalog. A repository with only drafts builds an explicit zero-card state. `content/sections.json` supplies presentation metadata; `content/identities.json` maps stable IDs to MSE source references without duplicating card names.
+Draft projects never enter website catalog. Open and locked packages both publish when artifacts validate. A repository with only drafts builds an explicit zero-card state. `content/sections.json` supplies presentation metadata; `content/identities.json` maps stable IDs to MSE source references without duplicating card names.
 
 Each package must pass hash, aggregate, render-provenance, identity, and metadata validation before any generated output is written. Current card routes select highest lifecycle rank, then highest semantic version. Exact historical versions remain at package-specific routes.
 
@@ -23,7 +23,7 @@ npm ci
 npm run dev
 ```
 
-Use Node version declared in `package.json`. MSE installation is unnecessary for website builds because immutable packages contain canonical renders.
+Use Node version declared in `package.json`. MSE installation is unnecessary for website builds because packages contain canonical renders.
 
 ## Checks
 

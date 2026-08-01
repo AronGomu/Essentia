@@ -14,8 +14,8 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { isSupportedRenderProvenance } from './render-provenance.mjs';
 import {
+  compareLifecycleVersion,
   comparePublicationVersion,
-  compareSemanticVersion,
   selectCurrentVersion,
 } from './publication-order.mjs';
 
@@ -37,27 +37,40 @@ const LIMITS = {
 };
 const PUBLIC_STAGES = [
   {
-    directory: '02_alpha',
+    directory: '01_alpha',
     metadata: 'alpha',
-    label: 'ALPHA',
-    marker: 'ALPHA',
+    label: 'Alpha',
+    marker: 'Alpha',
+    versionPrefix: 'Alpha',
+    rank: 1,
+  },
+  {
+    directory: '02_beta',
+    metadata: 'beta',
+    label: 'Beta',
+    marker: 'Beta',
+    versionPrefix: 'Beta',
     rank: 2,
   },
   {
-    directory: '04_beta',
-    metadata: 'beta',
-    label: 'BETA',
-    marker: 'BETA',
-    rank: 4,
-  },
-  {
-    directory: '06_released',
+    directory: '03_release',
     metadata: 'release',
     label: 'Release',
     marker: 'Release',
-    rank: 6,
+    versionPrefix: 'Release',
+    rank: 3,
   },
 ];
+const SET_ID_RE = /^[A-Z]{2,8}-\d{4}$/;
+const VERSION_RE = /^(Alpha|Beta|Release)_\d+\.\d+(?:\.\d+)?$/;
+const PACKAGE_STATUSES = new Set(['open', 'locked']);
+const PROJECT_SECTION_GROUP = {
+  '00_YGO_Non_Archetype.mse-set': '00_non_archetype',
+  '01_YGO_Burning_Abyss.mse-set': '01_burning_abyss',
+  '02_YGO_Shaddoll.mse-set': '02_shaddoll',
+  '03_YGO_Nekroz.mse-set': '03_nekroz',
+  '04_YGO_Spellbook.mse-set': '04_spellbook',
+};
 
 function fail(message) {
   throw new Error(`content: ${message}`);
@@ -77,8 +90,8 @@ function slugify(value) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
-function packageStem(name, version) {
-  return `${name.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '')}_${version}`;
+function packageFolder(setId, version) {
+  return `${setId}-${version}`;
 }
 function renderName(name) {
   return `${name
@@ -340,6 +353,7 @@ function validateRelease(release, stage, folder) {
     'setName',
     'version',
     'stage',
+    'status',
     'releasedOn',
     'components',
     'decks',
@@ -347,18 +361,22 @@ function validateRelease(release, stage, folder) {
   ]);
   if (Object.keys(release).some((key) => !allowed.has(key)))
     fail(`${folder}: release metadata contains unsupported/card field`);
+  const versionMatch = VERSION_RE.exec(release.version ?? '');
   if (
-    release.schemaVersion !== 1 ||
+    release.schemaVersion !== 2 ||
     release.stage !== stage.metadata ||
-    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(release.setId ?? '') ||
-    release.setId !== slugify(release.setName ?? '') ||
-    !/^\d+\.\d+(?:\.\d+)?$/.test(release.version ?? '') ||
+    !PACKAGE_STATUSES.has(release.status) ||
+    !SET_ID_RE.test(release.setId ?? '') ||
+    typeof release.setName !== 'string' ||
+    !release.setName.trim() ||
+    !versionMatch ||
+    versionMatch[1] !== stage.versionPrefix ||
     !validDate(release.releasedOn) ||
     !Array.isArray(release.components) ||
     !release.components.length ||
     !Array.isArray(release.decks) ||
     !Array.isArray(release.contentPosts) ||
-    folder !== packageStem(release.setName, release.version)
+    folder !== packageFolder(release.setId, release.version)
   )
     fail(`${folder}: invalid release metadata`);
   const projects = new Set();
@@ -532,8 +550,7 @@ async function discover(registry) {
       const packageRoot = path.join(stageRoot, entry.name);
       const info = await lstat(packageRoot);
       if (info.isSymbolicLink() || !entry.isDirectory())
-        fail(`unexpected immutable-stage entry ${packageRoot}`);
-      await validatePackageHashes(packageRoot);
+        fail(`unexpected stage entry ${packageRoot}`);
       const release = JSON.parse(
         await readFile(
           await safeFile(packageRoot, 'release.json', 1_048_576),
@@ -541,18 +558,21 @@ async function discover(registry) {
         ),
       );
       validateRelease(release, stage, entry.name);
+      // Open packages may still publish when artifacts are present and valid.
+      await validatePackageHashes(packageRoot);
       const marker = `${release.setName} ${stage.marker}`;
-      const packageId = `${stage.metadata}-${release.setId}-${release.version.replaceAll('.', '-')}`;
+      const packageId = `${stage.metadata}-${release.setId}-${release.version.replaceAll('.', '-').replaceAll('_', '-')}`;
       const packageRecord = {
         id: packageId,
         setId: release.setId,
         setName: release.setName,
         version: release.version,
+        status: release.status,
         stage: stage.metadata,
         stageLabel: stage.label,
         stageRank: stage.rank,
         releasedOn: release.releasedOn,
-        route: `/releases/${stage.metadata}/${release.setId}-${release.version.replaceAll('.', '-')}/`,
+        route: `/releases/${stage.metadata}/${release.setId}-${release.version.replaceAll('.', '-').replaceAll('_', '-')}/`,
         decks: release.decks,
         contentPosts: release.contentPosts,
         cardIds: [],
@@ -560,14 +580,37 @@ async function discover(registry) {
       };
       const componentCards = [];
       for (const component of release.components) {
-        const section = registry.sections.get(component.group);
-        if (!section)
-          fail(`${entry.name}: unknown component group ${component.group}`);
+        const fallbackSection = registry.sections.get(component.group) ?? null;
         const projectRoot = await safeDirectory(packageRoot, component.project);
         for (const card of await parseProject(projectRoot, marker)) {
           const source = `${component.project}/${card.sourceFile}`;
           const identity = registry.bySource.get(source);
           if (!identity) fail(`${entry.name}: missing identity for ${source}`);
+          let section = fallbackSection;
+          if (!section) {
+            for (const identitySource of identity.sources) {
+              const projectName = identitySource.split('/')[0];
+              const group = PROJECT_SECTION_GROUP[projectName];
+              if (group && registry.sections.has(group)) {
+                section = registry.sections.get(group);
+                break;
+              }
+            }
+          }
+          if (!section) {
+            // Mixed set packages: classify by stableId prefix, else non-archetype.
+            if (identity.stableId.startsWith('burning-abyss-'))
+              section = registry.sections.get('01_burning_abyss');
+            else if (identity.stableId.startsWith('nekroz-'))
+              section = registry.sections.get('03_nekroz');
+            else if (identity.stableId.startsWith('shaddoll-') || identity.stableId.startsWith('el-shaddoll-'))
+              section = registry.sections.get('02_shaddoll');
+            else if (identity.stableId.startsWith('spellbook-') || identity.stableId.includes('prophecy'))
+              section = registry.sections.get('04_spellbook');
+            else section = registry.sections.get('00_non_archetype');
+          }
+          if (!section)
+            fail(`${entry.name}: unable to resolve section for ${source}`);
           componentCards.push({
             ...card,
             identity,
@@ -576,7 +619,7 @@ async function discover(registry) {
           });
         }
       }
-      const aggregateName = `${packageStem(release.setName, release.version)}_all_cards.mse-set`;
+      const aggregateName = `${packageFolder(release.setId, release.version)}_all_cards.mse-set`;
       const aggregateCards = await parseProject(
         await safeDirectory(packageRoot, aggregateName),
         marker,
@@ -826,7 +869,7 @@ async function main() {
   packages.sort(
     (a, b) =>
       b.stageRank - a.stageRank ||
-      -compareSemanticVersion(a.version, b.version) ||
+      -compareLifecycleVersion(a.version, b.version) ||
       b.releasedOn.localeCompare(a.releasedOn),
   );
   const updates = cards

@@ -11,7 +11,7 @@ test('empty publication home is English and accessible', async ({ page }) => {
   await expect(page.locator('.compact-brand')).toHaveText('Essentia');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(
-    page.getByRole('heading', { name: 'No immutable releases published yet.' }),
+    page.getByRole('heading', { name: 'No release packages published yet.' }),
   ).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
