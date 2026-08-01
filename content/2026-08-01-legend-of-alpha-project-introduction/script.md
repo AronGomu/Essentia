@@ -1,4 +1,4 @@
-# Legend of Alpha — Introducing Essentia
+# Legend of Alpha — Introducing Yu-Gi-Oh! × Magic
 
 ## Video goal
 
@@ -8,118 +8,235 @@ Introduce project at surface level: why it exists, core design choices, major di
 
 ## Opening
 
-What would happen if Yu-Gi-Oh! archetypes were rebuilt as Magic: The Gathering cards—not translated word for word, but redesigned to preserve what made those decks feel special?
+The good old yugioh, but in Magic ?
 
-That is idea behind **YGO × MTG: Essentia**, usually shortened to **Essentia**. The name comes from project's goal: preserve essence of Yu-Gi-Oh! inside Magic's card-game rules.
+Hi everyone and welcome on this presentation video of my beloved project : YGO X MTG: Essentia
 
-This is a custom cube where familiar Yu-Gi-Oh! cards, archetypes, and summoning mechanics are adapted to work inside Magic's rules engine. First set is called **Legend of Alpha**. It begins with two starter decks: **Burning Abyss** and **Nekroz**.
+My goal with the Essentia project is to allow to play YGO cards in the Magic rule system but with the feeling of playing YGO.
 
-In this video, I want to present project at broadest level: why I am making it, major decisions behind it, how it differs from regular Magic, and what I want players to feel when they pick up these cards.
+It started as the idea of making a magic cube using adapted YGO cards and it slowly evolved into making basically an entire new game derived from Magic the Gathering rules systems.
 
-I will save individual card designs, exact rules, and balance choices for later videos.
+It happened because I realised it was not really possible to raw dog the cube I was making.
+Because of YGO archetypes based deck construction and highly synergistic cards, understanding what you had to do in a draft at your first exposure to the cube would be too hard for players.
+
+So I had to make structure decks for each archetype I was building that can be played against to show how to play the game in an intuitive way.
+That should be the first exposure for players for the cube.
+
+So my current goal, is to make 6 structure decks for 6 archetypes, each containing 50 cards, 40 cards main deck and 10 cards sideboard. And if you remove the basics of those decks and add some amount of cards, it should make a playable cube.
+
+## Who I am
+
+But first, i want to tell you more about myself.
+
+I started my TCG career as a YGO player very early, around 2010. I started to go to weekly local tournaments at the synchro release when i was 10 years old.
+
+Of course, I was bad. I played on and off during this synchro era.
+I remember first playing horrible synchro structure deck, then a kinda zombie deck, then mixing it with lightsworn then blackwing when it has already fallen.
+I was on a budget as most kids were at the time. So I had to do with what I had.
+
+Then I started to play seriously at the end of HAT format up until the end of Kozmo format.
+I was heavely invested in Dueling Network (the previous version of Dueling Book) and played a lot.
+IRL, I was a budget burning abyss player for DUEA and Nekroz format and I was blessed with my deck avoiding almost all bans the entire duration of my play.
+
+I hard stopped the game at PEPE format because I started to hate the 10 minutes combo turns into Board Breaker format.
+It was not my jam at all.
+I loved the game for heavely interactive format with Shaddoll, Burning Abyss and Nekroz.
+
+I still came back from time to time for T0 format like Zoodiac and Tearlaments and I still follow YGO content form time to time but I am not invested in the game at all now.
+I am what you would call, a YGO Boomer spamming the "In my times, YGO was great, we played more than 2 turns" and stuff.
+
+As you guessed, I transitionned to Magic during the Golden Era of Magic : 2016 Modern format.
+
+I started playing Jeskai Control and Death's Shadow into that pure goaded format and became a serious MTG player up until the banning of Oko and URO in most format.
+
+I retranched myself into the Legacy with a local community in my city.
+
+To be honest, I am disgusted by the directions of both YGO and MTG.
+The FIRE and Commander design is horrendous.
+It justs encourages non-interactive game and poison every format it touches.
+
+And YGO never solved the combo issue, I honestly dont understand how there is still people playing the game after getting shat on by Konami for decades.
+I guess they like to get raped every banlist, I dont know man
 
 ## Why I am making this
 
-This project comes from my own history with Yu-Gi-Oh!.
+Since i transitionned inot Magic, I always missed the high power and interaction of YGO games.
 
-I started playing during HAT format, then stopped around end of Kozmo format. That period shaped what I enjoy most in card games: decks with strong identities, engines where cards connect with each other, lots of decisions within one turn, and games where knowing your deck matters as much as drawing your strongest card.
+Legacy format is the closest cousin but its clearly still not the same.
 
-For a long time, Burning Abyss was my deck. It was only deck I owned in real life, so I learned it deeply. I knew its lines, its recovery, its awkward hands, and small interactions that made it rewarding to keep playing.
+There is something missing and I dont really know how to describe it in 1 word.
+Its all the floating effect, the insane value you make, moving pieces of card board around like making xyz (man, just overlaying cards into an xyz is so satisfying its crazy).
+I feel like MTG has not enough game action in one turn and you dont move enough card board around doing cool stuff.
+I am the type of guy who love search 5 times in my library, ritual summoning valkyrus and sacrificing it to leave an empty board if you remember what i am talking about.
 
-Nekroz gave me something different. When format was not dominated by locks, it was best deck experience I had in Yu-Gi-Oh!. It felt flexible, expressive, and full of meaningful choices. You searched for right piece, managed your hand, planned around Ritual Summons, then adapted to what opponent was doing.
+But I also love the MTG rule system. I love the land system and the overall feeling of the game.
 
-That feeling is what I want to recreate.
-
-I do not want to make Magic cards that merely share names or artwork with Yu-Gi-Oh! cards. I want to capture memory of piloting those decks: speed, synergy, sequencing, recovery, and satisfaction of making archetype engine work.
+So i wanted to experiment with recreating that YGO feeling into the MTG game system, here we are.
 
 ## Core idea
 
-Foundation is Magic: The Gathering. Cards use Magic's rules engine, mana system, colors, stack, combat, and familiar card types.
+So the foundation is Magic. Cards use Magic's rules engine, mana system, colors, stack, combat, and familiar card types.
 
-But design target is not normal Magic Limited or Constructed. This is a closed cube environment, balanced against itself. That gives me room to support patterns that feel much closer to Yu-Gi-Oh!: several actions in one turn, rapid board development, frequent use of Extra Deck, strong interaction, and archetypes with very distinct internal engines.
+But the design target is not normal Magic Limited or Constructed. This is a closed environment, balanced against itself.
+As you saw, cards are completly out of the MTG norms.
+you get to have 1 mana 3/2 that can be played for free and when it is send to the graveyard from anywhere, it reanimates another creature from the grave.
+Of course, in MTG, even in Legacy, that would be completly broken.
+But in my envionment, it is the norm.
+That's what i mean by adapting YGO feeling into Magic.
+Everything is broken, so nothing is.
 
-Conversion is based on role and gameplay feel, not literal text.
+However, 1 major difference with YGO, is that I still gave cost the cards.
+Yes, the cost is minimal. But it is still a limitation and I hope, it allows for interactive games playing on several turns, similar to Modern.
+Remember, my goal is to recreate the feeling of YGO using MTg system, not be an exact copy of YGO transposed into MTG.
 
-A Yu-Gi-Oh! effect can be too long, too specific, or dependent on rules that do not exist in Magic. Instead of copying it exactly, I ask: What job did this card perform? Why did player want to draw it? What decisions did it create? What made it belong to its archetype?
+## YGO specifics translated into MTG
 
-Then I rebuild that experience in language Magic can support.
+Let me list how I translated differents stats into Magic.
 
-## Major changes from regular Magic
+### Extra Decks
 
-Most important change is vocabulary and structure.
+I also adapted, YGO summoning mecanics to fit MTG system while retaining YGO toolbox feeling.
 
-This project uses **Deck**, **Hand**, **Field**, **Grave**, **Exile**, **Sideboard**, and **Stack**. Some are familiar Magic zones with Yu-Gi-Oh!-inspired names. Grave replaces graveyard, while Sideboard also acts as Extra Deck.
+So, Fusions, Synchros, Xyz and Links start in the sideboard and they can be played exactly like in YGO, directly from the sideboard executing their summoning mecanics.
 
-Main Deck contains normal cards and Ritual Creatures. Fusion, Synchro, Xyz, and Link Creatures begin in Sideboard, functioning as Extra Deck monsters. They cannot simply be cast whenever you have enough mana. They must first be summoned through their correct mechanic and material requirements.
+### Life, Power and Toughness
 
-Traps also work differently from normal Magic spells. They can be Set face down on Field, then used from a later turn. Creatures can also be played face down, with their own restrictions. These systems bring hidden information and delayed interaction into game.
+For the Power and Toughness, I simply calculated adapted so that each multiple of 500 ATK is equivalent to 1 power and 500 DEF is 1 toughness.
 
-Deck structure is closer to Yu-Gi-Oh! starter experience than standard Magic deck building. Current Legend of Alpha test decks use forty-card Main Decks and ten-card Sideboards, with additional flex choices available during testing.
+For exemple, for Cir, it was a 1600 ATK and 1200 DEF, so it becomes a 3/2 rounded down.
+I did the same for all monster cards.
 
-Opening hands use a custom one-time redraw: you may place any number of cards from opening hand on bottom of Deck, then draw same number. This supports engine-based decks without using normal Magic mulligan.
+I thought about another solution, where I updated the MTG life points to be 80 life, so I could simple remove the 2 zeros from the ATK and DEF for each cards and it would perfectly match the ratio and precision for the translation.
+Cir for example would become an 16/12.
+This way, it is the same number of direct attack for Cir from YGO to win.
 
-There are also shared cube keywords for repeated actions such as searching Deck, sending cards to Grave, recovering cards, and summoning from different zones. Goal is to keep cards readable while still allowing rich turns.
+But for the first version of the game, I want to stay as close as possible to MTG stats-wise.
+So I choose against this for now.
 
-Mana remains important. It prevents explosive Yu-Gi-Oh!-style openings from becoming uncontrollable. This is not an attempt to remove Magic's resource system. It is an attempt to use that system to pace Yu-Gi-Oh!-inspired gameplay.
+### Levels and Mana
 
-## Feeling I want from cards
+Levels are the hardest thing to translate to because they are very different from Mana Values from MTG.
+I cant really just transpose level into Mana Cost because 4 mana is already a lot in MTG and it would break the YGO feeling if the game were that long.
 
-I want every archetype to feel like a deck, not a collection of individually powerful cards.
+So I just adapted so that :
+Level 1 to 4 = 1 Mana
+Level 5 to 6 = 2 Mana
+Level 7 to 9 = 3 Mana
+Level 10 to 12 = 4 Mana
 
-Cards should reward sequencing. Small creatures should matter after they leave Field. Search effects should ask you to understand your options. Grave and Exile should feel like resources, not only places where used cards go. Extra Deck should give you choices rather than one automatic best summon.
+Because of this, I lose a lot precisions for synchro and xyz summoning.
+Now Level 1, 2, 3 and 4 archetypes can all use easily the same XYZ and Synchro.
+Same for Ritual summoning.
 
-Turns should feel active. Players should often have several useful actions available, but those actions should carry costs and tradeoffs. Interaction should be strong enough to stop runaway engines, without turning games into hard locks or non-games.
+I choose to do this because its simple and I dont loose the YGO feeling, its just less fidelity for archetypes recreation.
 
-Most importantly, decks should recover.
+### Attributes and Color
 
-Some of my favorite Yu-Gi-Oh! games were not decided by first push. They were about trading resources, rebuilding, then finding another line. I want this cube to create that same tension: powerful turns, meaningful disruption, then opportunity to fight back.
+Color was a big headache. Because, even though YGO has attributes, they dont really matter.
+Its just another type.
 
-## Starter deck one: Burning Abyss
+In Magic, each color can do specific things well, not well or just cant.
+In YGO, they all can do everything.
 
-First starter deck is **Burning Abyss**, represented primarily in black.
+Also, YGO has an HEAVY bias on LIGHT and DARK.
+And to make a cube, color balance is important.
 
-At macro level, Burning Abyss is a graveyard-value deck with an aristocrats-style engine. It uses small, inexpensive creatures that develop Field quickly, create value when sent to Grave, and turn those resources into larger Xyz or Synchro threats.
+Also also, LIGHT is White, DARK is Black, FIRE is Red, WATER is Blue, EARTH is Green and then... what do i do for WIND ?
 
-Its creatures want to move. They enter play, enable another action, go to Grave, then leave something behind. Deck accumulates small advantages until those exchanges become a real engine.
+After some reflexions, I decided to go Vibe based. I dont care about color balance and the color pie to feat the YGO feel.
 
-This is why Burning Abyss was obvious choice for first set. It was deck I lived with longest. I want its Magic version to preserve feeling that every small monster has a purpose, every trip to Grave can advance plan, and deck can keep rebuilding after opponent answers its board.
+Another problem is that the XYZ, Synchro, Links mechanics completly ignore colors by defaults.
+You can use 2 DARK to Xyz Summon a WIND, that's normal in YGO.
+So I decided to do the same for Essentia.
 
-It should feel scrappy, recursive, and difficult to exhaust.
+So Yeah, dont be surprised to see wacky colors.
+For now I just throw shit at the wall and I will see what stick.
 
-## Starter deck two: Nekroz
+### Traps
 
-Second starter deck is **Nekroz**, represented primarily in blue.
+### FLIP and face down cards.
 
-Nekroz is a Ritual toolbox and anti-Extra Deck strategy. It searches for specific pieces, converts cards in Hand into different forms of utility, uses Grave and Exile strategically, and pressures opponents who rely too heavily on Sideboard creatures.
+## Problems and how I solved them
 
-Its basic progression is deliberate: find Ritual spell and correct Ritual Creature, stabilize hand, make first Ritual Summon, control opposing Extra Deck threats, then recycle resources to regain advantage.
+### YGO card effect text purge
 
-Nekroz should not be about racing toward one immediate lethal combo. It should feel adaptable. Ritual Creatures offer different tools, Hand matters as a resource, and correct search depends on current game.
+Heartstone Keyword based card templating.
 
-That is feeling I remember most: when locks were not defining games, Nekroz gave me decisions. It rewarded planning, matchup knowledge, and ability to see several turns ahead. Recreating that experience is one of central goals of project.
+Merging, MTG keywords and YGO PSCT for condensed text effect.
+
+### Chaining Tutors and Combo Feels
+
+Make it free
+
+### Hand Traps Interactions
+
+Make it free
+
+### One Turn Kill
+
+Printing very minimal direct damage effect.
+
+No cards have haste for now.
+
+Easy to create big board for both player.
+
+Also easy to brake them.
+
+I dont want fast games.
+
+I dont want infinite slogs
+
+Need to playtest to see.
+
+### Match Length
+
+I want to do highly interactive game that would take entire match length.
+
+Make deck as consistent as possible. Effects are broken and you can see many cards per games.
+
+1 Game should be enough but not go over typical match length (aim 30 to 50 minutes games).
+
+Need playtest to see.
+
+## Problems I did not solve yet
+
+### Lands
+
+Most of cards are 1 mana. How to not make lands brick games
+
+Solution : Create custom lands cards for archetype in the future
+
+## What's planned for the Alpha 0.1 of Legend of Alpha
+
+### Starter deck one: Burning Abyss
+
+### Starter deck two: Nekroz
 
 ## Why these two decks
 
-Burning Abyss and Nekroz are not here because they give easiest overview of every mechanic. They are here because they are personal.
+## What I will avoid
 
-Burning Abyss was my real deck. Nekroz was deck that gave me best gameplay feeling. Together, they define what this project is trying to protect from original game: archetype identity, engine mastery, flexible lines, resource loops, and satisfaction of knowing why each card belongs.
+Floodgate and Lingering effect.
 
-They also create useful contrast.
-
-Burning Abyss develops through creatures and Grave value. Nekroz assembles Ritual tools through Hand management and search. One feels persistent and scrappy; other feels precise and adaptive. Both want to make many connected decisions, but they reach that experience in different ways.
-
-That makes them right foundation for Legend of Alpha.
+No Droll and Lock Bird, no abyss dweller, no Macro Cosmos, etc...
 
 ## Closing
 
-Legend of Alpha is first step, not finished statement.
+I will release a video for showing all the cards from the 0.1 Alpha of Legend of the Alpha Set in a few days.
 
-Project is currently about building foundation: establishing shared rules, finding right pace, testing how Yu-Gi-Oh! mechanics fit into Magic, and making sure each archetype still feels like itself after conversion.
+Subscribe to not miss update on this project.
 
-Future videos can go deeper into individual cards, summoning systems, decklists, balance, and lessons from playtesting. For now, central idea is simple:
+Like you see, I am working hard to share this project.
 
-I want to rebuild feeling I had playing favorite Yu-Gi-Oh! decks, using Magic: The Gathering as rules engine, without losing speed, identity, sequencing, and recovery that made those decks memorable.
+You can go to this website to see all the cards, decklists, sets, new release, print the cards yourself to proxy and play.
 
-That is aim of Essentia.
+The project itself is open source.
+IP and Copyright is evil so you can anything you want by with any of my content shared.
 
-That is foundation of Legend of Alpha.
+You can also easily contribute yourself if you want to by submitting pull requests.
+I built it using IA agent and IA's are first class citizens.
+Just pull up Claude or Codex for documentation and to start contributing.
+
+I also appreciate any constructive feedback or supportive comments.
+
+On this note, GAME ON GAMERS !
