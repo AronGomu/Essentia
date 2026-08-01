@@ -4,7 +4,7 @@
 - Review ID: 2026-07-17-12-ygo-necroz-rule-proposals
 - Generated: 2026-07-17
 - Normalize after approval: false
-- Source request: fix-mse-cards — cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set
+- Source request: fix-mse-cards — cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set
 
 ## How to complete this review
 

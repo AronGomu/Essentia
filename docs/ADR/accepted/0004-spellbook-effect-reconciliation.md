@@ -5,7 +5,7 @@
 - Generated: 2026-07-19
 - Applied: 2026-07-19
 - Normalize after approval: false
-- Source request: fix-mse-cards — re-analyze `HEAD` versus direct July 19 edits in `cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set/`; preserve frozen French archive
+- Source request: fix-mse-cards — re-analyze `HEAD` versus direct July 19 edits in `cards_mse/00_drafts/04_spellbook/04_YGO_Spellbook.mse-set/`; preserve frozen French archive
 
 ## How to complete this review
 
@@ -35,12 +35,12 @@ Repeated effect-text changes:
 
 ### D1 — Affinity keywords become printed, card-selective mechanics
 
-- Scope: archetype (`docs/13_spellbook/RULES.md`)
-- Existing rule: **Book Affinity** applies to “Spellbook” or “Prophecy” creatures and **Spell Affinity** applies to “Spellbook” Sorceries (`docs/13_spellbook/RULES.md:18-22`).
+- Scope: archetype (`docs/04_spellbook/RULES.md`)
+- Existing rule: **Book Affinity** applies to “Spellbook” or “Prophecy” creatures and **Spell Affinity** applies to “Spellbook” Sorceries (`docs/04_spellbook/RULES.md:18-22`).
 - Conflicting MSE evidence: High Priestess now prints only a reveal-3 **Alternative Cost** (`card high priestess of prophecy:18-20`); Justice prints no affinity (`card justice of prophecy:18`); Judgment prints no affinity (`card spellbook of judgment:18`). Magician still prints **Book Affinity** and ten other Sorceries still print **Spell Affinity**.
 - Why this destroys a pattern: Card identity no longer automatically grants its documented affinity.
 - Question: Are Spellbook affinity keywords opt-in mechanics that apply only when printed on a card?
-- Impacted cards/files: High Priestess of Prophecy; Justice of Prophecy; Spellbook of Judgment; Spellbook Magician of Prophecy; ten Spell Affinity Sorceries; `docs/13_spellbook/RULES.md`; tests.
+- Impacted cards/files: High Priestess of Prophecy; Justice of Prophecy; Spellbook of Judgment; Spellbook Magician of Prophecy; ten Spell Affinity Sorceries; `docs/04_spellbook/RULES.md`; tests.
 - Proposed resolution: Define **Book Affinity** and **Spell Affinity** by effect and eligible card type, but state that neither is automatically granted by name or type; a card has the affinity only when its MSE rules text prints the keyword.
 - Side effects: Preserves direct removals without listing card-by-card exceptions in archetype docs.
 - Decision: REVISE
@@ -225,6 +225,6 @@ Repeated effect-text changes:
 - Skipped: MSE card normalization, because `Normalize after approval: false`.
 - Failed: none.
 - General rules updated: `docs/CONTEXT.md`; `docs/RULES.md`.
-- Archetype rule updated: `docs/13_spellbook/RULES.md`.
-- Global examples synchronized: `docs/10_burning_abyss/RULES.md`; `docs/12_nekroz/RULES.md`.
+- Archetype rule updated: `docs/04_spellbook/RULES.md`.
+- Global examples synchronized: `docs/01_burning_abyss/RULES.md`; `docs/03_nekroz/RULES.md`.
 - Archive contract synchronized: `tests/test_english_source_of_truth.py` no longer requires canonical English projects, cards, docs, or reviews to gain French counterparts; checksum manifest remains authoritative.

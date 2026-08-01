@@ -5,7 +5,7 @@
 - Review ID: 2026-07-17-06-ygo-staples-synchro
 - Generated: 2026-07-17
 - Normalize after approval: false
-- Source request: fix-mse-cards — cards_mse/00_drafts/06_synchro_staples/06_YGO_Staples_Synchro.mse-set
+- Source request: fix-mse-cards — cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set
 
 ## How to complete this review
 
@@ -26,7 +26,7 @@ For `REVISE`, write the replacement rule under `Final wording`. Use `Notes` for 
 - Conflicting evidence: Pre-fix MSE on Black Rose Dragon used `(2 - Activated Ritual Soft)` with a plant-exile cost (`card black rose dragon`).
 - Why this destroys a pattern: Introduces a third activation speed token that is not defined and collides with Ritual Summon vocabulary.
 - Question: Confirm that `Ritual` is never a legal Activated timing token and that the Black Rose line must use `Activated Sorcery Soft` (or Flash if intended)?
-- Impacted cards/files: `cards_mse/00_drafts/06_synchro_staples/06_YGO_Staples_Synchro.mse-set/card black rose dragon` (already corrected mechanically to Sorcery Soft pending this ruling).
+- Impacted cards/files: `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card black rose dragon` (already corrected mechanically to Sorcery Soft pending this ruling).
 - Proposed resolution: Document explicitly that Activated timing tokens are only `Sorcery` and `Flash`. Never write `Activated Ritual`.
 - Side effects: Any future `Activated Ritual` is invalid markup.
 - Decision: REJECT

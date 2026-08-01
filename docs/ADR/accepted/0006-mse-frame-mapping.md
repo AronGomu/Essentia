@@ -4,7 +4,7 @@
 
 Parsed path: `MSE_DATA_DIR` from local `launcher/.env`, generated with `python launcher/setup_mse.py`.
 
-This record preserves candidate evidence plus accepted MSE styles/frames used to distinguish special Yu-Gi-Oh! × Magic cube card types visually. Current rules live in [`../../design/FRAMES.md`](../../design/FRAMES.md).
+This record preserves candidate evidence plus accepted MSE styles/frames used to distinguish special Essentia cube card types visually. Current rules live in [`../../design/FRAMES.md`](../../design/FRAMES.md).
 
 ## Current validated mapping
 
@@ -18,7 +18,7 @@ Ritual Creature -> Praetor / Phyrexian Showcase (`m15-showcase-praetor` / `magic
 non-Creature Fusion Summon / Ritual Summon -> 7.5th Edition (`sevenhalf`) — validated standard
 ```
 
-Synchro validation: **Sketch** style was selected for Synchro cards/projects and applied to `06_YGO_Staples_Synchro.mse-set`.
+Synchro validation: **Sketch** style was selected for Synchro cards/projects and applied to `00_YGO_Non_Archetype.mse-set`.
 
 Note: `M15 big text` remains available for text-heavy cards.
 

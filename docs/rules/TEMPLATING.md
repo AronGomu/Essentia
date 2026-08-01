@@ -20,6 +20,7 @@ Types: `Static`, `Triggered`, `Activated`, `Resolution`.
 
 - Prefix number/type/timing/frequency first.
 - Event keyword follows prefix, bold, then em dash.
+- A defined event nested in resolution creates a same-turn delayed instruction under [`EVENTS.md`](../keywords/EVENTS.md); it is not a second recurring ability.
 - Activation conditions, costs, and target choice precede `;`.
 - Resolution follows `;`.
 - Resolution label does not move preceding cost into resolution.
@@ -50,6 +51,8 @@ Complete documented invocation is bold. Unknown bold phrase is invalid. Evergree
 
 Bold atomic compounds including arguments/connectors: **Detach 1 and Mill 3**, **Exile 1 Plant from Grave**, **Protection from Creatures**, **Ward 2**.
 
+A numbered ability may consist solely of a documented archetype custom keyword when that keyword defines the complete effect. Bodyless base actions and event keywords remain invalid. Cards outside the owning archetype print the full effect.
+
 ## Compact text
 
 - Use Arabic numerals for governing quantities.
@@ -73,5 +76,7 @@ A selector without `target` chooses on resolution. Add `This effect does not tar
 - Use race before type: `Dragon Ritual Creature`.
 - Sideboard material line is italic and omits summon prefix.
 - Destruction replacement: `If this card would be destroyed, you may sacrifice ... instead.`
-- Ability loss/stat reset: `The target Creature loses all its abilities and becomes 0/0 until the end of the turn.`
+- Ability loss and power/toughness setting are independent instructions. Ability loss alone does not change power or toughness.
+- When both apply, state both: `The target Creature loses all its abilities and becomes P/T until the end of the turn.` Choose P/T per effect.
+- A temporary-negation effect not intended as removal uses toughness 1 or greater, so its P/T instruction does not cause death solely through 0 toughness.
 - Ability loss `on the Field` ends when card leaves Field.

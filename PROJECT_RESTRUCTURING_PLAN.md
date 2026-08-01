@@ -21,7 +21,7 @@ Card/deck selection was deferred during restructuring. Burning Abyss and Nekroz 
 ## Source-of-truth rules
 
 - Card name, rules text, cost, type, rarity, stats, art refs, frame: MSE only.
-- Current Nekroz source: existing `12_YGO_Necroz.mse-set`.
+- Current Nekroz source: existing `03_YGO_Nekroz.mse-set`.
 - `website/content/snapshots/nekroz/001-2026-07-17.json` is not card source.
 - Docs must not duplicate card-by-card values.
 - Website must never write MSE source.
@@ -95,26 +95,16 @@ set_info:
 ```text
 cards_mse/
   00_drafts/
-    03_non_archetype_creatures/
-      03_YGO_Non_Archetype_Creatures.mse-set/
-    05_fusion_staples/
-      05_YGO_Staples_Fusion.mse-set/
-    06_synchro_staples/
-      06_YGO_Staples_Synchro.mse-set/
-    07_xyz_staples/
-      07_YGO_Staples_Xyz.mse-set/
-    08_link_staples/
-      08_YGO_Staples_Link.mse-set/
-    09_non_archetype_non_creatures/
-      09_YGO_Non_Archetype_Non_Creatures.mse-set/
-    10_burning_abyss/
-      10_YGO_Burning_Abyss.mse-set/
-    11_shaddoll/
-      11_YGO_Shaddoll.mse-set/
-    12_nekroz/
-      12_YGO_Necroz.mse-set/
-    13_spellbook/
-      13_YGO_Spellbook.mse-set/
+    00_non_archetype/
+      00_YGO_Non_Archetype.mse-set/
+    01_burning_abyss/
+      01_YGO_Burning_Abyss.mse-set/
+    02_shaddoll/
+      02_YGO_Shaddoll.mse-set/
+    03_nekroz/
+      03_YGO_Nekroz.mse-set/
+    04_spellbook/
+      04_YGO_Spellbook.mse-set/
 
   01_pre_alpha/
     {XX}_{group}/
@@ -170,34 +160,24 @@ cards_mse/02_alpha/Legend_of_Alpha_0.1/
 
 ```text
 MSE_projects/03_YGO_Non_Archetype_Creatures.mse-set
-→ cards_mse/00_drafts/03_non_archetype_creatures/03_YGO_Non_Archetype_Creatures.mse-set
-
 MSE_projects/05_YGO_Staples_Fusion.mse-set
-→ cards_mse/00_drafts/05_fusion_staples/05_YGO_Staples_Fusion.mse-set
-
 MSE_projects/06_YGO_Staples_Synchro.mse-set
-→ cards_mse/00_drafts/06_synchro_staples/06_YGO_Staples_Synchro.mse-set
-
 MSE_projects/07_YGO_Staples_Xyz.mse-set
-→ cards_mse/00_drafts/07_xyz_staples/07_YGO_Staples_Xyz.mse-set
-
 MSE_projects/08_YGO_Staples_Link.mse-set
-→ cards_mse/00_drafts/08_link_staples/08_YGO_Staples_Link.mse-set
-
 MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set
-→ cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set
+→ cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set
 
 MSE_projects/10_YGO_Burning_Abyss.mse-set
-→ cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set
+→ cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set
 
 MSE_projects/11_YGO_Shaddoll.mse-set
-→ cards_mse/00_drafts/11_shaddoll/11_YGO_Shaddoll.mse-set
+→ cards_mse/00_drafts/02_shaddoll/02_YGO_Shaddoll.mse-set
 
 MSE_projects/12_YGO_Necroz.mse-set
-→ cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set
+→ cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set
 
 MSE_projects/13_YGO_Spellbook.mse-set
-→ cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set
+→ cards_mse/00_drafts/04_spellbook/04_YGO_Spellbook.mse-set
 
 MSE_projects/ensure_original_images.py
 → .script/ensure_original_images.py
@@ -239,25 +219,25 @@ docs/
     accepted/
     proposed/
 
-  10_burning_abyss/
+  01_burning_abyss/
     CONTEXT.md
     DESIGN.md
     RULES.md
     KEYWORDS.md
 
-  11_shaddoll/
+  02_shaddoll/
     CONTEXT.md
     DESIGN.md
     RULES.md
     KEYWORDS.md
 
-  12_nekroz/
+  03_nekroz/
     CONTEXT.md
     DESIGN.md
     RULES.md
     KEYWORDS.md
 
-  13_spellbook/
+  04_spellbook/
     CONTEXT.md
     DESIGN.md
     RULES.md
@@ -321,16 +301,16 @@ release/MSE workflow sections
 → docs/RELEASES.md + docs/MSE.md
 
 docs/10_archetype_burning_abyss.md
-→ docs/10_burning_abyss/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
+→ docs/01_burning_abyss/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
 
 docs/11_archetype_shaddoll.md
-→ docs/11_shaddoll/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
+→ docs/02_shaddoll/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
 
 docs/12_archetype_necroz.md
-→ docs/12_nekroz/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
+→ docs/03_nekroz/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
 
 docs/13_archetype_spellbook.md
-→ docs/13_spellbook/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
+→ docs/04_spellbook/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
 
 docs/frame_candidates.md
 → docs/ADR/accepted/<id>-mse-frame-mapping.md

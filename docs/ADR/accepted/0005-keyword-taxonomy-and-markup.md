@@ -30,7 +30,7 @@ For `REVISE`, write the replacement rule under `Final wording`. Use `Notes` for 
 
 - Scope: general
 - Existing rule: Current docs classify canonical `Grave` as a keyword and require `<b>Grave</b>` in MSE (`docs/CONTEXT.md`, “Formatting abilities and keywords” and “Grave”; `docs/RULES.md`, “On Send Grave”).
-- Conflicting evidence: Proposed rule says game zones use initial uppercase only, not bold: `Hand`, `Field`, `Deck`. Current cards contain 51 bold `Grave` instances, e.g. `cards_mse/00_drafts/03_non_archetype_creatures/03_YGO_Non_Archetype_Creatures.mse-set/card d.d crow:18`, `cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card monster reborn:18`.
+- Conflicting evidence: Proposed rule says game zones use initial uppercase only, not bold: `Hand`, `Field`, `Deck`. Current cards contain 51 bold `Grave` instances, e.g. `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card d.d crow:18`, `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card monster reborn:18`.
 - Why this destroys a pattern: Accepting proposal changes `Grave` from keyword to proper game-zone vocabulary and requires removing bold markup project-wide.
 - Question: Should all game-zone names be capitalized but never bold?
 - Impacted cards/files: 96 `Grave`, 42 `hand`, 43 `field`, 29 `Deck`, 39 `exile`, 12 `Sideboard`, 4 `stack` occurrences across canonical MSE; 51 current `<b>Grave</b>` instances; both global rules docs; tests/generators containing literal text.
@@ -44,7 +44,7 @@ For `REVISE`, write the replacement rule under `Final wording`. Use `Notes` for 
 
 - Scope: general
 - Existing rule: Current docs bold only defined shortcut actions such as **Summon**, **Reanimate**, **Salvage**, **Reclaim**, **Release**, **Attach**, **Bounce**, **Negate**, **Set**, **Detach X**, and **Mill X**. Ordinary PSCT verbs such as `discard`, `exile`, `search`, `draw`, `target`, and `destroy` usually remain unbolded.
-- Conflicting evidence: Proposed rule explicitly makes action keywords bold with initial uppercase: **Discard**, **Exile**, **Search**. Current cards use these as ordinary verbs, often mid-sentence and lowercase, e.g. `Discard Ash Blossom...` (`cards_mse/00_drafts/03_non_archetype_creatures/03_YGO_Non_Archetype_Creatures.mse-set/card ash blossom  joyous spring:18`), `...; exile it` (`card d.d crow:18`), `Search 1 “Spellbook”` (`cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set/card spellbook magician of prophecy:20`).
+- Conflicting evidence: Proposed rule explicitly makes action keywords bold with initial uppercase: **Discard**, **Exile**, **Search**. Current cards use these as ordinary verbs, often mid-sentence and lowercase, e.g. `Discard Ash Blossom...` (`cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card ash blossom  joyous spring:18`), `...; exile it` (`card d.d crow:18`), `Search 1 “Spellbook”` (`cards_mse/00_drafts/04_spellbook/04_YGO_Spellbook.mse-set/card spellbook magician of prophecy:20`).
 - Why this destroys a pattern: Same verbs would move from prose/PSCT instructions into formal keyword vocabulary. Mid-sentence capitalization may become nonstandard unless keywords are always treated as named commands.
 - Question: Should **Discard**, **Exile**, and **Search** become formal action keywords everywhere, including mid-sentence uses?
 - Impacted cards/files: 42 discard, 43 exile, 35 search occurrences; both global rules docs; most project tests; rendered cards.
@@ -225,7 +225,7 @@ These require classification before normalization. Suggested class reflects curr
 ## Mechanical cleanup found but not decision-bearing
 
 - Current `docs/KEYWORDS.md` is stale: it lists several now-documented terms as undocumented and includes old French terms.
-- `bounded` is bold once inside prose (`cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card burning abyss - cherubini:23`); likely should be plain derived terminology if R1 is accepted.
+- `bounded` is bold once inside prose (`cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set/card burning abyss - cherubini:23`); likely should be plain derived terminology if R1 is accepted.
 - Zone capitalization is inconsistent (`hand`, `field`, `exile`, `stack` lowercase; `Deck`, `Grave`, `Sideboard` uppercase).
 - Existing card tests often assert literal unformatted text and will need synchronized markup expectations after normalization.
 

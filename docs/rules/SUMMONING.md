@@ -18,6 +18,8 @@ A direct effect does not bypass requirement unless it performs matching summon o
 
 **Summon**, **Hand Summon**, **Reanimate**, and **Release** do not bypass proper-summon requirement. Never infer `ignoring the restrictions of summon`; explicit card design decision required.
 
+Fusion, Synchro, Xyz, and Link Creature movement to Hand or Deck follows optional owner replacement in [`ZONES.md`](ZONES.md).
+
 ## Ritual
 
 **Ritual Summon** puts one or more Ritual Creatures onto Field using stated materials/conditions. Material mana value equals Ritual Creature mana value by default; card may explicitly allow greater/equal payment. Multiple creatures use plural agreement.

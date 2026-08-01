@@ -12,6 +12,15 @@
 | `cards_mse/05_pre_release` | Final release candidate assembly | Yes | No |
 | `cards_mse/06_released` | Official releases | No | Yes |
 
+**Active development** = every stage from `01_pre_alpha` through `06_released` (see [Glossary](GLOSSARY.md#active-development)). Draft is outside it.
+
+### Card ownership / no duplicate editables
+
+- Move (do not copy) a card from draft into active development.
+- One display-name card may exist in only one mutable root at a time: draft **or** a single pre-stage.
+- Settled packages under `02_alpha`, `04_beta`, and `06_released` may each hold full snapshot copies. That is the only intentional duplication.
+- Do not keep parallel archetype copies of a card that already lives in a set package staging root. Archetype regrouping uses docs/decklists/indexes, not extra MSE files.
+
 Mutable staging roots use `stage.json`. Immutable set packages use `release.json`, `package-sha256.json`, `render-provenance.json`, and `print-manifest.json`.
 
 Staging metadata contains release identity and optional stable-ID lists only—never card names, text, stats, or other card fields:
@@ -32,11 +41,11 @@ Each future deck entry has exactly `{"id": "deck-id", "cards": ["stable-card-id"
 
 ## Promotion
 
-- Draft → Pre-ALPHA: copy selected working projects.
+- Draft → Pre-ALPHA: **move** selected cards/projects into staging. Delete draft copies of moved display names (including alternate filenames).
 - Pre-ALPHA → ALPHA: validate, generate aggregate/renders/PDF/provenance/hash, commit immutable package, empty successful source staging.
-- ALPHA → Pre-BETA: copy component source from immutable ALPHA. Never move or edit ALPHA.
+- ALPHA → Pre-BETA: copy component source from immutable ALPHA into new staging. Never move or edit ALPHA.
 - Pre-BETA → BETA: validate, generate immutable package, empty successful source staging.
-- BETA → Pre-Release: copy component source from immutable BETA. Never move or edit BETA.
+- BETA → Pre-Release: copy component source from immutable BETA into new staging. Never move or edit BETA.
 - Pre-Release → Release: validate, generate immutable package, empty successful source staging.
 - Post-release correction: copy released component source into mutable staging, edit, promote as a new version.
 

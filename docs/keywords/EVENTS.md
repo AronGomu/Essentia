@@ -11,6 +11,7 @@ Controller-default event looks at your side. Do not add `Your`. Use `Opponent` o
 - **On Block** — this creature blocks.
 - **On Blocked** — this creature becomes blocked.
 - **On Attack or Block** — this creature attacks or blocks.
+- **After Attack or Block** — first legal trigger window after combat damage involving this creature resolves. This event does not occur if this creature leaves combat before dealing or receiving combat damage.
 - **On Block or Blocked** — this creature blocks or becomes blocked.
 - **On Fusion Summon** — Fusion Creature enters via own Fusion Summon; generic movement does not trigger.
 - **On Link Summon** — Link Creature enters via own Link Summon; generic movement does not trigger.
@@ -19,6 +20,14 @@ Controller-default event looks at your side. Do not add `Your`. Use `Opponent` o
 - **MV2+ Opponent Creature Enter** — opponent creature MV 2+ enters.
 
 An event placed after an instruction repeats instruction on each occurrence for stated duration: `**Draw** 1 card **On Opponent Creature Enter**`.
+
+`After [action]` is a one-shot event at the first legal trigger window after that action fully resolves.
+
+## Delayed events
+
+A defined event nested in an effect's resolution creates a one-shot delayed instruction at the next matching event this turn, then expires. If no match occurs, it expires at turn end. Recurrence or a future turn must be explicit. A standalone event ability remains recurring.
+
+Canonical form: `**Primary Event** — **Secondary Event**, instruction.`
 
 ## Casting/activation/summon
 

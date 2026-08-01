@@ -15,11 +15,13 @@ Launch nested projects with `launcher/mse_project_menu.pyw`. Diagnostics write t
 ## Save contract
 
 - Use folder-form `.mse-set` directories containing `set`.
-- Keep one editable project per archetype/storage group.
-- Use title `YGO x MTG -- [name]` in `set_info.title`.
+- Draft may keep one project per archetype/storage group. Active-development packages may regroup cards by set, not by archetype.
+- A display-name card is editable in only one mutable root (draft **or** one pre-stage). See [GLOSSARY.md](GLOSSARY.md#card-uniqueness).
+- Use title `Essentia -- [name]` in `set_info.title`.
 - Use lifecycle painter marker from [RELEASES.md](RELEASES.md#stage-markers).
 - Draft projects are mutable; immutable aggregate/component projects are read-only.
 - Aggregate projects exist only in immutable packages and are generated from component manifests.
+- Empty draft projects are allowed while their cards live in active development.
 
 ## Card ordering
 

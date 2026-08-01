@@ -29,3 +29,9 @@ Spell/ability targets may exist on Stack. Trap activation from Field moves card 
 - **Reclaim** means Exile → Hand.
 - **Release** means Exile → Field.
 - **Bounce** means permanent → owner's Hand.
+
+## Sideboard replacement
+
+If a Fusion, Synchro, Xyz, or Link Creature would move to Hand or Deck, its owner may return it to Sideboard instead. The owner chooses before the card enters the hidden zone. If declined, it moves to the original destination.
+
+Ritual Creatures are unaffected. Movement to other destinations is unaffected.
