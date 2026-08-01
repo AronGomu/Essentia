@@ -10,26 +10,11 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 DRAFTS = ROOT / "cards_mse" / "00_drafts"
-INTENTIONAL_UNINCLUDED_CARDS = {
-    "07_YGO_Staples_Xyz.mse-set": {"card aa zeus sky thunder"},
-    "12_YGO_Necroz.mse-set": {
-        "card dance princess of the nekroz",
-        "card exa enforcer of the nekroz",
-        "card great sorcerer of the nekroz",
-        "card nekroz cycle",
-        "card nekroz kaleidoscope",
-        "card nekroz mirror",
-        "card nekroz of brionac",
-        "card nekroz of catastor",
-        "card nekroz of clausolas",
-        "card nekroz of decisive armor",
-        "card nekroz of gungnir",
-        "card nekroz of trishula",
-        "card nekroz of unicore",
-        "card nekroz of valkyrus",
-        "card shurit strategist of the nekroz",
-    },
+INTENTIONAL_UNINCLUDED_CARDS: dict[str, set[str]] = {
+    # Empty draft shell: Nekroz cards live only in active development.
+    "03_YGO_Nekroz.mse-set": set(),
 }
+EMPTY_DRAFT_PROJECTS = {"03_YGO_Nekroz.mse-set"}
 FRENCH_MARKERS = re.compile(
     r"[àâçéèêëîïôùûüÿœæ]|"
     r"\b(?:votre|depuis|ciblez|carte|cartes|créature|créatures|détruisez|"
@@ -67,18 +52,22 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
         ):
             self.assertFalse((ROOT / relative).exists(), relative)
 
-    def test_ten_draft_projects_are_english_and_complete(self) -> None:
+    def test_five_draft_projects_are_english_and_complete(self) -> None:
         projects = sorted(DRAFTS.glob("*/*.mse-set"))
-        self.assertEqual(len(projects), 10)
+        self.assertEqual(len(projects), 5)
         for project in projects:
             with self.subTest(project=project.name):
                 set_text = (project / "set").read_text(encoding="utf-8-sig")
                 self.assertIn("set_language: EN", set_text)
                 self.assertIn("card_language: English", set_text)
-                self.assertRegex(set_text, r"(?m)^\ttitle: YGO x MTG -- ")
+                self.assertRegex(set_text, r"(?m)^\ttitle: Essentia -- ")
                 self.assertRegex(set_text, r"(?m)^\tartist: DRAFT$")
                 includes = re.findall(r"(?m)^include_file:\s*(.+)$", set_text)
                 self.assertEqual(len(includes), len(set(includes)))
+                if project.name in EMPTY_DRAFT_PROJECTS:
+                    self.assertEqual(includes, [])
+                    self.assertEqual({path.name for path in project.glob("card *")}, set())
+                    continue
                 self.assertTrue(includes)
                 for include in includes:
                     self.assertTrue((project / include).is_file(), include)
@@ -92,10 +81,16 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
                     self.assertNotRegex(text, FRENCH_MARKERS)
                     image = re.search(r"(?m)^\timage:\s*(.+)$", text)
                     if image and image.group(1).strip():
-                        image_path = project / image.group(1).strip()
+                        image_ref = image.group(1).strip()
+                        image_path = project / image_ref
                         self.assertTrue(image_path.is_file(), image_path)
                         with Image.open(image_path) as value:
                             value.verify()
+                        if project.name == "00_YGO_Non_Archetype.mse-set":
+                            self.assertRegex(
+                                image_ref,
+                                r"^mse_images/(creatures|fusion|synchro|xyz|link|noncreatures)/(imported|embedded)/",
+                            )
                 render_paths = list((project / "render").glob("*.png"))
                 if render_paths:
                     expected = {render_name(card_name(project / name)) for name in includes}
@@ -124,7 +119,8 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             "ADR/README.md",
         }
         self.assertTrue(all((ROOT / "docs" / path).is_file() for path in required))
-        for archetype in ("10_burning_abyss", "11_shaddoll", "12_nekroz", "13_spellbook"):
+        self.assertTrue((ROOT / "docs" / "GLOSSARY.md").is_file())
+        for archetype in ("01_burning_abyss", "02_shaddoll", "03_nekroz", "04_spellbook"):
             self.assertEqual(
                 {"CONTEXT.md", "DESIGN.md", "RULES.md", "KEYWORDS.md"},
                 {path.name for path in (ROOT / "docs" / archetype).glob("*.md")},

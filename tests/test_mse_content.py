@@ -129,10 +129,20 @@ class MSEContentTests(unittest.TestCase):
         self.assertIn("rule_text: Changed", updated)
         self.assertIn("name: One", updated)
 
-    def test_live_necroz_manifest_has_19_cards(self) -> None:
-        cards = mse_content.load_manifest(ROOT / "cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set")
-        self.assertEqual(len(cards), 19)
-        self.assertEqual(cards[14].name, "Nekroz - Trishula")
+    def test_active_legend_manifest_has_19_necroz_cards(self) -> None:
+        cards = mse_content.load_manifest(
+            ROOT
+            / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+        )
+        support = {
+            "Herald of the Arc Light",
+            "Manju of the Ten Thousand Hands",
+            "Preparation of Rites",
+            "Senju of the Thousand Hands",
+        }
+        necroz = [card for card in cards if card.name.startswith("Nekroz - ") or card.name in support]
+        self.assertEqual(len(necroz), 19)
+        self.assertIn("Nekroz - Trishula", {card.name for card in necroz})
 
 
 if __name__ == "__main__":

@@ -5,8 +5,12 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set"
-DOCS = ROOT / "docs/10_burning_abyss"
+PROJECT = ROOT / "cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set"
+ACTIVE = (
+    ROOT
+    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+)
+DOCS = ROOT / "docs/01_burning_abyss"
 
 
 class BurningAbyssCardTests(unittest.TestCase):
@@ -16,10 +20,10 @@ class BurningAbyssCardTests(unittest.TestCase):
         cls.includes = re.findall(r"(?m)^include_file:\s*(.+)$", cls.set_text)
 
     def test_manifest_has_complete_unique_card_graph(self) -> None:
-        self.assertEqual(len(self.includes), 30)
-        self.assertEqual(len(set(self.includes)), 30)
+        self.assertEqual(len(self.includes), 13)
+        self.assertEqual(len(set(self.includes)), 13)
         self.assertEqual({path.name for path in PROJECT.glob("card *")}, set(self.includes))
-        self.assertIn("title: YGO x MTG -- Burning Abyss", self.set_text)
+        self.assertIn("title: Essentia -- Burning Abyss", self.set_text)
         self.assertIn("set_language: EN", self.set_text)
         self.assertIn("card_language: English", self.set_text)
 
@@ -34,19 +38,10 @@ class BurningAbyssCardTests(unittest.TestCase):
                 codes = re.findall(r"(?m)^\tcard_code_text(?:_\d+)?:\s*(.+)$", text)
                 self.assertTrue(codes)
                 for code in codes:
-                    self.assertRegex(code, rf"^{index:03d}/030 [CURM]$")
+                    self.assertRegex(code, rf"^{index:03d}/013 [CURM]$")
 
     def test_representative_card_mechanics_are_preserved(self) -> None:
         expected = {
-            "card aa-zeus - sky thunder": (
-                "<i>2 Creatures MV 4</i>",
-                "Xyz Alternative Cost",
-                "(1 - Activated <kw-a><nospellcheck><key>Flash</key></nospellcheck></kw-a> Soft)",
-                "<b>Detach 2</b>",
-                "<b>Send</b> all other nonland permanents on the Field to Grave",
-                "(2 - Triggered Soft)",
-                "<b>Attach</b> the destroyed Creature to <i-auto>“ZEUS”</i-auto>",
-            ),
             "card burning abyss - cherubini": (
                 "name: Burning Abyss - Cherubini",
                 "super_type: <word-list-type-en>Link Lvl 2 Creature</word-list-type-en>",
@@ -58,9 +53,6 @@ class BurningAbyssCardTests(unittest.TestCase):
                 "<b>On Destroy</b>",
                 "they <b>Discard</b> 1 card at random",
             ),
-            "card burning abyss - farfa": (
-                "<b>Slow Blink 1 Any Creature</b>",
-            ),
             "card burning abyss - good  evil": (
                 "<b>Ritual Summon</b>",
                 "<b>Exile from Grave</b> and <b>Discard</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature",
@@ -69,10 +61,6 @@ class BurningAbyssCardTests(unittest.TestCase):
                 "<b>Fusion Summon</b>",
                 "the target gains +2/+2 until the end of the opponent’s next turn",
             ),
-            "card leviair the sea dragon": (
-                "<b>Target</b> 1 exiled MV 1 Creature",
-                "<b>Release</b> the target",
-            ),
         }
         for card, fragments in expected.items():
             text = (PROJECT / card).read_text(encoding="utf-8-sig")
@@ -80,19 +68,47 @@ class BurningAbyssCardTests(unittest.TestCase):
                 with self.subTest(card=card, fragment=fragment):
                     self.assertIn(fragment, text)
 
+    def test_active_dev_ba_mechanics_live_in_pre_alpha(self) -> None:
+        expected = {
+            ACTIVE / "card burning abyss - dante": (
+                "name: Burning Abyss - Dante",
+            ),
+            ACTIVE / "card burning abyss - farfa": (
+                "<b>Slow Blink 1 Any Creature</b>",
+            ),
+            ACTIVE / "card burning abyss - draghig": (
+                "<b>On Send Grave</b> — <b>Discard</b> 1 card, then <b>Draw</b> 1 card",
+            ),
+            ACTIVE / "card leviair the sea dragon": (
+                "<b>Target</b> 1 exiled MV 1 Creature",
+                "<b>Release</b> the target",
+            ),
+            ROOT
+            / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set"
+            / "card aa zeus sky thunder": (
+                "<i>2 creatures MV 4</i>",
+                "Xyz Alternative Cost",
+            ),
+        }
+        for path, fragments in expected.items():
+            text = path.read_text(encoding="utf-8-sig")
+            for fragment in fragments:
+                with self.subTest(card=path.name, fragment=fragment):
+                    self.assertIn(fragment, text)
+
     def test_trap_and_extra_deck_types_use_current_contract(self) -> None:
-        trap = (PROJECT / "card burning abyss - fire lake").read_text(encoding="utf-8-sig")
+        trap = (ACTIVE / "card burning abyss - fire lake").read_text(encoding="utf-8-sig")
         self.assertIn("super_type: <word-list-type-en>Trap Instant</word-list-type-en>", trap)
         self.assertIn("sub_type:", trap)
         self.assertNotIn("sub_type: <word-list-race-en>Trap", trap)
         for name in (
-            "card aa-zeus - sky thunder",
             "card beatrice lady of the eternal",
             "card burning abyss - dante",
             "card downerd magician",
             "card leviair the sea dragon",
         ):
-            text = (PROJECT / name).read_text(encoding="utf-8-sig")
+            root = PROJECT if name == "card beatrice lady of the eternal" else ACTIVE
+            text = (root / name).read_text(encoding="utf-8-sig")
             self.assertIn("super_type: <word-list-type-en>Xyz Creature</word-list-type-en>", text)
 
     def test_accepted_general_rules_are_documented_in_english(self) -> None:

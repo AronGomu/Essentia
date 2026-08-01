@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set"
-DOCS = ROOT / "docs/13_spellbook"
+PROJECT = ROOT / "cards_mse/00_drafts/04_spellbook/04_YGO_Spellbook.mse-set"
+DOCS = ROOT / "docs/04_spellbook"
 
 BOOK_AFFINITY = "<b>Book Affinity</b>"
 SPELL_AFFINITY = "<b>Spell Affinity</b>"
@@ -54,7 +54,7 @@ class SpellbookCardTests(unittest.TestCase):
         includes = re.findall(r"(?m)^include_file:\s*(.+)$", set_text)
         self.assertEqual(includes, sorted(EXPECTED_RULES))
         self.assertEqual(len(includes), 16)
-        self.assertIn("title: YGO x MTG -- Spellbook", set_text)
+        self.assertIn("title: Essentia -- Spellbook", set_text)
         self.assertIn("set_language: EN", set_text)
         self.assertIn("card_language: English", set_text)
 
@@ -98,7 +98,7 @@ class SpellbookCardTests(unittest.TestCase):
         self.assertIn("**Alternative Cost**", rules)
         self.assertIn("**Spell Affinity**", keywords)
         self.assertIn("printed opt-in keyword", rules)
-        self.assertIn("cards_mse/00_drafts/13_spellbook/13_YGO_Spellbook.mse-set", context)
+        self.assertIn("cards_mse/00_drafts/04_spellbook/04_YGO_Spellbook.mse-set", context)
         self.assertNotIn("\nCreature — Wizard Spellbook\n", context + rules + keywords)
 
     def test_retired_generator_cannot_overwrite_canonical_project(self) -> None:

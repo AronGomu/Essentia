@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PROJECT = REPO_ROOT / "cards_mse/00_drafts/08_link_staples/08_YGO_Staples_Link.mse-set"
+PROJECT = REPO_ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set"
 UPDATED_CARDS = {
     "card accesscode talker": (
         "casting_cost: RRWW",
@@ -72,9 +72,13 @@ class LinkCardContentTests(unittest.TestCase):
         self.assertNotIn("Cherubini, Ebon Angel of the Burning Abyss", batch_script)
 
     def test_other_link_cards_only_keep_name_and_non_content_metadata(self) -> None:
-        other_cards = [
-            path for path in PROJECT.glob("card *") if path.name not in UPDATED_CARDS
+        link_cards = [
+            path
+            for path in PROJECT.glob("card *")
+            if "mse_images/link/" in path.read_text(encoding="utf-8-sig")
         ]
+        other_cards = [path for path in link_cards if path.name not in UPDATED_CARDS]
+        self.assertEqual(len(link_cards), 29)
         self.assertEqual(len(other_cards), 26)
         for card_path in other_cards:
             with self.subTest(card=card_path.name):

@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "cards_mse/00_drafts/11_shaddoll/11_YGO_Shaddoll.mse-set"
-DOCS = ROOT / "docs/11_shaddoll"
+PROJECT = ROOT / "cards_mse/00_drafts/02_shaddoll/02_YGO_Shaddoll.mse-set"
+DOCS = ROOT / "docs/02_shaddoll"
 
 
 class ShaddollCardsTest(unittest.TestCase):

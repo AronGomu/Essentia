@@ -4,15 +4,19 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+ACTIVE = (
+    ROOT
+    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+)
 TRAP_CARDS = (
-    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card breakthrough skill",
-    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card compulsory evacuation device",
-    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card karma cut",
-    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card phoenix wing wind blast",
-    ROOT / "cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card torrential tribute",
-    ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card burning abyss - fire lake",
-    ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card burning abyss - traveler",
-    ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card fiend griefing",
+    ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card breakthrough skill",
+    ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card compulsory evacuation device",
+    ACTIVE / "card karma cut",
+    ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card phoenix wing wind blast",
+    ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card torrential tribute",
+    ACTIVE / "card burning abyss - fire lake",
+    ACTIVE / "card burning abyss - traveler",
+    ROOT / "cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set/card fiend griefing",
 )
 
 
@@ -26,12 +30,12 @@ class TrapSupertypeTests(unittest.TestCase):
                 self.assertNotIn("<b>Trap</b>", card)
 
     def test_trap_references_use_current_english_vocabulary(self) -> None:
-        rafflesia = (ROOT / "cards_mse/00_drafts/07_xyz_staples/07_YGO_Staples_Xyz.mse-set/card traptrix rafflesia").read_text(encoding="utf-8-sig")
+        rafflesia = (ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card traptrix rafflesia").read_text(encoding="utf-8-sig")
         self.assertIn("<i>2 Creatures MV 1</i>", rafflesia)
         self.assertIn("<b>Send</b> 1 Trap from your Deck to Grave", rafflesia)
         self.assertNotIn("error-spelling", rafflesia)
 
-        back_jack = (ROOT / "cards_mse/00_drafts/10_burning_abyss/10_YGO_Burning_Abyss.mse-set/card absolute king back jack").read_text(encoding="utf-8-sig")
+        back_jack = (ROOT / "cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set/card absolute king back jack").read_text(encoding="utf-8-sig")
         self.assertIn("If it is a Trap, <b>Set</b> the card face down on the Field", back_jack)
         self.assertIn("you may <b>Cast</b> it this turn", back_jack)
 

@@ -22,6 +22,18 @@ SPEC.loader.exec_module(export_mse_renders)
 
 
 class WhiteCornerTransparencyTests(unittest.TestCase):
+    def test_colon_in_card_name_is_sanitized_for_portable_render(self) -> None:
+        export_mse_renders.validate_export_name("I:P Masquerena")
+        self.assertEqual(
+            export_mse_renders.render_filename("I:P Masquerena"),
+            "I -P Masquerena.png",
+        )
+
+    def test_path_separators_in_card_name_remain_rejected(self) -> None:
+        for name in ("folder/card", r"folder\\card"):
+            with self.subTest(name=name), self.assertRaises(export_mse_renders.MSESourceError):
+                export_mse_renders.validate_export_name(name)
+
     def make_project(self, root: Path) -> Path:
         project = root / "demo.mse-set"
         project.mkdir()

@@ -51,7 +51,7 @@ class ReleasePackageTests(unittest.TestCase):
             "game: magic\n"
             "stylesheet: sevenhalf\n"
             "set_info:\n"
-            f"\ttitle: YGO x MTG -- Test\n\tartist: {marker}\n"
+            f"\ttitle: Essentia -- Test\n\tartist: {marker}\n"
             "set_language: EN\ncard_language: English\n"
             + "".join(f"include_file: {value}\n" for value in includes),
             encoding="utf-8",
@@ -170,6 +170,8 @@ class ReleasePackageTests(unittest.TestCase):
         }
         self.assertEqual(first, second)
         self.assertEqual(len(release.load_manifest(aggregate)), 2)
+        aggregate_set = (aggregate / "set").read_text(encoding="utf-8-sig")
+        self.assertIn("title: Essentia -- Test Set ALPHA", aggregate_set)
         release.validate_aggregate(package)
 
     def test_duplicate_stable_identity_fails_aggregate(self) -> None:

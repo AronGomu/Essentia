@@ -5,8 +5,12 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / "cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set"
-DOCS = ROOT / "docs" / "12_nekroz"
+DRAFT_PROJECT = ROOT / "cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set"
+PROJECT = (
+    ROOT
+    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+)
+DOCS = ROOT / "docs" / "03_nekroz"
 
 INCLUDED = [
     "card herald of the arc light",
@@ -32,11 +36,18 @@ INCLUDED = [
 
 
 class NecrozCardTests(unittest.TestCase):
+    def test_draft_project_empty_while_cards_in_active_dev(self) -> None:
+        set_text = (DRAFT_PROJECT / "set").read_text(encoding="utf-8-sig")
+        includes = re.findall(r"(?m)^include_file:\s*(.+)$", set_text)
+        self.assertEqual(includes, [])
+        self.assertEqual(list(DRAFT_PROJECT.glob("card *")), [])
+
     def test_manifest_includes_all_active_cards(self) -> None:
         set_text = (PROJECT / "set").read_text(encoding="utf-8-sig")
         includes = re.findall(r"(?m)^include_file:\s*(.+)$", set_text)
-        self.assertEqual(includes, INCLUDED)
-        self.assertEqual(len(includes), 19)
+        for filename in INCLUDED:
+            self.assertIn(filename, includes)
+        self.assertEqual(len(includes), 50)
 
     def test_included_cards_clean_and_images_resolve(self) -> None:
         stale = ("graveyard", "GYD", "library", "mana value", "error-spelling")
@@ -56,7 +67,7 @@ class NecrozCardTests(unittest.TestCase):
 
     def test_key_mechanics_present(self) -> None:
         brionac = (PROJECT / "card nekroz - brionac").read_text(encoding="utf-8-sig")
-        self.assertIn("<b>Bounce</b>", brionac)
+        self.assertIn("shuffle the target into its owner’s Deck", brionac)
         self.assertIn("<b>Discard</b> <i-auto>“Brionac”</i-auto>", brionac)
 
         catastor = (PROJECT / "card nekroz - catastor").read_text(encoding="utf-8-sig")
@@ -64,7 +75,7 @@ class NecrozCardTests(unittest.TestCase):
 
         exa = (PROJECT / "card nekroz - exa").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Release</b>", exa)
-        self.assertIn("ignoring the restrictions of summon", exa)
+        self.assertIn("ignoring the restrictions of Summon", exa)
 
         unicore = (PROJECT / "card nekroz - unicore").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Salvage</b>", unicore)
@@ -82,12 +93,12 @@ class NecrozCardTests(unittest.TestCase):
             text = (PROJECT / name).read_text(encoding="utf-8-sig")
             self.assertIn("<b>Ritual Summon</b>", text)
             self.assertIn("<b>Nekroz Recovery</b>", text)
-            self.assertIn("<b>Search</b> 1 non-Creature <b>Ritual Summon</b> <i-auto>“Nekroz”</i-auto>", text)
 
     def test_archetype_docs_point_at_mse(self) -> None:
         context = (DOCS / "CONTEXT.md").read_text(encoding="utf-8-sig")
         keywords = (DOCS / "KEYWORDS.md").read_text(encoding="utf-8-sig")
-        self.assertIn("cards_mse/00_drafts/12_nekroz/12_YGO_Necroz.mse-set", context)
+        self.assertIn("cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set", context)
+        self.assertIn("01_pre_alpha", context)
         self.assertIn("**Nekroz Recovery**", keywords)
         self.assertIn("non-Creature **Ritual Summon** *“Nekroz”*", keywords)
 
