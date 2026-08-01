@@ -39,6 +39,6 @@ createServer(async (request, response) => {
       response.end('Not found');
     }
   }
-}).listen(4321, '127.0.0.1', () =>
-  process.stdout.write(`preview: http://127.0.0.1:4321${base}\n`),
+}).listen(4201, '127.0.0.1', () =>
+  process.stdout.write(`preview: http://127.0.0.1:4201${base}\n`),
 );

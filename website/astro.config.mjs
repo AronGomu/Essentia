@@ -15,5 +15,7 @@ export default defineConfig({
   outDir: process.env.OUT_DIR ?? 'dist',
   trailingSlash: 'always',
   integrations: [svelte()],
+  server: { port: 4201, strictPort: true },
+  preview: { port: 4201, strictPort: true },
   vite: { build: { sourcemap: false } },
 });

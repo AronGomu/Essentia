@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const basePath = process.env.E2E_BASE_PATH ?? '/';
-const baseURL = `http://127.0.0.1:4321${basePath}`;
+const baseURL = `http://127.0.0.1:4201${basePath}`;
 
 export default defineConfig({
   testDir: './tests/e2e',
