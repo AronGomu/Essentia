@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Trishula</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” and <b>Target</b> 1 Spell or ability targeting 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature you control; <b>Counter</b> the target.
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> “Trishula” and <b>Target</b> 1 Spell or ability targeting 1 “Nekroz” Creature you control; <b>Counter</b> the target.
 		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Exile</b> 1 opponent’s nonland permanent, 1 random card from their Hand and 1 card from their Grave. This effect does not resolve if you cannot <b>Exile</b> all 3 cards simultaneously.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5

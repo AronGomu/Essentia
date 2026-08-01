@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> If you control no Creatures, <b>Discard</b> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Valkyrus</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”; prevent all combat damage that would be dealt to you this turn.
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> If you control no Creatures, <b>Discard</b> “Valkyrus”; prevent all combat damage that would be dealt to you this turn.
 		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Sacrifice</b> 0–2 Creatures from your Hand or Field; <b>Draw</b> 1 card for each sacrificed Creature.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5

@@ -16,8 +16,8 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Static)</i-auto> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Shurit</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” alone can satisfy the sacrifice cost for a <b>Ritual Summon</b> of a “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Ritual Creature.
-		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature.
+		<i-auto>(1 - Static)</i-auto> “Shurit” alone can satisfy the sacrifice cost for a <b>Ritual Summon</b> of a “Nekroz” Ritual Creature.
+		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 “Nekroz” Creature.
 	flavor_text: <i-flavor></i-flavor>
 	power: 1
 	toughness: 3

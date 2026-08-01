@@ -2,7 +2,7 @@
   "components": [
     {
       "group": "01_legend_of_alpha",
-      "project": "01_YGO_Legend_of_Alpha.mse-set"
+      "project": "01_YGO_Legend_of_the_Alpha.mse-set"
     }
   ],
   "contentPosts": [],
@@ -74,9 +74,10 @@
     }
   ],
   "releasedOn": "2026-08-01",
-  "schemaVersion": 1,
-  "setId": "legend-of-alpha",
-  "setName": "Legend of Alpha",
+  "schemaVersion": 2,
+  "setId": "LOTA-0001",
+  "setName": "Legend of the Alpha",
   "stage": "alpha",
-  "version": "0.1"
+  "status": "open",
+  "version": "Alpha_0.1"
 }

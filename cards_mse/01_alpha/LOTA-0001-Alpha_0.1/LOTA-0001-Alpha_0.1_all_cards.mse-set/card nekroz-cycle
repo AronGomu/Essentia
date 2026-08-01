@@ -16,8 +16,8 @@ card:
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Resolution)</i-auto> <b>Ritual Summon</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature from Hand or Grave by sacrificing Creatures from your Hand or Field whose <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> meets its Ritual cost.
-		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b><error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Recovery</b>
+		<i-auto>(1 - Resolution)</i-auto> <b>Ritual Summon</b> 1 “Nekroz” Creature from Hand or Grave by sacrificing Creatures from your Hand or Field whose MV meets its Ritual cost.
+		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Nekroz Recovery</b>
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 033/050 C
 	card_code_text_2: 033/050 C

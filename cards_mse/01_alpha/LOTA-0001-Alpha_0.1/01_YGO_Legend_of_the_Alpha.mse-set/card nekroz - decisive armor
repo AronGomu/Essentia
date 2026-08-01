@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> “Armor” and <b>Target</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature; the target gains +2/+2 until the end of the turn.
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> “Armor” and <b>Target</b> 1 “Nekroz” Creature; the target gains +2/+2 until the end of the turn.
 		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Target</b> 1 Creature; the target gains -2/-0 until the end of the turn.
 	flavor_text: <i-flavor></i-flavor>
 	power: 6

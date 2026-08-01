@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Human</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i>2 Creatures MV 1</i>
 		<i-auto>(1 - Activated Soft)</i-auto> <b>Detach 1 and Mill 3</b>; “Dante” gains +1/+0 for each card milled and gains <b><kw-a>Vigilance</kw-a></b> until the end of the turn.
 		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Salvage</b> 1 other “Burning Abyss”.
 	flavor_text: <i-flavor></i-flavor>

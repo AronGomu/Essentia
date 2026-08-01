@@ -16,8 +16,8 @@ card:
 	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> this card and <b>Target</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature; the target gains <b><kw-a>Indestructible</kw-a></b> until the end of the turn.
-		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” and <b>Target</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature; the target gains <b><kw-a>Indestructible</kw-a></b> until the end of the turn.
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> this card and <b>Target</b> 1 “Nekroz” Creature; the target gains <b><kw-a>Indestructible</kw-a></b> until the end of the turn.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> 1 “Nekroz” and <b>Target</b> 1 “Nekroz” Creature; the target gains <b><kw-a>Indestructible</kw-a></b> until the end of the turn.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5
 	toughness: 3

@@ -4,10 +4,10 @@ game_version: 2025-06-14
 stylesheet: sevenhalf
 stylesheet_version: 2024-05-30
 set_info:
-	title: Essentia -- Legend of Alpha ALPHA
-	description: Legend of Alpha 0.1 Pre-ALPHA candidate cards for Burning Abyss and Nekroz test decks.
-	artist: Legend of Alpha ALPHA
-	set_code: YLA
+	title: Essentia -- Legend of the Alpha Alpha
+	description: Legend of the Alpha Alpha_0.1 cards for Burning Abyss and Nekroz test decks.
+	artist: Legend of the Alpha Alpha
+	set_code: LOTA
 	set_language: EN
 	symbol: 
 	masterpiece_symbol: 
