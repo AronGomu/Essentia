@@ -132,7 +132,7 @@ class MSEContentTests(unittest.TestCase):
     def test_active_legend_manifest_has_19_necroz_cards(self) -> None:
         cards = mse_content.load_manifest(
             ROOT
-            / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+            / "cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set"
         )
         support = {
             "Herald of the Arc Light",

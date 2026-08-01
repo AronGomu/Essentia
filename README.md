@@ -4,7 +4,7 @@
 
 ## Source of truth
 
-Card fields live only in folder-form MSE projects under [`cards_mse/`](cards_mse/). Current editable projects are drafts under `cards_mse/00_drafts/`. ALPHA, BETA, and Release packages are immutable publication history. Documentation starts at [`docs/CONTEXT.md`](docs/CONTEXT.md).
+Card fields live only in folder-form MSE projects under [`cards_mse/`](cards_mse/). Editable roots are drafts under `cards_mse/00_drafts/` and open packages under `01_alpha`/`02_beta`/`03_release`. Locked packages are immutable publication history. Documentation starts at [`docs/CONTEXT.md`](docs/CONTEXT.md).
 
 ## First-time MSE setup
 
@@ -32,16 +32,17 @@ Double-click `launcher/mse_project_menu.pyw` for GUI. Diagnostics write to ignor
 
 ```bash
 python .script/release_package.py validate
-python .script/release_package.py promote --from-stage 01_pre_alpha --to-stage 02_alpha --released-on YYYY-MM-DD
-python .script/release_package.py prepare-next cards_mse/02_alpha/<set_version> --to-stage 03_pre_beta
+python .script/release_package.py rebuild cards_mse/01_alpha/<setId-version>
+python .script/release_package.py lock cards_mse/01_alpha/<setId-version> --released-on YYYY-MM-DD
+python .script/release_package.py advance cards_mse/01_alpha/<setId-version> --to-stage 02_beta --version Beta_X.Y
 python .script/check_immutable_stages.py --base <merge-base>
 ```
 
-See [`docs/RELEASES.md`](docs/RELEASES.md) and [`docs/MSE.md`](docs/MSE.md). Legend of Alpha 0.1 decklists are defined in [`docs/rules/DECKLISTS_ALPHA_0.1.md`](docs/rules/DECKLISTS_ALPHA_0.1.md); their 48 unique custom cards are assembled in Pre-ALPHA. No immutable ALPHA package exists yet.
+See [`docs/RELEASES.md`](docs/RELEASES.md) and [`docs/MSE.md`](docs/MSE.md). Legend of the Alpha (`LOTA-0001`) Alpha_0.1 decklists are defined in [`docs/rules/DECKLISTS_ALPHA_0.1.md`](docs/rules/DECKLISTS_ALPHA_0.1.md); package lives at `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/` with status `open`.
 
 ## Showcase website
 
-`website/` contains read-only Astro + Svelte publication UI. It reads only immutable `02_alpha`, `04_beta`, and `06_released` packages. Draft-only repository builds valid empty catalog.
+`website/` contains read-only Astro + Svelte publication UI. It reads `01_alpha`, `02_beta`, and `03_release` packages (open or locked). Draft-only repository builds valid empty catalog.
 
 ```bash
 cd website

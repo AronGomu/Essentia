@@ -2,9 +2,9 @@
 
 Hard-lock history. Set name + cards only.
 
-## 2026-08-01 — Legend of Alpha → alpha (v0.1)
+## 2026-08-01 — Legend of the Alpha → alpha open (Alpha_0.1 / LOTA-0001)
 
-- Package: `cards_mse/02_alpha/Legend_of_Alpha_0.1/`
+- Package: `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/`
 - Cards:
   - Ash Blossom & Joyous Spring
   - Bagooska

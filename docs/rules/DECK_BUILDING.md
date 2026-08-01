@@ -4,7 +4,7 @@
 
 Main Deck contains normal Main Deck cards, including Ritual Creatures. Sideboard represents Extra Deck for Fusion, Synchro, Xyz, and Link Creatures.
 
-Exact Burning Abyss and Nekroz decklists for Legend of Alpha 0.1 live in [`DECKLISTS_ALPHA_0.1.md`](DECKLISTS_ALPHA_0.1.md). Pre-ALPHA `stage.json` records their stable-card membership; gameplay quantities remain in the decklist.
+Exact Burning Abyss and Nekroz decklists for Legend of the Alpha Alpha_0.1 live in [`DECKLISTS_ALPHA_0.1.md`](DECKLISTS_ALPHA_0.1.md). Package `release.json` records their stable-card membership; gameplay quantities remain in the decklist.
 
 No project-wide rarity copy limits beyond approved deck metadata are currently defined. Mythic copy limits remain undecided.
 

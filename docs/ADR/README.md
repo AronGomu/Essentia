@@ -13,6 +13,7 @@ Decision evidence lives here after rule/design review.
 - [0005 — Keyword taxonomy and markup](accepted/0005-keyword-taxonomy-and-markup.md)
 - [0006 — MSE frame mapping](accepted/0006-mse-frame-mapping.md)
 - [0007 — Legend of Alpha rule reconciliation](accepted/0007-legend-of-alpha-rule-reconciliation.md)
+- [0008 — Open/locked package lifecycle](accepted/0008-open-locked-lifecycle.md)
 
 ## Proposed
 

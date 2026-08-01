@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DRAFT_PROJECT = ROOT / "cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set"
 PROJECT = (
     ROOT
-    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+    / "cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set"
 )
 DOCS = ROOT / "docs" / "03_nekroz"
 
@@ -98,7 +98,7 @@ class NecrozCardTests(unittest.TestCase):
         context = (DOCS / "CONTEXT.md").read_text(encoding="utf-8-sig")
         keywords = (DOCS / "KEYWORDS.md").read_text(encoding="utf-8-sig")
         self.assertIn("cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set", context)
-        self.assertIn("01_pre_alpha", context)
+        self.assertIn("01_alpha", context)
         self.assertIn("**Nekroz Recovery**", keywords)
         self.assertIn("non-Creature **Ritual Summon** *“Nekroz”*", keywords)
 

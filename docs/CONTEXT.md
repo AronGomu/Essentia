@@ -5,10 +5,10 @@
 ## Sources of truth
 
 - Card name, rules text, mana cost, type, rarity, statistics, artwork references, and frame live only in folder-form Magic Set Editor projects under [`cards_mse/`](../cards_mse/).
-- Draft and pre-stage projects are mutable. ALPHA, BETA, and Release packages are immutable after commit.
+- Draft projects and open set packages are mutable. Locked alpha/beta/release packages are immutable after commit.
 - A card lives in draft **or** [active development](GLOSSARY.md#active-development), never both. Settled `alpha` / `beta` / `release` packages may each keep their own snapshot copies.
 - Documentation defines reusable design and rules. It must not reproduce card-by-card values.
-- The website reads immutable packages and never writes MSE source.
+- The website reads alpha/beta/release packages (open or locked) and never writes MSE source.
 - Stable IDs, release dates, deck membership, and content URLs may live in metadata when they do not duplicate MSE card fields.
 - Official Yu-Gi-Oh! records and source illustrations remain under [`original_cards/`](../original_cards/) and [`original_images/`](../original_images/).
 - Shared vocabulary: [Glossary](GLOSSARY.md).

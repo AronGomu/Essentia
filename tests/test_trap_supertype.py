@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = (
     ROOT
-    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+    / "cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set"
 )
 TRAP_CARDS = (
     ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card breakthrough skill",

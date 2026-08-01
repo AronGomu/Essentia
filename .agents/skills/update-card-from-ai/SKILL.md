@@ -12,7 +12,7 @@ Add or modify converted cube cards directly from structured Markdown supplied by
 
 The supplied converted card data is the **provisional source of truth** for card mechanics. Preserve it unless the user explicitly classifies a difference as an input error. Correct English spelling, grammar, established vocabulary, and MSE markup, but never silently redesign the mechanic.
 
-Only folder-form projects in mutable lifecycle stages may be destinations; default to `cards_mse/00_drafts/*/*.mse-set/`. Never edit `02_alpha`, `04_beta`, `06_released`, or generated aggregate projects. Draft PDFs are forbidden.
+Only folder-form projects in drafts or open packages may be destinations; default to `cards_mse/00_drafts/*/*.mse-set/`. Never edit locked packages or generated aggregate projects. Draft PDFs are forbidden.
 
 This workflow has two mandatory interview loops, matching `fix-mse-cards`:
 

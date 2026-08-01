@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set"
 ACTIVE = (
     ROOT
-    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+    / "cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set"
 )
 DOCS = ROOT / "docs/01_burning_abyss"
 
@@ -68,7 +68,7 @@ class BurningAbyssCardTests(unittest.TestCase):
                 with self.subTest(card=card, fragment=fragment):
                     self.assertIn(fragment, text)
 
-    def test_active_dev_ba_mechanics_live_in_pre_alpha(self) -> None:
+    def test_active_dev_ba_mechanics_live_in_alpha_package(self) -> None:
         expected = {
             ACTIVE / "card burning abyss - dante": (
                 "name: Burning Abyss - Dante",

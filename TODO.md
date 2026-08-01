@@ -1,6 +1,6 @@
 # TODO
 
-- [x] Define 2 decklists for **Legend of Alpha 0.1** cards.
+- [x] Define 2 decklists for **Legend of the Alpha 0.1** cards.
 - [ ] Add decklist feature to website:
   - [ ] Decklist detail page for one specific decklist.
   - [ ] Decklist tab/search surface.

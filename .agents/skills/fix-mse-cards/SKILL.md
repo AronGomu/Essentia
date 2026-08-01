@@ -42,8 +42,8 @@ One file per gate/run. Collision → `-2`, `-3`, … Never overwrite. Pasted cli
 
 ## Repo contracts
 
-- Mutable source: `cards_mse/00_drafts/*/*.mse-set/`; folder, not zip.
-- Frozen: `02_alpha`, `04_beta`, `06_released`, generated aggregates. Never edit. Never create draft PDFs.
+- Mutable source: `cards_mse/00_drafts/*/*.mse-set/` and open packages under `cards_mse/01_alpha|02_beta|03_release/*/*.mse-set/`; folder, not zip.
+- Locked packages (`status: locked`) and generated aggregates: never edit. Open packages under `01_alpha`/`02_beta`/`03_release` are editable. Never create draft PDFs.
 - Manifest: `<project>.mse-set/set`; cards: `card <slug>` via `include_file:`.
 - General rules: `docs/rules/*`, `docs/keywords/*`, `docs/design/*`; indexes: `docs/RULES.md`, `docs/KEYWORDS.md`.
 - Archetype rules: numbered `CONTEXT.md`/`DESIGN.md`/`RULES.md`/`KEYWORDS.md`. Card values stay MSE-only.

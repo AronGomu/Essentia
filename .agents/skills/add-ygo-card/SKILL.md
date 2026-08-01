@@ -36,7 +36,7 @@ Prefer the existing matching MSE project (source of truth for translated card te
 
 Archetype modules under `docs/01_burning_abyss/` through `docs/04_spellbook/` keep identity/mechanics only — do not reintroduce full card blocks there. MSE `name:` uses cube display name.
 
-Write only to mutable lifecycle stages. Default destination is `cards_mse/00_drafts/`. Never edit `02_alpha`, `04_beta`, `06_released`, or generated aggregate projects.
+Write only to drafts or open packages. Default destination is `cards_mse/00_drafts/`. Never edit locked packages or generated aggregate projects.
 
 ## Conversion
 

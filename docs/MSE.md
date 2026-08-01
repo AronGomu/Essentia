@@ -19,8 +19,8 @@ Launch nested projects with `launcher/mse_project_menu.pyw`. Diagnostics write t
 - A display-name card is editable in only one mutable root (draft **or** one pre-stage). See [GLOSSARY.md](GLOSSARY.md#card-uniqueness).
 - Use title `Essentia -- [name]` in `set_info.title`.
 - Use lifecycle painter marker from [RELEASES.md](RELEASES.md#stage-markers).
-- Draft projects are mutable; immutable aggregate/component projects are read-only.
-- Aggregate projects exist only in immutable packages and are generated from component manifests.
+- Draft projects and open packages are mutable; locked packages and generated aggregates are read-only.
+- Aggregate projects exist only in set packages and are generated from component manifests.
 - Empty draft projects are allowed while their cards live in active development.
 
 ## Card ordering
@@ -75,4 +75,4 @@ Do not infer corruption from `3221225477` / `0xC0000005` alone. Build a sibling 
 - Render audit: `{set_dir}/render-provenance.json`
 - Package integrity: `{set_dir}/package-sha256.json`
 
-No root `print/` directory exists. Renders, PDF, provenance, aggregate, metadata, and component source belong to immutable package guard.
+No root `print/` directory exists. Renders, PDF, provenance, aggregate, metadata, and component source belong to package status guard (`locked` = immutable).

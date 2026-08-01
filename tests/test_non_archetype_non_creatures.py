@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set"
 ACTIVE = (
     ROOT
-    / "cards_mse/01_pre_alpha/01_legend_of_alpha/01_YGO_Legend_of_Alpha.mse-set"
+    / "cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set"
 )
 
 DRAFT_EXPECTED = {
@@ -76,7 +76,7 @@ class NonArchetypeNonCreatureTests(unittest.TestCase):
                 self.assertNotIn("error-spelling", body)
                 self.assertIn("\tsub_type: <word-list-spell></word-list-spell>", text)
         for filename, fragments in ACTIVE_EXPECTED.items():
-            with self.subTest(filename=filename, stage="pre-alpha"):
+            with self.subTest(filename=filename, stage="alpha"):
                 text = (ACTIVE / filename).read_text(encoding="utf-8-sig")
                 for fragment in fragments:
                     self.assertIn(fragment, text)
