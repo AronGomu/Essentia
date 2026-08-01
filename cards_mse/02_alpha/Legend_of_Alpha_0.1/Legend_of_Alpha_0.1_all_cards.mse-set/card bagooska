@@ -1,0 +1,28 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-spellbook
+	stylesheet_version: 2024-09-01
+	has_styling: false
+	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card bagooska
+	time_created: 2026-07-11 17:03:48
+	time_modified: 2026-08-01 01:11:47
+	name: Bagooska
+	casting_cost: G
+	image: images/bagooska-image.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Xyz Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Fiend</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: rare
+	rule_text:
+		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i-auto>(1 - Triggered)</i-auto> At the start of your upkeep, <b>Detach 1</b>. If you can’t, <b>Destroy</b> this card.
+		<i-auto>(2 - Static)</i-auto> As long as <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Bagooska</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> is untapped, <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>opponents’</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Creatures cannot attack.
+		<i-auto>(3 - Static)</i-auto> As long as <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Bagooska</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> is tapped, all other Creatures on the Field lose all their abilities.
+	flavor_text: <i-flavor></i-flavor>
+	power: 4
+	toughness: 4
+	card_code_text: 002/050 R
+	card_code_text_2: 002/050 R
+	card_code_text_3: 002/050 R

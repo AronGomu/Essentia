@@ -1,0 +1,309 @@
+{
+  "cards": [
+    {
+      "copies": 3,
+      "render": "renders/Ash Blossom & Joyous Spring.png",
+      "sha256": "c28b9bdd8a540e14a4a1413def7833477cf0a0a50ab9697a86d888faaea9cd22",
+      "stableId": "ash-blossom-and-joyous-spring"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Bagooska.png",
+      "sha256": "2dc6c91bfceaa59d9afae1d1a3d2470a127ce08720527d7fca73c94f1d4e559d",
+      "stableId": "bagooska"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Book of Moon.png",
+      "sha256": "93a0b1fb3bc3e4b028c973da83fddef82a5494b0c12947f70b011613b87d75e1",
+      "stableId": "book-of-moon"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Alich.png",
+      "sha256": "3eafcff76848c76cc7bb33392d8cb9dcdc7cf06b1b16c7cf84921d1c8825d23e",
+      "stableId": "burning-abyss-alich"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Barbar.png",
+      "sha256": "a5798878667f7f7fb0b2d00d19f2be59a6a48e8fdcec63d8dd22822ef2f17c7c",
+      "stableId": "burning-abyss-barbar"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Calcab.png",
+      "sha256": "fdfca07173880a116e64671d46d1a097cebc5ce42b5a66862ce5372767bc4e35",
+      "stableId": "burning-abyss-calcab"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Cir.png",
+      "sha256": "599f987112295d0853bce859ef7771852679ef210b32190b436b15e862305232",
+      "stableId": "burning-abyss-cir"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Dante.png",
+      "sha256": "b85400a13e24cd4617a5d36778c5e0b50e4390bd7fc717091ebc5fde39f2db85",
+      "stableId": "burning-abyss-dante"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Draghig.png",
+      "sha256": "9c36c86b8444118a2f4163ea00e1505cc93ff61c2d8fde3085bd89136e8a6682",
+      "stableId": "burning-abyss-draghig"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Farfa.png",
+      "sha256": "afae2152649be31426326871a8198c0e04d3ce2ef811307ae73f02d05ae9d06c",
+      "stableId": "burning-abyss-farfa"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Fire Lake.png",
+      "sha256": "78409106b869dbc67a3174d259205965c2fad38cb062f1c592d98bf32be3f34e",
+      "stableId": "burning-abyss-fire-lake"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Graff.png",
+      "sha256": "440e502f5b10e17e25dc47ecaa6f8eaf276108365e8620c1ec63ec189bc4ffb6",
+      "stableId": "burning-abyss-graff"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Rubic.png",
+      "sha256": "67bd37b7052443e5768b47bab2a06c2ca5ad2c08fe5d2eea160dfb19031a0ce6",
+      "stableId": "burning-abyss-rubic"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Scarm.png",
+      "sha256": "ffc52def2f144bab31bb77a41a4087ef1df4c94be39377b171ff52e9c7b224ea",
+      "stableId": "burning-abyss-scarm"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Traveler.png",
+      "sha256": "5826964eb75ea27512be072128072c0b95fccbc17454c4489f4d88e5a48bbac8",
+      "stableId": "burning-abyss-traveler"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Burning Abyss - Virgil.png",
+      "sha256": "650569dfeb124fb14a3ee43ea4ab19da386fd780f56383191691653db74ddcf5",
+      "stableId": "burning-abyss-virgil"
+    },
+    {
+      "copies": 3,
+      "render": "renders/D.D. Crow.png",
+      "sha256": "0a814a47e74577938060106ec9a5859bb5444ba5dbf0e1067b6196597fd71fb5",
+      "stableId": "d-d-crow"
+    },
+    {
+      "copies": 6,
+      "render": "renders/Daigusto Emeral.png",
+      "sha256": "8a18fe87bb23b1ad969fbfd926881941dae37bcb3fd97782a4410ff70ed69841",
+      "stableId": "daigusto-emeral"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Dark Hole.png",
+      "sha256": "b6142b3a57bfd0a461dd7eb52743462584a46318ee0fcdad519efc1a96a72a98",
+      "stableId": "dark-hole"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Downerd Magician.png",
+      "sha256": "149f3bc9322ecb585f4c0f5d52eaa49e87d5dfa15c03406278e37b1004bcbc5f",
+      "stableId": "downerd-magician"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Effect Veiler.png",
+      "sha256": "92ae9a34dfcf9a8af418ed5c4546065796a0d352e5e95972956054bb10b18970",
+      "stableId": "effect-veiler"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Evilswarm Exciton Knight.png",
+      "sha256": "cba563f4d3a899cffacdc4280ae20c479e84ed4dfe72a895a2292b6b03b712ea",
+      "stableId": "evilswarm-exciton-knight"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Foolish Burial.png",
+      "sha256": "9cbc18bfadc72faf64e4a43d8f28f4a1f90609d8fb3e1127a467d6312f470c40",
+      "stableId": "foolish-burial"
+    },
+    {
+      "copies": 6,
+      "render": "renders/Gagaga Cowboy.png",
+      "sha256": "308a82a7a937924d50ad1351e3042f8a28cfb71abf999ad91312e395aeeddc12",
+      "stableId": "gagaga-cowboy"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Herald of the Arc Light.png",
+      "sha256": "3e6c3a55e6b5241bd78edd8af17d58957670aa3340b67f765702fc020b41f86e",
+      "stableId": "herald-of-the-arc-light"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Karma Cut.png",
+      "sha256": "d7044d305f7c9b5d4e40fcc1fc1848fd22f3664aed3cb11aaab14c49ea90f8ef",
+      "stableId": "karma-cut"
+    },
+    {
+      "copies": 6,
+      "render": "renders/Leviair the Sea Dragon.png",
+      "sha256": "af6ad88682cdb773689b6c2ee28f2ad037452aede1c8f34f6a003a2b0719114b",
+      "stableId": "leviair-the-sea-dragon"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Manju of the Ten Thousand Hands.png",
+      "sha256": "440a1c4424fb17e2e973ba7a7cf7489c1857f0c5170b557eaf391f01a656c229",
+      "stableId": "manju-of-the-ten-thousand-hands"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Maxx \u201cC\u201d.png",
+      "sha256": "128b52acbdead2033128f6a27eb663cb006552c5025287e94c7559ff42da71f1",
+      "stableId": "maxx-c"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Brionac.png",
+      "sha256": "d937578118a71f8bb9d78fa7e3a6347401d15a2f7597957e1c3bad76f536ea35",
+      "stableId": "nekroz-brionac"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Catastor.png",
+      "sha256": "9ff9e91342977ebad403be89b7c92800bcca226decd5cee698a1a6bce67df3b4",
+      "stableId": "nekroz-catastor"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Clausolas.png",
+      "sha256": "cfbe8cbc17cd8425121c02d43445e101199c82f70c7cde472a4d7b9c499f3a1f",
+      "stableId": "nekroz-clausolas"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Cycle.png",
+      "sha256": "335780fcbac30afe565c753a02b7c0696a0d1a3abff5c0e030b96af9d443447e",
+      "stableId": "nekroz-cycle"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Dance Princess.png",
+      "sha256": "9453d20881c433b14b30735422f9612e320f5004ebd19434c8974dda8128003b",
+      "stableId": "nekroz-dance-princess"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Decisive Armor.png",
+      "sha256": "f53c62605025413fa65f8f958d14709fbe276ca1fc2e063bfdd934ad122f9676",
+      "stableId": "nekroz-decisive-armor"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Exa.png",
+      "sha256": "3b29ba205c79736abd1b831121a9a8168d2671c6f7542d0a12faddd6290fffc3",
+      "stableId": "nekroz-exa"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Great Sorcerer.png",
+      "sha256": "5459076f3dbcfc5c2b164bfd7d734b4b90c92a4e22d1633f81006bddb1726a8c",
+      "stableId": "nekroz-great-sorcerer"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Gungnir.png",
+      "sha256": "275ff1274fd9f36899280328b327b737fb566aa0c2fe46c8e216646417b4c241",
+      "stableId": "nekroz-gungnir"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Kaleidoscope.png",
+      "sha256": "6851067b71a58d59b72c5a91e7a4900fc86d6814fc68c45d2db994dccafabebd",
+      "stableId": "nekroz-kaleidoscope"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Mirror.png",
+      "sha256": "5b8e8f5c315d63c71f84b3193d5e896f010f249bbdec0d8bee87ee951094d766",
+      "stableId": "nekroz-mirror"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Shurit.png",
+      "sha256": "4bdc6635b44fce5d44b086af71629abbf13ef75d46ea6abd4f6d1620263a3442",
+      "stableId": "nekroz-shurit"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Trishula.png",
+      "sha256": "5c049e03a68b6bad1121fb2b1ef9527938f945e2766c6a046724a25d7cf70065",
+      "stableId": "nekroz-trishula"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Unicore.png",
+      "sha256": "4dfad1a64915051d659d132a23882f45cb2fd716aaa9e8e54f3e23377caf5c15",
+      "stableId": "nekroz-unicore"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Nekroz - Valkyrus.png",
+      "sha256": "193a88e10d1c1c0933db8b8a3f7b48709fdcfb1294cbb5b55dd1446fdfea68c4",
+      "stableId": "nekroz-valkyrus"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Preparation of Rites.png",
+      "sha256": "3c6f498725249d38ab7ac360ebc3af79ec2fbe3d258c00833e6fb9252ceb2216",
+      "stableId": "preparation-of-rites"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Senju of the Thousand Hands.png",
+      "sha256": "a72adb03f9e988cfa3fd2b4d4f5d58538b94ccb322cc4deeb50d6440b3db5f54",
+      "stableId": "senju-of-the-thousand-hands"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Silent Honor ARK.png",
+      "sha256": "39bdc046441c333f9f5ed8feddc65a40ac32b98901d87c32d54f2998e0f60b95",
+      "stableId": "silent-honor-ark"
+    },
+    {
+      "copies": 6,
+      "render": "renders/Stealth Kragen.png",
+      "sha256": "a509b00bb1cdec5e8cee55e28a72685bbdd436d9094bc47eb0d0beb0b376de15",
+      "stableId": "stealth-kragen"
+    },
+    {
+      "copies": 6,
+      "render": "renders/Tornado Dragon.png",
+      "sha256": "74263f361a38aa681292d0ac621e875f2d310baf1911d802a79c4139f027ec06",
+      "stableId": "tornado-dragon"
+    },
+    {
+      "copies": 3,
+      "render": "renders/Tour Guide From the Underworld.png",
+      "sha256": "9c101a47c00fd5e2c7f9be0722b8bc41f3eb07ff918174b29fecccb0c52edef0",
+      "stableId": "tour-guide-from-the-underworld"
+    }
+  ],
+  "copyRule": "3 copies per distinct card per deck; gameplay quantity ignored",
+  "pages": 19,
+  "pdf": "Legend_of_Alpha_0.1_print.pdf",
+  "schemaVersion": 1,
+  "totalCards": 165
+}

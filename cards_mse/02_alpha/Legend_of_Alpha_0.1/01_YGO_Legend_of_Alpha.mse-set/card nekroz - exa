@@ -1,0 +1,26 @@
+﻿mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: docs/03_nekroz/CONTEXT.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-08-01 01:39:53
+	name: Nekroz - Exa
+	casting_cost: 1U
+	image: mse_images/nekroz-exa-image.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text:
+		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 Dragon Ritual Creature “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”.
+		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Exile</b> — <b>Target</b> 1 other “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature in your Exile; <b>Release</b> the target ignoring the restrictions of Summon.
+	flavor_text: <i-flavor></i-flavor>
+	power: 4
+	toughness: 2
+	card_code_text: 036/050 C
+	card_code_text_2: 036/050 C
+	card_code_text_3: 036/050 C

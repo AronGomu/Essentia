@@ -1,0 +1,22 @@
+﻿mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card effect veiler
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-08-01 01:25:28
+	name: Effect Veiler
+	casting_cost: W
+	image: mse_images/effect-veiler-image.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Tuner Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> Effect <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Veiler</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> and <b>Target</b> 1 Creature; until the end of the turn, the target loses all abilities, and <b>Counter</b> all abilities of the target on the Stack.
+	flavor_text: <i-flavor></i-flavor>
+	power: 0
+	toughness: 1
+	card_code_text: 021/050 C
