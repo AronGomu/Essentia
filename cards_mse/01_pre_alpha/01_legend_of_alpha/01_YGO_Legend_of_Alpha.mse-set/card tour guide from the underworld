@@ -1,11 +1,11 @@
-mse_version: 2.5.8
+﻿mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
 	has_styling: false
-	notes: Source: docs/10_burning_abyss/CONTEXT.md
+	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 16:40:30
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-01 01:52:18
 	name: Tour Guide From the Underworld
 	casting_cost: B
 	image: mse_images/tour-guide-from-the-underworld-image.png
@@ -15,10 +15,10 @@ card:
 	super_type: <word-list-type-en>Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Fiend</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Summon</b> 1 Fiend MV 1 Creature from your Hand or Deck. It loses its abilities on the Field.
+	rule_text: <i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Summon</b> 1 Fiend MV 1 Creature from Hand or Deck. It loses its abilities on the Field.
 	flavor_text: <i-flavor></i-flavor>
 	power: 2
 	toughness: 1
-	card_code_text: 048/048 C
-	card_code_text_2: 048/048 C
-	card_code_text_3: 048/048 C
+	card_code_text: 050/050 C
+	card_code_text_2: 050/050 C
+	card_code_text_3: 050/050 C

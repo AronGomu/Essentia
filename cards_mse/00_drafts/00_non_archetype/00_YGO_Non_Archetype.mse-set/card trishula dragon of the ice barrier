@@ -1,0 +1,30 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-sketch
+	stylesheet_version: 2024-09-01
+	has_styling: false
+	notes: Source: 06_synchro.md
+	time_created: 2026-07-11 12:12:00
+	time_modified: 2026-07-24 13:53:09
+	name: Trishula, Dragon of the Ice Barrier
+	casting_cost: 1UU
+	image: mse_images/synchro/embedded/image3.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Synchro Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: rare
+	rule_text:
+		<i>1 Tuner + 2+ non-Tuner</i>
+		<b>Flying</b>
+		<i-auto>(1 - Triggered)</i-auto> <b>On Enter</b> — <b>Exile</b> up to 1 card from an opponent’s Hand, up to 1 card from their Field, and up to 1 card from their Grave.
+	flavor_text: <i-flavor></i-flavor>
+	power: 5
+	toughness: 4
+	card_code_text: 072/077 R
+	card_code_text_2: 072/077 R
+	card_code_text_3: 072/077 R

@@ -1,0 +1,34 @@
+mse_version: 2.1.2
+card:
+	stylesheet: genevensis-00-main
+	stylesheet_version: 2022-02-22
+	has_styling: false
+	notes: Source: 05_fusion.md
+	time_created: 2026-07-11 12:11:28
+	time_modified: 2026-07-24 13:53:09
+	name: Garura, Wings of Resonant Life
+	casting_cost: 1B
+	image: mse_images/fusion/embedded/image4.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Fusion Creature</word-list-type-en>
+	super_type_2: <word-list-type-en></word-list-type-en>
+	super_type_3: <word-list-type-en></word-list-type-en>
+	super_type_4: <word-list-type-en></word-list-type-en>
+	sub_type: <word-list-race-en>Bird</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: rare
+	rule_text:
+		<i>2 Creatures with the same type and color but different names</i>
+		<b>Flying</b>
+		<i-auto>(1 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Draw</b> 1 card.
+	flavor_text: <i-flavor></i-flavor>
+	power: 3
+	toughness: 4
+	card_code_text: 025/077 R
+	card_code_text_2: 025/077 R
+	card_code_text_3: 025/077 R
+	copyright: 

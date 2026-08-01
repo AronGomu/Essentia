@@ -1,0 +1,29 @@
+mse_version: 2.0.2
+game: magic
+game_version: 2025-06-14
+stylesheet: sevenhalf
+stylesheet_version: 2024-05-30
+set_info:
+	title: Essentia -- Nekroz
+	description: English canonical Nekroz cards for the Essentia cube.
+	artist: DRAFT
+	set_code: YNK
+	set_language: EN
+	symbol: 
+	masterpiece_symbol: 
+	card_language: English
+	automatic_reminder_text: 
+	automatic_copyright: yes
+	automatic_card_numbers: yes
+styling:
+	magic-m15:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay:
+	magic-m15-sketch:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay: 
+	magic-sevenhalf:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+version_control:
+	type: none
+apprentice_code: 

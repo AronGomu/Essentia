@@ -1,0 +1,42 @@
+mse_version: 2.0.2
+game: magic
+game_version: 2025-06-14
+stylesheet: sevenhalf
+stylesheet_version: 2024-05-30
+set_info:
+	title: Essentia -- Spellbook
+	description: English canonical Spellbook cards for the Essentia cube.
+	artist: DRAFT
+	set_code: YSB
+	set_language: EN
+	symbol: 
+	masterpiece_symbol: 
+	card_language: English
+	automatic_reminder_text: 
+	automatic_copyright: yes
+	automatic_card_numbers: yes
+styling:
+	magic-m15:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+		overlay:
+	magic-sevenhalf:
+		text_box_mana_symbols: magic-mana-small.mse-symbol-font
+include_file: card high priestess of prophecy
+include_file: card justice of prophecy
+include_file: card spellbook library of the crescent
+include_file: card spellbook magician of prophecy
+include_file: card spellbook of eternity
+include_file: card spellbook of fate
+include_file: card spellbook of judgment
+include_file: card spellbook of knowledge
+include_file: card spellbook of life
+include_file: card spellbook of miracles
+include_file: card spellbook of power
+include_file: card spellbook of secrets
+include_file: card spellbook of the master
+include_file: card spellbook of wisdom
+include_file: card spellbook star hall
+include_file: card the grand spellbook tower
+version_control:
+	type: none
+apprentice_code: 

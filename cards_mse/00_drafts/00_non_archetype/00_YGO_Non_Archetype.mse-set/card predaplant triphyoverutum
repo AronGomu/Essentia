@@ -1,0 +1,31 @@
+mse_version: 2.1.2
+card:
+	stylesheet: genevensis-00-main
+	stylesheet_version: 2022-02-22
+	has_styling: false
+	notes: Source: 05_fusion.md
+	time_created: 2026-07-11 16:45:00
+	time_modified: 2026-07-24 13:53:09
+	name: Predaplant Triphyoverutum
+	casting_cost: 1BG
+	image: mse_images/fusion/embedded/image10.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Fusion Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Plant</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: rare
+	rule_text:
+		<i>3 black Creatures</i>
+		<i-auto>(1 - Static)</i-auto> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Triphyoverutum</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” gains +1/+1 for each Creature with a Predator counter.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Target</b> 1 Creature Spell cast from Sideboard; <b>Counter</b> it.
+	flavor_text: <i-flavor></i-flavor>
+	power: 6
+	toughness: 6
+	card_code_text: 049/077 R
+	card_code_text_2: 049/077 R
+	card_code_text_3: 049/077 R
+	copyright: 

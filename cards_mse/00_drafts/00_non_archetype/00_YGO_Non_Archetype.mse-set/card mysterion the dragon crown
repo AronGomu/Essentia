@@ -1,0 +1,30 @@
+mse_version: 2.1.2
+card:
+	stylesheet: genevensis-00-main
+	stylesheet_version: 2022-02-22
+	has_styling: false
+	notes: Source: 05_fusion.md
+	time_created: 2026-07-11 12:11:29
+	time_modified: 2026-07-24 13:53:09
+	name: Mysterion the Dragon Crown
+	casting_cost: W
+	image: mse_images/fusion/embedded/image7.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Fusion Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: rare
+	rule_text:
+		<i>1 Wizard + 1 Dragon</i>
+		<i-auto>(1 - Triggered Soft)</i-auto> If your opponent activates a Creature’s summon ability, <b>Counter</b> that ability, then <b>Exile</b> that Creature and all Creatures of the same type from your opponent’s Field.
+	flavor_text: <i-flavor></i-flavor>
+	power: 6
+	toughness: 3
+	card_code_text: 044/077 R
+	card_code_text_2: 044/077 R
+	card_code_text_3: 044/077 R
+	copyright: 

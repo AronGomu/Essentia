@@ -1,9 +1,9 @@
-mse_version: 2.5.8
+﻿mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
 	has_styling: false
-	notes: Source: cards_mse/00_drafts/09_non_archetype_non_creatures/09_YGO_Non_Archetype_Non_Creatures.mse-set/card dark hole
+	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card dark hole
 	time_created: 2026-07-10 23:49:32
 	time_modified: 2026-07-24 17:10:45
 	name: Dark Hole
@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Destroy</b> all Creatures.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 017/048 C
-	card_code_text_2: 017/048 C
-	card_code_text_3: 017/048 C
+	card_code_text: 019/050 C
+	card_code_text_2: 019/050 C
+	card_code_text_3: 019/050 C

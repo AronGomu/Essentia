@@ -1,0 +1,22 @@
+mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: 09_non_archetype_non_creature.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-24 17:10:50
+	name: Super Polymerization
+	casting_cost: B/R
+	image: mse_images/noncreatures/imported/image18.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Fusion Summon Instant</word-list-type-en>
+	sub_type: <word-list-spell></word-list-spell>
+	rarity: common
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Discard</b> 1 card; <b>Fusion Summon</b> 1 Fusion Creature using Creatures on the Field controlled by any player as materials.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 063/077 C
+	card_code_text_2: 063/077 C
+	card_code_text_3: 063/077 C

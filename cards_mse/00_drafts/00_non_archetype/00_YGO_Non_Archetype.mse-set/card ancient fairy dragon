@@ -1,0 +1,28 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-sketch
+	stylesheet_version: 2024-09-01
+	has_styling: false
+	notes: Source: 06_synchro.md
+	time_created: 2026-07-11 16:45:00
+	time_modified: 2026-07-24 13:53:09
+	name: Ancient Fairy Dragon
+	casting_cost: 1GW
+	image: mse_images/synchro/embedded/image1.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Synchro Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: rare
+	rule_text:
+		<i>1 Tuner + 1+ non-Tuner</i>
+		<b>Flying</b>
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Hand Summon</b> 1 Creature <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1 or less.
+		<i-auto>(2 - Activated Sorcery Soft)</i-auto> <b>Destroy</b> all enchantments you control. Gain 3 life, then <b>Search</b> 1 enchantment with a name different from those destroyed this way.
+	flavor_text: <i-flavor></i-flavor>
+	power: 4
+	toughness: 6
+	card_code_text: 004/077 R
+	card_code_text_2: 004/077 R
+	card_code_text_3: 004/077 R

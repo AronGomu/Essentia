@@ -1,0 +1,31 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-sketch
+	stylesheet_version: 2024-09-01
+	has_styling: false
+	notes: Source: 06_synchro.md
+	time_created: 2026-07-11 12:11:48
+	time_modified: 2026-07-24 13:53:09
+	name: Chaos Angel
+	casting_cost: 2WB
+	image: mse_images/synchro/imported/image6.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Synchro Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Fiend</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: rare
+	rule_text:
+		<i>1 Tuner + 1+ white or black non-Tuner</i>
+		<i-auto>(1 - Triggered)</i-auto> <b>On Enter</b> — <b>Target</b> 1 nonland permanent; <b>Exile</b> it.
+		<i-auto>(2 - Static)</i-auto> If 1 black material was used, Chaos Angel gains <b><kw-a>Indestructible</kw-a></b>. If 1 white material was used, it gains <b>Protection from everything</b>.
+	flavor_text: <i-flavor></i-flavor>
+	power: 7
+	toughness: 5
+	card_code_text: 014/077 R
+	card_code_text_2: 014/077 R
+	card_code_text_3: 014/077 R
+	copyright: 

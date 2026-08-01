@@ -1,11 +1,11 @@
-mse_version: 2.5.8
+﻿mse_version: 2.1.2
 card:
 	stylesheet: m15-spellbook
 	stylesheet_version: 2024-09-01
 	has_styling: false
-	notes: Source: cards_mse/00_drafts/07_xyz_staples/07_YGO_Staples_Xyz.mse-set/card silent honor ark
+	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card silent honor ark
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-01 01:50:09
 	name: Silent Honor ARK
 	casting_cost: U
 	image: mse_images/silent-honor-ark-image.png
@@ -22,6 +22,6 @@ card:
 	flavor_text: <i-flavor></i-flavor>
 	power: 2
 	toughness: 1
-	card_code_text: 045/048 R
-	card_code_text_2: 045/048 R
-	card_code_text_3: 045/048 R
+	card_code_text: 047/050 R
+	card_code_text_2: 047/050 R
+	card_code_text_3: 047/050 R

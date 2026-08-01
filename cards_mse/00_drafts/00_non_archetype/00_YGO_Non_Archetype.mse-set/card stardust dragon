@@ -1,0 +1,31 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-sketch
+	stylesheet_version: 2024-09-01
+	has_styling: false
+	notes: Source: 06_synchro.md
+	time_created: 2026-07-11 12:11:57
+	time_modified: 2026-07-24 13:53:09
+	name: Stardust Dragon
+	casting_cost: 1GW
+	image: mse_images/synchro/imported/image12.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Synchro Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: rare
+	rule_text:
+		<i>1 Tuner + 1+ non-Tuner</i>
+		<b>Flying</b>
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Sacrifice</b> Stardust Dragon and <b>Target</b> 1 Spell or ability that would <b>Destroy</b> 1 or more cards; <b>Negate & Destroy</b>. At the start of the next end step, <b>Reanimate</b> this card.
+	flavor_text: <i-flavor></i-flavor>
+	power: 5
+	toughness: 4
+	card_code_text: 060/077 R
+	card_code_text_2: 060/077 R
+	card_code_text_3: 060/077 R
+	copyright: 

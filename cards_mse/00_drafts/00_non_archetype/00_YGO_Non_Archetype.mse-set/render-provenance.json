@@ -1,0 +1,957 @@
+{
+  "schemaVersion": 2,
+  "project": "00_YGO_Non_Archetype.mse-set",
+  "exportedAt": "2026-07-31T22:13:18.339745Z",
+  "mse": {
+    "version": "2.0.2",
+    "game": "magic",
+    "stylesheet": "sevenhalf",
+    "cli": "magicseteditor"
+  },
+  "renderTransform": {
+    "id": "transparent-white-corners",
+    "version": 1
+  },
+  "cards": [
+    {
+      "id": "card accesscode talker",
+      "name": "Accesscode Talker",
+      "manifestIndex": 0,
+      "sourceHash": "f5e6813f475cc1b22ea7a790e33fb53e6b4829f17d94ca8b6864dad6d7829c91",
+      "artworkHash": "9a278b38cee3278bce869afc8a36b73b5ba38e66eafb7b578b31517e163d3da6",
+      "render": "Accesscode Talker.png",
+      "renderHash": "fdf10f2b1e48073a72e5362fbb758ff8c14ad21b74d6f7aea3bd0dc57c2db4bc",
+      "renderPixelHash": "be6422179e678e1df66cd3722c32a0526420e072d2f256d54db42dc1ac44a6d4"
+    },
+    {
+      "id": "card allure of darkness",
+      "name": "Allure of Darkness",
+      "manifestIndex": 1,
+      "sourceHash": "cbb744ca2015ba5bb11a1a5625120a454b95269e869af3b6be99cf61f69dcd62",
+      "artworkHash": "425b0bf6a09b708c4a8a2ba7553c01e3ec45899544a3088c92946356bb96aaea",
+      "render": "Allure of Darkness.png",
+      "renderHash": "025739969a941d986a511e72ee96afd827563e3342712e9ee61d584540ceaa26",
+      "renderPixelHash": "f4e820a7bf87bd3c6fb252a91cb53f23ed9fab08360cc58f98899a0783df7d34"
+    },
+    {
+      "id": "card ancient fairy dragon",
+      "name": "Ancient Fairy Dragon",
+      "manifestIndex": 2,
+      "sourceHash": "4375c534c754dd5b8067a665c42beb97c6ca786829e9d255dd1b1dcd96c9dd79",
+      "artworkHash": "f381990dde3347e654b31723453cd5201351576f946e9fb23eb2b3218fbede53",
+      "render": "Ancient Fairy Dragon.png",
+      "renderHash": "10ec515c4f8a40b7850b92a338c0c1337195e7908636718cc25e2cd022d72bb5",
+      "renderPixelHash": "593481327aade89c0f83120672ea8520dbcad7182df0774654c4cbce7565279a"
+    },
+    {
+      "id": "card apollousa bow of the goddess",
+      "name": "Apollousa, Bow of the Goddess",
+      "manifestIndex": 3,
+      "sourceHash": "9545871796998702472d6fe9b3ca2e9e436ef05d1e870f9d07d46de4729f9270",
+      "artworkHash": "5abde06d6f7713d0d5683d0afb8c1499d5f68625bcc88030d928f728281c06e3",
+      "render": "Apollousa, Bow of the Goddess.png",
+      "renderHash": "809dcf635d37862037dbc5d623c83c59503ac6d3efdf145cddb05dc0eaffd077",
+      "renderPixelHash": "8f55fd9611e6b94d9d0d13b919b252cff6b8c056be1d70abbda5b47b199a04aa"
+    },
+    {
+      "id": "card ash blossom  joyous spring",
+      "name": "Ash Blossom & Joyous Spring",
+      "manifestIndex": 4,
+      "sourceHash": "feb701179895d480dcd1e00f35f420e5343460962f93d717957bbe05e52e1a13",
+      "artworkHash": "a4939540888accb70b8f97995971f3b94d6887218439a5879daed7dd7501c21e",
+      "render": "Ash Blossom & Joyous Spring.png",
+      "renderHash": "6cc21423850d8f554f8fac91f4ef20733489a75fde0907a47277d717a2e3ea3f",
+      "renderPixelHash": "eb9d3f88d893222d5779382cc40ba3979296e62ac2b8c085809cf057a67fad0a"
+    },
+    {
+      "id": "card bagooska",
+      "name": "Bagooska",
+      "manifestIndex": 5,
+      "sourceHash": "34f425cb6005dcc2d00577fb981194c015ba2ed2755742f2a107d25720eab2a0",
+      "artworkHash": "828346b362f381ad54cd852b3980a4437481d736a84d2b61a43c9be91a0a1c9a",
+      "render": "Bagooska.png",
+      "renderHash": "8df02aaadb0837a57ad740ac597b7d864c2fb86d011ccffc3ac30fdf9d56300d",
+      "renderPixelHash": "ae0aaf1a82e1c48252266ec77fb5f72e79b4253e5e031db3c766d303d51f6f28"
+    },
+    {
+      "id": "card bamboozling gossip shadow",
+      "name": "Bamboozling Gossip Shadow",
+      "manifestIndex": 6,
+      "sourceHash": "d14d30efdbf5953ef51f2f3d2416ef9ffee9e5e087913481c795e4e230fee658",
+      "artworkHash": "deff31b7afc9c8c06b653b1de205799a66e22cb05245b7f919624c248bb3f384",
+      "render": "Bamboozling Gossip Shadow.png",
+      "renderHash": "158744b0c7f10b2286df207724d40264456e942a6ce0bd90c00082839c246ab0",
+      "renderPixelHash": "58b87bacba019c46d63a6c49377e9f07f16cb940d5ae67f3457b1d0bc83805c6"
+    },
+    {
+      "id": "card big eye",
+      "name": "Big Eye",
+      "manifestIndex": 7,
+      "sourceHash": "34938ffac45f0d40660cc3f1af8b17ba92e5d6872015f1ccbe11a7132fb70800",
+      "artworkHash": "681ce815b7111280d4d614a20cc87ffc85b1137594c11c6561705fb208613698",
+      "render": "Big Eye.png",
+      "renderHash": "a29072138a4c572d1c98a15ecd90645ac25b52e43539d5503949bcb49c4c3dff",
+      "renderPixelHash": "ba804707b1efc4957fbd6cdc22b48196c81f6317333670fa47ef5e4e4e2c2a31"
+    },
+    {
+      "id": "card black rose dragon",
+      "name": "Black Rose Dragon",
+      "manifestIndex": 8,
+      "sourceHash": "116a2e0b3478804166985bdf4388c9078514ee5a989b7067b4434d7850df6bd7",
+      "artworkHash": "1c94e8819e6d36118969e7a537fa10ab7de0ed5496e92896593e6e4f2128bafb",
+      "render": "Black Rose Dragon.png",
+      "renderHash": "48e5d909f42f1c341e435d33569b3755c9faf220e0f957c361b8f2c4d2756941",
+      "renderPixelHash": "2c7986071735fff7fcabe366e356e25ed4042b3e3b5bd4746f16585dab7ae637"
+    },
+    {
+      "id": "card black rose moonlight dragon",
+      "name": "Black Rose Moonlight Dragon",
+      "manifestIndex": 9,
+      "sourceHash": "f5ba77cb3d7f5c73fcef05b8b2b4ee1e658c671ee3235654bf8abbfd62c12baf",
+      "artworkHash": "a348f19d7ac47e077a026aede428bf5d9347d32fd37e96c68814edcc563e29a2",
+      "render": "Black Rose Moonlight Dragon.png",
+      "renderHash": "ee1ca06f54fd6fbde0c4d761f222bc49462bac8ac29cbc73792c764345ad0e66",
+      "renderPixelHash": "dcf7b909bbb2847faceda2d90a0e5699e0b103fe87424e5badd324a9b601915a"
+    },
+    {
+      "id": "card book of eclipse",
+      "name": "Book of Eclipse",
+      "manifestIndex": 10,
+      "sourceHash": "2441ac063b90020e044c31135d9321a93116079404be5723c0de65718d0feb73",
+      "artworkHash": "45a4322555e007cfa10a4de7e4ac2295f0fdcd1f372c8c5fdb42274a118ec91d",
+      "render": "Book of Eclipse.png",
+      "renderHash": "b412b99cfaaeb0286066ed19e90e9528069d499d51789aa4c041c4ec0a3f72a6",
+      "renderPixelHash": "2f1c4018f5e91b96ea34ce4b87ee0fc3bfafcd2d51d772e0f36d7d65beb69cab"
+    },
+    {
+      "id": "card book of moon",
+      "name": "Book of Moon",
+      "manifestIndex": 11,
+      "sourceHash": "325acb05cb82233ab4c4bbdb9197e117d86108593311fd02346ba1366b3a5cc0",
+      "artworkHash": "9dfbf94163949aecf8349611cbb16884a6cb9776b9cba2597a898d94949b1ca6",
+      "render": "Book of Moon.png",
+      "renderHash": "990945c21f3e71e19636daf7b0a61dd2bd706271b20b3412249a49151fa67b3d",
+      "renderPixelHash": "89662d7ca575b37ff204a06b14d153e987ffd9e3354d68ecd1a4c901b6d1e581"
+    },
+    {
+      "id": "card borrelsword dragon",
+      "name": "Borrelsword Dragon",
+      "manifestIndex": 12,
+      "sourceHash": "353faea2afba74c6096afc238387a65a5c1f472a8118fb14860f9d02e5b6e46c",
+      "artworkHash": "bdc50759d6b4f352d14fa4b212e3180fe20b55ffc29431c7684d5f53a39d60aa",
+      "render": "Borrelsword Dragon.png",
+      "renderHash": "8c8c8d45a38c87fcd1c76258feb91b2fc8426b871c4f00b16c8f3322ac49e075",
+      "renderPixelHash": "1f2f586fd3d87cf9a24fac85be7ce3fdffa21835c5719f4366860ae51be56137"
+    },
+    {
+      "id": "card breakthrough skill",
+      "name": "Breakthrough Skill",
+      "manifestIndex": 13,
+      "sourceHash": "ca1a56df6277c6f6598dda38353d2b0c3902771cfdcf1993751b680420f5dc8b",
+      "artworkHash": "40aef5d47afb16f25fc9e9aede538f302a587871549a0308d1101ba5066209e4",
+      "render": "Breakthrough Skill.png",
+      "renderHash": "d542a4991d6bdffa66b7dd3ff4dce547e16731e0ec2531f772cbb1feac9a2572",
+      "renderPixelHash": "a2e4f0c409b5a29b45bec7813ffab4dce2f22f51ba64237a1d76c74af660f0e2"
+    },
+    {
+      "id": "card brionac dragon of the ice barrier",
+      "name": "Brionac, Dragon of the Ice Barrier",
+      "manifestIndex": 14,
+      "sourceHash": "c08c267f4321d406b5937e39ed60db82ff911787e1e7dcf63d0ed5cc8bbc6cae",
+      "artworkHash": "5e08ea8dbd6d58d8aa17371e478bb61a1b3b9617405e04d7c99fbfc8bc59eafc",
+      "render": "Brionac, Dragon of the Ice Barrier.png",
+      "renderHash": "5c718031d2aa9e6a17fc6e664737dadd47cbd9eb4c9501ae099a6c3b34bc0b35",
+      "renderPixelHash": "6b039a65674fc02807aac132145a8cf495cc4386a423bab0cad3d7b8ae1b10b5"
+    },
+    {
+      "id": "card chaos angel",
+      "name": "Chaos Angel",
+      "manifestIndex": 15,
+      "sourceHash": "af53b1d0d7d9b7e738022510f3fbbd8e1480a7ed4badf7aeddc9519ab766fe7a",
+      "artworkHash": "4ef44d615da7816d0f4a20ebe5f0f2451b0fefa72b13c63970f7843224034086",
+      "render": "Chaos Angel.png",
+      "renderHash": "4507fe7205a7406e22badb266c64cc90e575ead90a51a9bcec6997ec8d62af2c",
+      "renderPixelHash": "bbf78f3d597c26e164d707ff88d2726e74d7e54a5b72d751da1b3dc031007327"
+    },
+    {
+      "id": "card compulsory evacuation device",
+      "name": "Compulsory Evacuation Device",
+      "manifestIndex": 16,
+      "sourceHash": "b6ee6fe45bcd056b5917cd9b1a6d0872a7ead3f3ab651b3451bc17e982dbb544",
+      "artworkHash": "ea7cd7450396fefb3c999b9bc4b1556b636399809ded224d8f1674989828cda6",
+      "render": "Compulsory Evacuation Device.png",
+      "renderHash": "73626d8a1ce60171ff293e8bfc1db4f560219fd2bd03a5e57a3c0fa66240d759",
+      "renderPixelHash": "0f515ac1937ab7548c01ca6a918e1934c6de530bfa8ce547fd3bc915604c70c1"
+    },
+    {
+      "id": "card constellar pleiades",
+      "name": "Constellar Pleiades",
+      "manifestIndex": 17,
+      "sourceHash": "339b0b94cd29d918f18c1a7079c13ee64ca5311e8d0a6dae826cc0b8e423ac1c",
+      "artworkHash": "45be316ae447ceff24ba131252a0e325aaac972df6c549364bddddb211c29b31",
+      "render": "Constellar Pleiades.png",
+      "renderHash": "930e4142142a4b13a84516ac7e644771e3dc74f08b1db912d2a6a0d368d10ee1",
+      "renderPixelHash": "74b87d7c0110dd1358910f5b3da58530a0bce13d69fbb9d5ba9e2d2122a0a070"
+    },
+    {
+      "id": "card coordius the triphasic dealmon",
+      "name": "Coordius the Triphasic Dealmon",
+      "manifestIndex": 18,
+      "sourceHash": "94193ed88c54b89d5ebb096c2b6120e40f8c9c663d520f4c345606fb1d447fc1",
+      "artworkHash": "97d2912eb6992e44e496b1340d17ea5ee01e34311ee914fa40547366260d0129",
+      "render": "Coordius the Triphasic Dealmon.png",
+      "renderHash": "bced6ddb58a1c24fe0b4365e5fc9967675dc2cb2cd985f9a25c597981bc49b4f",
+      "renderPixelHash": "1effea8f87b2c3e1eba70701c443641a449cf7f3597531dd83cdbed76e0a26aa"
+    },
+    {
+      "id": "card coral dragon",
+      "name": "Coral Dragon",
+      "manifestIndex": 19,
+      "sourceHash": "c8c4f99eddec867ef5cb2a38786bae2855bce57ce68241ac027f1c2123f550a7",
+      "artworkHash": "6cf44d058942df63f0b041c34f0b28a767da6e265003f103c0a47df99cde3000",
+      "render": "Coral Dragon.png",
+      "renderHash": "f2a8edd77abed3fa0182e19a1e8b617021a1d7b2c21a2517321f2d2aea74d180",
+      "renderPixelHash": "5fac1926a1ac0c1d34f5b073ba0f63858d52f4b671d426a111f1b760fe806a13"
+    },
+    {
+      "id": "card cross sheep",
+      "name": "Cross-Sheep",
+      "manifestIndex": 20,
+      "sourceHash": "04b83ffd0ff7aaf11beddcecac99037de7b98901c00bda84a811d3e22182bc3a",
+      "artworkHash": "6f7be5401f65d433edf3f402b3edbceb019399c3074667e3f01c7f50f819ffab",
+      "render": "Cross-Sheep.png",
+      "renderHash": "718234a9cc09ce2e1faee8cf43cfbcac603c9ee6b2335c649ff69a2a3a6ee67f",
+      "renderPixelHash": "86f156380386cb84a87e4f2051271cd1dd54a0b87a62c00f444c5e76fc0d309b"
+    },
+    {
+      "id": "card crystron halqifibrax",
+      "name": "Crystron Halqifibrax",
+      "manifestIndex": 21,
+      "sourceHash": "74aeb17c2a0f42d2690e2fe94ad02b67179ff600d628acf03f4a65c61a1d3d02",
+      "artworkHash": "1449c962d89086e60888d4964e5ff316ee5876869f6b20fa96c95efb7f918cec",
+      "render": "Crystron Halqifibrax.png",
+      "renderHash": "fa6015424fd7e9810625064cd2d32317a093860b3a6dd4e989b8b16852f39e3e",
+      "renderPixelHash": "127fd29823be9ae9351013c9be89af0edaac649bbb5b01dbda98e90f45964a96"
+    },
+    {
+      "id": "card d.d. crow",
+      "name": "D.D. Crow",
+      "manifestIndex": 22,
+      "sourceHash": "a30760ae688e36ecdbd0b755008e2d8f38daf25d402121b94a78ba0ffae9a5eb",
+      "artworkHash": "16eb9d1dccb00af641876e0952e8d658772337fd308f016c5b66999440161795",
+      "render": "D.D. Crow.png",
+      "renderHash": "9fe733ac2cd7bd86ee28d422d9585d14f5e6addeb4048689f1e4a811b56d7e97",
+      "renderPixelHash": "eac7a6cbdb989c9f937c3fbfde21004dc2d943e530d868126cea3f47043647ad"
+    },
+    {
+      "id": "card daigusto emeral",
+      "name": "Daigusto Emeral",
+      "manifestIndex": 23,
+      "sourceHash": "29939f22ceb2f627afe0cdfe90414db33cb5635f294b86caf2cec5794951ec79",
+      "artworkHash": "7a60903244521e66d2c7dafacf8d1733cc09a98bc10c6e2c9130d4b9dc6bd89f",
+      "render": "Daigusto Emeral.png",
+      "renderHash": "708667b86fab51d119266fddd2a81da50e51739bbc71f1c951b2c133c810f2a4",
+      "renderPixelHash": "79049115acaa710c7860abe426d58f7a774e684e96b17d5f362599f700691051"
+    },
+    {
+      "id": "card dark hole",
+      "name": "Dark Hole",
+      "manifestIndex": 24,
+      "sourceHash": "4daf791329fb8f4ead5243bc1679de95099f9c9b4afa0d075e7e6836b3639a42",
+      "artworkHash": "a0484e4864278ce4d6f723ee41ef234b5503cebd01a0e53cff4c216e5689e686",
+      "render": "Dark Hole.png",
+      "renderHash": "c5cfa535248ecf3634b5c533a57c264f8cbaa440419c0bafb07ee13ef9bb15d1",
+      "renderPixelHash": "743a571f31cfe8af68eae595dd36a2b4c5db1ba322c195bfdc2fe013b453239f"
+    },
+    {
+      "id": "card dharc the dark charmer gloomy",
+      "name": "Dharc the Dark Charmer, Gloomy",
+      "manifestIndex": 25,
+      "sourceHash": "ee539b011003dda932293b6e40f68b0d0ad791f714655694f205a11fe219e9c2",
+      "artworkHash": "055cc365f5e94b7c9f35e727e9d28054883a075fd6ac84c091c4a5903aa1fc5b",
+      "render": "Dharc the Dark Charmer, Gloomy.png",
+      "renderHash": "c91525f3bcecb3ffb661c7bf7d1f59f49e672fd70d6c7f313bd223030302624d",
+      "renderPixelHash": "4acd546207b750f7c120ac406fc44bec957510aff49d6da666797b291b9e55a4"
+    },
+    {
+      "id": "card downerd magician",
+      "name": "Downerd Magician",
+      "manifestIndex": 26,
+      "sourceHash": "8875e2746a0d8884a0d07f28430958222233ad9495868c7f9b57c12157ff2737",
+      "artworkHash": "86cd4e284b024748ce20b990887ad29f9eef12ebb1bb53d7cc8c7561563a5dd7",
+      "render": "Downerd Magician.png",
+      "renderHash": "b490ac27cfe8dff1c704fbe6e2980a0276d3e2c1fa7828441e2c4f5e2b68fbf7",
+      "renderPixelHash": "b05399f0b9dfa875fa091521ecbb0fb213cc3439157576cb31ac23b45628050e"
+    },
+    {
+      "id": "card dugares the timeless",
+      "name": "Dugares the Timeless",
+      "manifestIndex": 27,
+      "sourceHash": "0518bbf639b776e634730e71a0e4064d3903f2ef31d67cc73f2693b2847dfba6",
+      "artworkHash": "c8bc3e19442ed421d19ed337abcf8fbd1ae54e4739b3a7eb53360e33b4a2e2c3",
+      "render": "Dugares the Timeless.png",
+      "renderHash": "9d8c405dd4620dc66fd779ed9755fbd6cbefaa220ad4d87d7aa4d3df8761bd85",
+      "renderPixelHash": "af71f18dedc5cadc3df082d41ab93ba3bc206cb5ee1abeb1253df26aecccfb54"
+    },
+    {
+      "id": "card effect veiler",
+      "name": "Effect Veiler",
+      "manifestIndex": 28,
+      "sourceHash": "5d1928388e949d37321bb5a127f3daa956927d4787ad9681667dd65d1ede35ff",
+      "artworkHash": "efa5fa3d8a4d3114e91099f0cc23efa8e4e1c69ec4da03f15dc7de4964b2834b",
+      "render": "Effect Veiler.png",
+      "renderHash": "5a24e5e90c53ea7eadb992cb0aed75ff4c368d5a7de23f171632937f0a3df63c",
+      "renderPixelHash": "77f9f534bd05fdb6d8a72b8743677a6f4cd44a70bff2a03285874e552b936c55"
+    },
+    {
+      "id": "card elder entity ntss",
+      "name": "Elder Entity N'tss",
+      "manifestIndex": 29,
+      "sourceHash": "4ecd4b9723afe3484bd2735b33faf39c5057eaa290a86fad5bc41dfdeafaf341",
+      "artworkHash": "cfcbca842a33c28134a7ef405381d32a7cf693831dad682c2b9bba7c27d48479",
+      "render": "Elder Entity N'tss.png",
+      "renderHash": "fc9a0bba23bbd94da41cef916613c2d55f7ff05f5876f7222f58c7a292fbf406",
+      "renderPixelHash": "e9f018622dd52bcce5f65953c47563b27f1a7c13c4abb8f7e418c27523db6f2d"
+    },
+    {
+      "id": "card evilswarm exciton knight",
+      "name": "Evilswarm Exciton Knight",
+      "manifestIndex": 30,
+      "sourceHash": "37a14bdc78cd5768f41483b37ac538fa76b4dead0f0adb4b1249342962f7f905",
+      "artworkHash": "74b1a49182896cbd720ee644b210826a0d013dd30b1bd75cddf722064f210239",
+      "render": "Evilswarm Exciton Knight.png",
+      "renderHash": "07cd830c7d1439bda4ebb801413f1bbfc167adcd39b9057fcdf517c7f0634855",
+      "renderPixelHash": "4b4758571881757cc1961c2ac8d3b8bb0b12da46dc38f7fa7623e190c485f04c"
+    },
+    {
+      "id": "card foolish burial",
+      "name": "Foolish Burial",
+      "manifestIndex": 31,
+      "sourceHash": "ed8642dffde055a3731353e3463d93606361e71a130b093343b70ad8ca1f0730",
+      "artworkHash": "b09bcb372d979ed5c28be57388900ddf65a345e3e92f34fee04c6ca58e510d11",
+      "render": "Foolish Burial.png",
+      "renderHash": "67b588d118bf58c7a138d394f7b5d0b2644e4d9758a077f8ff6d672ca52de61f",
+      "renderPixelHash": "7316afcf7ba7d384712bcd5fa0e0570ba0d42e35a1ccedbc92af923611581fea"
+    },
+    {
+      "id": "card formula synchron",
+      "name": "Formula Synchron",
+      "manifestIndex": 32,
+      "sourceHash": "c2b3b7364790229a25063a538da90f2211dea600571d57839627f1b321121378",
+      "artworkHash": "087df47073b09f0ef0e2ba72615f5b6532865c265b4a3f1085d4ac8aa0c5284e",
+      "render": "Formula Synchron.png",
+      "renderHash": "b961a697f879d822336179c6f940d5ce39b59a309b434882c6136c9c89b7ec63",
+      "renderPixelHash": "40c81de1f00713c4dc7bfe78a0de78656503c899781057f20e8126a70a6371a4"
+    },
+    {
+      "id": "card gagaga cowboy",
+      "name": "Gagaga Cowboy",
+      "manifestIndex": 33,
+      "sourceHash": "3e8b42583e6ab03f41e57600d96af4223ac3c712d3913562fb5b22bc996fe186",
+      "artworkHash": "5af383d0f009853b4a2a5eca9a4b9e7138b20b817c98ceca904702c9c7d87e87",
+      "render": "Gagaga Cowboy.png",
+      "renderHash": "769ec3f8c16ee72891823a507e7ed134c973c656ac5db1233666cc0ddf69e51e",
+      "renderPixelHash": "677666e553cb8e1dfb6dec2f0b76f9e4de2b04a1192e99df618b431714db5f00"
+    },
+    {
+      "id": "card garura wings of resonant life",
+      "name": "Garura, Wings of Resonant Life",
+      "manifestIndex": 34,
+      "sourceHash": "13409e9501b083977c7a163026d525ff7215681ad5fa722b59674932e98fdf78",
+      "artworkHash": "a904c13b06ec24764320b39261938fb74ab990a6dbafd96b4321e7442c59c79a",
+      "render": "Garura, Wings of Resonant Life.png",
+      "renderHash": "70b33d4b1941eee69b437c7bf950cc2dfcfebd3854a02d2714e43502ec20afa4",
+      "renderPixelHash": "cbf8c29e426b1180d2801acba7a466fa9586af44d3122274b47ae1a7098eb6a2"
+    },
+    {
+      "id": "card goyo guardian",
+      "name": "Goyo Guardian",
+      "manifestIndex": 35,
+      "sourceHash": "ed1efdcbfaf24ad25ab3dcd92daeda150e9d4c79306b9e148ab889af86836a3d",
+      "artworkHash": "87896a57596274c42be3c42250dbd066de9893f244312af0979ec698b0c51715",
+      "render": "Goyo Guardian.png",
+      "renderHash": "9f130b1dc68925d0a16195ee201d7439ecab289fc2c6cbcb5673009aaf0f66f8",
+      "renderPixelHash": "346d6f847c3a2a7c357988842cf1dc556bad55cd5633be8996062cb6adf7d99d"
+    },
+    {
+      "id": "card guardian chimera",
+      "name": "Guardian Chimera",
+      "manifestIndex": 36,
+      "sourceHash": "2dc8229c483a4ec712c2b58e2bd54e0dacf3630a2a5032540f8ed3814257f530",
+      "artworkHash": "6fab34a9864fce9fa6889bfc92130877b044143aec6e3fcad34ba10f647f7871",
+      "render": "Guardian Chimera.png",
+      "renderHash": "608387a9d5a5e382d71a28e3b203571bf237b89ca47d815922e42fafbe89c62a",
+      "renderPixelHash": "dae248fd193c71f088b6fbdc9e53a5be951906576e5ad6f18b308f6c610eb6a7"
+    },
+    {
+      "id": "card heavymetalfoes electrumite",
+      "name": "Heavymetalfoes Electrumite",
+      "manifestIndex": 37,
+      "sourceHash": "1f1ddc788044b73023de212784aa4db1f9307b6afb9e8f3054be00be9b301f11",
+      "artworkHash": "6b8258193f7ff59fcd0298f357b8e6e5f8abe19bbcae2dac87c7421b51cb8039",
+      "render": "Heavymetalfoes Electrumite.png",
+      "renderHash": "df59c788168b267652a3bd107a1f368d347b95c718c5bf578e2a60ac16cf876e",
+      "renderPixelHash": "4f67a11578da7e45a335b579553948c026b3629a2329b4c1a7aeeea844580f15"
+    },
+    {
+      "id": "card herald of the arc light",
+      "name": "Herald of the Arc Light",
+      "manifestIndex": 38,
+      "sourceHash": "778871be57f15e5eaf66ebd57c7d125060bd8261e773a31001cb490fd11e4488",
+      "artworkHash": "95805c4fda8d933d7d132f2355b8cc78dff1e4a464512dfbd68ad36046d16a43",
+      "render": "Herald of the Arc Light.png",
+      "renderHash": "cda9571f4309ce9a578f61252fd2ed138ebc712d7e1cc4710d7673e6d195d09a",
+      "renderPixelHash": "1aa370ae5e5897c6a5c8a109cd66668e5cd989e10986c1667079766bedd3b264"
+    },
+    {
+      "id": "card hieratic seal of the heavenly spheres",
+      "name": "Hieratic Seal of the Heavenly Spheres",
+      "manifestIndex": 39,
+      "sourceHash": "29e9d94ddad59a00e37c45f1be4c386367ff18dcd1c2e7a489ea1f3f518d53d1",
+      "artworkHash": "15f709b79f89094afd3acb6b7a0c096a13df0b03f8fcf8d3c4ecc881a9915564",
+      "render": "Hieratic Seal of the Heavenly Spheres.png",
+      "renderHash": "c549873b2dee93a98987a126084bda989fadd0c72657c70e63f0cb1bc57ea791",
+      "renderPixelHash": "6caf3ad9d2691b9e5b2a4e6a7ace9eef5b5dc3752716651bc72ea51242565fd8"
+    },
+    {
+      "id": "card hiita the fire charmer ablaze",
+      "name": "Hiita the Fire Charmer, Ablaze",
+      "manifestIndex": 40,
+      "sourceHash": "78dc459daaa27589112ac10985ffc80069745ef237dbff4a1ec1919bb5e816af",
+      "artworkHash": "87929b21efb6b950f691e2d324a6ad0227560ae7c4ada4ee168adad12303139b",
+      "render": "Hiita the Fire Charmer, Ablaze.png",
+      "renderHash": "2d91e7bd9bdbd1d58c11d1fc0636ae5b1d533ab9268be58e58fe1595d48afef8",
+      "renderPixelHash": "bbed14935dc50c19c9c033984fc4dd339a520e0a5b1b25a141c7f469c154960c"
+    },
+    {
+      "id": "card hope harbinger dragon",
+      "name": "Hope Harbinger Dragon",
+      "manifestIndex": 41,
+      "sourceHash": "73841e46db9770ad5c77d91de97c3e3ed96dfbb1a79743bdc4bba3511163b8c4",
+      "artworkHash": "19a72ccaa1897cb44a1952084460e3cae38e50a60b3fc5f25ffae83b49d5afab",
+      "render": "Hope Harbinger Dragon.png",
+      "renderHash": "aa592259ccf1b3e2781804f2672d282af4614211f95fdeae0150e2dba9c0ab3d",
+      "renderPixelHash": "478b1848184fc7bb1521b8729b654e76fdf9b87db26d46ee3f252358e6b2964f"
+    },
+    {
+      "id": "card hot red dragon archfiend abyss",
+      "name": "Hot Red Dragon Archfiend Abyss",
+      "manifestIndex": 42,
+      "sourceHash": "ab8d8a5370a2311e001e0170e4f1fbb23944221c27758406da12ec1e51020c81",
+      "artworkHash": "665ad43ac1e765eff6a41b39d395c1b515430c6c7175bb6e7b4a487d259992e6",
+      "render": "Hot Red Dragon Archfiend Abyss.png",
+      "renderHash": "ed6ea21383e5a15fff8fca4eeff1a5815ab2fb1f509ba53ae3eef4a0b56afd05",
+      "renderPixelHash": "1a97060f668b7c3bd563c86c9b109e1767ff2773d299ac1d89dd2c6deb4a3be4"
+    },
+    {
+      "id": "card i p masquerena",
+      "name": "I:P Masquerena",
+      "manifestIndex": 43,
+      "sourceHash": "946efc969e84e511182e5572dc075ae5efe02bb03719e5cd2b91e5da40865f9a",
+      "artworkHash": "d2d79e866bf5f72d6585c57749c7bf036001c4122b6cf1706d060af9c838dcd3",
+      "render": "I -P Masquerena.png",
+      "renderHash": "f7045de4e520c33805e6af397a32c8bd1eb3eea082c3dbeec27bf323b0e1c8f7",
+      "renderPixelHash": "faad1c3458150608343ce3046c0cced7087ba0e39b8272304c6f29ae5c59c4fa"
+    },
+    {
+      "id": "card instant fusion",
+      "name": "Instant Fusion",
+      "manifestIndex": 44,
+      "sourceHash": "dccabbd1f94a7c68f585344f3a6fcd7056c1516e0a0bee2ed8fca02ccbfb34a5",
+      "artworkHash": "13c03e23e84ac7f344561b8531d69dc200cba60f72b6d5b750a2b73de8b8b34b",
+      "render": "Instant Fusion.png",
+      "renderHash": "8658040b9cb76f75f581c9f27d4a8be42d04c0b0b18e38fc5868478c026d9fdf",
+      "renderPixelHash": "709c7e6e2d2fdf55987ccb04e8676557d8f3baef487f3306ec49430b3951a0e1"
+    },
+    {
+      "id": "card isolde two tales of the noble knights",
+      "name": "Isolde, Two Tales of the Noble Knights",
+      "manifestIndex": 45,
+      "sourceHash": "dd975378d13c749d419de20eb5f33fef5271e50d8ba2acd90514e324708f9418",
+      "artworkHash": "e08ca0ef79369a7053afb4d13ffb1dda1eb392c2eed275e4424cf5a203d4ebbf",
+      "render": "Isolde, Two Tales of the Noble Knights.png",
+      "renderHash": "ba31f7eecb887107839c5d3d8526cb51af8db78678dc2b404d81813f7d184d7d",
+      "renderPixelHash": "6f128089432a685e60e286458bebd1a83690287a8b8b5ecb301eab8fcfc7170a"
+    },
+    {
+      "id": "card karma cut",
+      "name": "Karma Cut",
+      "manifestIndex": 46,
+      "sourceHash": "670a8c6ab198569d0a6afe468485d41a7879a0c0d0c8b22e274444e4acada37c",
+      "artworkHash": "d55c5f1f584d69ff773fb1692bedb66d59e6a2730dd8118d9ce697eb526ece63",
+      "render": "Karma Cut.png",
+      "renderHash": "33b7bd2ce2cc7b189f6032fee00102ecd8e8e8b7a8088b1158dac14d241068bb",
+      "renderPixelHash": "ab308e0846032f00279062d88a3defe70c0037043e8a146dc9c955b2b1c31f79"
+    },
+    {
+      "id": "card knightmare cerberus",
+      "name": "Knightmare Cerberus",
+      "manifestIndex": 47,
+      "sourceHash": "39029c375cdf71bfd8b9df2a697bc0fae738d86ce49bf24340ab191d6725567f",
+      "artworkHash": "33f7cf0a6885b118f9e455829a90f307e910ccf9b0ea832c7179c322080f6426",
+      "render": "Knightmare Cerberus.png",
+      "renderHash": "069b9e60457d1d687951f9025490f2b10d686b6cbc75ebe58eec083471045f5d",
+      "renderPixelHash": "20fb4967d54941588d8fc801efee3532808be2337cba291a57f135b98ddb4fb5"
+    },
+    {
+      "id": "card knightmare phoenix",
+      "name": "Knightmare Phoenix",
+      "manifestIndex": 48,
+      "sourceHash": "91114537d048f6474546bd9ff2d45e622f4bf864dec95bdcf19fb9101da2e7ef",
+      "artworkHash": "b07074496a76935519c2a9900d77bb97bbc0cc81e4550bf38813d5a010b9a4f9",
+      "render": "Knightmare Phoenix.png",
+      "renderHash": "c8421b897c8477fe55b40ff2c85bec2ed4de69e62dc8d5c97427b922d5246cad",
+      "renderPixelHash": "221fcaf60d9e4a3799f42bc9070d3e66637908d3b0b232f6bc801af51dc6a1d1"
+    },
+    {
+      "id": "card knightmare unicorn",
+      "name": "Knightmare Unicorn",
+      "manifestIndex": 49,
+      "sourceHash": "86e7195be4695471d454c1579102b6f1d0a90c159b5dfdcf2668615514328084",
+      "artworkHash": "8782a104b00aff491a0c514aa0f166af97f78d0735ef6cbb81139b6015f0eeb4",
+      "render": "Knightmare Unicorn.png",
+      "renderHash": "99c441112205ee8b825fe3ff9dfb7822bf0389203463e9563fa6a2045a6d9428",
+      "renderPixelHash": "9ef61e35447fc73b108f70af22f48b642c82b567a6a84d64b1e36b0cb948d8fe"
+    },
+    {
+      "id": "card leviair the sea dragon",
+      "name": "Leviair the Sea Dragon",
+      "manifestIndex": 50,
+      "sourceHash": "91acd1d39d68bacf8e3f898856f1edaf7811c6706a9605f89dccb107ee00b9dc",
+      "artworkHash": "70e703030d4f41e90722e55e04f72e4bd4fbe9209211f908b08722c038c96084",
+      "render": "Leviair the Sea Dragon.png",
+      "renderHash": "4953eb0af90fe5469563df548ab308bd5c61acd8de87340bef6bd88d027570bc",
+      "renderPixelHash": "c92cceb79ae02a9c56d1327d12b5be432f02e6fd9bcc82ca8dbe3cbc9249877d"
+    },
+    {
+      "id": "card linkuriboh",
+      "name": "Linkuriboh",
+      "manifestIndex": 51,
+      "sourceHash": "071c138bc20791f3235d85dd6f53cce4baaced158b212d9d0150cd44a35b13dc",
+      "artworkHash": "1254f46b3b8e23f04a2970f83f78ffeecebff8ae901104cc2112fcbf75e72684",
+      "render": "Linkuriboh.png",
+      "renderHash": "390dfb8ec971302eabe76d62e5454a49d847cb340a615cc458107af1e4184e68",
+      "renderPixelHash": "bb9bf38347d8508acfce5d4b4e5c37aa9f8ee06f89334e19a34bb9d8e970166c"
+    },
+    {
+      "id": "card lyrilusc - assembled nightingale",
+      "name": "Lyrilusc - Assembled Nightingale",
+      "manifestIndex": 52,
+      "sourceHash": "c27a5013d360949adbde2e4e79fbb736b675debe742e9f3c12885541c60b5d8f",
+      "artworkHash": "6e41e934b3ac203c35c0e42607111701cb9f4f9b664d882b92898414edd3bc60",
+      "render": "Lyrilusc - Assembled Nightingale.png",
+      "renderHash": "0a498edaee76d3a0a11b6b4526c3a86c6fd40c40f8f5a458cf02f96801fbccc9",
+      "renderPixelHash": "1abe25bcd22223444ca8bdd98605da734d3087001317f6e3073dc698fba3acf1"
+    },
+    {
+      "id": "card maxx c",
+      "name": "Maxx \u201cC\u201d",
+      "manifestIndex": 53,
+      "sourceHash": "d18f16c2d8175f5b7e8a2f629515d25d1e714c26d925efbce56e8470aac12ded",
+      "artworkHash": "dda94e7d5c1b146a8f912a0e89f977c9d9d4e44b9229e67085b33e25810d4c88",
+      "render": "Maxx \u201cC\u201d.png",
+      "renderHash": "d876433d3a133147b132e43d9cc7d22a7bf55a449c946c862d3f4f0a7645405c",
+      "renderPixelHash": "29270333f392ab09e6e3a52004de181d4b264a280a693e40bc525b66070324ad"
+    },
+    {
+      "id": "card mekk knight crusadia avramax",
+      "name": "Mekk-Knight Crusadia Avramax",
+      "manifestIndex": 54,
+      "sourceHash": "b96beb114b61618833569ffadc2ac9995af352ee4af884d01d5dca95669ef383",
+      "artworkHash": "46bb817d414293c5209625f9d6f5c8a0a81b55c646c5fd19402e5d69902b10d0",
+      "render": "Mekk-Knight Crusadia Avramax.png",
+      "renderHash": "ae2cde33a5d4f6f79ae999264ef83c53c2e8b720aaf8b5fddb371c5a7db082eb",
+      "renderPixelHash": "461435fe30e62a829613ae460e4ede59601775c3caf3ecef392d0060dc3684d7"
+    },
+    {
+      "id": "card monster reborn",
+      "name": "Monster Reborn",
+      "manifestIndex": 55,
+      "sourceHash": "d5b9b108013c02becd055e9d08ee0a06e3a1e1f21ede8fac5814b2efe2f8682f",
+      "artworkHash": "784178bd8f7a2573a718d5a86b7b1cf82ccaad18a5f2add3a96d74d674c513f5",
+      "render": "Monster Reborn.png",
+      "renderHash": "b8a0d1b9fa880abd136cb896e70fee99cd43099ce372aebebcccf327cac43814",
+      "renderPixelHash": "dfb0ae7d55c13026899091d20f633298293f22bba11ca0dbf556fd5dcc9b78cd"
+    },
+    {
+      "id": "card mudragon of the swamp",
+      "name": "Mudragon of the Swamp",
+      "manifestIndex": 56,
+      "sourceHash": "ae5303c19b4154b3e8638378b9d9f2978c29bedf8ecd9e8501ed63485849596a",
+      "artworkHash": "305dda396645d713db38b43a0d0e366c1c37e75dabf4f8e89fbc449d427bd02d",
+      "render": "Mudragon of the Swamp.png",
+      "renderHash": "beec2e47f6e4b034a8de5bba5e7d89a058991784a869962eca172e998eaaa090",
+      "renderPixelHash": "72ff2d577d1b4b3b58e1e3e2869d86a8036819b92af43ff8351d79448d2313f0"
+    },
+    {
+      "id": "card mysterion the dragon crown",
+      "name": "Mysterion the Dragon Crown",
+      "manifestIndex": 57,
+      "sourceHash": "3f66c12f471cfaa219e28cdfaddcd6c9c5ebb2c81e1aad220d734df78b5191dc",
+      "artworkHash": "f11d6e74cfa7a60b11533b0029cde8f4dcabfdc3ad4cae98ce5b8d21a3416cee",
+      "render": "Mysterion the Dragon Crown.png",
+      "renderHash": "60afccdfe37e63d30cbf02ea68f1e2a1e7f529d7788fb245911c751440751710",
+      "renderPixelHash": "6b0826fcb9821140a01f309e0c2f487f4ad565cb2a3b5842b19aaec033493f2d"
+    },
+    {
+      "id": "card mystical space typhoon",
+      "name": "Mystical Space Typhoon",
+      "manifestIndex": 58,
+      "sourceHash": "6e6537b56ad0fbf0e809a9600ab603094662e0a52be79e2967ce64e21a094376",
+      "artworkHash": "c370ce38ecb669c8be11542153064429a7371a4293ee7bf04d1ef675cec09a52",
+      "render": "Mystical Space Typhoon.png",
+      "renderHash": "be5b1d909d22abdcc9afa4a05caa6b314fe7e8deb922e1e4dfba699885339586",
+      "renderPixelHash": "a0a3efeee8444fd4823dd2c0bdd1a5b967c7f91378fa2feb25f29418de518ae2"
+    },
+    {
+      "id": "card panzer dragon",
+      "name": "Panzer Dragon",
+      "manifestIndex": 59,
+      "sourceHash": "476154e7c7b51e7647c22eba38adba04c9cfa87365ee8b819479128ee92b8a48",
+      "artworkHash": "61e8badc8357920cd799f8a4e8da2b5e2f458f700ffa7df6bb8dcbb03ed40f96",
+      "render": "Panzer Dragon.png",
+      "renderHash": "449a35c467ce286f785b3ecb83a55d0048a14f14bde1f1fd59487089422a42ec",
+      "renderPixelHash": "3be83fe9cd9914eb9aa659409eefa98a62533f40679491e12ad33e6cf0edc8a4"
+    },
+    {
+      "id": "card phoenix wing wind blast",
+      "name": "Phoenix Wing Wind Blast",
+      "manifestIndex": 60,
+      "sourceHash": "660ab297229ad2a1723598e767160bc4486c3f0f40807369582da943b4dc531d",
+      "artworkHash": "4e37509e0d74aab11ed02abd79b50e75f35b4ef4bc0a01c3491b315c4bee8ae0",
+      "render": "Phoenix Wing Wind Blast.png",
+      "renderHash": "a760d76ccab4d91c07d3bc35cbab587bd1ab409d5b16c198bf54e4baf2c30ca4",
+      "renderPixelHash": "f0a456cddc06b19b909e91bd4616a171a33e9b968644cd879de02f56cbd8c05e"
+    },
+    {
+      "id": "card predaplant dragostapelia",
+      "name": "Predaplant Dragostapelia",
+      "manifestIndex": 61,
+      "sourceHash": "9c03c6b91b39a7956dd8c4d58b4ada78aba0bcc2c58a6b46c2df02c14db38b44",
+      "artworkHash": "358bf2f986391b10bf940b3c8057816d65e48184d6ec25351618d45fbe4a00dc",
+      "render": "Predaplant Dragostapelia.png",
+      "renderHash": "4812c936cb2f268e88f91eebf66b639062357275df97ee89f9c6218ba2a7d507",
+      "renderPixelHash": "ee9e0ca1139e11f021cfb7b3b5983f4564b81b306fe6cc39f18d21a60352783f"
+    },
+    {
+      "id": "card predaplant triphyoverutum",
+      "name": "Predaplant Triphyoverutum",
+      "manifestIndex": 62,
+      "sourceHash": "7cce7e97e2fdd3f36dcc34d2033af3e1bee915dd1a3a2eae79fe5d1d904130dc",
+      "artworkHash": "6993bb9fa4e537b17be0f0ac5e3a418a6e4dfd8893b256f01a169f4d18c5906e",
+      "render": "Predaplant Triphyoverutum.png",
+      "renderHash": "bab0d2baa5f504792cb1ad8022f5ef57b735bd0faeb1f7f487189b3c52866f01",
+      "renderPixelHash": "682700d4f514dd9cdeb93f7317807754983dde0a9f67ca6ca761cca1340b9de7"
+    },
+    {
+      "id": "card predaplant verte anaconda",
+      "name": "Predaplant Verte Anaconda",
+      "manifestIndex": 63,
+      "sourceHash": "bab3b92de145e8bccf7b4ae8f78516078f77ea68539a8bdc4c96aede19448028",
+      "artworkHash": "bf787e620cd6558e4f389ccdfc491728ccf0137f3009f7aa7af6038176bd5e28",
+      "render": "Predaplant Verte Anaconda.png",
+      "renderHash": "4c5a93982973279aac315d68580d6f24d8f3f8ec66276f1050ec98e1b7514331",
+      "renderPixelHash": "dbe1af44803466268f9ece98519b516253c8c80581155a86ac8d9d9537ec59f5"
+    },
+    {
+      "id": "card raigeki",
+      "name": "Raigeki",
+      "manifestIndex": 64,
+      "sourceHash": "2f6a3da849348f812d29fb46c8dda067214eba59b44917cb117529310643549e",
+      "artworkHash": "55f4467b8b7a0da8e61a512d6a14f0ff82def574331794aebea902b2382fddea",
+      "render": "Raigeki.png",
+      "renderHash": "1dd4513e9bc9b6542e43eeadc1f3bc2669d64ffa7d16a076dfb5fad76eb0f8fb",
+      "renderPixelHash": "32d1724439c40d45d4830cbe665bac772d09b2785e04c613f0028b822255edfc"
+    },
+    {
+      "id": "card red supernova dragon",
+      "name": "Red Supernova Dragon",
+      "manifestIndex": 65,
+      "sourceHash": "8e32888156315c18f8fe15f2dee71057ae9019744752fc53d1482d8d79db1d89",
+      "artworkHash": "5fa0bbb0658f2fed699b0a1c8b57fc0789651c3bd0404d7052f40aff88d0ee93",
+      "render": "Red Supernova Dragon.png",
+      "renderHash": "f4ced1696b3198e2c828de20ce79ed8f05895f53d972c900f84338c4b5982c4a",
+      "renderPixelHash": "aa98f0d04dcfdaac401afd3aefd816cdb4da2cd96e6e86a8313e046ac789085c"
+    },
+    {
+      "id": "card relinquished anima",
+      "name": "Relinquished Anima",
+      "manifestIndex": 66,
+      "sourceHash": "538c06e1d109741c9aa135fb0b34387ed1f995ededfb52ce980d76e41b8332ae",
+      "artworkHash": "afa2b9f806fba24c2e267f9309ef887a473e99f0a63fb6973c063bf3d575da95",
+      "render": "Relinquished Anima.png",
+      "renderHash": "ff8b9dfa1e6e1b7934fb87added52836079025db5076066d1727ff44f9b40bbf",
+      "renderPixelHash": "591d7892080f632a01182edf1cc4bb992c34edb8004717563fd82bafe9de4720"
+    },
+    {
+      "id": "card s p little knight",
+      "name": "S:P Little Knight",
+      "manifestIndex": 67,
+      "sourceHash": "bcdd3a13c10381d4e0514dd9749481f9cf16995c79998b27d6aa837ea7f29b96",
+      "artworkHash": "9e39ad393bcbf95f1daaa80a1253914618aef2426b35f79bee733b4d7030146a",
+      "render": "S -P Little Knight.png",
+      "renderHash": "6663eaf0d6c24ebd15e76f87d884ac40a0ce8bb51b1bb799aba930a8e83d008e",
+      "renderPixelHash": "70789c07804304434e3a52841803d837253f357f7c7c75ba1afe4be28bab70bc"
+    },
+    {
+      "id": "card salamangreat almiraj",
+      "name": "Salamangreat Almiraj",
+      "manifestIndex": 68,
+      "sourceHash": "cf3fc5da63c17c7a1978f806261fc4f5f9bbd13cda1c975632a8a1937c7a2360",
+      "artworkHash": "54e0426d18f9032d1bbcea62bd7b5211814a5eba2004a7a38eab3267558beff0",
+      "render": "Salamangreat Almiraj.png",
+      "renderHash": "dd5e268f0f0c629b7a6cf987c9068e7f9b785f5f12f280243f81cdcfd245379e",
+      "renderPixelHash": "3550be129ddbf0be87b5b28c42fbc279d0013590823bd0b2f858a2cafaef2664"
+    },
+    {
+      "id": "card scarlight red dragon archfiend",
+      "name": "Scarlight Red Dragon Archfiend",
+      "manifestIndex": 69,
+      "sourceHash": "808c426c674982df1b8bf2938b3129dfe4788009b3b7e861079c8b78f84dc79f",
+      "artworkHash": "f9c96f17d3d6767cf5bc86ce4ab6de4a5d3f7bf2207b4bb5ba83b75092850340",
+      "render": "Scarlight Red Dragon Archfiend.png",
+      "renderHash": "c497d1f7f833f7764778e7590c737dff02f82b77fbebac191459a0777f7f0328",
+      "renderPixelHash": "d8a0be7a8da081688d8482e01bac32eae716b89ca4b6c99036aa1fd14b5ae932"
+    },
+    {
+      "id": "card sea monster of theseus",
+      "name": "Sea Monster of Theseus",
+      "manifestIndex": 70,
+      "sourceHash": "a9f4a94b5ef6ff7172ca7d2d178a672110706f9e0d3369fcbd9755511983e094",
+      "artworkHash": "e4a26c7250d684c67462218e4b0b0853b41d0ad78e9d35c27da851acfdb4f729",
+      "render": "Sea Monster of Theseus.png",
+      "renderHash": "336d480ba866c1c35bbaa19ef4f98c3404f114a91311206a8f7ff6992a592045",
+      "renderPixelHash": "f7d2fab441e47b3a76e5db2884ee1aefd35e18e47d64152870f858eead7f983a"
+    },
+    {
+      "id": "card selene queen of the master magicians",
+      "name": "Selene, Queen of the Master Magicians",
+      "manifestIndex": 71,
+      "sourceHash": "e980c2d66264b0f1d8475641099fd1ed37847848d3d9142a9cd87721fc683650",
+      "artworkHash": "60b69b118aa5856aac13373658b36421c980b1e9b2c71089da1f51f19b23c04f",
+      "render": "Selene, Queen of the Master Magicians.png",
+      "renderHash": "66a7d3a58291dd8a1a139fd425e0507d020dc3143bcbd305974713083d0388c0",
+      "renderPixelHash": "00a1bcab40267476b7a862697a72e03ac67662aa642ecf8542841f61e3c35e43"
+    },
+    {
+      "id": "card silent honor ark",
+      "name": "Silent Honor ARK",
+      "manifestIndex": 72,
+      "sourceHash": "f5e4436fb62b9805caf6f9129de97db2b665e278fa6546eb1d1a7f8334faa4ba",
+      "artworkHash": "8596e47604db7295159a1e4e51ba1f8495bb9f89eab72213bf9ce2718982bc72",
+      "render": "Silent Honor ARK.png",
+      "renderHash": "cf71cf5e95ab5f131b6f06581775bd68183f6f5ab7337c1033234c37f50bab0e",
+      "renderPixelHash": "26607f75a9d7a92422b69df2a636ef898d230a00747d5a02970c484fe766289b"
+    },
+    {
+      "id": "card spright elf",
+      "name": "Spright Elf",
+      "manifestIndex": 73,
+      "sourceHash": "b31652aacb72d32111a23dc2a090120169c82524a35989e3306e2107fd370f74",
+      "artworkHash": "3ad3f693e311ab7673c06190bb621d4f40c3a48666eee3cfb7f8b93296234a42",
+      "render": "Spright Elf.png",
+      "renderHash": "096fccdd1abf8f64fd3bc6ee03fc66faf150232882ed4dfd0d69d92a86bd49f6",
+      "renderPixelHash": "73138ebf60c823a386f5b4c227c2aeb5d29f762452f6d422a260ab4d9e0a4571"
+    },
+    {
+      "id": "card stardust dragon",
+      "name": "Stardust Dragon",
+      "manifestIndex": 74,
+      "sourceHash": "0e724281d31cdf06a8fbdcf31db284156c7a674cebf2c3b2a1f0b0b5ca815b4e",
+      "artworkHash": "e6ce43834036f0aa1fb4cf680b1f2889b6e211ef299abd88f2aabc415b806334",
+      "render": "Stardust Dragon.png",
+      "renderHash": "060321e9c955effcfe09e37f13f16c59fca33d0c6ecfb2a95fbf8ee1c190365b",
+      "renderPixelHash": "dd1c7e5a9fc511fd2e0971fda42a2ac2b8dd72443800dd09a87648a39044b435"
+    },
+    {
+      "id": "card starving venom fusion dragon",
+      "name": "Starving Venom Fusion Dragon",
+      "manifestIndex": 75,
+      "sourceHash": "c70ac7baa0d5b7d7c33e82de72f7e0b6472c24651aaccdb926ba22f55d11ff10",
+      "artworkHash": "bc54a995073b4992b90a7a6e5d254bbb103a26c94a3f7980f89e56ff4ce02474",
+      "render": "Starving Venom Fusion Dragon.png",
+      "renderHash": "03a9aaede0e7112496e0f791fdde216f3b51062251d0159df5b082665186b4db",
+      "renderPixelHash": "addeb0d1e68d2c2fb4020c64fc42c0a4e5bc3531a52dd63286c27792adcbf3c5"
+    },
+    {
+      "id": "card stealth kragen",
+      "name": "Stealth Kragen",
+      "manifestIndex": 76,
+      "sourceHash": "2755bc47b348fddd5ab02a887bff97de15465ec61139295a383fb0f99aa3dd55",
+      "artworkHash": "2ab4404e9e6d9c6ae4552f9790457d6334501e08e6cfb0c080e695513f586c1a",
+      "render": "Stealth Kragen.png",
+      "renderHash": "200c848c77611f040fe455d0e5b1d1f2b1dfe2d2928e22498b48b5c31e498ff7",
+      "renderPixelHash": "595be6bf721a866c042ab01ef137cc55e36ed8314a71c1a58356974faea1c40e"
+    },
+    {
+      "id": "card striker dragon",
+      "name": "Striker Dragon",
+      "manifestIndex": 77,
+      "sourceHash": "a0b2bee9d93b1a4805866b24b6dbd1e90207140a1beb416b03d0243e34b1d896",
+      "artworkHash": "4f59c9a98fe6ea87d60eeae803b462372740314f7c4dd216e67ef38b796b16bc",
+      "render": "Striker Dragon.png",
+      "renderHash": "97c97ae6466f5f5c31f3dca2d27f1294d9d1d799f0bc8310cb295272201d5712",
+      "renderPixelHash": "2881e6bb9542bde6870a28165f871c807cfa197396683dc393b6c4d900ab7450"
+    },
+    {
+      "id": "card super polymerization",
+      "name": "Super Polymerization",
+      "manifestIndex": 78,
+      "sourceHash": "45e3d802dcb8892c1480ba96eb22e1eb4c7d6d1c52cb24ae9208351bc76cdb6a",
+      "artworkHash": "1424bb6dc6e2dd3089b348c78105e89045884fc46a22d0c2fe09d38e4dd1f3d1",
+      "render": "Super Polymerization.png",
+      "renderHash": "d2f985180e305a364f58aada2b2bc196fd23f98199d941e07c8a848668bb712c",
+      "renderPixelHash": "34d8c02741779ef37743453fd56995e0e5198ce953e0a7e549774db5111cd3d5"
+    },
+    {
+      "id": "card t.g. hyper librarian",
+      "name": "T.G. Hyper Librarian",
+      "manifestIndex": 79,
+      "sourceHash": "e28f3fbcbef0c1428887262e6cabd9d970252cf1de734e5615a9abeada6a5dee",
+      "artworkHash": "02c98235f51fd8199493648192df448425d5ffe3af7413284cd821ab76f9ef8b",
+      "render": "T.G. Hyper Librarian.png",
+      "renderHash": "79fd03882a2e858f4d0398e7772bf1a019228b6c1a16a3f653364b9d1fe51541",
+      "renderPixelHash": "e7845b821b8039f31707de7253f24fd58ed9f09fcadf8b374e29766e79cb4055"
+    },
+    {
+      "id": "card time thief redoer",
+      "name": "Time Thief Redoer",
+      "manifestIndex": 80,
+      "sourceHash": "49a017a9128aabec2f6d3c0cecdd5b6c50482e2d4520abfb3d797c0558ec348c",
+      "artworkHash": "53afb444febca44faf9374d5e98fdae67d4adc9b6cddd499b38906a9b7717bd5",
+      "render": "Time Thief Redoer.png",
+      "renderHash": "e64a5c9add158df8d3d34ffc16c6fb4348e68399cd93b24b10f845002b00f0b0",
+      "renderPixelHash": "f456e744860980f55bdfc47d7ac7edd4345b38150850894adac30d2187427ae9"
+    },
+    {
+      "id": "card topologic bomber dragon",
+      "name": "Topologic Bomber Dragon",
+      "manifestIndex": 81,
+      "sourceHash": "d3f5afc8845c68d99ea5dc6e3ad476b7fdc41ea9025560e7ffb6b971f416a521",
+      "artworkHash": "18204691bca0208ea6a64619b08bcaeb6f757ef77634bed942a0735f48055cb7",
+      "render": "Topologic Bomber Dragon.png",
+      "renderHash": "1cacfc614becc397f363da1763ab83250c9751d7007b9f8f35f2864c5f8bdcdf",
+      "renderPixelHash": "3bdb400832cb2d8929e26130699b81c91cccc9f466dc59cad483ff5ab568fb1b"
+    },
+    {
+      "id": "card topologic zeroboros",
+      "name": "Topologic Zeroboros",
+      "manifestIndex": 82,
+      "sourceHash": "59a8451cda20ac411fc086dd8ef3b7f2cf29d5424cce451beba992eb615a74ff",
+      "artworkHash": "a11b2f5e74c9c538cd4c702b9a928fc0f315f9957e842ef90203e1f4ec26b1d4",
+      "render": "Topologic Zeroboros.png",
+      "renderHash": "fa22cf02b160d63c7a1db8a8a02d49bd9fd5de293d41a1d349886726792bf8b0",
+      "renderPixelHash": "a4fec85876f821c5acc1d54f4bb3e9b202f024e01ee4b9ca9335075a486e5608"
+    },
+    {
+      "id": "card tornado dragon",
+      "name": "Tornado Dragon",
+      "manifestIndex": 83,
+      "sourceHash": "10ee9c8228cb9e23dbeacd70bffc12e8c27d74f4f06a112eb8d111d90b586b60",
+      "artworkHash": "95069cef26062a1c42a4ed7923bf82b962a2e7e7c278ae7297e8bfce34dc40fc",
+      "render": "Tornado Dragon.png",
+      "renderHash": "6d7c8858aaec0ec72d34f352e1e9cdd75fd30b2b8cdab9c8c3d90885a09af741",
+      "renderPixelHash": "8b9e2dd00b8c9aaa86f4b5d86c932d032536433a2e3e5a932ca561e5713a151a"
+    },
+    {
+      "id": "card torrential tribute",
+      "name": "Torrential Tribute",
+      "manifestIndex": 84,
+      "sourceHash": "05035df2618a11160b7084140431fc4b8a93b1f919d0b862dbe4aae1c02e6fac",
+      "artworkHash": "3f58fdba03052eda090ed47f68de71c3640a892a74666d5863f51d5fda9153fb",
+      "render": "Torrential Tribute.png",
+      "renderHash": "b09a177a8144d5b6c8cb38209fc96db481925eeb5d60ca7d72256f64d63984f3",
+      "renderPixelHash": "b47ec8cb4e88154484de1cbc03d87833fa261b0294aedd58f408aab9e7f7d4e1"
+    },
+    {
+      "id": "card traptrix rafflesia",
+      "name": "Traptrix Rafflesia",
+      "manifestIndex": 85,
+      "sourceHash": "5a3141292d0b69384608a57c55f8a58d889709a33107bf47374c069f864244a8",
+      "artworkHash": "c8d989bc5a74b6470af082bed9fd3dc381174bb56317b15eee4674c487c3b4c2",
+      "render": "Traptrix Rafflesia.png",
+      "renderHash": "43f03bc89346b0a0924096dda2322d29b0fb9766c730d5607365792b7b648608",
+      "renderPixelHash": "af0fc2d30d06c5ca39bd81e4cbefd2a2f0a7e4203ddb2ba24f99271920ef9e72"
+    },
+    {
+      "id": "card tri brigade ferrijit the barren blossom",
+      "name": "Tri-Brigade Ferrijit the Barren Blossom",
+      "manifestIndex": 86,
+      "sourceHash": "e70c022fb56a8f2ddc3baa5402a2a14111336abedfbab4a675b48762df6742b4",
+      "artworkHash": "5b437374e2ffd437c86346b99e7d8ff78f2ecb91e7c713f03bebf34b67e3cc4f",
+      "render": "Tri-Brigade Ferrijit the Barren Blossom.png",
+      "renderHash": "7790d0e1c3d92316f3c1d0ea41791326ea25f1bd30078a3e24104f26a5442037",
+      "renderPixelHash": "cf2a7899996127b332a06d84367a8db54f87dc2f31943ef57d8a1a5fb3a2b5cc"
+    },
+    {
+      "id": "card tri brigade shuraig the ominous omen",
+      "name": "Tri-Brigade Shuraig the Ominous Omen",
+      "manifestIndex": 87,
+      "sourceHash": "f8a88c9511bf507596b045064446a9e2069a57cfbcd7297b6dd39fee0ecddfd1",
+      "artworkHash": "0ab215a06d2354e096cf06df82339ef752896c9e6f556e6974797349687cb9f1",
+      "render": "Tri-Brigade Shuraig the Ominous Omen.png",
+      "renderHash": "5b1b5f87451ca5eda7109c372f8e772b9f3ffa0c95dce3b190ea91231644df09",
+      "renderPixelHash": "52905f03cb808605d925fcfe0bbf71c4e4b2350835db5c6f39a06be711465965"
+    },
+    {
+      "id": "card trishula dragon of the ice barrier",
+      "name": "Trishula, Dragon of the Ice Barrier",
+      "manifestIndex": 88,
+      "sourceHash": "2bf18ad68c7dba247fc9328808b94d35cac6b14f2dcaf1ee2e6620b3e4e86610",
+      "artworkHash": "d592ae2079269d33460462ea24c25291f54f7aaaa58e6abb2aad25b2063a99fa",
+      "render": "Trishula, Dragon of the Ice Barrier.png",
+      "renderHash": "c19003458760a43ae588462bf4dd4394f620598a3ee35e9ccbab017d221deb9d",
+      "renderPixelHash": "754c936e2bd853904de7a89874a8844e325681277d5077b48f9f588cd7fe6cff"
+    },
+    {
+      "id": "card twin twisters",
+      "name": "Twin Twisters",
+      "manifestIndex": 89,
+      "sourceHash": "78e61cd7f6bf3a9038b6e4109c0bb46db37f6abcc0c7961dc3e737ed3fa66d8f",
+      "artworkHash": "5d8d7fa40109af7f5c0fedabea01fbb8826820d73c2e37af4d515669dcdc2c17",
+      "render": "Twin Twisters.png",
+      "renderHash": "df8eec41103e84d8d56f325dc9f830e939fa6cf643b533942decbe887ee9ebd7",
+      "renderPixelHash": "bc189920dc53a3096cbb56f92ca331fb9c9fbc69612e356171022d382a751c51"
+    },
+    {
+      "id": "card underworld goddess of the closed world",
+      "name": "Underworld Goddess of the Closed World",
+      "manifestIndex": 90,
+      "sourceHash": "dd7fdc3379df021cec9f2f002a70dab00d2902987feca5dc0ca9022d136be095",
+      "artworkHash": "6ee35526fde69230270279271d08173908440203e9fa28cd52bcafff6a079a5e",
+      "render": "Underworld Goddess of the Closed World.png",
+      "renderHash": "533d289bf723ab868427cd4cc85364f9f4f89f0271f28501f3e6a5b273e639ba",
+      "renderPixelHash": "cdaa1cd54a2589aa5dac76122555d078f6ce99f95b9c81aa8fb4e9afa2dc64d4"
+    },
+    {
+      "id": "card union carrier",
+      "name": "Union Carrier",
+      "manifestIndex": 91,
+      "sourceHash": "36c578728207c60fb53726862e30c62c079c45bdaedf014d0b55e5e54eb2691c",
+      "artworkHash": "106825cab2b99cb11c6468e7e688def9ab391e25a511eeda13b44890ee6b4b40",
+      "render": "Union Carrier.png",
+      "renderHash": "4db05213815125a592cc53adf03c767d097a5468cecf78000fe2e2370ee27ae9",
+      "renderPixelHash": "888b6a7e8a1d3f5cc6d64e75ba16a8e13ebe8ca02463e4c9011c386cde56565f"
+    },
+    {
+      "id": "card upstart goblin",
+      "name": "Upstart Goblin",
+      "manifestIndex": 92,
+      "sourceHash": "eaa554b37a4ca99033ebc005008948c9bbb11b516b44999bf6b7c54cf0db3e6a",
+      "artworkHash": "652f9c129b0415777021e9ce5e6baf519bba2b6e369cf1b85ec1dc1563990e27",
+      "render": "Upstart Goblin.png",
+      "renderHash": "1e79d1437b7a0f09f5a88bb130c7b8fd80403d7fb79889c1770e629b8f4b64ec",
+      "renderPixelHash": "aae0ff197c81e7423ae0715dbb7f588ca966e6fb6eb6ec07f56f62376222b962"
+    },
+    {
+      "id": "card world chalice guardragon almarduke",
+      "name": "World Chalice Guardragon Almarduke",
+      "manifestIndex": 93,
+      "sourceHash": "4cf50ee5bfc2207718c1dd1c3e230fc31128a2c11c04827bdea14db425f4c751",
+      "artworkHash": "9665ea74e2c1396b825ea207c7850d1396bc88c8f8453582f1400d84bd4731ba",
+      "render": "World Chalice Guardragon Almarduke.png",
+      "renderHash": "fd39b35267699335f9641e84044401b2a4c780a595b9acff885eb4f9ddb16dfb",
+      "renderPixelHash": "930d21b14e5754fdfc44ae9ae25de48bfc24256dda853936692c4887ef11a93f"
+    }
+  ]
+}

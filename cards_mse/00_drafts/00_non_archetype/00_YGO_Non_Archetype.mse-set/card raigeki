@@ -1,0 +1,22 @@
+mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: 09_non_archetype_non_creature.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-07-24 17:10:41
+	name: Raigeki
+	casting_cost: W
+	image: mse_images/noncreatures/imported/image8.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Sorcery</word-list-type-en>
+	sub_type: <word-list-spell></word-list-spell>
+	rarity: common
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Destroy</b> all Creatures your opponents control.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 051/077 C
+	card_code_text_2: 051/077 C
+	card_code_text_3: 051/077 C

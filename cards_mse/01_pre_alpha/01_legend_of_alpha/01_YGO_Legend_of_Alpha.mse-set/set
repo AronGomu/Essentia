@@ -4,7 +4,7 @@ game_version: 2025-06-14
 stylesheet: sevenhalf
 stylesheet_version: 2024-05-30
 set_info:
-	title: YGO x MTG -- Legend of Alpha
+	title: Essentia -- Legend of Alpha
 	description: Legend of Alpha 0.1 Pre-ALPHA candidate cards for Burning Abyss and Nekroz test decks.
 	artist: Legend of Alpha Pre-ALPHA
 	set_code: YLA
@@ -54,16 +54,15 @@ styling:
 		overlay: 
 	magic-sevenhalf:
 		text_box_mana_symbols: magic-mana-small.mse-symbol-font
-version_control:
-	type: none
-apprentice_code:
 include_file: card ash blossom  joyous spring
 include_file: card bagooska
+include_file: card book of moon
 include_file: card burning abyss - alich
 include_file: card burning abyss - barbar
 include_file: card burning abyss - calcab
 include_file: card burning abyss - cir
 include_file: card burning abyss - dante
+include_file: card burning abyss - draghig
 include_file: card burning abyss - farfa
 include_file: card burning abyss - fire lake
 include_file: card burning abyss - graff
@@ -105,3 +104,6 @@ include_file: card silent honor ark
 include_file: card stealth kragen
 include_file: card tornado dragon
 include_file: card tour guide from the underworld
+version_control:
+	type: none
+apprentice_code:

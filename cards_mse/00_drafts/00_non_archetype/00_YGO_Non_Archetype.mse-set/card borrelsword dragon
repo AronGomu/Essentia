@@ -1,0 +1,28 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-showcase-capenna-art-deco
+	stylesheet_version: 2024-10-01
+	has_styling: false
+	notes: Source: 08_link.md
+	time_created: 2026-07-11 12:12:32
+	time_modified: 2026-07-24 13:53:09
+	name: Borrelsword Dragon
+	casting_cost: RRWW
+	image: mse_images/link/imported/image3.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Link Lvl 4 Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: rare
+	rule_text:
+		<i>3+ Creatures</i>
+		<i-auto>(1 - Static)</i-auto> Prevent all combat damage that would be dealt to “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Borrelsword</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Target</b> 1 Creature; tap the target and “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Borrelsword</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” gains <b>Double strike</b> until the end of the turn. This ability cannot be countered.
+		<i-auto>(3 - Triggered)</i-auto> <b>On Blocked</b> — <b>Target</b> 1 Creature blocking “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Borrelsword</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”; “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Borrelsword</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” gains +X/+X and the target gains -X/-X until the end of the turn, where X is half the target’s power, rounded down.
+	flavor_text: <i-flavor></i-flavor>
+	power: 6
+	toughness: 6
+	card_code_text: 011/077 R
+	card_code_text_2: 011/077 R
+	card_code_text_3: 011/077 R

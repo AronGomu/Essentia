@@ -1,0 +1,29 @@
+mse_version: 2.1.2
+card:
+	stylesheet: m15-spellbook
+	stylesheet_version: 2024-09-01
+	has_styling: false
+	notes: Source: docs/07_xyz.md
+	time_created: 2026-07-11 17:03:48
+	time_modified: 2026-07-24 13:53:09
+	name: Time Thief Redoer
+	casting_cost: U
+	image: mse_images/xyz/embedded/image16.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Xyz Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Psychic</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: rare
+	rule_text:
+		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i-auto>(1 - Triggered)</i-auto> At the start of each upkeep, <b>Attach</b> the top card of 1 opponent’s Deck to “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Redoer</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Detach X</b> from “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Redoer</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”; for each card type detached this way, apply the corresponding effect:
+		— Creature: <b>Exile</b> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Redoer</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” until the end of the turn;
+		— non-Creature Spell: <b>Draw</b> 1 card or put 1 target nonland permanent on top of its owner’s Deck.
+	flavor_text: <i-flavor></i-flavor>
+	power: 4
+	toughness: 4
+	card_code_text: 065/077 R
+	card_code_text_2: 065/077 R
+	card_code_text_3: 065/077 R

@@ -1,0 +1,28 @@
+mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: 09_non_archetype_non_creature.md
+	time_created: 2026-07-10 23:49:32
+	time_modified: 2026-08-01 00:51:14
+	name: Book of Eclipse
+	casting_cost: U
+	image: mse_images/noncreatures/imported/image24.png
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Sorcery</word-list-type-en>
+	super_type_2: <word-list-type-en></word-list-type-en>
+	super_type_3: <word-list-type-en></word-list-type-en>
+	super_type_4: <word-list-type-en></word-list-type-en>
+	sub_type: <word-list-spell></word-list-spell>
+	sub_type_2: 
+	sub_type_3: 
+	sub_type_4: 
+	rarity: common
+	rule_text: <i-auto>(1 - Resolution)</i-auto> Turn all Creatures face down. Their controllers cannot turn them face up until the start of their next turn. This restriction does not apply if a combat effect or rule turns them face-up.
+	flavor_text: <i-flavor></i-flavor>
+	card_code_text: 010/077 C
+	card_code_text_2: 010/077 C
+	card_code_text_3: 010/077 C

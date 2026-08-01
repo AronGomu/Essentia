@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 2,
+  "project": "03_YGO_Nekroz.mse-set",
+  "exportedAt": "2026-07-24T15:21:42.233494Z",
+  "mse": {
+    "version": "2.0.2",
+    "game": "magic",
+    "stylesheet": "sevenhalf",
+    "cli": "mse.com"
+  },
+  "renderTransform": {
+    "id": "transparent-white-corners",
+    "version": 1
+  },
+  "cards": [
+    {
+      "id": "card herald of the arc light",
+      "name": "Herald of the Arc Light",
+      "manifestIndex": 0,
+      "sourceHash": "5a75622333965cf14b8716d6f0562d09f0e4cbf522c869e263a09466b8b3931d",
+      "artworkHash": "c565aa125e765c1c980a6afdfff8e3d8e54ade5754c117ed45346ac58c53c87b",
+      "render": "Herald of the Arc Light.png",
+      "renderHash": "02c0d692b1defd632750d4e0ce149a103f77fd550b170293e94db7dcf945ee05",
+      "renderPixelHash": "b5f1447d49ae158ad65936a34039b477b5784679469cb019e291569fa655d776"
+    },
+    {
+      "id": "card manju of the ten thousand hands",
+      "name": "Manju of the Ten Thousand Hands",
+      "manifestIndex": 1,
+      "sourceHash": "9df9af34de89659e0550756c9c85c5eebaf43579cfeef509d7c845bd938fd191",
+      "artworkHash": "7f64fbccbf6539d8c564d10edd456f4f76ba90fd1171f12e912ff141ecc1ee29",
+      "render": "Manju of the Ten Thousand Hands.png",
+      "renderHash": "32599ea3feb54c6701aed130ddf8072c252b213db7c39c665dfea6d323adacde",
+      "renderPixelHash": "6c25e1ea30ea7b26c4b2e272e70f4feb583864468ec7aee1eb0d3ed27f633d11"
+    },
+    {
+      "id": "card nekroz - brionac",
+      "name": "Nekroz - Brionac",
+      "manifestIndex": 2,
+      "sourceHash": "06d058efa2f3b80d7e91bfdb8dc7e798a764a0978f6d875e82e51c91a64e6373",
+      "artworkHash": "d17b9d3c9297a0ce3496473056f9fb0417838aaae7d7d1e672ed28d3e12df7e7",
+      "render": "Nekroz - Brionac.png",
+      "renderHash": "caf3612c079bd5d7275858e8ab0da791c99f53f2dc120d57435b5513da464aae",
+      "renderPixelHash": "4055178c7e6ac40309d081845c98bdbea956f7980f05d5d31a92522c31fe7c66"
+    },
+    {
+      "id": "card nekroz - catastor",
+      "name": "Nekroz - Catastor",
+      "manifestIndex": 3,
+      "sourceHash": "94528ec51547eef9a836242630284bf1435d6ef3374d9c0b6678ee6b4f4d6405",
+      "artworkHash": "66dc27bcf82eeb062b830df2db79860a56330e4e911e0fb4c19cf38d62516335",
+      "render": "Nekroz - Catastor.png",
+      "renderHash": "eb719736bb832d3cece8c064f0a5ec15a934c6be257ea2f7d43f56407d136774",
+      "renderPixelHash": "e7c3cc6e1c6aa010deda1bdcd33422b2686e1fa2ad45d1be15ba297e826e67cb"
+    },
+    {
+      "id": "card nekroz - clausolas",
+      "name": "Nekroz - Clausolas",
+      "manifestIndex": 4,
+      "sourceHash": "80a165b5c777a37db19cb28ec9a2fb9aefee4826406291f56df4a3a8ed6e5705",
+      "artworkHash": "17d2d214aba44ed4e1037e70828042ad88bcb609ce65642532b294e0a62b8c5f",
+      "render": "Nekroz - Clausolas.png",
+      "renderHash": "6b80f6e29de80989a35e042efe8b3318ac31b040eb237f11814d1744b991cf30",
+      "renderPixelHash": "5398221418c5396a72e61a2ee8b20c992d01210727f1c66da82f6b4f80af8406"
+    },
+    {
+      "id": "card nekroz - cycle",
+      "name": "Nekroz - Cycle",
+      "manifestIndex": 5,
+      "sourceHash": "42d31d0660a10c390939a40f315b70dee78da6fe7bbaddf602be5880142f750b",
+      "artworkHash": "ac505389605a47350d0c995ecdb325e664f4ef5017cae7f55424f12edf112eb4",
+      "render": "Nekroz - Cycle.png",
+      "renderHash": "05b78a892fc80e4f0f130abc6a76fdae207a8abf0e7d4e44eb55029f47b18eb7",
+      "renderPixelHash": "94be2fa33c6abec45d631008cd576a54a0ab5e53c44818067066e4e7f3d5c943"
+    },
+    {
+      "id": "card nekroz - dance princess",
+      "name": "Nekroz - Dance Princess",
+      "manifestIndex": 6,
+      "sourceHash": "d91c06ce5a2607db40b36aa6103df61525ebb63fb5a665e5c6d5bcc7d12d8491",
+      "artworkHash": "59d5193ad4f2d6c2cf70c0fcd36ee11de8e3554396a7088a6da715c4ceae5f2b",
+      "render": "Nekroz - Dance Princess.png",
+      "renderHash": "89e213831e51d666c37c80c9145908f32bbe5dd97d061593e323caaa029274a6",
+      "renderPixelHash": "2c1a917217398a67384a705459d4619d48a0e2a3097293d2ddb11be1121bd079"
+    },
+    {
+      "id": "card nekroz - decisive armor",
+      "name": "Nekroz - Decisive Armor",
+      "manifestIndex": 7,
+      "sourceHash": "f3fa528b209b914a5725d3339cd82bfaac950582a7a55248325b9ce89a6780d8",
+      "artworkHash": "66d43cf87e53f7344466d8d5cee94ec0f08422274b58d8671d98834c80a8411f",
+      "render": "Nekroz - Decisive Armor.png",
+      "renderHash": "2d3aa6a20cb1ad04fba4e09dc87ac1f479f6d6d215b5d935301ca6276f4bc2d1",
+      "renderPixelHash": "e20fa780f79bfac2ef1d77b7947d4af09c9b33387c38e0fc6e3d5cbf4df57885"
+    },
+    {
+      "id": "card nekroz - exa",
+      "name": "Nekroz - Exa",
+      "manifestIndex": 8,
+      "sourceHash": "9a7903c977e4f87f1430a0420a50193a3b5ac782d4c0a68ff3809f98b3354a1f",
+      "artworkHash": "c12c9f2261f58403c8608f3ee4aa40af553206447ab94f30ed57560b40098b9c",
+      "render": "Nekroz - Exa.png",
+      "renderHash": "e05b7a4014307e2e5ebcf8e6a3d80a27ee7712d2a0fdd7c02448f68b9f2daaf7",
+      "renderPixelHash": "343fd77a273b30f166a8c3bf3f655d6843a19021622bc4a080539d3daf91021f"
+    },
+    {
+      "id": "card nekroz - great sorcerer",
+      "name": "Nekroz - Great Sorcerer",
+      "manifestIndex": 9,
+      "sourceHash": "9def60200030b487a1bd7ce2f4606cab4f25d884f0439682a3e463a6fc41834a",
+      "artworkHash": "718e31b056b3c35a749a2a00e696ab496318bf70d303d18dffcc7230a89084f9",
+      "render": "Nekroz - Great Sorcerer.png",
+      "renderHash": "e90a7042a5baf6aa498b048493bc9487b4f8a7d0281d668a849868951e224d1a",
+      "renderPixelHash": "17661c38ea4e492b4f46a4b0aba202be2d93202665950c6222f8d3269d0b6bed"
+    },
+    {
+      "id": "card nekroz - gungnir",
+      "name": "Nekroz - Gungnir",
+      "manifestIndex": 10,
+      "sourceHash": "edf742cbdfd5a255cbd2c97f5e1a929c40a12a8b25db9db62f26840b01418417",
+      "artworkHash": "e7c759649f6020b8b95962d81036aa20fb6535f6e9a328935ee19cd765a6b5eb",
+      "render": "Nekroz - Gungnir.png",
+      "renderHash": "96d47fe5b534f1e399f9db4b4a1c7498ea0ca3d7bb3222435c7d152551c81e93",
+      "renderPixelHash": "6670a38e1fe6251f7665c9de062c349f472f2966c58786af972d34c7ea68fee1"
+    },
+    {
+      "id": "card nekroz - kaleidoscope",
+      "name": "Nekroz - Kaleidoscope",
+      "manifestIndex": 11,
+      "sourceHash": "11622aa0ff95458f15f226a1a75f9b874907f5ede642bb9306b211890934b400",
+      "artworkHash": "d5f762255ef4430e1d5d1fdcdaa0f63831a2e65d1c922380cd2609779d568c1a",
+      "render": "Nekroz - Kaleidoscope.png",
+      "renderHash": "889cc5d40227d674349995750e5fbbdd02bd1756333e164eb1b6a923b87c6a73",
+      "renderPixelHash": "680f8a668ee6622f71dfafd9b13bfcec4cb0018bc6b412694e1425e7159581e8"
+    },
+    {
+      "id": "card nekroz - mirror",
+      "name": "Nekroz - Mirror",
+      "manifestIndex": 12,
+      "sourceHash": "ce7b77c82f28f7877f83a32301e17c2d645fb13d1fad6300eaf18d241ffb80ba",
+      "artworkHash": "f47bc6a19e60187ce9f96214cdcd23f561a8807c6247f43a705d65adb999c9a9",
+      "render": "Nekroz - Mirror.png",
+      "renderHash": "296e2254ab30a6b7c337b4458d503bc23b1a1b8ba3cf9c3929fe84b6f659475c",
+      "renderPixelHash": "0bf868eddb2ae9792bc990d42a7ca1ce7eae31216100aa5f2facbe3c01c363b2"
+    },
+    {
+      "id": "card nekroz - shurit",
+      "name": "Nekroz - Shurit",
+      "manifestIndex": 13,
+      "sourceHash": "22c8e12675e544c517f84babfffc9861a4bbc2de58c887428ba61f7bc6969af5",
+      "artworkHash": "2e28aca6d7398ee1335291660e64c66454957f6827b1572200e13217369da776",
+      "render": "Nekroz - Shurit.png",
+      "renderHash": "602f889d9e61d3785701f49404069611956df249af6d409c310b4192b94e1b99",
+      "renderPixelHash": "a6d64f175137a5ab8abd54ac0b0a9712c5fa328d631f31012423c758a48f46e4"
+    },
+    {
+      "id": "card nekroz - trishula",
+      "name": "Nekroz - Trishula",
+      "manifestIndex": 14,
+      "sourceHash": "850d353f492f2427a671996cfb74395735474e74d3241a2921ae57e8b7e4ad05",
+      "artworkHash": "c6c0fdf1dc432af3bd8441b08ad5054244d3117ff844efe7071f88b7a950d1af",
+      "render": "Nekroz - Trishula.png",
+      "renderHash": "fa576ee3e97d445055af04e1ff5a038283a787e2e5ca9b13e1620371c0ccfa3c",
+      "renderPixelHash": "44ae7f104d6da802baed56ed9e1eb5aeca94d648369f7846fad1a3d2d765530f"
+    },
+    {
+      "id": "card nekroz - unicore",
+      "name": "Nekroz - Unicore",
+      "manifestIndex": 15,
+      "sourceHash": "f51255edb1ca0b30a772bff46353cbe71de499487be71b40e3e69f2f227237f9",
+      "artworkHash": "ef76f76a71bf610a934a9c8cb3c13600ba98bcb712facc51e489ee1b33874ee5",
+      "render": "Nekroz - Unicore.png",
+      "renderHash": "488098ff43017e96e5788295baebdda8f2497ed57cbd780a2b704267865514cd",
+      "renderPixelHash": "af9a232fe2a6c3bdfff0189423ab734c04186dd52dca79f2b852ed9125c95d97"
+    },
+    {
+      "id": "card nekroz - valkyrus",
+      "name": "Nekroz - Valkyrus",
+      "manifestIndex": 16,
+      "sourceHash": "6729aabfa889bb006e4529cae9e6ed0d7f96c50d30d8784caaf7107ed2e9c254",
+      "artworkHash": "5134430712188c52d49eab79644745e521527abeed23a0a89c65179b4e2a4216",
+      "render": "Nekroz - Valkyrus.png",
+      "renderHash": "f98afc950febeebaaeae97d087185ecabf29a2528324d60bc4a34bcc8c22eb05",
+      "renderPixelHash": "a5065af06ea39adbfceb06dec07bdee0c0457553438e917e43c1e65a96d5db70"
+    },
+    {
+      "id": "card preparation of rites",
+      "name": "Preparation of Rites",
+      "manifestIndex": 17,
+      "sourceHash": "e35e9a1d33c6c5857d894900b6f4d4e5498386c6ba1e245f20b4befcfa2d8d24",
+      "artworkHash": "99c136721246f91e1b75b96a7f90f5106cb7811a3a6c33adfb016e511df23390",
+      "render": "Preparation of Rites.png",
+      "renderHash": "c105a435d0506a232dbeb5974ca82184f80c06ea78c25d9f40316555ee914fef",
+      "renderPixelHash": "28897ac3a21042a421be66cec8e9c40adbf90d4c80eebe5807fde14c4728b65e"
+    },
+    {
+      "id": "card senju of the thousand hands",
+      "name": "Senju of the Thousand Hands",
+      "manifestIndex": 18,
+      "sourceHash": "f06e4a6538121adc74322f2de74826382f70b8d3a047e8ed46e73ba1234bc49a",
+      "artworkHash": "ad050c802ca3ed9ccf4f85c4d0865c3b13551672f796e0c5e24e87b8ff20e21a",
+      "render": "Senju of the Thousand Hands.png",
+      "renderHash": "05db03d06eff7dc701ba66fb5f321b3e173230f26874fb28d22e7ef3483f9f4c",
+      "renderPixelHash": "6c9ee5189ba78ee6c71944562672af4a484346fd36d5d76371c479fa019b9499"
+    }
+  ]
+}
