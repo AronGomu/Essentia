@@ -8,6 +8,7 @@ folder-form .mse-set directly with Magic Set Editor.
 from __future__ import annotations
 
 import logging
+import os
 import re
 import subprocess
 import sys
@@ -112,6 +113,7 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, obj
         project
         for project in projects_root.rglob("*.mse-set")
         if project.is_dir()
+        and not project.name.endswith("_all_cards.mse-set")
         and not any(parent.name.endswith(".mse-set") for parent in project.parents)
     ]
     for project in sorted(candidates, key=lambda item: _project_sort_key(item, projects_root)):
@@ -174,6 +176,45 @@ def _observe_process(process: subprocess.Popen[bytes], project_path: Path, start
     )
 
 
+def _nix_wx_library_dir() -> Path | None:
+    """Locate a Nix wxWidgets 3.2 lib dir for the prebuilt MSE binary."""
+    store = Path("/nix/store")
+    if not store.is_dir():
+        return None
+    matches = sorted(
+        path
+        for path in store.glob("*-wxwidgets-3.2.*/lib")
+        if (path / "libwx_gtk3u_core-3.2.so.0").exists()
+    )
+    return matches[-1] if matches else None
+
+
+def _mse_spawn_env() -> dict[str, str]:
+    env = os.environ.copy()
+    parts: list[str] = []
+    explicit = env.get("MSE_LIBRARY_PATH", "").strip()
+    if explicit:
+        parts.extend(part for part in explicit.split(":") if part)
+    if sys.platform.startswith("linux"):
+        wx_lib = _nix_wx_library_dir()
+        if wx_lib is not None:
+            parts.append(str(wx_lib))
+    existing = env.get("LD_LIBRARY_PATH", "").strip()
+    if existing:
+        parts.extend(part for part in existing.split(":") if part)
+    # Preserve order while dropping duplicates.
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for part in parts:
+        if part in seen:
+            continue
+        seen.add(part)
+        deduped.append(part)
+    if deduped:
+        env["LD_LIBRARY_PATH"] = ":".join(deduped)
+    return env
+
+
 def open_project(project_path: Path) -> None:
     if MSE_CONFIG is None:
         LOGGER.error("event=spawn.mse.rejected reason=not_configured project=%s", project_path)
@@ -191,18 +232,52 @@ def open_project(project_path: Path) -> None:
         messagebox.showerror("Project not found", f"Invalid MSE project:\n{project_path}")
         return
     try:
+        env = _mse_spawn_env()
         LOGGER.info(
-            "event=spawn.mse.starting cmd=%s args=%s cwd=%s",
+            "event=spawn.mse.starting cmd=%s args=%s cwd=%s ld_library_path=%s",
             MSE_CONFIG.executable,
             [str(project_path)],
             ROOT,
+            env.get("LD_LIBRARY_PATH", ""),
         )
         started_at = time.monotonic()
         process = subprocess.Popen(
             [str(MSE_CONFIG.executable), str(project_path)],
             close_fds=True,
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
         )
         LOGGER.info("event=spawn.mse.started pid=%s project=%s", process.pid, project_path)
+        # Surface missing-library crashes immediately instead of looking like a dead button.
+        time.sleep(0.25)
+        early_code = process.poll()
+        if early_code is not None:
+            stderr = b""
+            if process.stderr is not None:
+                stderr = process.stderr.read() or b""
+            detail = stderr.decode("utf-8", errors="replace").strip()
+            LOGGER.error(
+                "event=spawn.mse.exited_early pid=%s project=%s return_code=%s detail=%s",
+                process.pid,
+                project_path,
+                early_code,
+                detail,
+            )
+            message = (
+                f"MSE exited immediately (code {early_code}).\n\n"
+                f"Project:\n{project_path}\n"
+            )
+            if detail:
+                message += f"\n{detail}\n"
+            if early_code == 127 or "shared libraries" in detail:
+                message += (
+                    "\nLinux tip: MSE needs wxWidgets libs. "
+                    "Set MSE_LIBRARY_PATH to the directory containing "
+                    "libwx_gtk3u_core-3.2.so.0, or install wxwidgets_3_2."
+                )
+            messagebox.showerror("MSE failed to start", message)
+            return
         threading.Thread(
             target=_observe_process,
             args=(process, project_path, started_at),
