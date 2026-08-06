@@ -5,6 +5,9 @@ implementing agent, phase by phase. Each phase is independently shippable and le
 
 Companion overview document: `WEBSITE_V2_PLAN.html`.
 
+Execution order for the open items in this spec is tracked in `TODO.md`; each entry there names the
+phase or section here that owns it.
+
 ---
 
 ## 0. Conventions and constraints

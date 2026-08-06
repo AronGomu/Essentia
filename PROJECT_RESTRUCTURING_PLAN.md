@@ -230,9 +230,9 @@ python -m unittest discover -s tests
 
 **Work:**
 
-- [ ] In `TODO.md`, annotate each open item with its owning `WEBSITE_V2_SPEC.md` phase or ticket id.
-- [ ] Add a one-line pointer in `WEBSITE_V2_SPEC.md` stating that `TODO.md` tracks its execution order.
-- [ ] Add a pointer to this plan from `docs/CONTEXT.md` change-ownership section so restructuring decisions are discoverable.
+- [x] In `TODO.md`, annotate each open item with its owning `WEBSITE_V2_SPEC.md` phase or ticket id.
+- [x] Add a one-line pointer in `WEBSITE_V2_SPEC.md` stating that `TODO.md` tracks its execution order.
+- [x] Add a pointer to this plan from `docs/CONTEXT.md` change-ownership section so restructuring decisions are discoverable.
 
 **Commands:**
 
@@ -242,8 +242,8 @@ git grep -n "WEBSITE_V2_SPEC" -- TODO.md docs README.md
 
 **Acceptance:**
 
-- [ ] Every unchecked `TODO.md` item names an owner.
-- [ ] `docs/CONTEXT.md` links this plan.
+- [x] Every unchecked `TODO.md` item names an owner.
+- [x] `docs/CONTEXT.md` links this plan.
 
 ### RST-105 — Final verification gate and closure
 

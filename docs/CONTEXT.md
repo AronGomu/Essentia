@@ -59,5 +59,7 @@ French archive content was intentionally removed. No French counterpart or archi
 - Card-specific value → MSE only.
 - Proposed decision → `docs/ADR/proposed/`.
 - Accepted decision evidence → `docs/ADR/accepted/`.
+- Repository restructuring decision → [Project restructuring plan](../PROJECT_RESTRUCTURING_PLAN.md).
+- Website feature or phase → [`WEBSITE_V2_SPEC.md`](../WEBSITE_V2_SPEC.md), ordered by [`TODO.md`](../TODO.md).
 
 Create an archetype `CHANGELOG.md` only after a released archetype changes. Do not create empty changelogs.
