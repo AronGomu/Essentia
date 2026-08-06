@@ -20,4 +20,8 @@ Do not shuffle Deck during this procedure.
 
 ## Proxy quantities
 
-When release decklists exist, print 3 copies of each distinct card per deck. A card shared by 2 decks receives 6 copies. Ignore gameplay quantity recorded in decklist. Before decklists exist, package print manifest uses 3 copies per distinct package card.
+Print 2 copies of each distinct package card. This count is uniform: gameplay quantity recorded in a decklist never changes it, and a card shared by several decks still gets 2 copies.
+
+Per-card exceptions use `--copies-for "Card Name=N"`. `N` of 0 omits that card from the print run, and a name matching no card fails the run instead of being ignored.
+
+Print command and its remaining flags live in [`docs/MSE.md`](../MSE.md#printing).

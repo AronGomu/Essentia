@@ -162,9 +162,9 @@ Execute in order. Each is independently committable.
 
 **Work:**
 
-- [ ] Rewrite the "Proxy quantities" section of `docs/rules/DECK_BUILDING.md`: uniform 2 copies per distinct package card, `--copies-for "Card Name=N"` for exceptions, `N` of 0 omits, unknown name fails the run.
-- [ ] Link `docs/MSE.md#printing` from that section instead of restating flags.
-- [ ] Remove any other statement of the 3-per-deck / 6-when-shared rule.
+- [x] Rewrite the "Proxy quantities" section of `docs/rules/DECK_BUILDING.md`: uniform 2 copies per distinct package card, `--copies-for "Card Name=N"` for exceptions, `N` of 0 omits, unknown name fails the run.
+- [x] Link `docs/MSE.md#printing` from that section instead of restating flags.
+- [x] Remove any other statement of the 3-per-deck / 6-when-shared rule.
 
 **Commands:**
 
@@ -175,8 +175,8 @@ python -m unittest discover -s tests
 
 **Acceptance:**
 
-- [ ] The grep returns no hit outside `docs/ADR/**` and `CHANGELOG.md`.
-- [ ] `docs/rules/DECK_BUILDING.md` names 2 copies and the override flag.
+- [x] The grep returns no hit outside `docs/ADR/**` and `CHANGELOG.md`.
+- [x] `docs/rules/DECK_BUILDING.md` names 2 copies and the override flag.
 - [ ] Test suite exits 0.
 
 ### RST-102 — Close the copy-limit decision
