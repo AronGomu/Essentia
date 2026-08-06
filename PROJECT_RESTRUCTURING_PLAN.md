@@ -137,6 +137,12 @@ Status: **ratified 2026-08-06**. All 23 entries are accepted with no exceptions 
 
 **Decision:** A ticket is done when its acceptance commands exit 0 and `git diff --check` is clean. Reporting is factual: a skipped or failing gate is stated with its output, never summarized as passing.
 
+### D-024 — Pre-existing card-text drift
+
+**Decision:** The 53 unittest failures and the 251 `lint_mse_card_style.py` findings are MSE card-text drift that predates this plan and is out of its scope. No RST ticket in this plan owns card text.
+
+**Why:** They measure identically on `main @ 4882457` — 147 tests / 53 failures there, 148 tests / 53 failures here (the extra test is RST-103's), with an identical failure set and byte-identical lint output. Closing them is a separate card-normalization ticket, not restructuring work.
+
 ## Contract pointers
 
 Single owner per topic. This plan links; it does not duplicate.
@@ -251,17 +257,32 @@ git grep -n "WEBSITE_V2_SPEC" -- TODO.md docs README.md
 
 **Work:**
 
-- [ ] Run the full [Verification gate](#verification-gate).
-- [ ] Fix any fallout inside the tickets above; do not widen scope.
-- [ ] Append a closure line to this section recording the date and commit of the green run.
+- [x] Run the full [Verification gate](#verification-gate).
+- [x] Fix any fallout inside the tickets above; do not widen scope. — no fallout: the branch failure set is identical to `main @ 4882457`.
+- [x] Append a closure line to this section recording the date and commit of the green run.
 
 **Acceptance:**
 
-- [ ] Every gate command exits 0.
-- [ ] `git diff --check` clean.
-- [ ] `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/release.json` still reports `"status": "open"` (D-016).
+- [ ] Every gate command exits 0. — not satisfied; see the closure line.
+- [x] `git diff --check` clean.
+- [x] `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/release.json` still reports `"status": "open"` (D-016).
 
 **Depends on:** RST-101 … RST-104.
+
+**Closure — 2026-08-06, gate run at `40fbcb5`.** The gate is not green. Per D-023 the result is recorded factually:
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `python -m unittest discover -s tests` | 1 | pre-existing fail — `Ran 148 tests` / `FAILED (failures=53)` (D-024) |
+| `python .script/lint_mse_card_style.py` | 1 | pre-existing fail — 251 findings, byte-identical to `main @ 4882457` (D-024) |
+| `python .script/release_package.py validate` | 0 | pass — `lifecycle valid: …/cards_mse` |
+| `python .script/check_immutable_stages.py --base $(git merge-base HEAD origin/main)` | 0 | pass — `locked lifecycle packages OK` |
+| `python .script/audit_python_dependencies.py` | 0 | pass — `python audit: 1 locked packages clean` |
+| `cd website && npm ci && npm run ci` | 0 | pass — `format:check`, `lint`, `check`, `test`, `build`; `dist scan: clean` |
+| `cd website && npm run test:e2e` | 1 | skipped — Playwright browsers absent: `Executable doesn't exist at /home/aron/.cache/ms-playwright/webkit-2311/pw_run.sh`. Enable with `cd website && npx playwright install`. |
+| `git diff --check` | 0 | pass |
+
+No failure is attributable to RST-101 … RST-104: the branch's 53 failing tests are the same 53 that fail on `main @ 4882457`, and the lint output is unchanged. `release.json` still reports `"status": "open"`; this plan never ran `release_package.py lock`.
 
 ## Verification gate
 
