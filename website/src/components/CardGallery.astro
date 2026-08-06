@@ -1,5 +1,6 @@
 ---
-import { withBase, type GalleryCard } from '../lib/catalog';
+import { previewImage, withBase, type GalleryCard } from '../lib/catalog';
+import CardPicture from './CardPicture.astro';
 
 interface Props {
   cards: GalleryCard[];
@@ -27,26 +28,9 @@ const ranks = new Map(cards.map((card, index) => [card.id, index]));
           <a
             class="gallery-card"
             href={withBase(base, card.route)}
-            data-card-preview={withBase(base, card.render)}
+            data-card-preview={withBase(base, previewImage(card))}
           >
-            <picture>
-              <source
-                srcset={withBase(base, card.galleryAvif)}
-                type="image/avif"
-              />
-              <source
-                srcset={withBase(base, card.galleryWebp)}
-                type="image/webp"
-              />
-              <img
-                src={withBase(base, card.render)}
-                alt=""
-                width={card.width}
-                height={card.height}
-                loading={(ranks.get(card.id) ?? 4) < 4 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
-            </picture>
+            <CardPicture card={card} eager={(ranks.get(card.id) ?? 4) < 4} />
             <span class="card-caption">
               <strong>{card.name}</strong>
               <span>{card.superType}</span>

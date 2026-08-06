@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-03 00:12:30
 	name: Shaddoll - Schism
 	casting_cost: W/B
 	image: mse_images/image20.png
@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Fusion Summon Enchantment</word-list-type-en>
 	sub_type: <word-list-enchantment></word-list-enchantment>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Fusion Summon</b> 1 <i-auto>“Shaddoll”</i-auto> Creature by exiling the indicated materials from your Field or Grave. Then <b>Send</b> 1 Creature controlled by an opponent that shares a color with this Creature to Grave.
+	rule_text: <i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Fusion Summon</b> 1 <i-auto>“Shaddoll”</i-auto> Creature by exiling the indicated materials from your Field or Grave. Then <b>Send</b> 1 Creature controlled by an opponent that shares a color with Schism to Grave.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 023/025 C
 	card_code_text_2: 023/025 C

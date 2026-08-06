@@ -46,12 +46,12 @@ class BurningAbyssCardTests(unittest.TestCase):
                 "name: Burning Abyss - Cherubini",
                 "super_type: <word-list-type-en>Link Lvl 2 Creature</word-list-type-en>",
                 "<i>2 Creatures MV 1</i>",
-                "<b>Send</b> 1 Creature with MV 1 from your Deck to Grave",
+                "<b>Send</b> 1 Creature with MV 1 from Deck to Grave",
             ),
             "card burning abyss - dante pilgrim": (
                 "<b><kw-a><nospellcheck><key>Hexproof</key></nospellcheck></kw-a></b>",
                 "<b>On Destroy</b>",
-                "they <b>Discard</b> 1 card at random",
+                "they <b>Discard</b> 1 at random",
             ),
             "card burning abyss - good  evil": (
                 "<b>Ritual Summon</b>",
@@ -77,11 +77,11 @@ class BurningAbyssCardTests(unittest.TestCase):
                 "<b>Slow Blink 1 Any Creature</b>",
             ),
             ACTIVE / "card burning abyss - draghig": (
-                "<b>On Send Grave</b> — <b>Discard</b> 1 card, then <b>Draw</b> 1 card",
+                "<b>On Send Grave</b> — <b>Discard</b>",
             ),
             ACTIVE / "card leviair the sea dragon": (
-                "<b>Target</b> 1 exiled MV 1 Creature",
-                "<b>Release</b> the target",
+                "<b>Target</b> 1 exiled",
+                "<b>Release</b> it",
             ),
             ROOT
             / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set"

@@ -17,6 +17,24 @@ LOADER.exec_module(MENU)
 
 
 class MSEProjectMenuTests(unittest.TestCase):
+    def test_read_title_removes_essentia_prefix(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            set_file = Path(directory) / "set"
+            set_file.write_text(
+                "set_info:\n\ttitle: Essentia -- Burning Abyss\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(MENU.read_title(set_file), "Burning Abyss")
+
+    def test_project_path_starts_at_repo_root(self) -> None:
+        project = ROOT / "cards_mse" / "00_drafts" / "sample.mse-set"
+
+        self.assertEqual(
+            MENU.project_root_path(project),
+            "cards_mse/00_drafts/sample.mse-set",
+        )
+
     def test_discovers_only_top_level_menu_lifecycles(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

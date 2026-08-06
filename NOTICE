@@ -1,0 +1,22 @@
+Essentia — licence scope
+========================
+
+The CC0 1.0 Universal dedication in LICENSE applies to everything created for
+this project: card designs, rules and card text, renders, code, documentation,
+and the website.
+
+It does NOT apply to third-party material, which remains under its own owners'
+terms and is explicitly excluded from the dedication:
+
+  * Yu-Gi-Oh! card names, characters, and the official source records this
+    project adapts from — Konami and their respective rights holders.
+  * Magic: The Gathering terminology and mana symbols — Wizards of the Coast.
+  * Imported land artwork reproduced for proxy printing — the original artists
+    and their publishers.
+
+Essentia is an independent, unofficial fan design project. It is not produced,
+endorsed, or approved by Konami or Wizards of the Coast. Reusing this project's
+material under CC0 does not transfer any rights in their trademarks or artwork.
+
+See website/src/pages/legal/index.astro (published at /legal/) for the same
+statement in plain language.

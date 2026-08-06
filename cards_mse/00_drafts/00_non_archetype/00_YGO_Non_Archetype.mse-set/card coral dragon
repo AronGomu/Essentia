@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 06_synchro.md
 	time_created: 2026-07-11 12:11:48
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Coral Dragon
 	casting_cost: 1U
 	image: mse_images/synchro/imported/image7.png
@@ -23,10 +23,10 @@ card:
 	rarity: rare
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Discard</b> 1 card and <b>Target</b> 1 non-Creature permanent; <b>Destroy</b> it.
-		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Send Grave</b> — <b>Draw</b> 1 card.
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Discard</b> 1 and <b>Target</b> 1 non-Creature permanent; <b>Destroy</b> it.
+		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Send Grave</b> — <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
-	power: 4
+	power: 6
 	toughness: 1
 	card_code_text: 018/077 R
 	card_code_text_2: 018/077 R

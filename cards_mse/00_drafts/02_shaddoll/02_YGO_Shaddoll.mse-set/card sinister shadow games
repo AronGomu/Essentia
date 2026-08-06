@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Sinister Shadow Games
 	casting_cost: B
 	image: mse_images/image23.png
@@ -21,7 +21,7 @@ card:
 	sub_type_3: 
 	sub_type_4: 
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> card from your Deck to Grave, then you may turn any number of face-down <i-auto>“Shaddoll”</i-auto> Creatures you control face up.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> card from Deck to Grave, then you may turn any number of face-down <i-auto>“Shaddoll”</i-auto> Creatures you control face up.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 025/025 C
 	card_code_text_2: 025/025 C

@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card daigusto emeral
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-08-01 01:21:21
+	time_modified: 2026-08-03 00:13:02
 	name: Daigusto Emeral
 	casting_cost: G
 	image: images/daigusto-emeral-image.png
@@ -16,10 +16,10 @@ card:
 	sub_type: <word-list-race-en>Rock</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i>2 Creatures MV 1</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 3 Creatures in your Grave; shuffle the targets into your Deck, then <b>Draw</b> 1 card.
+		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 3 Creatures in Grave; <b>Shuffle</b> them, then <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
-	power: 3
+	power: 4
 	toughness: 2
 	card_code_text: 018/050 R
 	card_code_text_2: 018/050 R

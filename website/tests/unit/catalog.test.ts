@@ -27,7 +27,7 @@ describe('immutable publication graph', () => {
 
   it('uses source references rather than duplicated card names in identities', () => {
     const identities = content('identities.json');
-    expect(identities.schemaVersion).toBe(2);
+    expect(identities.schemaVersion).toBe(3);
     expect(identities.cards.length).toBeGreaterThan(100);
     expect(
       identities.cards.every(
@@ -40,7 +40,7 @@ describe('immutable publication graph', () => {
   });
 
   it('publishes open/locked packages, never drafts', () => {
-    expect(catalog.schemaVersion).toBe(3);
+    expect(catalog.schemaVersion).toBe(4);
     expect(catalog.releases.length).toBeGreaterThan(0);
     expect(catalog.cards.length).toBeGreaterThan(0);
     expect(catalog.cardVersions.length).toBeGreaterThan(0);
@@ -49,9 +49,9 @@ describe('immutable publication graph', () => {
         ['alpha', 'beta', 'release'].includes(release.stage),
       ),
     ).toBe(true);
-    expect(catalog.releases.some((release) => release.setId === 'LOTA-0001')).toBe(
-      true,
-    );
+    expect(
+      catalog.releases.some((release) => release.setId === 'LOTA-0001'),
+    ).toBe(true);
   });
 
   it('keeps current cards and versions internally linked', () => {

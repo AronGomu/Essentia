@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 09_non_archetype_non_creature.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 17:12:03
+	time_modified: 2026-08-02 23:25:22
 	name: Twin Twisters
 	casting_cost: R
 	image: mse_images/noncreatures/imported/image17.png
@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Instant</word-list-type-en>
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Discard</b> 1 card and <b>Target</b> 0–2 nonland non-Creature permanents; <b>Destroy</b> the targets.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Discard</b> 1 and <b>Target</b> 0–2 nonland non-Creature permanents; <b>Destroy</b> the targets.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 073/077 C
 	card_code_text_2: 073/077 C

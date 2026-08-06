@@ -1,0 +1,4 @@
+## Review
+- **Blocker (high):** `.agents/skills/fix-mse-cards/SKILL.md:104,116` defines `PATTERN_DESTROYER` flag without HTML field/schema. Stop/resume loses deterministic mapping from accepted `C*` → `D*`. Add machine-readable flag plus validation.
+- **Note (medium):** Frame-rule scope contradicts itself. `.agents/skills/fix-mse-cards/SKILL.md:134` mines reusable frame mappings; `.agents/skills/update-rules/SKILL.md:30` assigns design owner; line 45 excludes all frame items. Limit exclusion to card-specific frame choices. Require relevant `docs/design/*` review.
+- **Note (medium):** Legacy Markdown finalization leaves applied review under `docs/ADR/proposed/`. `.agents/skills/update-rules/SKILL.md:124` marks legacy source `APPLIED`, conflicting with `docs/ADR/README.md:5-6,22` plus `docs/ADR/proposed/README.md:3`. Specify removal/archive after final accepted ADR creation plus Proposed-index cleanup.

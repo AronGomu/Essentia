@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 16:40:30
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-03 00:13:02
 	name: Leviair the Sea Dragon
 	casting_cost: G
 	image: mse_images/leviair-the-sea-dragon-image.jpg
@@ -22,11 +22,11 @@ card:
 	sub_type_4: 
 	rarity: rare
 	rule_text:
-		<i>2 Creatures MV 1</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 1 exiled MV 1 Creature; <b>Release</b> the target.
+		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 1 exiled <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1 Creature; <b>Release</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	power: 3
-	toughness: 3
+	power: 4
+	toughness: 4
 	card_code_text: 027/050 R
 	card_code_text_2: 027/050 R
 	card_code_text_3: 027/050 R

@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/03_nekroz/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-01 01:44:21
+	time_modified: 2026-08-03 00:13:02
 	name: Nekroz - Mirror
 	casting_cost: U
 	image: mse_images/nekroz-mirror-image.png
@@ -16,8 +16,8 @@ card:
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Resolution)</i-auto> <b>Ritual Summon</b> 1 Ritual Creature “Nekroz” from Hand by exiling Creatures from your Grave or by sacrificing Creatures from your Hand or Field whose total MV meets its Ritual cost.
-		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Nekroz Recovery</b>
+		<i-auto>(1 - Resolution)</i-auto> <b>Ritual Summon</b> 1 Ritual Creature “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” from Hand by exiling Creatures from Grave or by sacrificing Creatures from Hand or Field whose total <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> meets its Ritual cost.
+		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b><error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Recovery</b>
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 040/050 C
 	card_code_text_2: 040/050 C

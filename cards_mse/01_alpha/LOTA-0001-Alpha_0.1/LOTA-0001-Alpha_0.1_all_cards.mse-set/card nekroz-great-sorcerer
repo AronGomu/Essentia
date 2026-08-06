@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/03_nekroz/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-03 00:13:02
 	name: Nekroz - Great Sorcerer
 	casting_cost: U
 	image: images/nekroz-great-sorcerer-image.png
@@ -16,11 +16,11 @@ card:
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 Ritual Creature “Nekroz”.
-		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Exile</b> — <b>Target</b> 1 other “Nekroz” from Exile; <b>Reclaim</b> the target.
+		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 Ritual Creature “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”.
+		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Exile</b> — <b>Target</b> 1 other “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” from Exile; <b>Reclaim</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 3
-	toughness: 1
+	toughness: 2
 	card_code_text: 037/050 C
 	card_code_text_2: 037/050 C
 	card_code_text_3: 037/050 C

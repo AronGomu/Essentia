@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 06_synchro.md
 	time_created: 2026-07-11 16:45:00
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Black Rose Moonlight Dragon
 	casting_cost: 1RG
 	image: mse_images/synchro/imported/image28.png
@@ -18,10 +18,10 @@ card:
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
 		<b>Flying</b>
-		<i-auto>(1 - Triggered)</i-auto> <b>On Enter or <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>2+ Opponent Creature Enter</b> — <b>Target</b> 1 Creature an opponent controls; <b>Bounce</b> the target.
+		<i-auto>(1 - Triggered)</i-auto> <b>On Enter or MV2+ Opponent Creature Enter</b> — <b>Target</b> 1 Creature an opponent controls; <b>Bounce</b> the target.
 	flavor_text: <i-flavor></i-flavor>
-	power: 4
-	toughness: 3
+	power: 6
+	toughness: 4
 	card_code_text: 009/077 R
 	card_code_text_2: 009/077 R
 	card_code_text_3: 009/077 R

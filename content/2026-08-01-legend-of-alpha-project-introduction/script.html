@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legend of Alpha — Video Script</title>
+<style>
+  :root{
+    --bg:#0d0f13;
+    --bg-bar:#14171d;
+    --line:#252a33;
+    --text:#e8eaee;
+    --dim:#8b93a3;
+    --accent:#f0b429;
+    --accent-2:#5aa9e6;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size:var(--fs,28px);
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---- top bar ---- */
+  .bar{
+    position:sticky;top:0;z-index:20;
+    background:rgba(20,23,29,.96);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar-in{
+    max-width:1100px;margin:0 auto;
+    padding:10px 20px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    font-size:14px;line-height:1.3;
+  }
+  .brand{font-weight:700;letter-spacing:.02em;color:var(--accent);white-space:nowrap}
+  .brand small{display:block;font-weight:400;color:var(--dim);letter-spacing:0}
+  .spacer{flex:1}
+  button{
+    font:inherit;font-size:13px;
+    background:#1d222b;color:var(--text);
+    border:1px solid var(--line);border-radius:7px;
+    padding:6px 11px;cursor:pointer;
+  }
+  button:hover{border-color:#3b4351;background:#232936}
+  button.on{background:var(--accent);color:#191203;border-color:var(--accent);font-weight:600}
+  .grp{display:flex;gap:6px;align-items:center}
+  .grp span{color:var(--dim);font-size:12px}
+  progress{
+    display:block;width:100%;height:3px;border:0;
+    background:#1a1e26;appearance:none;
+  }
+  progress::-webkit-progress-bar{background:#1a1e26}
+  progress::-webkit-progress-value{background:var(--accent)}
+  progress::-moz-progress-bar{background:var(--accent)}
+
+  /* ---- layout ---- */
+  main{max-width:1100px;margin:0 auto;padding:0 24px 70vh}
+
+  .title{
+    padding:64px 0 40px;border-bottom:1px solid var(--line);margin-bottom:8px;
+  }
+  .title h1{
+    font-size:1.5em;line-height:1.2;margin:0 0 .35em;
+    letter-spacing:-.01em;
+  }
+  .meta{font-size:.5em;color:var(--dim);line-height:1.7}
+  .meta b{color:var(--accent-2);font-weight:600}
+
+  /* ---- table of contents ---- */
+  .toc{
+    margin:28px 0 0;padding:20px 24px;
+    background:#12151b;border:1px solid var(--line);border-radius:12px;
+    font-size:.52em;
+  }
+  .toc h2{margin:0 0 12px;font-size:1em;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-weight:600}
+  .toc ol{margin:0;padding-left:1.4em;columns:2;column-gap:32px}
+  @media(max-width:720px){.toc ol{columns:1}}
+  .toc li{margin:.3em 0;break-inside:avoid}
+  .toc a{color:var(--text);text-decoration:none}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc .t{color:var(--dim);font-variant-numeric:tabular-nums}
+
+  /* ---- script body ---- */
+  section{padding:52px 0 8px;border-top:1px solid var(--line);margin-top:44px}
+  section:first-of-type{border-top:0}
+  h2{
+    font-size:.92em;margin:0 0 4px;
+    color:var(--accent);letter-spacing:.01em;line-height:1.25;
+  }
+  h3{
+    font-size:.7em;margin:1.7em 0 .1em;
+    color:var(--accent-2);font-weight:600;line-height:1.3;
+  }
+  .cue{
+    font-size:.44em;color:var(--dim);letter-spacing:.08em;
+    text-transform:uppercase;margin-bottom:1.4em;font-weight:600;
+  }
+  p{margin:0 0 1.05em;max-width:26ch;max-width:30em}
+  p.beat{color:var(--accent);font-weight:600}
+
+  /* reading aid */
+  p:hover{color:#fff}
+  ::selection{background:var(--accent);color:#191203}
+
+  .end{
+    margin-top:60px;padding:34px 0;border-top:1px solid var(--line);
+    color:var(--dim);font-size:.5em;text-align:center;
+  }
+
+  @media(max-width:640px){
+    body{font-size:22px}
+    main{padding:0 16px 70vh}
+  }
+  @media print{
+    .bar{display:none}
+    body{background:#fff;color:#000;font-size:12pt}
+    h2{color:#000}h3{color:#333}
+    section{page-break-inside:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="brand">Legend of Alpha<small>video script · read-through</small></div>
+    <div class="spacer"></div>
+    <div class="grp">
+      <span>text</span>
+      <button id="fsDown" title="Smaller (−)">A−</button>
+      <button id="fsUp" title="Bigger (+)">A+</button>
+    </div>
+    <div class="grp">
+      <span>scroll</span>
+      <button id="slower" title="Slower (←)">−</button>
+      <button id="play" title="Play / pause (space)">▶ Auto-scroll</button>
+      <button id="faster" title="Faster (→)">+</button>
+      <span id="spd">1.0×</span>
+    </div>
+    <div class="grp">
+      <button id="top" title="Back to top">↑ Top</button>
+    </div>
+  </div>
+  <progress id="prog" value="0" max="100"></progress>
+</div>
+
+<main>
+
+  <div class="title">
+    <h1>Legend of Alpha — Introducing Yu-Gi-Oh! × Magic</h1>
+    <div class="meta">
+      <b id="words">—</b> words · <b id="mins">—</b> estimated at 150 wpm<br>
+      Space = play/pause · ← → = speed · + − = text size
+    </div>
+  </div>
+
+  <nav class="toc">
+    <h2>Sections</h2>
+    <ol id="tocList"></ol>
+  </nav>
+
+  <section id="s-opening">
+    <h2>Opening</h2>
+    <div class="cue">Section 1</div>
+    <p class="beat">The good old yugioh, but in Magic ?</p>
+    <p>Hi everyone and welcome on the presentation of my beloved project : YGO X MTG: Essentia</p>
+    <p>My goal with Essentia project is to allow you to play YGO cards in the Magic rule system while keeping the feeling of playing YGO.<br>
+    Hence the name : Essentia.<br>
+    We keep the essence of YGO in another game system.</p>
+    <p>This idea started from me trying to create a magic cube using Yu‑Gi‑Oh! mechanics and cards.</p>
+    <p>It was a classical Magic cube trying to implement the fusion mechanics from Yu‑Gi‑Oh, and it was a mix of Magic cards that synergized pretty well with the fusion mechanics, and new Yu‑Gi‑Oh cards that I translated to support the new fusion mechanic.</p>
+    <p>As most first tries, it was not really a great success, but it inspired me to make it better.</p>
+    <p>And the thing that I missed the most from that prototype was that I was not really feeling the Yu‑Gi‑Oh feeling when playing.</p>
+    <p>I thought a lot about it, and the result is this project: trying, with the goal in mind, to replicate as much as possible the feeling of playing Yu‑Gi‑Oh! using the Magic: The Gathering rule system.</p>
+    <p>This project started to become very complex because I faced one major problem, and that problem was the complexity for a first-time player of my cube.</p>
+    <p>Because I try to implement Yu‑Gi‑Oh mechanics and Yu‑Gi‑Oh archetypes, I faced the same exact horizontal complexity problem, where you need to know almost every card to determine which cards are valuable and which are not.</p>
+    <p>The only solution I found to this problem, that is not really a solution, was creating structure decks that I can give to new players so they can play a few games before the actual cube and familiarize themselves with at least one or two archetypes and how the games played.</p>
+    <p>So my current goal, is to make 6 structure decks for 6 archetypes, each containing 50 cards, 40 cards main deck and a 10 cards sideboard.</p>
+    <p>And if you remove the basics from those decks and then add an arbitraty amount of cards, it should make a playable cube for at least 6 player.</p>
+    <p class="beat">That's my target for my first set, Legend of the Alpha.</p>
+  </section>
+
+  <section id="s-who">
+    <h2>Who I am</h2>
+    <div class="cue">Section 2</div>
+    <p class="beat">But first, who i am ?</p>
+    <p>I started my TCG career as a YGO player very early.</p>
+    <p>I started to go to weekly local tournaments when synchros releases when i was around 10 years old.</p>
+    <p>As most kids do, I played on and off, Not very seriously -- I was just a kid with kid budget decks after all -- up until the Hat format.</p>
+    <p>That's where I started to become much more serious about the game. I was a very active participant in the French forum OTK Expert, and I started to play a lot online, especially on Dueling Network.</p>
+    <p>Maybe you know Duelingbook, a current platform where you play Yu‑Gi‑Oh! in a browser online against other players.</p>
+    <p>Well, Duelingbook was its predecessor.</p>
+    <p>Then, a few years after the Duelist Alliance was released, I became a Burning Abyss budget player, and the two years of Burning Abyss, Shaddoll, and Nekroz formats were my own personal golden age of playing the game.<br>
+    And I think I became pretty good, becoming one of the best players in my local area, and I did attain the top 100 on Dueling Network, which, from my memory, was not a small feat.</p>
+    <p>I truly loved playing Burning Abyss, Nekroz, Shaddoll, and Spellbook.<br>
+    Those are my four favorite archetypes of all time.<br>
+    Kozmo is a close fifth.</p>
+    <p>I really did not like the direction of Yu‑Gi‑Oh, going to big first‑turn combos that break the board.<br>
+    I don't find those kinds of games interesting at all.<br>
+    It strayed a lot from Shaddoll, Burning Abyss, and Nekroz, which had very interesting and interactive games most of the time.</p>
+    <p>I still came back from time to time for Tier 0 format like Zoodiac and Tearlaments just to experience the thing.<br>
+    I still follow YGO content but I am not invested in the game at all now.<br>
+    I am what you would call, a YGO Boomer.</p>
+    <p>As you guessed, I transitionned to Magic during its Golden Era : 2016 Modern format.</p>
+    <p>I started playing Jeskai Control and Death's Shadow into that pure goaded format<br>
+    I became a serious MTG competitive player up until FIRE design ruined everything.</p>
+    <p>Now, I am mostly a Legacy when I played a card game.<br>
+    Which is funny because it's the closest format to Yu‑Gi‑Oh that you can actually play in Magic.</p>
+  </section>
+
+  <section id="s-why">
+    <h2>Why I am making this</h2>
+    <div class="cue">Section 3</div>
+    <p>Since i transitionned inot Magic, I always missed the high power and interaction of YGO games.</p>
+    <p>Ever since I transitioned into Magic, I always missed the high power and interactions of Yu‑Gi‑Oh games.</p>
+    <p>As I said, the legacy format is the closest, but it's still not the same.</p>
+    <p>I am the type of guy who loves searching five times in my library, ritual summon a Valkyrus, and sacrificing my Manju and my Valkyrus just to make a plus one using the exiling Necroz ritual spell.<br>
+    You just can't do that in Magic.</p>
+    <p>Also I love the Magic rule system and lands.</p>
+    <p>I want to give a good try mixing both the feeling of power and velocity from Yu‑Gi‑Oh, while still using the mana system from Magic: The Gathering.<br>
+    And also, maybe the mana system is the one missing thing that allows us to play actual games of Yu‑Gi‑Oh that don’t always devolve into a board-breaking of a first turn combo.</p>
+  </section>
+
+  <section id="s-core">
+    <h2>Core idea</h2>
+    <div class="cue">Section 4</div>
+    <p class="beat">What's the core idea?</p>
+    <p>The foundation is Magic.<br>
+    Cards use Magic's rules engine, mana system, colors, stack, combat, and card super and sub types.</p>
+    <p>But the design and power level target is not normal Magic Limited or Constructed.<br>
+    This is aimed to be played in a closed environment, balanced against itself.<br>
+    As you already saw, the cards I show you are completely out of the norm of Magic.<br>
+    In my environment, having a 4/3 for one mana that can also be played for free, and when it is sent to the graveyard from anywhere, it reanimates another creature; that's the norm.</p>
+    <p class="beat">If everything is broken, then nothing is.</p>
+    <p>And that's kinda the vibe of Yu‑Gi‑Oh.</p>
+    <p>Unless you give the possibility to kill your opponent in one turn, having overstat cards and effects is not really a problem as long as you give time to the opponent to do the same thing.</p>
+    <p>Also, you will see that I still gave mana cost to the cards, and almost every mana cost is just one mana.<br>
+    There are many effects that are free, so I hope to strike a good balance between mana cost and free cards to allow the Yu‑Gi‑Oh feeling of chaining cards together while providing enough space for several interative turns to be played.</p>
+  </section>
+
+  <section id="s-translated">
+    <h2>YGO specifics translated into MTG</h2>
+    <div class="cue">Section 5</div>
+    <p>Okay, now let me give a list of different Yu‑Gi‑Oh! specific mechanics that I translated into Magic: The Gathering raw systems.</p>
+
+    <h3>Extra Decks</h3>
+    <p>The first one is the Extra deck, and it behaves exactly like you would expect from Yu‑Gi‑Oh.</p>
+    <p>Fusions, Synchros, Xyz and Links start in the sideboard and they can be played exactly like in Yu‑Gi‑Oh, directly from the sideboard, using their summoning mecanics.<br>
+    And by default, summoning them, meaning putting them into play, does not cost mana.<br>
+    Fusions are the only exception because I consider playing a fusion spell like playing a creature from your hand, and it should cost at least one mana most of the time.</p>
+    <p>One thing I should not forget to mention is that for all those, you have to first summon them properly to be able to summon them afterward without using their summoning mechanic.<br>
+    And all types that come from the extra deck, like in Yu‑Gi‑Oh, return to the extra deck if they are shuffled into the deck or bounced to the hand.</p>
+
+    <h3>Life, Power and Toughness</h3>
+    <p>For the power and toughness of creatures, I used a very simple rule.<br>
+    I made a ratio based on Yu‑Gi‑Oh, where the attack or defense is divided by the life points.<br>
+    I tried to keep that ratio as close as possible in Magic, converting it into a power and toughness number for 20 life.</p>
+    <p>8,000 life divided by 20 is 400, so that means that for every 400 attack or defense, that is equivalent in my system to 1 power or toughness.<br>
+    For the card I showed previously, Burning Abyss Cir in Yu‑Gi‑Oh, he has 1600 attack points and 1200 defense points. Converted to magic ratios, that becomes a 4‑3, because 4 × 400 is equal 1600 and 3 × 400 is equal 1200.<br>
+    If the card has only 1500 instead of 1600, it becomes 3 because I always truncate the number down.</p>
+    <p>As you can see, this is very straightforward.<br>
+    I don't plan to make manual changes to the stats.<br>
+    I want to keep as much of this system as possible, because it is much simpler, and I can just adapt the actual effects that I cannot translate as easily to balance the card if balance is needed.</p>
+    <p>There is just a single thing that is bugging me, and that's the fact that I have to truncate down the stats. It would be possible for me to update the life in Magic to be 80 life instead of 20, so that I would not have to truncate the numbers for 99% of the Yu‑Gi‑Oh cards. However, I don't want to do that right now, because I would stray further from the actual Magic rule systems.<br>
+    And also the stats of the cards will be very weird for a Magic player because you have to multiply the power and toughness of every creature by 4.<br>
+    So for example, Burning Abyss Cir would be a one‑mana 16/12.<br>
+    And to me, that looks weird and doesn't fit an actual Magic card's stats.</p>
+
+    <h3>Levels and Mana</h3>
+    <p>Concerning the levels and mana, it was one of the hardest things to translate into Magic because the two systems are very different from each other.<br>
+    You can't really translate the levels directly into mana cost, because it just breaks the mana generation system of Magic: The Gathering.<br>
+    And also in modern Yu‑Gi‑Oh, levels are more like colors or types that allows you to play specific cards that synergize with them, based on their specific levels, rather than a mana cost.</p>
+    <p>So I decided to dumb down the system like that.<br>
+    Monster level 1 to 4 costs 1 mana, level 5 to 6 cost 2 mana, level 7 to 9 cost 3 mana, and level 10 to 12 cost 4 mana.<br>
+    With that system, and the speed I aim for in my games, it basically means that every card that costs more than 2 mana is not really playable for its mana-cst, like in Yu‑Gi‑Oh.<br>
+    Unless it is completely broken, in modern Yu‑Gi‑Oh, you cannot sacrifice two creatures to play a Level 7 monster.</p>
+    <p>But because of this simplification, I now lose a lot of precision for synchros, Xyz and Ritual summoning.<br>
+    Unfortunately, that's one of the trade-offs to use the magic game system.<br>
+    So that means every archetype, whatever its level — level 1, level 2, level 3, or level 4—has now access to the same exact Xyz and Synchros.</p>
+    <p>This is less faithful to recreate archetypes, but I think that's a fine cost to make.<br>
+    Because my main goal is really to keep the Yu‑Gi‑Oh feeling when playing the actual game, and not do a perfect recreation of the archetypes.</p>
+
+    <h3>Attributes and Color</h3>
+    <p class="beat">Now, the Attributes and Colors.</p>
+    <p>Converting the attributes into color was a big headache.<br>
+    Because there are two main problems.<br>
+    The first one is that attributes in Yu‑Gi‑Oh! are basically just another type for the cards, because there is no mana system and no deck‑building restrictions based on the attribute.<br>
+    The second problem is that in Yu‑Gi‑Oh you have six attributes, but in Magic you have only five main colors.</p>
+    <p>There are five attributes that are quite easy to translate. For example, light is white, dark is black, fire is red, water is blue, and earth is green. But the missing attribute, wind—where do I place it?</p>
+    <p>Also, if I want to make a faithful adaptation of the cards into Magic while considering color balance in my cube, this becomes quite hard to balance.</p>
+    <p>Then I thought more, and a third problem appeared: Xyz, Synchros, Fusions, and Links summon mechanics do not care about the color of the cards.<br>
+    Which, in a magic context, is very weird.<br>
+    And totally break the color pie.</p>
+    <p>So I decided not to care about the color balance in my cube, and to not to care about the color pie specifics.</p>
+    <p>I decided to keep the color as faithful to the attribute as possible.<br>
+    And for the wind monsters, I just attribute a color based on the vibe of the card.</p>
+
+    <h3>FLIP, Traps and face down cards.</h3>
+    <p>Another mechanic specific to Yu-Gi-Oh! is the Trap Cards and more generally, face-down cards for monsters and magic spells.</p>
+    <p>Magic has Morph, which is a bit similar, but it's still very different in how it actually plays.</p>
+    <p>I made one big change. I added a new global rule to this version of the game: any permanent or trap card can now be played face down for the same mana cost.</p>
+    <p>So you pay the same amount of mana that you would have to play the card normally, but you can choose to play the card face down.<br>
+    You must announce whether it’s a creature, and you probably need a counter to identify the face‑down card that can block or not</p>
+    <p>And exactly like with Yu‑Gi‑Oh, you cannot flip the card the turn you played it; you need to wait until the next turn.<br>
+    For creatures, you cannot flip them at instant speed; you have to wait for your turn at sorcery speed.<br>
+    But for traps, which is a new supertype that are instants you must play face down before you can activate them, You can activate them at any time.</p>
+    <p>And exactly like in Yu‑Gi‑Oh, whenever you flip a flip monster, that triggers its effect.<br>
+    And there are effects that can Turn cards face up or face down, with the possibility of triggering the effect again.<br>
+    I am currently working on the shadow archetype that is in part based on that mechanic.<br>
+    But that will come in the next batch.</p>
+  </section>
+
+  <section id="s-problems">
+    <h2>Problems and how I solved them</h2>
+    <div class="cue">Section 6</div>
+    <p>Those were the main translations from Yu‑Gi‑Oh to Magic I had to do.<br>
+    New problems have appeared that I need to solve, so here they are.</p>
+
+    <h3>YGO card effect text purge</h3>
+    <p>The first problem was the size of the text box from a Yu‑Gi‑Oh card to Magic.<br>
+    As you probably know, Yu‑Gi‑Oh is known for its terrible text‑box management, and they basically cram as much text as possible within a tiny box.<br>
+    And because I like to think I am a good game designer, I wanted to avoid that and make the text-box of my cards as clean as possible for players.</p>
+    <p>However, there is one good thing from Yu‑Gi‑Oh, the PSCT syntax for card effects.<br>
+    That makes reading conditions, costs, and effect resolution very easy to understand once you understand the PSCT syntax, which is very simple.<br>
+    Basically, the first part of the effect is always the condition; if there is a condition, then it's separated with a colon, then you have the cost of the card, which is then separated with a semicolon, then you have the actual resolution of the effect of the card.</p>
+    <p>So I took that from Yu‑Gi‑Oh, then I took the keywords from Magic.</p>
+    <p>As you can see on the cards, I have a very heavy use of keywords, and I created a bunch of new keywords to compactify the text of the card, making it more readable.<br>
+    The cost of that is, for a new player reading the cards, they have to constantly check either the website or a rule text to know what the keyword means, but once you have integrated all the keywords, it becomes very easy and very fast to parse any card effect.<br>
+    But that's also why my cards do not read like Magic cards.<br>
+    I took the liberty to make something I think is better.<br>
+    Especially in the digital age, where finding information through AI or the website dedicated to this project is very easy.</p>
+    <p>I also try to make as much use as possible of text styling, using bold and italic fonts, to make parsing the effect even easier.</p>
+    <p>But the thing is, I cannot do everything I want because, for now, I'm restricted to using the Magic Set Editor software to make my cards.</p>
+
+    <h3>Chaining Tutors and Combo Feels</h3>
+    <p>One other little problem I had was how to replicate the feeling of chaining tutors and making combos within the magic system.<br>
+    The solution I found is very simple: give tutors of the archetype and many effects a free cost.<br>
+    So, as I said before, I tried to balance effects that cost mana with free effects to keep the Yu‑Gi‑Oh combo feeling while still having an interactive game.</p>
+    <p>That's why in my first batch, all the effects of Burning Abyss creatures are free when sent to the grave, and all the discard effects from Necroz creatures are also free, because it's the core of their mechanics, and that's where you feel the Yu‑Gi‑Oh feeling of this project.</p>
+
+    <h3>One Turn Kill</h3>
+    <p>Concerning the one‑turn kill problem, because Magic has summoning sickness, the issue resolves itself.</p>
+    <p>Even if I give many free effects, creatures cannot attack the turn they enter.</p>
+    <p>Also its both players that receive numerous free effects, it is not one‑sided.</p>
+    <p>Additionally, I do not plan to design or adapt many direct‑damage effects or cards with haste.</p>
+    <p>Firstly because the haste mecanic does not exist in YGO — every monster already has it.</p>
+    <p>Secondly, giving haste to too much creatures would not align with the interactive gameplay I want to create with this project.</p>
+
+    <h3>Match Length</h3>
+    <p>On the opposite side, another possible problem is games being too long.</p>
+    <p>Because this project aims to produce highly interactive gameplay, Using Yu-Gi-Oh! cards that have many effects The magic game system naturally slows the games, which may cause the average game duration to become very long.</p>
+    <p>Even though the creatures are overstated, I can imagine scenarios where it's possible to never inflict any damage to the opponent because they keep reanimating and creating huge boards due to all the free effects I gave to the cards.</p>
+    <p>To be honest, I don't really mind if most of the game becomes the length of an entire match.<br>
+    As long as the decks are consistent enough to give both players a chance to play, I am fine to play a cube where each match is just one game.<br>
+    Especially in a casual context.<br>
+    The main focus is that the games are interesting to play and the cube is interesting to draft.</p>
+
+    <h3>Lands</h3>
+    <p>Another problem are the lands.</p>
+    <p>Currently, in Yu‑Gi‑Oh, many decks exceed 40 cards because the decks became so consistent and the engines are so big that you just want more space in your deck to reduce the chances of drawing bricks.</p>
+    <p>However, currently, everything I design is to be played with 40-card decks and a 10-card sideboard that contains only extra deck cards.</p>
+    <p>Even if almost every card costs one mana, the lands still take at least a third of your deck.<br>
+    That means that in a 40‑card deck, you have between 13 and 14 lands to be optimal.<br>
+    You may want a bit more to ensure land drops each turn and overpower your opponent with more mana, because almost every card generates some card advantage one way or another.</p>
+    <p>That means that in reality you only play with 27 or 26 actual cards in your deck.<br>
+    And as I said, that's very very tight for Yu‑Gi‑Oh.</p>
+    <p>However, I know that there is the game Duel Links that makes you play with only 20-card decks, so I guess it can works.</p>
+    <p>My current solution for this problem is to restrict cards to only two copies in the structure decks and cube.</p>
+    <p>Also, another thing is that in Yu‑Gi‑Oh the concept of lands does not exist; there are no effects that could be nicely linked to lands or mana generation, because that does not exist in Yu‑Gi‑Oh.<br>
+    For now, I am stuck using regular lands from Magic the Gathering for the first batches, but I would like to add new lands in the future that mesh well with archetypes.<br>
+    I want to make very good lands. I’m the type of guy who hates mana flood and mana screw, so I want to create strong lands for the archetypes to mitigate those issues as much as possible.<br>
+    Because the best way Magic found to mitigate the downside of lands is to give them utility effects, so that you are incited to play more lands, because you can use them if you mana flood.<br>
+    That's what I will be doing in the future.</p>
+  </section>
+
+  <section id="s-planned">
+    <h2>What's planned for the Alpha 0.1 of Legend of the Alpha</h2>
+    <div class="cue">Section 7</div>
+    <p>OK, so now you got the overall idea.</p>
+    <p class="beat">So what is planned for the Alpha 0.1 of the first set "Legend of the Alpha" ?</p>
+    <p>I want to create two starter decks to start to playtest this project.</p>
+    <p>And I will do it with my two preferred archetypes in Yu‑Gi‑Oh.</p>
+
+    <h3>Starter deck one: Burning Abyss</h3>
+    <p>The first one is, of course, Burning Abyss.<br>
+    It was my deck when I was a competitive player, and I always loved playing all iterations of it.</p>
+    <p>As you can expect, this deck will have all the iconic cards of the archetype.<br>
+    Tour Guide, Graph, Cir, Scarm, Farfa, Dante, Virgil, Rubic.<br>
+    They are all here for the first Alpha of my "Legend of the Aplha" set.</p>
+    <p>I will not present every card individually, but here are the three main mechanics of the archetype.</p>
+    <p>The first is Abyssal Curse. If you control a creature that is not a Burning Abyss, all of the main deck Burning Abyss monsters will destroy themselves.</p>
+    <p>Second, is Descent. Once per turn, you can play for free one Main deck Burning Abyss creature from your hand.<br>
+    I removed the restriction of spell and trap zone because that does not exist in Magic, and I added a once‑per‑turn limitation to avoid the possibility of flooding the board too much on the first turn.</p>
+    <p>And the last effect is that all Burning Abyss monsters have an on‑send‑to‑grave effect that triggers when the card is sent to the grave from any other zone.</p>
+    <p>Of course, I kept the soft and hard 1% restriction from Yu‑Gi‑Oh and formatted it as proper rule syntax, as you can see within the text in parentheses.</p>
+    <p>I will explain in more detail in the next video how to parse the effect of every card I showed here.<br>
+    And if you cannot wait, you can simply go to the GitHub page of this project and ask the AI yourself or read the docs.</p>
+    <p>As you can expect, this deck focuses mostly on Xyz summoning, even though I still added Virgil, a synchro monster, because it's very easy to understand how to summon it once explained.<br>
+    And it is a core card of the archetype in the Duelist Alliance era.</p>
+
+    <h3>Starter deck two: Nekroz</h3>
+    <p>The second archetype is Nekroz.</p>
+    <p>You can expect to play Senju, Manju, Preparation of Rite, Brionac, Clausolas, Shurit, Trishula, Unicorn and more.</p>
+    <p>As I said before, all the discards effects of the archetype are free; its mostly casting creatures that costs mana, the ritual summons for example.</p>
+    <p>I kept ritual summoning exactly the same as in Yu‑Gi‑Oh, you cannot play ritual creatures from your hand paying their mana cost; you have to ritual summon them using a ritual‑summon spell.</p>
+  </section>
+
+  <section id="s-whytwo">
+    <h2>Why these two decks</h2>
+    <div class="cue">Section 8</div>
+    <p>I choose to make first Burning Abyss and Necroz because they are the two archetypes I like the most, and I really want to try them first.<br>
+    The next archetypes I already planned are Shaddoll, Spellbook, and Kozmo.</p>
+    <p class="beat">If I can't make it work for my favorite archetypes, there is no point in this Essentia project.</p>
+  </section>
+
+  <section id="s-avoid">
+    <h2>What I will avoid</h2>
+    <div class="cue">Section 9</div>
+    <p>Because I am a good game designer, there will be no floodgates or lingering effects.<br>
+    So you can expect to not see Droll &amp; Lock Bird, Abyss Dweller, Macro Cosmos or any effect of that sort.<br>
+    Every card that you and I hate, I will make sure never to add them to Essentia.</p>
+  </section>
+
+  <section id="s-closing">
+    <h2>Closing</h2>
+    <div class="cue">Section 10 · final</div>
+    <p>I will soon release a video for showing all the cards from the 0.1 Alpha of Legend of the Alpha Set.</p>
+    <p>Subscribe to not miss any update from the Essentia project.</p>
+    <p>I am working very hard to share my of this project.<br>
+    I would love you to try it out with your friends.</p>
+    <p>You can go to this website to see all the cards, decklists, sets, new release and blog post about Essentia.<br>
+    You can also easily download PDFs of proxies for every card from the website, so you can proxy decks or the cube yourself and play with your friends.</p>
+    <p>The project itself is completly open source.</p>
+    <p>IP and Copyright is evil so you can do anything you want with any of the content I shared.</p>
+    <p>You can also easily contribute if you want to : by submitting pull requests on my github project.</p>
+    <p>I built it using IA agents and IA is a first class citizens in this codebase.</p>
+    <p>So just pull up your Claude or Codex and start contributing immediately.</p>
+    <p>I also appreciate any constructive feedback or supportive comments.</p>
+    <p class="beat">And on this note, GAME ON GAMERS !</p>
+  </section>
+
+  <div class="end">— end of script —</div>
+
+</main>
+
+<script>
+(function(){
+  var WPM = 150;
+
+  // --- word count + read time, whole doc and per section ---
+  function countWords(el){
+    var t = el.innerText.replace(/\s+/g,' ').trim();
+    return t ? t.split(' ').length : 0;
+  }
+  function mmss(words){
+    var s = Math.round(words / WPM * 60);
+    return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+  }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section'));
+  var total = 0;
+  var toc = document.getElementById('tocList');
+  sections.forEach(function(sec){
+    var w = countWords(sec);
+    total += w;
+    var h = sec.querySelector('h2').textContent;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + sec.id;
+    a.textContent = h;
+    var t = document.createElement('span');
+    t.className = 't';
+    t.textContent = '  ' + mmss(w);
+    li.appendChild(a); li.appendChild(t);
+    toc.appendChild(li);
+  });
+  document.getElementById('words').textContent = total.toLocaleString();
+  document.getElementById('mins').textContent = mmss(total);
+
+  // --- reading progress ---
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    prog.value = max > 0 ? (window.scrollY / max) * 100 : 0;
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // --- font size ---
+  var fs = 28;
+  function setFs(v){
+    fs = Math.min(60, Math.max(16, v));
+    document.body.style.setProperty('--fs', fs + 'px');
+    onScroll();
+  }
+  document.getElementById('fsUp').onclick = function(){ setFs(fs + 2); };
+  document.getElementById('fsDown').onclick = function(){ setFs(fs - 2); };
+
+  // --- auto-scroll (teleprompter) ---
+  var playing = false, speed = 1, acc = 0, last = 0, raf = null;
+  var playBtn = document.getElementById('play');
+  var spdLabel = document.getElementById('spd');
+
+  function tick(now){
+    if(!playing) return;
+    if(!last) last = now;
+    var dt = (now - last) / 1000;
+    last = now;
+    acc += dt * 38 * speed;            // ~38 px/s at 1x
+    var px = Math.floor(acc);
+    if(px >= 1){
+      acc -= px;
+      window.scrollBy(0, px);
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      if(window.scrollY >= max - 1){ stop(); return; }
+    }
+    raf = requestAnimationFrame(tick);
+  }
+  function start(){
+    playing = true; last = 0; acc = 0;
+    playBtn.classList.add('on');
+    playBtn.textContent = '❚❚ Pause';
+    raf = requestAnimationFrame(tick);
+  }
+  function stop(){
+    playing = false;
+    if(raf) cancelAnimationFrame(raf);
+    playBtn.classList.remove('on');
+    playBtn.textContent = '▶ Auto-scroll';
+  }
+  playBtn.onclick = function(){ playing ? stop() : start(); };
+
+  function setSpeed(v){
+    speed = Math.min(6, Math.max(0.2, Math.round(v * 10) / 10));
+    spdLabel.textContent = speed.toFixed(1) + '×';
+  }
+  document.getElementById('faster').onclick = function(){ setSpeed(speed + 0.2); };
+  document.getElementById('slower').onclick = function(){ setSpeed(speed - 0.2); };
+  document.getElementById('top').onclick = function(){ stop(); window.scrollTo({top:0}); };
+
+  // stop auto-scroll as soon as the reader takes over
+  ['wheel','touchstart','mousedown'].forEach(function(ev){
+    window.addEventListener(ev, function(){ if(playing) stop(); }, {passive:true});
+  });
+
+  // --- keyboard ---
+  document.addEventListener('keydown', function(e){
+    if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if(e.code === 'Space'){ e.preventDefault(); playing ? stop() : start(); }
+    else if(e.key === 'ArrowRight'){ e.preventDefault(); setSpeed(speed + 0.2); }
+    else if(e.key === 'ArrowLeft'){ e.preventDefault(); setSpeed(speed - 0.2); }
+    else if(e.key === '+' || e.key === '='){ setFs(fs + 2); }
+    else if(e.key === '-'){ setFs(fs - 2); }
+  });
+})();
+</script>
+
+</body>
+</html>

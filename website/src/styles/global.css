@@ -265,6 +265,23 @@
     flex-wrap: wrap;
     gap: var(--space-3);
   }
+  /* Shown only when Save-Data or a 2g-class connection suppressed the
+     automatic upgrade, so the visitor can still opt into full-quality art. */
+  .quality-upgrade {
+    align-self: center;
+    background: none;
+    border: 1px solid var(--ruleline);
+    color: inherit;
+    font: inherit;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+  }
+  .quality-upgrade:hover {
+    border-color: var(--accent);
+  }
+  .quality-upgrade[hidden] {
+    display: none;
+  }
 }
 
 @layer components {

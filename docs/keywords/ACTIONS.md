@@ -2,7 +2,7 @@
 
 Closed base-action catalog:
 
-**Discard**, **Exile**, **Search**, **Summon**, **Hand Summon**, **Ritual Summon**, **Fusion Summon**, **Reanimate**, **Salvage**, **Reclaim**, **Release**, **Attach**, **Bounce**, **Negate**, **Negate & Destroy**, **Set**, **Detach N**, **Mill N**, **Scry N**, **Slow Blink N Any Creature**, **Draw**, **Target**, **Counter**, **Return**, **Destroy**, **Send**, **Cast**, **Sacrifice**, **Reveal**.
+**Discard**, **Exile**, **Search**, **Summon**, **Hand Summon**, **Ritual Summon**, **Fusion Summon**, **Reanimate**, **Salvage**, **Reclaim**, **Release**, **Attach**, **Bounce**, **Negate**, **Negate & Destroy**, **Set**, **Detach N**, **Mill N**, **Scry N**, **Slow Blink N Any Creature**, **Draw**, **Target**, **Counter**, **Return**, **Destroy**, **Send**, **Shuffle**, **Cast**, **Sacrifice**, **Reveal**.
 
 Bold/capitalize exact base-form command when it performs action. Homonymous nouns, adjectives, participles remain plain (`the target`, `Predator counter`, `draw step`, `was cast`). `Choose` and `Put` are ordinary instructions.
 
@@ -18,7 +18,7 @@ Send top N cards of Deck to Grave. Quantity is mandatory: **Mill 1**, **Mill 2**
 
 ### Summon / Hand Summon
 
-**Summon** puts indicated card onto Field from stated zone without casting or paying mana cost. **Hand Summon** is Summon from Hand. Neither bypasses proper-summon restriction. Illegal movement needs explicit `ignoring the restrictions of summon`.
+**Summon** puts indicated card onto Field from stated zone without casting or paying mana cost. **Hand Summon** is Summon from Hand. Neither bypasses proper-summon restriction. Illegal movement needs explicit `ignoring summoning restrictions`.
 
 ### Reanimate
 
@@ -42,6 +42,10 @@ Exact-count gate template: `**Target** 1 [Creature] MV X in Grave and choose X [
 
 Return indicated permanent to owner's Hand.
 
+### Shuffle
+
+Put indicated object(s) into their owner's Deck, then shuffle that Deck. Default destination is always owner's Deck — omit `into Deck`, `into its owner's Deck`, and `into your Deck`. Canonical forms: `**Shuffle** it`, `**Shuffle** them`, `**Shuffle** [selector]`. Distinct from **Search**'s internal Deck randomization. Plain “shuffle Deck” with no moving objects stays ordinary instruction. Does not mean Hand, Grave, Exile, or Sideboard. Sideboard replacement still applies when a Fusion, Synchro, Xyz, or Link would move to Deck.
+
 ### Negate
 
 Requires target permanent, spell, or ability on Stack. Permanent loses abilities; its abilities on Stack are countered. Spell/ability target is countered.
@@ -62,8 +66,8 @@ Put card face down on Field under Trap/explicit rules. Setting does not use Stac
 
 Compound action/cost: activate only from Grave, exile this card from Grave. Write **Exile from Grave**, not long form. Additional costs/choices remain before separator.
 
-**Exile N [selector] from Grave** exiles N matching cards from your Grave as cost; distinct from self-exiling **Exile from Grave**.
+**Exile N [selector] from Grave** exiles N matching cards from Grave as cost; distinct from self-exiling **Exile from Grave**.
 
 ### Copy Resolution
 
-Target before `;`, then `copy the target's Resolution effect and resolve it`. This does not cast copy or copy costs, restrictions, or non-Resolution abilities.
+Target before `;`, then `copy its Resolution effect and resolve it`. This does not cast the copied card or copy costs, restrictions, or non-Resolution abilities.

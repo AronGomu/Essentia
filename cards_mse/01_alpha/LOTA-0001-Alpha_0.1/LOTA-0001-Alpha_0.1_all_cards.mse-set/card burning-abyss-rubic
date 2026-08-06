@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 01:36:28
-	time_modified: 2026-08-01 01:18:15
+	time_modified: 2026-08-03 00:12:30
 	name: Burning Abyss - Rubic
 	casting_cost: B
 	image: images/burning-abyss-rubic-image.png
@@ -24,10 +24,10 @@ card:
 	rule_text:
 		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
 		<i-auto>(2 - Activated Hard)</i-auto> <b>Descent</b>
-		<i-auto>(3 - Static)</i-auto> This card cannot be used to Synchro Summon non-”Burning Abyss” Synchro Creatures.
+		<i-auto>(3 - Static)</i-auto> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Rubic</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> cannot be used to <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Synchro</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Summon non-”Burning Abyss” <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Synchro</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Creatures.
 	flavor_text: <i-flavor></i-flavor>
-	power: 2
-	toughness: 2
+	power: 0
+	toughness: 5
 	card_code_text: 013/050 C
 	card_code_text_2: 013/050 C
 	card_code_text_3: 013/050 C

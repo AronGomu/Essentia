@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 09_non_archetype_non_creature.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:27:02
 	name: Torrential Tribute
 	casting_cost: R
 	image: mse_images/noncreatures/imported/image23.png
@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
 	rule_text:
-		You may <b>Cast</b> this Spell only if 1 Creature has entered the Field this turn.
+		You may <b>Cast</b> this Spell only if 1 Creature has entered Field this turn.
 		<i-auto>(1 - Resolution)</i-auto> <b>Destroy</b> all Creatures.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 068/077 C

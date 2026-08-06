@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 09_non_archetype_non_creature.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 17:07:07
+	time_modified: 2026-08-02 23:52:17
 	name: Instant Fusion
 	casting_cost: R
 	image: mse_images/noncreatures/imported/image14.png
@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Sorcery</word-list-type-en>
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> Pay 3 LP; <b>Summon</b> 1 Fusion Creature MV 1 or less from your Sideboard ignoring the restrictions of summon. <b>On End Step</b> — <b>Sacrifice</b> it.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> Pay 3 LP; <b>Summon</b> 1 Fusion Creature MV 1 or less from your Sideboard ignoring summoning restrictions. <b>On End Step</b> — <b>Sacrifice</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 034/077 C
 	card_code_text_2: 034/077 C

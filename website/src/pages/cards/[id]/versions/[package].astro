@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import CardPicture from '../../../../components/CardPicture.astro';
 import ImageZoom from '../../../../components/ImageZoom.svelte';
 import RichText from '../../../../components/RichText.astro';
 import {
@@ -18,32 +19,27 @@ export function getStaticPaths() {
 const { card } = Astro.props;
 const current = cardsById.get(card.id)!;
 const base = import.meta.env.BASE_URL;
-const render = withBase(base, card.render);
+const zoomImage = withBase(base, card.images.zoom.webp);
 ---
 
 <BaseLayout
   title={`${card.name} — ${card.stageLabel} ${card.version}`}
   description={`Immutable ${card.stageLabel} ${card.version} version of ${card.name}.`}
-  image={card.render}
+  image={card.images.display.webp}
   accent={card.sectionAccent}
   theme={card.sectionSlug}
 >
   <article class="page-shell card-detail">
     <div class="render-column">
-      <picture>
-        <source srcset={withBase(base, card.galleryAvif)} type="image/avif" />
-        <source srcset={withBase(base, card.galleryWebp)} type="image/webp" />
-        <img
-          src={render}
-          alt={`${card.name} card render from ${card.stageLabel} ${card.version}`}
-          width={card.width}
-          height={card.height}
-          fetchpriority="high"
-        />
-      </picture>
+      <CardPicture
+        card={card}
+        tier="display"
+        eager
+        alt={`${card.name} card render from ${card.stageLabel} ${card.version}`}
+      />
       <ImageZoom
         client:load
-        src={render}
+        src={zoomImage}
         alt={`${card.name} card render from ${card.stageLabel} ${card.version}`}
         width={card.width}
         height={card.height}

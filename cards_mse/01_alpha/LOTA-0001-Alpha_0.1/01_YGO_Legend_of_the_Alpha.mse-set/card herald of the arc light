@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/03_nekroz/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-01 01:29:16
+	time_modified: 2026-08-02 23:52:17
 	name: Herald of the Arc Light
 	casting_cost: W
 	image: mse_images/herald-of-the-arc-light-image.png
@@ -17,7 +17,7 @@ card:
 	rarity: common
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
-		<i-auto>(1 - Static)</i-auto> If a card would be put into a Grave from a Hand or Deck, <b>Exile</b> it instead.
+		<i-auto>(1 - Static)</i-auto> If a card would be put into Grave from Hand or Deck, <b>Exile</b> it instead.
 		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Search</b> 1 Ritual Creature or non-Creature <b>Ritual Summon</b>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 1

@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 01:36:28
-	time_modified: 2026-07-12 12:55:26
+	time_modified: 2026-08-02 18:39:22
 	name: Burning Abyss - Farfa
 	casting_cost: B
 	image: images/burning-abyss-farfa-image.png
@@ -21,7 +21,7 @@ card:
 		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Slow Blink 1 Any Creature</b>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 2
-	toughness: 3
+	toughness: 4
 	card_code_text: 010/050 C
 	card_code_text_2: 010/050 C
 	card_code_text_3: 010/050 C

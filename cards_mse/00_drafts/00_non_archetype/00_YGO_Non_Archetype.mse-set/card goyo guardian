@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/06_synchro.md
 	time_created: 2026-07-11 18:28:20
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Goyo Guardian
 	casting_cost: 1R
 	image: mse_images/synchro/imported/goyo_guardian.jpg
@@ -17,10 +17,10 @@ card:
 	rarity: rare
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
-		<i-auto>(1 - Triggered)</i-auto> If <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Goyo</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Guardian destroys 1 Creature an opponent controls, <b>Reanimate</b> that Creature tapped.
+		<i-auto>(1 - Triggered)</i-auto> If Goyo Guardian destroys 1 Creature an opponent controls, <b>Reanimate</b> that Creature tapped.
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 4
+	power: 7
+	toughness: 5
 	card_code_text: 026/077 R
 	card_code_text_2: 026/077 R
 	card_code_text_3: 026/077 R

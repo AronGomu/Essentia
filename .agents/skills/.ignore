@@ -1,0 +1,27 @@
+# Hide agentsystem pack from pi discovery/commands.
+# Files stay on disk for handoff reads. Un-ignore entry points below.
+*
+
+# Keep orchestrator
+!ship/
+!ship/**
+
+# Keep Essentia project skills
+!add-ygo-card/
+!add-ygo-card/**
+!fetch-original-ygo-card/
+!fetch-original-ygo-card/**
+!fix-mse-cards/
+!fix-mse-cards/**
+!normalize-card-formatting/
+!normalize-card-formatting/**
+!update-card-from-ai/
+!update-card-from-ai/**
+!update-rules/
+!update-rules/**
+!validate-set-stage/
+!validate-set-stage/**
+
+# Shared assets (not a skill; allow if nested refs need walk)
+!_shared/
+!_shared/**

@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/13_spellbook/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-03 00:12:30
 	name: Spellbook Magician of Prophecy
 	casting_cost: U
 	image: image5.png
@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><atom-sep> </atom-sep><word-list-class-en>Spellbook</word-list-class-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<b>Alternative Cost</b> — If you <b>Cast</b> 1 non-Creature <i-auto>“Spellbook”</i-auto> this turn, you may <b>Cast</b> this Spell without paying its mana cost.
+		<b>Alternative Cost</b> — If you <b>Cast</b> 1 non-Creature <i-auto>“Spellbook”</i-auto> this turn: you may <b>Cast</b> this Spell without paying its mana cost.
 		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Search</b> 1 <i-auto>“Spellbook”</i-auto>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 1

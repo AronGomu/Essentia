@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/07_xyz.md
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Hope Harbinger Dragon
 	casting_cost: 1WU
 	image: mse_images/xyz/embedded/image11.png
@@ -16,12 +16,12 @@ card:
 	sub_type: <word-list-race-en>Dragon</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 3</i>
+		<i>2 Creatures MV 3</i>
 		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Counter</b> 1 non-Creature Spell or <sym-auto>1</sym-auto> target triggered ability.
 		<i-auto>(2 - Triggered)</i-auto> If an opponent attacks, you may detach any number of materials from this card. It can block 1 additional time this combat for each material detached this way.
 	flavor_text: <i-flavor></i-flavor>
-	power: 6
-	toughness: 5
+	power: 7
+	toughness: 6
 	card_code_text: 031/077 R
 	card_code_text_2: 031/077 R
 	card_code_text_3: 031/077 R

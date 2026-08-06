@@ -1,0 +1,376 @@
+{
+  "schemaVersion": 1,
+  "source": "phase-0 authored seed; Phase 1 replaces this with the docs/KEYWORDS.md parse",
+  "keywords": [
+    {
+      "id": "abyssal-curse",
+      "term": "Abyssal Curse",
+      "category": "archetype",
+      "archetype": "burning-abyss"
+    },
+    {
+      "id": "after-attack-or-block",
+      "term": "After Attack or Block",
+      "category": "event"
+    },
+    {
+      "id": "alternative-cost",
+      "term": "Alternative Cost",
+      "category": "cost-procedure"
+    },
+    {
+      "id": "attach",
+      "term": "Attach",
+      "category": "action"
+    },
+    {
+      "id": "bounce",
+      "term": "Bounce",
+      "category": "action"
+    },
+    {
+      "id": "bounded-n",
+      "term": "Bounded N",
+      "category": "ability"
+    },
+    {
+      "id": "cast",
+      "term": "Cast",
+      "category": "action"
+    },
+    {
+      "id": "counter",
+      "term": "Counter",
+      "category": "action"
+    },
+    {
+      "id": "descent",
+      "term": "Descent",
+      "category": "archetype",
+      "archetype": "burning-abyss"
+    },
+    {
+      "id": "destroy",
+      "term": "Destroy",
+      "category": "action"
+    },
+    {
+      "id": "detach-n",
+      "term": "Detach N",
+      "category": "action"
+    },
+    {
+      "id": "discard",
+      "term": "Discard",
+      "category": "action"
+    },
+    {
+      "id": "double-strike",
+      "term": "Double strike",
+      "category": "ability"
+    },
+    {
+      "id": "draw",
+      "term": "Draw",
+      "category": "action"
+    },
+    {
+      "id": "effect-indestructible",
+      "term": "Effect Indestructible",
+      "category": "ability"
+    },
+    {
+      "id": "exile",
+      "term": "Exile",
+      "category": "action"
+    },
+    {
+      "id": "exile-from-grave",
+      "term": "Exile from Grave",
+      "category": "action"
+    },
+    {
+      "id": "exile-n-plant-from-grave",
+      "term": "Exile N Plant from Grave",
+      "category": "action"
+    },
+    {
+      "id": "flip",
+      "term": "Flip",
+      "category": "action"
+    },
+    {
+      "id": "flying",
+      "term": "Flying",
+      "category": "ability"
+    },
+    {
+      "id": "fusion-alternative-cost",
+      "term": "Fusion Alternative Cost",
+      "category": "cost-procedure"
+    },
+    {
+      "id": "fusion-summon",
+      "term": "Fusion Summon",
+      "category": "cost-procedure"
+    },
+    {
+      "id": "hand-summon",
+      "term": "Hand Summon",
+      "category": "cost-procedure"
+    },
+    {
+      "id": "haste",
+      "term": "Haste",
+      "category": "ability"
+    },
+    {
+      "id": "hexproof",
+      "term": "Hexproof",
+      "category": "ability"
+    },
+    {
+      "id": "indestructible",
+      "term": "Indestructible",
+      "category": "ability"
+    },
+    {
+      "id": "mill-n",
+      "term": "Mill N",
+      "category": "action"
+    },
+    {
+      "id": "negate",
+      "term": "Negate",
+      "category": "action"
+    },
+    {
+      "id": "nekroz-recovery",
+      "term": "Nekroz Recovery",
+      "category": "archetype",
+      "archetype": "nekroz"
+    },
+    {
+      "id": "on-block-or-blocked",
+      "term": "On Block or Blocked",
+      "category": "event"
+    },
+    {
+      "id": "on-blocked",
+      "term": "On Blocked",
+      "category": "event"
+    },
+    {
+      "id": "on-cast-spellbook",
+      "term": "On Cast \"Spellbook\"",
+      "category": "event",
+      "archetype": "spellbook"
+    },
+    {
+      "id": "on-destroy",
+      "term": "On Destroy",
+      "category": "event"
+    },
+    {
+      "id": "on-end-step",
+      "term": "On End Step",
+      "category": "event"
+    },
+    {
+      "id": "on-enter",
+      "term": "On Enter",
+      "category": "event"
+    },
+    {
+      "id": "on-enter-or-mv2-opponent-creature-enter",
+      "term": "On Enter or MV2+ Opponent Creature Enter",
+      "category": "event"
+    },
+    {
+      "id": "on-enter-synchro",
+      "term": "On Enter Synchro",
+      "category": "event"
+    },
+    {
+      "id": "on-exile",
+      "term": "On Exile",
+      "category": "event"
+    },
+    {
+      "id": "on-fusion-summon",
+      "term": "On Fusion Summon",
+      "category": "event"
+    },
+    {
+      "id": "on-leave-field",
+      "term": "On Leave Field",
+      "category": "event"
+    },
+    {
+      "id": "on-link-summon",
+      "term": "On Link Summon",
+      "category": "event"
+    },
+    {
+      "id": "on-opponent-activation-or-attack",
+      "term": "On Opponent Activation or Attack",
+      "category": "event"
+    },
+    {
+      "id": "on-opponent-creature-enter",
+      "term": "On Opponent Creature Enter",
+      "category": "event"
+    },
+    {
+      "id": "on-opponent-summon",
+      "term": "On Opponent Summon",
+      "category": "event"
+    },
+    {
+      "id": "on-sacrifice",
+      "term": "On Sacrifice",
+      "category": "event"
+    },
+    {
+      "id": "on-send-grave",
+      "term": "On Send Grave",
+      "category": "event"
+    },
+    {
+      "id": "on-send-grave-by-effect",
+      "term": "On Send Grave by Effect",
+      "category": "event"
+    },
+    {
+      "id": "on-upkeep",
+      "term": "On Upkeep",
+      "category": "event"
+    },
+    {
+      "id": "protection-from-creatures",
+      "term": "Protection from Creatures",
+      "category": "ability"
+    },
+    {
+      "id": "protection-from-everything",
+      "term": "Protection from everything",
+      "category": "ability"
+    },
+    {
+      "id": "reanimate",
+      "term": "Reanimate",
+      "category": "action"
+    },
+    {
+      "id": "reclaim",
+      "term": "Reclaim",
+      "category": "action"
+    },
+    {
+      "id": "release",
+      "term": "Release",
+      "category": "action"
+    },
+    {
+      "id": "return",
+      "term": "Return",
+      "category": "action"
+    },
+    {
+      "id": "reveal",
+      "term": "Reveal",
+      "category": "action"
+    },
+    {
+      "id": "ritual-summon",
+      "term": "Ritual Summon",
+      "category": "cost-procedure"
+    },
+    {
+      "id": "sacrifice",
+      "term": "Sacrifice",
+      "category": "action"
+    },
+    {
+      "id": "salvage",
+      "term": "Salvage",
+      "category": "action"
+    },
+    {
+      "id": "scry-n",
+      "term": "Scry N",
+      "category": "action"
+    },
+    {
+      "id": "search",
+      "term": "Search",
+      "category": "action"
+    },
+    {
+      "id": "send",
+      "term": "Send",
+      "category": "action"
+    },
+    {
+      "id": "set",
+      "term": "Set",
+      "category": "action"
+    },
+    {
+      "id": "shaddoll-recovery",
+      "term": "Shaddoll Recovery",
+      "category": "archetype",
+      "archetype": "shaddoll"
+    },
+    {
+      "id": "shuffle",
+      "term": "Shuffle",
+      "category": "action"
+    },
+    {
+      "id": "slow-blink-n-any-creature",
+      "term": "Slow Blink N Any Creature",
+      "category": "ability"
+    },
+    {
+      "id": "spell-affinity",
+      "term": "Spell Affinity",
+      "category": "ability"
+    },
+    {
+      "id": "summon",
+      "term": "Summon",
+      "category": "action"
+    },
+    {
+      "id": "target",
+      "term": "Target",
+      "category": "action"
+    },
+    {
+      "id": "this-turn-on-end-step",
+      "term": "This turn On End Step",
+      "category": "event"
+    },
+    {
+      "id": "trample",
+      "term": "Trample",
+      "category": "ability"
+    },
+    {
+      "id": "vigilance",
+      "term": "Vigilance",
+      "category": "ability"
+    },
+    {
+      "id": "ward-n",
+      "term": "Ward N",
+      "category": "ability"
+    },
+    {
+      "id": "xyz-alternative-cost",
+      "term": "Xyz Alternative Cost",
+      "category": "cost-procedure"
+    }
+  ]
+}

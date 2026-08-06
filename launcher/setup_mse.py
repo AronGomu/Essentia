@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import filecmp
 import os
 import re
+import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,6 +19,11 @@ if str(REPO_ROOT) not in sys.path:
 from launcher.mse_config import DEFAULT_ENV_PATH, MSEConfig, write_env_file
 
 PROJECTS_DIR = REPO_ROOT / "cards_mse"
+MSE_PACKAGES_DIR = REPO_ROOT / "mse_packages"
+# MSE only loads packages from its own data directories, so repo-owned packages
+# must be copied in. Print masters depend on this template being present and
+# current; a stale copy silently exports at the wrong resolution.
+REPO_PACKAGES = ("essentia-print.mse-export-template",)
 EXECUTABLE_CANDIDATES = (
     "mse.exe",
     "magicseteditor.exe",
@@ -83,6 +90,49 @@ def find_required_assets(projects_dir: Path = PROJECTS_DIR) -> RequiredAssets:
         for name in stylesheet_names
     }
     return RequiredAssets(games, styles, symbol_fonts)
+
+
+def _package_files(package: Path) -> list[Path]:
+    return sorted(path for path in package.rglob("*") if path.is_file())
+
+
+def repo_package_status(data_dir: Path, packages_dir: Path = MSE_PACKAGES_DIR) -> list[str]:
+    """Report repo-owned MSE packages that are missing or stale in the data dir."""
+    problems: list[str] = []
+    for name in REPO_PACKAGES:
+        source = packages_dir / name
+        if not source.is_dir():
+            problems.append(f"repository package missing: {source}")
+            continue
+        installed = data_dir / name
+        if not installed.is_dir():
+            problems.append(f"not installed in MSE data directory: {name}")
+            continue
+        for path in _package_files(source):
+            relative = path.relative_to(source)
+            target = installed / relative
+            if not target.is_file() or not filecmp.cmp(path, target, shallow=False):
+                problems.append(f"stale in MSE data directory: {name}/{relative}")
+    return problems
+
+
+def install_repo_packages(data_dir: Path, packages_dir: Path = MSE_PACKAGES_DIR) -> list[str]:
+    """Copy repo-owned MSE packages into the data dir, refreshing stale files."""
+    installed: list[str] = []
+    for name in REPO_PACKAGES:
+        source = packages_dir / name
+        if not source.is_dir():
+            raise ValueError(f"repository MSE package missing: {source}")
+        target = data_dir / name
+        for path in _package_files(source):
+            relative = path.relative_to(source)
+            destination = target / relative
+            if destination.is_file() and filecmp.cmp(path, destination, shallow=False):
+                continue
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(path, destination)
+            installed.append(f"{name}/{relative}")
+    return installed
 
 
 def _find_first(root: Path, candidates: tuple[str, ...]) -> Path | None:
@@ -170,6 +220,15 @@ def configure(
     if errors or config is None:
         detail = "\n  - ".join(errors)
         raise ValueError(f"Invalid Magic Set Editor installation:\n  - {detail}")
+
+    # Install/refresh repo-owned packages, then re-verify. Setup fails rather
+    # than leaving a stale export template that would produce wrong-size masters.
+    for entry in install_repo_packages(config.data_dir):
+        print(f"event=config.mse.package.installed file={entry}")
+    remaining = repo_package_status(config.data_dir)
+    if remaining:
+        detail = "\n  - ".join(remaining)
+        raise ValueError(f"Repository MSE packages are not installed cleanly:\n  - {detail}")
 
     write_env_file(
         env_path,

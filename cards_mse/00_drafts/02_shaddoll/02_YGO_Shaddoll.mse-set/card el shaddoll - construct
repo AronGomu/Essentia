@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: El Shaddoll - Construct
 	casting_cost: 2W
 	image: image1.png
@@ -23,12 +23,12 @@ card:
 	rarity: common
 	rule_text:
 		<i>1 “Shaddoll” Creature + 1 white Creature</i>
-		<i-auto>(1 - Triggered)</i-auto> <b>On Enter</b> — <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> card from your Deck to Grave.
+		<i-auto>(1 - Triggered)</i-auto> <b>On Enter</b> — <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> card from Deck to Grave.
 		<i-auto>(2 - Triggered)</i-auto> <b>On Block or Blocked</b> — If the other Creature was summoned, <b>Destroy</b> it.
 		<i-auto>(3 - Triggered)</i-auto> <b>Shaddoll Recovery</b>
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 5
+	power: 7
+	toughness: 6
 	card_code_text: 004/025 C
 	card_code_text_2: 004/025 C
 	card_code_text_3: 004/025 C

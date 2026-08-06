@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 01:36:28
-	time_modified: 2026-08-01 12:30:36
+	time_modified: 2026-08-02 23:25:22
 	name: Burning Abyss - Virgil
 	casting_cost: 1W
 	image: images/burning-abyss-virgil-image.bin
@@ -17,10 +17,10 @@ card:
 	rarity: common
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Discard</b> 1 card and <b>Target</b> 1 nonland permanent; shuffle the target into its owner’s Deck.
-		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Draw</b> 1 card.
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Discard</b> 1 and <b>Target</b> 1 nonland permanent; <b>Shuffle</b> it.
+		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
+	power: 6
 	toughness: 2
 	card_code_text: 016/050 C
 	card_code_text_2: 016/050 C

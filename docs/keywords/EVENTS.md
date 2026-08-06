@@ -2,6 +2,8 @@
 
 Event keyword introducing ability is bold followed by em dash. Combined defined events use lowercase bold ` or ` only; never `/` or uppercase `OR`.
 
+Printed event keywords must match the documented token exactly, including Title Case of fixed words. Write `**On Exile**`, never `on Exile`, `ON EXILE`, or other casing variants. Applies to the whole documented event family.
+
 Controller-default event looks at your side. Do not add `Your`. Use `Opponent` or `Any` when scope expands.
 
 ## Combat/entry
@@ -19,7 +21,7 @@ Controller-default event looks at your side. Do not add `Your`. Use `Opponent` o
 - **On Opponent Creature Enter** — creature enters under opponent control.
 - **MV2+ Opponent Creature Enter** — opponent creature MV 2+ enters.
 
-An event placed after an instruction repeats instruction on each occurrence for stated duration: `**Draw** 1 card **On Opponent Creature Enter**`.
+An event placed after an instruction repeats instruction on each occurrence for stated duration: `**Draw** 1 **On Opponent Creature Enter**`.
 
 `After [action]` is a one-shot event at the first legal trigger window after that action fully resolves.
 

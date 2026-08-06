@@ -2,7 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CardPicture from '../components/CardPicture.astro';
 import StatusBadge from '../components/StatusBadge.astro';
-import { catalog, cardsById, withBase, formatDate } from '../lib/catalog';
+import {
+  catalog,
+  cardsById,
+  previewImage,
+  withBase,
+  formatDate,
+} from '../lib/catalog';
 
 const base = import.meta.env.BASE_URL;
 const latest = catalog.updates
@@ -41,8 +47,8 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
               Playable under Magic rules.
             </h1>
             <p>
-              Source-backed cards, release history, canonical renders,
-              readable rules, and stable card pages.
+              Source-backed cards, release history, canonical renders, readable
+              rules, and stable card pages.
             </p>
             <div class="hero-actions">
               <a class="primary-link" href={withBase(base, heroRoute)}>
@@ -68,7 +74,7 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
               <li class="update-item">
                 <a
                   href={withBase(base, card.route)}
-                  data-card-preview={withBase(base, card.render)}
+                  data-card-preview={withBase(base, previewImage(card))}
                 >
                   <CardPicture card={card} eager={index < 3} />
                   <span class="update-meta">

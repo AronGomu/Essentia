@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Shaddoll - Beast
 	casting_cost: 1B
 	image: mse_images/image1.png
@@ -22,11 +22,11 @@ card:
 	sub_type_4: 
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Draw</b> 2 cards, then <b>Discard</b> 1 card.
-		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Draw</b> 1 card.
+		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Draw</b> 2, then <b>Discard</b> 1.
+		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
-	power: 4
-	toughness: 3
+	power: 5
+	toughness: 4
 	card_code_text: 016/025 C
 	card_code_text_2: 016/025 C
 	card_code_text_3: 016/025 C

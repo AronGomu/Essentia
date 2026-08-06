@@ -12,30 +12,30 @@ ACTIVE = (
 )
 
 DRAFT_EXPECTED = {
-    "card allure of darkness": ("<b>Draw</b> 2 cards", "<b>Exile</b> 1 black card"),
+    "card allure of darkness": ("<b>Draw</b> 2", "<b>Exile</b> 1 black card"),
     "card book of eclipse": ("Turn all Creatures face down",),
-    "card breakthrough skill": ("Target Creature loses all its abilities", "from your Grave"),
+    "card breakthrough skill": ("Target Creature loses all its abilities", "from Grave"),
     "card compulsory evacuation device": ("<b>Target</b> 1 nonland permanent", "<b>Bounce</b> the target"),
-    "card instant fusion": ("Pay 3 LP", "MV 1 or less", "ignoring the restrictions of summon"),
+    "card instant fusion": ("Pay 3 LP", "MV 1 or less", "ignoring summoning restrictions"),
     "card monster reborn": ("in 1 Grave", "<b>Reanimate</b> it"),
     "card mystical space typhoon": ("<b>Target</b> 1 nonland non-Creature permanent; <b>Destroy</b> the target",),
     "card phoenix wing wind blast": ("<b>Discard</b> 1", "<b>Target</b> 1 nonland permanent", "on top of Deck"),
     "card raigeki": ("<b>Destroy</b> all Creatures your opponents control",),
     "card super polymerization": ("<b>Fusion Summon</b>",),
     "card torrential tribute": ("<b>Cast</b> this Spell only if 1 Creature has entered", "<b>Destroy</b> all Creatures"),
-    "card twin twisters": ("<b>Discard</b> 1 card", "<b>Target</b> 0–2 nonland non-Creature permanents; <b>Destroy</b> the targets"),
-    "card upstart goblin": ("<b>Draw</b> 1 card", "Alternative Cost"),
+    "card twin twisters": ("<b>Discard</b> 1", "<b>Target</b> 0–2 nonland non-Creature permanents; <b>Destroy</b> the targets"),
+    "card upstart goblin": ("<b>Draw</b> 1", "Alternative Cost"),
 }
 
 ACTIVE_EXPECTED = {
     "card book of moon": (
         "<b>Alternative Cost</b>",
-        "If you control no Creature, you may <b>Cast</b> this Spell without paying its mana cost.",
-        "<b>Target</b> 1 Creature; turn the target face down.",
+        "If you control no Creature: you may <b>Cast</b> Book of Moon for free.",
+        "<b>Target</b> 1 Creature; turn it face down.",
     ),
     "card dark hole": ("<b>Destroy</b> all Creatures",),
     "card foolish burial": ("<b>Send</b> 1 Creature from Deck to Grave",),
-    "card karma cut": ("<b>Discard</b> 1", "<b>Target</b> 1 Creature", "<b>Exile</b> the target"),
+    "card karma cut": ("<b>Discard</b> 1", "<b>Target</b> 1 Creature", "<b>Exile</b> it"),
 }
 
 
@@ -85,7 +85,7 @@ class NonArchetypeNonCreatureTests(unittest.TestCase):
         instant = (PROJECT / "card instant fusion").read_text(encoding="utf-8-sig")
         self.assertIn("super_type: <word-list-type-en>Sorcery</word-list-type-en>", instant)
         self.assertIn("<b>Summon</b>", instant)
-        self.assertIn("ignoring the restrictions of summon", instant)
+        self.assertIn("ignoring summoning restrictions", instant)
 
         super_poly = (PROJECT / "card super polymerization").read_text(encoding="utf-8-sig")
         self.assertIn("super_type: <word-list-type-en>Fusion Summon Instant</word-list-type-en>", super_poly)

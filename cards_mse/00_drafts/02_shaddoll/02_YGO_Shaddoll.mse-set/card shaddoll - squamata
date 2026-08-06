@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Shaddoll - Squamata
 	casting_cost: B
 	image: mse_images/image4.png
@@ -17,9 +17,9 @@ card:
 	rarity: common
 	rule_text:
 		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Destroy</b> 1 target Creature.
-		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> card from your Deck to Grave.
+		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> card from Deck to Grave.
 	flavor_text: <i-flavor></i-flavor>
-	power: 3
+	power: 4
 	toughness: 2
 	card_code_text: 024/025 C
 	card_code_text_2: 024/025 C

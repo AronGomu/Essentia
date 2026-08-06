@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "sections": [
     {
       "group": "00_non_archetype",
@@ -19,7 +19,8 @@
       "order": 1,
       "accent": "ember",
       "doc": "docs/01_burning_abyss/DESIGN.md",
-      "iconicId": "burning-abyss-dante"
+      "iconicId": "burning-abyss-dante",
+      "namePattern": "Burning Abyss"
     },
     {
       "group": "02_shaddoll",
@@ -29,7 +30,8 @@
       "order": 2,
       "accent": "shadow",
       "doc": "docs/02_shaddoll/DESIGN.md",
-      "iconicId": "el-shaddoll-construct"
+      "iconicId": "el-shaddoll-construct",
+      "namePattern": "Shaddoll"
     },
     {
       "group": "03_nekroz",
@@ -39,7 +41,8 @@
       "order": 3,
       "accent": "ice",
       "doc": "docs/03_nekroz/DESIGN.md",
-      "iconicId": "nekroz-trishula"
+      "iconicId": "nekroz-trishula",
+      "namePattern": "Nekroz"
     },
     {
       "group": "04_spellbook",
@@ -49,7 +52,8 @@
       "order": 4,
       "accent": "aether",
       "doc": "docs/04_spellbook/DESIGN.md",
-      "iconicId": "high-priestess-of-prophecy"
+      "iconicId": "high-priestess-of-prophecy",
+      "namePattern": "Spellbook"
     }
   ]
 }

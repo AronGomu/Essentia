@@ -13,7 +13,9 @@ test('production preview serves draft-only empty archive', async ({ page }) => {
     }),
   ).toBeVisible();
   await expect(
-    page.getByText(/Legend of the Alpha (LOTA-0001) Alpha_0.1 is open under alpha/),
+    page.getByText(
+      /Legend of the Alpha (LOTA-0001) Alpha_0.1 is open under alpha/,
+    ),
   ).toBeVisible();
   await expect(page.locator('.gallery-card')).toHaveCount(0);
 });

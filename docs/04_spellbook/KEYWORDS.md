@@ -2,7 +2,7 @@
 
 ## Spell Affinity
 
-**Spell Affinity** means: “If you control 1 *“Spellbook”* Creature, you may **Cast** this spell without paying its mana cost.”
+**Spell Affinity** means: “If you control 1 *“Spellbook”* Creature, you may **Cast** this spell for free.”
 
 Player may use this alternative cost only once each turn. Keyword applies only when printed on a *“Spellbook”* Sorcery.
 

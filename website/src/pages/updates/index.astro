@@ -5,6 +5,7 @@ import StatusBadge from '../../components/StatusBadge.astro';
 import {
   catalog,
   cardsById,
+  previewImage,
   sectionsBySlug,
   withBase,
   formatDate,
@@ -41,7 +42,7 @@ const updates = catalog.updates.map((update) => ({
               <li class="update-item">
                 <a
                   href={withBase(base, versionRoute)}
-                  data-card-preview={withBase(base, card.render)}
+                  data-card-preview={withBase(base, previewImage(card))}
                 >
                   <>
                     <CardPicture {card} eager={index < 3} />

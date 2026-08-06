@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Hel Shaddoll - Hollow
 	casting_cost: 2R
 	image: image7.png
@@ -22,11 +22,11 @@ card:
 	sub_type_4: 
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Target</b> 1 Creature an opponent controls; <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> Creature from your Sideboard into your Grave, then, if the 2 cards are of the same color, <b>Exile</b> the target.
+		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Target</b> 1 Creature an opponent controls; <b>Send</b> 1 <i-auto>“Shaddoll”</i-auto> Creature from your Sideboard into Grave, then, if the 2 cards are of the same color, <b>Exile</b> the target.
 		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Mill X</b>, where X is the number of colors among the Creatures you control.
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 5
+	power: 7
+	toughness: 7
 	card_code_text: 010/025 C
 	card_code_text_2: 010/025 C
 	card_code_text_3: 010/025 C

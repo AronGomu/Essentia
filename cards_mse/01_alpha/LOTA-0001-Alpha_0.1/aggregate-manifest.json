@@ -2,124 +2,124 @@
   "aggregate": "LOTA-0001-Alpha_0.1_all_cards.mse-set",
   "cards": [
     {
-      "contentHash": "070ffc4691550f4c932e7b1ea1f7abc3353c255fc64f8bdff9e610ace4fa58f0",
+      "contentHash": "4e7fcb2743bbec22f1fa9c84aee25da44d03fb608eaaa4b1e690101a3b73af03",
       "files": {
         "image": "a4939540888accb70b8f97995971f3b94d6887218439a5879daed7dd7501c21e"
       },
       "name": "Ash Blossom & Joyous Spring",
       "output": "card ash-blossom-and-joyous-spring",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card ash blossom  joyous spring",
-      "sourceHash": "7fe000821054457c18602661929cbe2030cc82c466c8515acbcb51cef631f3fb",
+      "sourceHash": "d1f6056e7e48ee36ebd42cb08669898fb6ec74305d785f534ac1dee654cdd0d3",
       "stableId": "ash-blossom-and-joyous-spring"
     },
     {
-      "contentHash": "6530564f53a4adaa16efd2b4428ddaef0ccd17ed01ec8ccb40996e1c0d3c0eb6",
+      "contentHash": "5ab1ab97cc25289103b0f5c7fdc2dde5d647962eafa41e41ea953c6a806f5eca",
       "files": {
         "image": "828346b362f381ad54cd852b3980a4437481d736a84d2b61a43c9be91a0a1c9a"
       },
       "name": "Bagooska",
       "output": "card bagooska",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card bagooska",
-      "sourceHash": "9b4747506577e096607b5175492e9aa68846378c493e2ac9b72b37951c6734fe",
+      "sourceHash": "52deb5e0690b3f76e0a6d36c38b8ee56571587e1be4b83261ad7c5043894e036",
       "stableId": "bagooska"
     },
     {
-      "contentHash": "41ea572dd0f5fc1693da1924d7e19cfb4de617f09c84283c22bd500f39197c17",
+      "contentHash": "9a3de267223d3edb6361963cf05c88f70e967f6c30dcce20e7b38d3f2ac9ff84",
       "files": {
         "image": "925be06dbf32aa9e3409fe4d34ee213388713f6a3f5d536ceb3d800ed172306e"
       },
       "name": "Book of Moon",
       "output": "card book-of-moon",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card book of moon",
-      "sourceHash": "bb9802f5a683c383bc27bccaab687db80e5852b4b518e81b865737d0868cc579",
+      "sourceHash": "88a4bd63758d39762157f61d54038965a018e485953abb532799435655afd3bc",
       "stableId": "book-of-moon"
     },
     {
-      "contentHash": "4e8452de9c41b70b37dc6ac432ccfa92dbb5b500841813d6e2740a420fb6ff98",
+      "contentHash": "dda623b086aa27b6d338618fd9cfb8e54fac259a91489130154f2e3675da5fc4",
       "files": {
         "image": "6d320c5ecd8f602447063c41bb3c578232da52bffbac9ebe4ce535b6e22fe04e"
       },
       "name": "Burning Abyss - Alich",
       "output": "card burning-abyss-alich",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - alich",
-      "sourceHash": "16c66258012d236251f6c76678035171fbbd217bfbd50efa2c86946c09f7b8ee",
+      "sourceHash": "127927ebc3352b9cb92ac2787a515351b2a633f1f8acda7bc6aaee8665a2bbb3",
       "stableId": "burning-abyss-alich"
     },
     {
-      "contentHash": "731a925f3ae659c88805b9990085c2e668cc7b63b142a790259a4e8f9302b448",
+      "contentHash": "efc2286d88f8145eecb9906a7092d2849b312745e99125c48c5e0624bc1acf81",
       "files": {
         "image": "87457310956599ae60e2a7ac02efa819aacf953e063babcfa7e718a774744cb6"
       },
       "name": "Burning Abyss - Barbar",
       "output": "card burning-abyss-barbar",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - barbar",
-      "sourceHash": "6354a597f9f29f1dd1c64ee1aa4234bf39325edaa3693703eb5e57d56b6cd213",
+      "sourceHash": "0a7edb0996314fed7a53ca24115cc96cdc2b849b52464a6e58be916803d8520e",
       "stableId": "burning-abyss-barbar"
     },
     {
-      "contentHash": "25324d65fcb05e176f83b8a6724e16c7e001ff5ca8e984f81371d796afc80f06",
+      "contentHash": "3d997888d1c64b979d040b60e95383477c2c495d87aa848ee620c507915c1294",
       "files": {
         "image": "887b1bbcabe08dc033ee5155b2aedc1446058ec0d14918ed61031d658c2ba3d0"
       },
       "name": "Burning Abyss - Calcab",
       "output": "card burning-abyss-calcab",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - calcab",
-      "sourceHash": "8e9b756b791273e6938e06023d4de3c219a5cfc5db7ac9cca279e028379347f7",
+      "sourceHash": "50cfd52bc7f4c1dc10b6a01e205c21c7d87aa4213808d7078b14c518de6b6a95",
       "stableId": "burning-abyss-calcab"
     },
     {
-      "contentHash": "61e6977a6f4640c810a3758bd7d7f375e982c34e1b71057c4c318d7c3cb8f762",
+      "contentHash": "52d230111557a28fae9f453dec5dab0400e7c05e5e2e61c437dcc15045d44eb1",
       "files": {
         "image": "eaa06ea73c241681e436c958feadc7ef81741a9728f31c4322ca678b7d04c16e"
       },
       "name": "Burning Abyss - Cir",
       "output": "card burning-abyss-cir",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - cir",
-      "sourceHash": "f6a1f58b3ca69263e29df29b07c0804a9e82e5aea028f2636df6b710a15cb2d7",
+      "sourceHash": "8019b5b4f90a2c5abb60020f32f4dbe24adbd6558719f000c20a0f62e2b15e5a",
       "stableId": "burning-abyss-cir"
     },
     {
-      "contentHash": "73d9001916d1dbf34870505005f8a58879898313ba98f786afb41f8f47da86c6",
+      "contentHash": "df43910bf81ca474cb3a1b751ea5bfb3d4551d2294e8b6650d55c21f30a0d485",
       "files": {
         "image": "b2df765478321c8266e83b9fb75cf7b48ca7f5bcdc7ef279fe11a7a85ae51d8b"
       },
       "name": "Burning Abyss - Dante",
       "output": "card burning-abyss-dante",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - dante",
-      "sourceHash": "525b991da227ec4410ea5fd7105db2fc15a67acace25b6b8bd6f8ca2b0cb88fe",
+      "sourceHash": "abe2523f330aac6506042d7fdbda81d36fa4d8641afcb5c599ecdc7c7b7df4c4",
       "stableId": "burning-abyss-dante"
     },
     {
-      "contentHash": "3d63603d55ccc567716101dc4596b72719b2f625356cfdbf54fa34c1f7d8016e",
+      "contentHash": "c3e3ae500c374816509113dd96730614398e6fef46df5f71c59e89d6801fcbfe",
       "files": {
         "image": "ca8fa13738dedb060f81f06f8286ea3fdbe78d7e3c672bcf124f8348bdb10546"
       },
       "name": "Burning Abyss - Draghig",
       "output": "card burning-abyss-draghig",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - draghig",
-      "sourceHash": "43da78863fcd20faca2e04a505f53451eeac6a9fca7e4e04a3694a2d3b0d8edd",
+      "sourceHash": "4e9649a467c733688dee6e7d2b651751b54024bc03a14176d215928afb59924c",
       "stableId": "burning-abyss-draghig"
     },
     {
-      "contentHash": "233f380a9b6849fc019599bab1e37c6da8af6eb9f8ba35b39739b7429a10153b",
+      "contentHash": "02fd3ef41f8d8b0ea37f4f9254096c8fb00de198d89187e9346d50784f5c0c98",
       "files": {
         "image": "e038bcce8423ef2f3de47f7e8aaccb1dd8fb69d9db09c3eccd4771b85d0ca36a"
       },
       "name": "Burning Abyss - Farfa",
       "output": "card burning-abyss-farfa",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - farfa",
-      "sourceHash": "ab4b2f1a293d5e35beb1ab65c1b93c76ec1ba0876833d65b0b2ff08c0159b97c",
+      "sourceHash": "b277337bcff2a0538bf3b82edda26ee9a9877ee429aae762df0a0d93ad104e2b",
       "stableId": "burning-abyss-farfa"
     },
     {
-      "contentHash": "51a8b03e9d49fedf6d3b56e44fb9d4d074adda4b0d2b42499f916ead88548f09",
+      "contentHash": "c91f4cb8924fd4de0e8fd3ac6980a407dd5329a85d404e3c102bef670bdd1e04",
       "files": {
         "image": "a40b098d06bbffe0b7800cd55c99b7dcc4caafe76355ef6a542cbdbe59be7914"
       },
       "name": "Burning Abyss - Fire Lake",
       "output": "card burning-abyss-fire-lake",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - fire lake",
-      "sourceHash": "e2dc50d83ee17b41cff0b01b7da6432d0298a7fc3d723c3cb30af0db3e096f83",
+      "sourceHash": "b59efbea74aae1f8ec9736d0504f4763f5dc85e798046cc7fa8ad73bc426552c",
       "stableId": "burning-abyss-fire-lake"
     },
     {
@@ -134,69 +134,69 @@
       "stableId": "burning-abyss-graff"
     },
     {
-      "contentHash": "5e212b77e55dcfd4c2211198da381efecec0b1ab5493507751d09972997be7a9",
+      "contentHash": "4db20558aa5669afb80414d275362d766237f5326efd1020678c40f842237e4d",
       "files": {
         "image": "e8ff989dc10b135fa2bfe1bae215e7bd86c4dd61443e3ed6db5ec770d063c8eb"
       },
       "name": "Burning Abyss - Rubic",
       "output": "card burning-abyss-rubic",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - rubic",
-      "sourceHash": "cf2193d531d4638b28ecf0f1cc1ff84f4a070f95041b26e8faf1d692f798caa8",
+      "sourceHash": "ed5589fd34c202fabced4686735eb6faf434e30897638f2af42646affe31980b",
       "stableId": "burning-abyss-rubic"
     },
     {
-      "contentHash": "c005457215beac296a53ea17dc3542de9066ad53848a09cf5bd9348c8679cfbb",
+      "contentHash": "4601fe5572ae7e6149d44fc213dcaf2b9851ec3549932224996417e01eedd975",
       "files": {
         "image": "dfbd8193543a78b68a8b916d1707710370363c46db2d6d1ef3764464d3d9e6c5"
       },
       "name": "Burning Abyss - Scarm",
       "output": "card burning-abyss-scarm",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - scarm",
-      "sourceHash": "9c5e1fb7635e344e87e45fbfa54a4768a8092008f466e7c3ecf5e09c930cdc71",
+      "sourceHash": "6e958f5641dfefc139e76d1ed0bec95fc0f05432d6314f75b98034f6ecbfc99b",
       "stableId": "burning-abyss-scarm"
     },
     {
-      "contentHash": "a878c3d5a815e2ccee172b998fdd90c9932af253a6f426e4ac96137c02264c5b",
+      "contentHash": "f5f7a2cdedc6f1da6931d14c57481e27cc211ae4c65d817aeca081d1b7493380",
       "files": {
         "image": "486edd160f8f7cf54097ba7069b4108cb4c0947656939482461dea274b8d4ace"
       },
       "name": "Burning Abyss - Traveler",
       "output": "card burning-abyss-traveler",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - traveler",
-      "sourceHash": "66af86ede925a9c076f08b6b40e3e3c4c0cf92c1d37fdc3ac5e833ca064db68d",
+      "sourceHash": "ef5b90ae1acdfd0da818e64437d3a30df91bac2cd4a42fc03004b6ba9875778a",
       "stableId": "burning-abyss-traveler"
     },
     {
-      "contentHash": "e552877ef4df733be0dd40440f879a184a74df7f3610130907d9d3b01984ff29",
+      "contentHash": "d6c6ed08b1781be8a586d97b0445b3ac0e7e54c635a010de632118965964e8e9",
       "files": {
         "image": "36649d92409d87dd471ca0cdd6172a16a4137dd70facc84d3d220cf222b4f971"
       },
       "name": "Burning Abyss - Virgil",
       "output": "card burning-abyss-virgil",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - virgil",
-      "sourceHash": "f146539916b40faf227b187c2764a2c4942df9e7c0e35456acab975a148e3d4c",
+      "sourceHash": "b0e3bdfba3631cb562b387c61e89acd29dd2bb3818dba1e8048e1fc13aa15603",
       "stableId": "burning-abyss-virgil"
     },
     {
-      "contentHash": "1a8c994b6d197b0217e2d081d8c0c79d42edb05ffec90c13565360a9c50ff77a",
+      "contentHash": "8a23c8d619eb3776ef4d4e3f77b61a1ac618f06abe5ce65218dbc11c05afb9a7",
       "files": {
         "image": "16eb9d1dccb00af641876e0952e8d658772337fd308f016c5b66999440161795"
       },
       "name": "D.D. Crow",
       "output": "card d-d-crow",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card d.d. crow",
-      "sourceHash": "264135806e206b21f1188f8ab63b19f398116c991d3134e6012363ceec6e1500",
+      "sourceHash": "e6e5784654d07db14e294a28be5c4003c214a52ee8e2b8ffa23ef86051963a77",
       "stableId": "d-d-crow"
     },
     {
-      "contentHash": "b910111b497ac6e46b8b96e349433d6455436d1aec822cffd22d34999f0f94e8",
+      "contentHash": "53cf9b3d315d3585c6b3ec8992346f13d88a3dfa63b318290e77b27fc8fe4d94",
       "files": {
         "image": "7a60903244521e66d2c7dafacf8d1733cc09a98bc10c6e2c9130d4b9dc6bd89f"
       },
       "name": "Daigusto Emeral",
       "output": "card daigusto-emeral",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card daigusto emeral",
-      "sourceHash": "278b977ba0539ac09e87f0aa6e585af32320e7c9ae21f7f83c169be077dd0b87",
+      "sourceHash": "17e973607f117399a22994a676d37f46504b4cf2c041b807bbf9de91278e176d",
       "stableId": "daigusto-emeral"
     },
     {
@@ -211,36 +211,36 @@
       "stableId": "dark-hole"
     },
     {
-      "contentHash": "f5d642fdef7278013c8f5aa35c77c547aa3f8ee6fcefa5ce874915da7b2b5c8d",
+      "contentHash": "32ff6cb16fec3061b8fcc581e8bdd769abf52de81732a012ef33d5012bba5627",
       "files": {
         "image": "1ca714a22eae430d0f62e819dea3db44e70f9d1c2934f2b01545b55803fb4c3f"
       },
       "name": "Downerd Magician",
       "output": "card downerd-magician",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card downerd magician",
-      "sourceHash": "99eaf4149ef29cb50a321e235958ae671ae8ec19f96612c9a3bd234722a080e2",
+      "sourceHash": "e7625d1d9bf6daed65679d7bb57e76d1205c5ed3a7d810e9f1ca662b2fc4bf36",
       "stableId": "downerd-magician"
     },
     {
-      "contentHash": "2c996d85a91d43c2be1eb777f7feeead138e397d69e9f86ebbd468c0db543d33",
+      "contentHash": "b3d9c155bc56356947ed80f07fe030257368b83ce5d1656b48688a1ec84c5a04",
       "files": {
         "image": "efa5fa3d8a4d3114e91099f0cc23efa8e4e1c69ec4da03f15dc7de4964b2834b"
       },
       "name": "Effect Veiler",
       "output": "card effect-veiler",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card effect veiler",
-      "sourceHash": "4af91419aba975a090629b5737fd7300efec8e18f155f35ab5feb553f0557783",
+      "sourceHash": "55e96c99aa4657eccd3b3f2fd32c3f40de83e2dd82323d32569ade746f28f167",
       "stableId": "effect-veiler"
     },
     {
-      "contentHash": "1ad0136f99f788cffd315902d28ce57d1ac7cf2826ddb8d7dac8b8a2bece6ef8",
+      "contentHash": "592787dcb4e9d48eb66df1c0d2db1cb2216478cce4cc5426cb7083dd2ef436ff",
       "files": {
         "image": "74b1a49182896cbd720ee644b210826a0d013dd30b1bd75cddf722064f210239"
       },
       "name": "Evilswarm Exciton Knight",
       "output": "card evilswarm-exciton-knight",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card evilswarm exciton knight",
-      "sourceHash": "b53f5a5ed173b2a6f12b02d180139e6699fff24f47a2594201eed1f5f569555c",
+      "sourceHash": "1baabb686ad3439bf31174790d257a8329446878433baa30d6b7bf24eee258e9",
       "stableId": "evilswarm-exciton-knight"
     },
     {
@@ -255,303 +255,303 @@
       "stableId": "foolish-burial"
     },
     {
-      "contentHash": "b8f94b37429682a7c2cba9a414a9b14e0e5f8f4b68d1e9d0b647c1e6d9c1276e",
+      "contentHash": "40baa562499f2e4d40a2fb0e74f8d215eb67b077b9f8168587e1919ee31bad8d",
       "files": {
         "image": "5af383d0f009853b4a2a5eca9a4b9e7138b20b817c98ceca904702c9c7d87e87"
       },
       "name": "Gagaga Cowboy",
       "output": "card gagaga-cowboy",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card gagaga cowboy",
-      "sourceHash": "97f993412b5b80b6d6375da69f94b468551860286c488dd07f0f4aa82291eaaa",
+      "sourceHash": "095d490f9a4e211fc085c81e21030eb3db7f3fdb043e98cca976bc5b42ff3f7f",
       "stableId": "gagaga-cowboy"
     },
     {
-      "contentHash": "dbde534f376439245bd4ed69ed5a1b63beadfc6d8eeb92e05fbbf305ce07fffc",
+      "contentHash": "db22f35e0b85db18f526b76495a9580d859e9fc6fb554db83c9e52264ec8dfbc",
       "files": {
         "image": "c565aa125e765c1c980a6afdfff8e3d8e54ade5754c117ed45346ac58c53c87b"
       },
       "name": "Herald of the Arc Light",
       "output": "card herald-of-the-arc-light",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card herald of the arc light",
-      "sourceHash": "522217ec7bf4ea04a29c154ed0ef3170e478be6d2317374216af5636c7a1cc74",
+      "sourceHash": "e453df36893fca77a2b5a45a0ff97f128ee32d2fc22f1daf67010d74d238483f",
       "stableId": "herald-of-the-arc-light"
     },
     {
-      "contentHash": "328c943489ee5c89db4cb1f6a1479f6ea71bd3234a8d0dc0fc73b4a51059a964",
+      "contentHash": "6aa2f95aa4a5495196cd8da1b95a31c9da5438520a0710757ee926b9a3892d7a",
       "files": {
         "image": "d55c5f1f584d69ff773fb1692bedb66d59e6a2730dd8118d9ce697eb526ece63"
       },
       "name": "Karma Cut",
       "output": "card karma-cut",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card karma cut",
-      "sourceHash": "2a7aee03b0abfda5ecc3bd10cf93eada757a97830b6a6ff9fdc49c44f8fbe6da",
+      "sourceHash": "e0b467477122690c86c33ef461ca60eaa9e41e1d6b0dc277efdbecf5ec863602",
       "stableId": "karma-cut"
     },
     {
-      "contentHash": "8cb8eef16346af70f5929be1bc9b0323a1434d8c7c2299c91e44d80dbf2e98ab",
+      "contentHash": "eba54051fba6dca196fd52c5a623a7df5703aace193554cfbbe2df3bd8e07453",
       "files": {
         "image": "e3de72059a712fde32eef72636430efeb49944ee1f430c9fa27cae72c4f4181c"
       },
       "name": "Leviair the Sea Dragon",
       "output": "card leviair-the-sea-dragon",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card leviair the sea dragon",
-      "sourceHash": "b50c8e8f67b2ecd9b9076fe8034c267b3e1568a451d3a6ea48f55f316ae85c3a",
+      "sourceHash": "21d7364cd98b87669f7cb31340ad82417242e6636394b2ffb1839819161a4732",
       "stableId": "leviair-the-sea-dragon"
     },
     {
-      "contentHash": "0991a3bf3b7a6d30416fdfeac36a6a8913249bb9fec13ea2cfe5ab11f33626d4",
+      "contentHash": "1bf81a28d12105309997f2d804e3ea7135c5396af42ca9c81e9c2ed862141ae2",
       "files": {
         "image": "7f64fbccbf6539d8c564d10edd456f4f76ba90fd1171f12e912ff141ecc1ee29"
       },
       "name": "Manju of the Ten Thousand Hands",
       "output": "card manju-of-the-ten-thousand-hands",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card manju of the ten thousand hands",
-      "sourceHash": "98c377115839160f55d1332f391b46fa23c792af7475ce14f3dba8df05a6cca4",
+      "sourceHash": "143e07ad0a4948d0a7de8c0dd5596a2e8d59331f5a53f16957db15dd56cc99be",
       "stableId": "manju-of-the-ten-thousand-hands"
     },
     {
-      "contentHash": "fdcc1609ca13b5a30c1b6762516f53fe05b6f0d6424ca7f74fb07c2649e016bf",
+      "contentHash": "c8bb7fd9723243efe4eef57c912de3cac8efe1c607dde4d8bf6283241707c16d",
       "files": {
         "image": "dda94e7d5c1b146a8f912a0e89f977c9d9d4e44b9229e67085b33e25810d4c88"
       },
       "name": "Maxx \u201cC\u201d",
       "output": "card maxx-c",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card maxx c",
-      "sourceHash": "d4a436ecb20c51e8ed1d4884ff333f5cb412a149572d09fef7ffb61aa725f002",
+      "sourceHash": "fbd7c2e874f15400444c1e3709bedae1267b205b97b921b1307db2da2959e26b",
       "stableId": "maxx-c"
     },
     {
-      "contentHash": "0894c08f3fc441c67ac12dea90c64e5dfc1649acfe2234b3fef3a89e788abc86",
+      "contentHash": "974929a230598c4b8aafb61bda79be6c5854b40f345f235697d11e0703880158",
       "files": {
         "image": "d17b9d3c9297a0ce3496473056f9fb0417838aaae7d7d1e672ed28d3e12df7e7"
       },
       "name": "Nekroz - Brionac",
       "output": "card nekroz-brionac",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - brionac",
-      "sourceHash": "7041f6b4d0f468c2e22309ec4e79ae5ad2c3b2d6a784c51a77f44b2e1166b159",
+      "sourceHash": "e99b28f5feb36daa5d1c2233b36ebfe18085df43b9d145549f459f31eb93d023",
       "stableId": "nekroz-brionac"
     },
     {
-      "contentHash": "be515e647a1f1445fcb456390766a48a899fd75ae4f3c22e5e16883e77dfb898",
+      "contentHash": "77a220fe0c3dd65867b9bf2895844d254f8f8774b2a63e7c092f6a0a3070c23f",
       "files": {
         "image": "66dc27bcf82eeb062b830df2db79860a56330e4e911e0fb4c19cf38d62516335"
       },
       "name": "Nekroz - Catastor",
       "output": "card nekroz-catastor",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - catastor",
-      "sourceHash": "e47ef1fbdd2a8665ea8ad636aa300b839e460d7416206f6023fbe1202ca20f24",
+      "sourceHash": "ca99f815452d4b1a33e941becf18fdc9a48e55b089f450c665fa48eafa2ef0fd",
       "stableId": "nekroz-catastor"
     },
     {
-      "contentHash": "f70d2786dcd546420805caaf936c1fca4e1914f000dd461cb5ca285cb0f91e39",
+      "contentHash": "6dbcc000f70ff506dbf1165953787dfb464e00c4823921be89a8582a5a3fe8a6",
       "files": {
         "image": "17d2d214aba44ed4e1037e70828042ad88bcb609ce65642532b294e0a62b8c5f"
       },
       "name": "Nekroz - Clausolas",
       "output": "card nekroz-clausolas",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - clausolas",
-      "sourceHash": "d915c45c4376d7b58ed1ab634fcbe30b6b66db895b098a26167e067989772bc8",
+      "sourceHash": "1d54a208fed15f967ad43e7433336456f8f88aa8e2ad8bcfd333c6a2b53fb62e",
       "stableId": "nekroz-clausolas"
     },
     {
-      "contentHash": "f24c55ca7e2a8cd1307b5fd406c2b8c649b3dbfe586782f3bcf44e5c0bdea054",
+      "contentHash": "fa828bb900e61d29ead1ca4790901cf4112ebb423ef67322866250727e7dfa15",
       "files": {
         "image": "ac505389605a47350d0c995ecdb325e664f4ef5017cae7f55424f12edf112eb4"
       },
       "name": "Nekroz - Cycle",
       "output": "card nekroz-cycle",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - cycle",
-      "sourceHash": "c42bcddad374249d897902333b88c7c08905339e0433bcb6300650191b47dae9",
+      "sourceHash": "6da626414823dfbed193c72817b5da1a50ceba22a508df8e25a22be8993f0eeb",
       "stableId": "nekroz-cycle"
     },
     {
-      "contentHash": "e2c79e6526e41f2d72d3c11875fa86ec494c3d4f0f26fb46f22cf0149dac4260",
+      "contentHash": "bac8ef9bce8c378d68d472c99a7297f30cc1b35e05a14e36d627bb490cd04b8d",
       "files": {
         "image": "59d5193ad4f2d6c2cf70c0fcd36ee11de8e3554396a7088a6da715c4ceae5f2b"
       },
       "name": "Nekroz - Dance Princess",
       "output": "card nekroz-dance-princess",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - dance princess",
-      "sourceHash": "5c5675c99df938a611a6f2ec2ae630ba7559048518c29bfbb9249401681bda1a",
+      "sourceHash": "56a0e030272b54700a8dd99bd0c45e366aaeacda8197d3311cc1a61a52b76d7f",
       "stableId": "nekroz-dance-princess"
     },
     {
-      "contentHash": "ad9673fee736dd7698e60b6c4cab248408a0a9abc6ca691239ff2377f19d466f",
+      "contentHash": "6aee7d9503f6bb77a6abf82877aac73ad3c7c550f2f11f3df37093b81df6c517",
       "files": {
         "image": "66d43cf87e53f7344466d8d5cee94ec0f08422274b58d8671d98834c80a8411f"
       },
       "name": "Nekroz - Decisive Armor",
       "output": "card nekroz-decisive-armor",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - decisive armor",
-      "sourceHash": "0f48d20b459a1a3adca4a306767d5001dbdd7ade623a7ab9883f038320a3b533",
+      "sourceHash": "bedf26c7f50d30a4600f2fdb142965d74112b9f38f08ec5c8f51b19ca9d4719d",
       "stableId": "nekroz-decisive-armor"
     },
     {
-      "contentHash": "e32e8544cdfbed9922555e9f07ee8c865b053d9ff1632519e47a3b1a52c693ca",
+      "contentHash": "2e0a755ecb430b8ff33259278d79ad700bc0f9d6672f6a48e3b7f9d63c9ec23b",
       "files": {
         "image": "c12c9f2261f58403c8608f3ee4aa40af553206447ab94f30ed57560b40098b9c"
       },
       "name": "Nekroz - Exa",
       "output": "card nekroz-exa",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - exa",
-      "sourceHash": "859179326ddb4e109f832689bf7fb0a95e80dc7319b4a02344009b5d06e6a434",
+      "sourceHash": "9ba343287d3cc2ded76800bbd2f01bfb5d326ba34656675766f8cee74c331d2b",
       "stableId": "nekroz-exa"
     },
     {
-      "contentHash": "b30ab43dc79b281cabfb9438b0d4d5fdf5cb8d9a1dc892b8f4b864d78704b654",
+      "contentHash": "e5c966ce995e3662c46362aeea8f6967bc42f522af885d00cd47f50bb401f6a5",
       "files": {
         "image": "718e31b056b3c35a749a2a00e696ab496318bf70d303d18dffcc7230a89084f9"
       },
       "name": "Nekroz - Great Sorcerer",
       "output": "card nekroz-great-sorcerer",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - great sorcerer",
-      "sourceHash": "d188e7e62b4f5b1f022e6ae50a7d0825b90fc736adc95918a24ca429c9e35181",
+      "sourceHash": "db1bdf7e17b982fcd92e233322b4bb91808c74ba1c436dccabfce72036b920c9",
       "stableId": "nekroz-great-sorcerer"
     },
     {
-      "contentHash": "06e5e245cede0d64887b3e1d42a869dc746f5427d0fcf7cf468771ef1ec6350d",
+      "contentHash": "31dddd10a56e08eaf482d05e8345553d4c98769a94471fe385fae573e0e64833",
       "files": {
         "image": "e7c759649f6020b8b95962d81036aa20fb6535f6e9a328935ee19cd765a6b5eb"
       },
       "name": "Nekroz - Gungnir",
       "output": "card nekroz-gungnir",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - gungnir",
-      "sourceHash": "4bf5f8b0168c0aac1454d501fe22cdeae74a97d5232b75e8291dd91fec90ba45",
+      "sourceHash": "c0eefae4f03f7cc81c205b177f036e4dca8a37d2536d16b593b9388e8c195a9c",
       "stableId": "nekroz-gungnir"
     },
     {
-      "contentHash": "f773afdd5968bc11cb647f7bbe91533432a75189da9aeb4018cbd98e2e551a2b",
+      "contentHash": "8287e2fd6e1b1cbeca49202086e59525d644b44ac75985f7d0e367ebc8e784a1",
       "files": {
         "image": "d5f762255ef4430e1d5d1fdcdaa0f63831a2e65d1c922380cd2609779d568c1a"
       },
       "name": "Nekroz - Kaleidoscope",
       "output": "card nekroz-kaleidoscope",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - kaleidoscope",
-      "sourceHash": "89a45e743516dd2b63c2f2ba1aaf7e265c12dacb27930a9d6c17cd96d0790685",
+      "sourceHash": "c7c01c71a73947c6e197796bfd0ee4242d12da1269907e310f3c1b50ba3465e3",
       "stableId": "nekroz-kaleidoscope"
     },
     {
-      "contentHash": "d44302a9dab47ca23a4ee4bc6e939db5cb246ecddceffd99983a0eb785016967",
+      "contentHash": "38923277ef5a471f27f3674db1384e72ce95bbaf827703d955e9b5a36009d59b",
       "files": {
         "image": "f47bc6a19e60187ce9f96214cdcd23f561a8807c6247f43a705d65adb999c9a9"
       },
       "name": "Nekroz - Mirror",
       "output": "card nekroz-mirror",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - mirror",
-      "sourceHash": "97c60d7926decd34f90efa47b59718dcaae09529633b559842e5c3616bbe6cf5",
+      "sourceHash": "2c17d9a9d572d948d054882d8d5db077c3a5637180772d4051d9a0a4a36e4149",
       "stableId": "nekroz-mirror"
     },
     {
-      "contentHash": "7574c978f9aadc8eb825bc05084b9395cfbbe9d1b5cf846f75d3e17ab2fb6518",
+      "contentHash": "400b138b2418a52f25a2156499a8069930483e16376442ecf20385f7c07741db",
       "files": {
         "image": "2e28aca6d7398ee1335291660e64c66454957f6827b1572200e13217369da776"
       },
       "name": "Nekroz - Shurit",
       "output": "card nekroz-shurit",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - shurit",
-      "sourceHash": "653551c5d65ee801f4b4c7a2e197ebba5fa1f3cb7709d0bfdfce553daffbc420",
+      "sourceHash": "8f11e981d36032f24f5d4d5eeadb31b411c29baf0f3ae0f13a801c0265e4fb41",
       "stableId": "nekroz-shurit"
     },
     {
-      "contentHash": "833d1591f792c43f163a84e7ceff2a8c1bf8675b1ea61a601964b2f5c72bf34e",
+      "contentHash": "fb9ab09970d754cc3fb4fa7b1f19bd0a66a91564727af0930bcf0adb6c3ab0d0",
       "files": {
         "image": "c6c0fdf1dc432af3bd8441b08ad5054244d3117ff844efe7071f88b7a950d1af"
       },
       "name": "Nekroz - Trishula",
       "output": "card nekroz-trishula",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - trishula",
-      "sourceHash": "e2d35ab23ce38bdbaa7d2e8fb6aa940aa01727095cb084acd5c4143e10522f7a",
+      "sourceHash": "5e39d4eedd03048671eb3b71a3f191294163abee0cfe237d711bd91cc07b9bff",
       "stableId": "nekroz-trishula"
     },
     {
-      "contentHash": "8d55d64be25f38339cf043d04b22e1382ddd0ac68eabb62b5994fea21fe1073b",
+      "contentHash": "2d2fac9ed466884d29be52211957658fc94fd4cf375d28b566808525c58c9b28",
       "files": {
         "image": "ef76f76a71bf610a934a9c8cb3c13600ba98bcb712facc51e489ee1b33874ee5"
       },
       "name": "Nekroz - Unicore",
       "output": "card nekroz-unicore",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - unicore",
-      "sourceHash": "321fd0f049c2cfc37d47ced6bc93760af9a641de6097fb6c6e7ae34847214253",
+      "sourceHash": "583bef7c8ba35dea008a1b5089be84f1c58c18b8e3b041b99290f7168843c693",
       "stableId": "nekroz-unicore"
     },
     {
-      "contentHash": "cc3cd929dbc42c93102373fc80035174a0d15fe41e4263959cb0eacb4c10bb4b",
+      "contentHash": "91b4307e32757dfeb94a459b57161ca9ef8b3a8b960d12b3745126b60500f63b",
       "files": {
         "image": "5134430712188c52d49eab79644745e521527abeed23a0a89c65179b4e2a4216"
       },
       "name": "Nekroz - Valkyrus",
       "output": "card nekroz-valkyrus",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card nekroz - valkyrus",
-      "sourceHash": "57e6e9ad58de19c7aa9ef693af4008ba55f5a88a3891c87094ecd41c01b2352b",
+      "sourceHash": "947e47d98861480e8e08d695cb04a367b8d6d43abda0f6f4694c395ad5d40d32",
       "stableId": "nekroz-valkyrus"
     },
     {
-      "contentHash": "94c8635f0a7afc406d3286584858d7ace18615a3713f23686765be9e273f0ba9",
+      "contentHash": "c1bb6e8a8ea13412a9cb69a6d75290a7181ac988bdbb2f4ba23ea126918dbe0c",
       "files": {
         "image": "99c136721246f91e1b75b96a7f90f5106cb7811a3a6c33adfb016e511df23390"
       },
       "name": "Preparation of Rites",
       "output": "card preparation-of-rites",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card preparation of rites",
-      "sourceHash": "c8a71050ae468c9add55b9937a15af48322ca7dc49978e8577f0c3dd91086cc6",
+      "sourceHash": "f5ee18ee54123d4985be1c9e62ba8b2c0d83c6a3fad8108d816c77cdb4fa1356",
       "stableId": "preparation-of-rites"
     },
     {
-      "contentHash": "af99232e4772ee7c4a3ba907214be2d7b5420e8412f5edaed6779439320f4c73",
+      "contentHash": "edf914cd61d0c3cc1335475fff667a8d2c2dc154f652b436a952154859010420",
       "files": {
         "image": "ad050c802ca3ed9ccf4f85c4d0865c3b13551672f796e0c5e24e87b8ff20e21a"
       },
       "name": "Senju of the Thousand Hands",
       "output": "card senju-of-the-thousand-hands",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card senju of the thousand hands",
-      "sourceHash": "02751bc03981b4a6936473c72e8930d03980b7118ee176c079a291bb7aca1862",
+      "sourceHash": "f0eb3f938fa7dae17d32e1337fd66ecf1f8d58238bd08085030880cd5c6089f2",
       "stableId": "senju-of-the-thousand-hands"
     },
     {
-      "contentHash": "2caf57ebb066bcdbff5c6825b384e3827b0bf45cc14fe28b59c11838c4a635e0",
+      "contentHash": "3795fef4a3e412b2df0f92e4764fb79ccf3d33cbeea54a10b7590e71612af379",
       "files": {
         "image": "8596e47604db7295159a1e4e51ba1f8495bb9f89eab72213bf9ce2718982bc72"
       },
       "name": "Silent Honor ARK",
       "output": "card silent-honor-ark",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card silent honor ark",
-      "sourceHash": "72340882d9557a3478f644542a848ea986d444beba6b7658ed4a576d2a6f6c78",
+      "sourceHash": "c379b5f85922a16dd83e35e0d5b19bc4f6f228799ae831cb19f6a8f6d31174d3",
       "stableId": "silent-honor-ark"
     },
     {
-      "contentHash": "2492cf4d70d91d7d211e16864ab8db39b46a7f3ec39ee3cad49cdacee1f1d5e3",
+      "contentHash": "6d3651666db6975327576521c06d989f5d92e4de82ef33ff8cf109ad39a3184b",
       "files": {
         "image": "2ab4404e9e6d9c6ae4552f9790457d6334501e08e6cfb0c080e695513f586c1a"
       },
       "name": "Stealth Kragen",
       "output": "card stealth-kragen",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card stealth kragen",
-      "sourceHash": "9c056095809a384899ed32449169d157fb49147769b8689437f47bc2003a9cea",
+      "sourceHash": "15804167e89b026f001fc8ac4e9b423ef39effdfc033c6b39fe6e7dbf584dff8",
       "stableId": "stealth-kragen"
     },
     {
-      "contentHash": "7debe801fd88ad84649a88bfba63dff15371f369734df61b35a047f5e7cf0cad",
+      "contentHash": "e3bd22005dbf4d02f7e0df15ec8d6a64f35565b93c69efa381351c1525e7cc61",
       "files": {
         "image": "95069cef26062a1c42a4ed7923bf82b962a2e7e7c278ae7297e8bfce34dc40fc"
       },
       "name": "Tornado Dragon",
       "output": "card tornado-dragon",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card tornado dragon",
-      "sourceHash": "517ab046511dc2d38b120b5343d41bf1eae0842e6ba372ae79728c411cdfafcd",
+      "sourceHash": "924870f6dbf3d09c6fc50b1edc3fd1a9041bbad25e2ebb55093a665e421eeb1a",
       "stableId": "tornado-dragon"
     },
     {
-      "contentHash": "d335b8b4ed5774c74a99ad69a085fe6f6e01b366f6539d6153dcaebaefc132f1",
+      "contentHash": "795e954a952cbb043616cf69742c6c263b11379d5bc501a46348bf1945b4685a",
       "files": {
         "image": "b1c347098a101ed8f9f71c8d10e9690a1020dcf8d06654fcd66745e22f985218"
       },
       "name": "Tour Guide From the Underworld",
       "output": "card tour-guide-from-the-underworld",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card tour guide from the underworld",
-      "sourceHash": "f66d9c1f4fa45948e2925783d46a8ae92018205d6d3a413a14f90c31cade0ad0",
+      "sourceHash": "637b659ef54e467e95bc601c2bdba82ac6161abee9ac13140d4076970aa033de",
       "stableId": "tour-guide-from-the-underworld"
     }
   ],
   "schemaVersion": 1,
-  "unionHash": "de0db809d75753987db2bc7a4222ed2ffda8f2bba5673237d897de8c6231926c"
+  "unionHash": "6ecf13f4854d7cf79267037a76ae5c6a2bfcd614076ad30505881069237fb3bd"
 }

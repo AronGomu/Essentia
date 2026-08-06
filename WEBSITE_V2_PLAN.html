@@ -1,0 +1,1007 @@
+<title>Essentia website v2 — feature plan</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --paper: #eef0f4;
+    --panel: #f8f9fb;
+    --ink: #14161c;
+    --ink-soft: #4c5262;
+    --ink-faint: #767d90;
+    --rule: #d2d6e0;
+    --rule-soft: #e3e6ed;
+    --gold: #9a6f16;
+    --gold-bright: #b8862b;
+    --arcane: #3f3a72;
+    --crimson: #97283a;
+    --verdant: #2c6b4f;
+    --code-bg: #e7eaf1;
+    --shadow: 0 1px 0 rgba(20, 22, 28, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0e1015;
+      --panel: #161923;
+      --ink: #e7e9ef;
+      --ink-soft: #a8aec0;
+      --ink-faint: #7b8296;
+      --rule: #2a2f3d;
+      --rule-soft: #21252f;
+      --gold: #d2a041;
+      --gold-bright: #e5b862;
+      --arcane: #9a92e0;
+      --crimson: #e0808f;
+      --verdant: #6fc79b;
+      --code-bg: #1b1f2a;
+      --shadow: none;
+    }
+  }
+  :root[data-theme='dark'] {
+    --paper: #0e1015;
+    --panel: #161923;
+    --ink: #e7e9ef;
+    --ink-soft: #a8aec0;
+    --ink-faint: #7b8296;
+    --rule: #2a2f3d;
+    --rule-soft: #21252f;
+    --gold: #d2a041;
+    --gold-bright: #e5b862;
+    --arcane: #9a92e0;
+    --crimson: #e0808f;
+    --verdant: #6fc79b;
+    --code-bg: #1b1f2a;
+    --shadow: none;
+  }
+  :root[data-theme='light'] {
+    --paper: #eef0f4;
+    --panel: #f8f9fb;
+    --ink: #14161c;
+    --ink-soft: #4c5262;
+    --ink-faint: #767d90;
+    --rule: #d2d6e0;
+    --rule-soft: #e3e6ed;
+    --gold: #9a6f16;
+    --gold-bright: #b8862b;
+    --arcane: #3f3a72;
+    --crimson: #97283a;
+    --verdant: #2c6b4f;
+    --code-bg: #e7eaf1;
+    --shadow: 0 1px 0 rgba(20, 22, 28, 0.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 4vw, 2.5rem) 6rem;
+    align-items: start;
+  }
+
+  /* ---- masthead ---- */
+  .masthead {
+    grid-column: 1 / -1;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .eyebrow {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0;
+  }
+  .masthead h1 {
+    font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 3.1rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead p.lede {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+  }
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.5rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+  }
+  .meta-strip b { color: var(--ink-soft); font-weight: 600; }
+
+  /* ---- rail ---- */
+  nav.rail {
+    position: sticky;
+    top: 1.5rem;
+    font-size: 0.85rem;
+    border-left: 1px solid var(--rule);
+    padding-left: 1rem;
+  }
+  nav.rail p {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.6rem;
+  }
+  nav.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+  nav.rail a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 2.1rem 1fr;
+    gap: 0.3rem;
+  }
+  nav.rail a:hover, nav.rail a:focus-visible { color: var(--gold); }
+  nav.rail span.num {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    color: var(--ink-faint);
+    font-size: 0.75rem;
+  }
+
+  main { display: grid; gap: 3.25rem; min-width: 0; }
+
+  section.chapter { display: grid; gap: 1rem; scroll-margin-top: 1.5rem; }
+  section.chapter > h2 {
+    font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    font-size: clamp(1.45rem, 3vw, 1.9rem);
+    line-height: 1.2;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+    text-wrap: balance;
+  }
+  section.chapter > h2 .num {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    color: var(--gold);
+    margin-right: 0.7rem;
+    vertical-align: 0.28em;
+  }
+  h3 {
+    font-size: 1.02rem;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.005em;
+  }
+  h4 {
+    font-size: 0.83rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    margin: 0.4rem 0 0.2rem;
+  }
+  p { margin: 0 0 0.75rem; max-width: 72ch; }
+  p:last-child { margin-bottom: 0; }
+  ul, ol.steps { margin: 0 0 0.75rem; padding-left: 1.15rem; max-width: 72ch; }
+  li { margin-bottom: 0.3rem; }
+  li:last-child { margin-bottom: 0; }
+  a { color: var(--gold); }
+
+  /* ---- feature blocks ---- */
+  .feature {
+    background: var(--panel);
+    border: 1px solid var(--rule-soft);
+    border-left: 3px solid var(--rule);
+    border-radius: 2px;
+    padding: 1rem 1.15rem;
+    box-shadow: var(--shadow);
+    display: grid;
+    gap: 0.5rem;
+  }
+  .feature[data-state='new'] { border-left-color: var(--gold-bright); }
+  .feature[data-state='rework'] { border-left-color: var(--arcane); }
+  .feature[data-state='extend'] { border-left-color: var(--verdant); }
+  .feature-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    justify-content: space-between;
+  }
+  .chip {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+    white-space: nowrap;
+  }
+  .chip.new { color: var(--gold); }
+  .chip.rework { color: var(--arcane); }
+  .chip.extend { color: var(--verdant); }
+  .chip.risk { color: var(--crimson); }
+
+  code, kbd {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 0.08em 0.34em;
+    border-radius: 2px;
+  }
+  pre {
+    margin: 0;
+    background: var(--code-bg);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: 0.85rem 1rem;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  .table-scroll { overflow-x: auto; border: 1px solid var(--rule-soft); border-radius: 2px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.85rem;
+    background: var(--panel);
+  }
+  th, td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+  th {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    background: var(--paper);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  td code { white-space: nowrap; }
+
+  .note {
+    border-left: 3px solid var(--crimson);
+    background: var(--panel);
+    padding: 0.75rem 1rem;
+    border-radius: 2px;
+    font-size: 0.92rem;
+  }
+  .note strong { color: var(--crimson); }
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 0.85rem;
+  }
+
+  .ascii {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.74rem;
+    line-height: 1.45;
+    white-space: pre;
+  }
+
+  footer.closing {
+    grid-column: 1 / -1;
+    border-top: 2px solid var(--ink);
+    padding-top: 1rem;
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+  }
+
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 60rem) {
+    .wrap { grid-template-columns: minmax(0, 1fr); }
+    nav.rail { position: static; border-left: none; border-top: 1px solid var(--rule); padding: 1rem 0 0; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Essentia · website restructuring</p>
+    <h1>From card archive to project hub</h1>
+    <p class="lede">
+      Everything the Legend of the Alpha introduction script promises the viewer —
+      docs, blog, releases, a Scryfall-grade search, decklists, and printable proxies —
+      mapped onto the existing static Astro site, with the data model and build steps each feature needs.
+    </p>
+    <div class="meta-strip">
+      <span><b>Base</b> Astro 7 static · Svelte 5 islands · GitHub Pages</span>
+      <span><b>Today</b> 15 route modules, 50 published cards, 1 package</span>
+      <span><b>Target</b> 7 feature areas, 6 phases</span>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="Plan sections">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#scope"><span class="num">00</span><span>Scope &amp; constraints</span></a></li>
+      <li><a href="#foundation"><span class="num">01</span><span>Data &amp; build foundation</span></a></li>
+      <li><a href="#docs"><span class="num">02</span><span>Documentation system</span></a></li>
+      <li><a href="#blog"><span class="num">03</span><span>Blog</span></a></li>
+      <li><a href="#home"><span class="num">04</span><span>Home &amp; releases</span></a></li>
+      <li><a href="#search"><span class="num">05</span><span>Search engine</span></a></li>
+      <li><a href="#decks"><span class="num">06</span><span>Decklists</span></a></li>
+      <li><a href="#print"><span class="num">07</span><span>Proxy PDF engine</span></a></li>
+      <li><a href="#builder"><span class="num">08</span><span>Print builder page</span></a></li>
+      <li><a href="#crosscut"><span class="num">09</span><span>IA, quality, CI</span></a></li>
+      <li><a href="#roadmap"><span class="num">10</span><span>Phased roadmap</span></a></li>
+      <li><a href="#decisions"><span class="num">11</span><span>Open decisions</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <!-- 00 -->
+    <section class="chapter" id="scope">
+      <h2><span class="num">00</span>Scope &amp; constraints</h2>
+      <p>
+        The site stays a <strong>static build</strong>: no backend, no accounts, no database. Every feature below
+        is either generated at build time from repository sources or executed in the visitor's browser.
+        That constraint shapes the search index, the PDF generator, and the print builder more than anything else.
+      </p>
+
+      <div class="cols">
+        <div class="feature">
+          <h3>Hard constraints</h3>
+          <ul>
+            <li>Output is <code>output: 'static'</code>, deployed to GitHub Pages under a configurable <code>BASE_PATH</code>, <code>trailingSlash: 'always'</code>.</li>
+            <li>CSP is locked to <code>default-src 'none'</code> with <code>script-src 'self'</code> and <code>img-src 'self' data:</code>. No CDNs, no external fonts, no third-party analytics, no remote PDF service.</li>
+            <li>MSE folder projects stay the only source of card fields. The website never writes card data.</li>
+            <li>Locked packages are immutable; published pages must keep resolving old versions.</li>
+          </ul>
+        </div>
+        <div class="feature">
+          <h3>Design rules for the new surfaces</h3>
+          <ul>
+            <li>Card facts always come from the generated catalog — never re-typed into prose, docs, or deck files.</li>
+            <li>Decklists, docs, and posts are authored as repository files, validated at build, and fail the build when they reference an unknown card.</li>
+            <li>Every visitor-built collection (print basket, deck sandbox) lives in <code>localStorage</code> plus a shareable URL — never on a server.</li>
+            <li>Heavy JavaScript (search index, PDF library) is lazy-loaded only on the routes that need it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>What already exists and gets reused</h4>
+      <ul>
+        <li><code>scripts/build-content.mjs</code> — validated package reader, image derivative generator, catalog emitter (schema v3).</li>
+        <li><code>components/CardHoverPreview.astro</code> + the <code>data-card-preview</code> attribute — the hover preview needed for embedded decklists is already built.</li>
+        <li><code>lib/mse-markup.ts</code>, <code>lib/markdown.ts</code> — MSE rich-text and Markdown rendering.</li>
+        <li><code>scripts/check-links.mjs</code>, <code>check-budgets.mjs</code>, <code>check-licenses.mjs</code>, <code>check-rights.mjs</code>, <code>harden-csp.mjs</code>, <code>scan-dist.mjs</code> — the quality gates each new feature must extend rather than bypass.</li>
+      </ul>
+    </section>
+
+    <!-- 01 -->
+    <section class="chapter" id="foundation">
+      <h2><span class="num">01</span>Data &amp; build foundation</h2>
+      <p>
+        Six of the seven feature areas need catalog fields that do not exist yet. Build this first;
+        everything after it is UI work on top of a stable contract.
+      </p>
+
+      <div class="feature" data-state="rework">
+        <div class="feature-head"><h3>Catalog schema v3 → v4</h3><span class="chip rework">rework</span></div>
+        <p>Extend the generated catalog with the fields the search, deck, print, and docs surfaces query. New per-card fields:</p>
+<pre><code>colors: string[]        // parsed from castingCost: {1}{B} → ["B"]
+manaValue: number       // numeric, sortable
+typeLine: string        // superType + subType, prebuilt for search
+types: string[]         // ["Creature","Fiend"] tokenized
+supertypes: string[]    // ["Trap","Legendary","Ritual"]
+zone: 'main' | 'extra'  // extra = Fusion/Synchro/Xyz/Link
+keywords: string[]      // bold invocations extracted from ruleText
+archetype: string|null  // authored bucket, see "Archetype provenance"
+archetypeRole: 'member'|'support'|'staple'
+setId, setName, stage, version, releasedOn   // already present per version
+printAsset: { url, width, height, dpi }      // print-resolution render
+oracleNormalized: string // lowercased, diacritic-free rules text for search
+</code></pre>
+        <p>
+          Keyword extraction reuses the rule already enforced by the linter: bold spans in MSE markup are keyword
+          invocations. The build resolves each against the keyword registry (§02) and <strong>fails</strong> on an unknown
+          bold phrase — the same closed-taxonomy rule <code>docs/KEYWORDS.md</code> states, now enforced by the site build.
+        </p>
+      </div>
+
+      <div class="feature" data-state="rework">
+        <div class="feature-head"><h3>Archetype provenance</h3><span class="chip rework">rework</span></div>
+        <p>
+          Archetype is metadata and is never printed on a card. Today it is inferred from the draft project folder
+          recorded in <code>identities.json</code> (<code>PROJECT_SECTION_GROUP</code>), with a stableId-prefix guess as
+          fallback — implicit and fragile. v4 splits it into two explicit concepts:
+        </p>
+        <ul>
+          <li><strong>Membership</strong> — derived from the card name via a <code>namePattern</code> on each archetype in
+            <code>sections.json</code>, mirroring the in-game rule ("a card with 'Burning Abyss' in its name") that
+            Descent, Abyssal Curse and Nekroz Recovery actually reference.</li>
+          <li><strong>Bucket</strong> — authored per card in <code>identities.json</code> as
+            <code>archetype</code> + <code>role: member | support | staple</code>. This is what carries Tour Guide,
+            Manju, Senju and Preparation of Rites into their archetype pages.</li>
+        </ul>
+        <p>
+          The build asserts <code>role === 'member'</code> exactly when the name pattern matches, so browse buckets can
+          never contradict card text. Folder mapping and prefix fallback are deleted; a card with no authored archetype
+          fails the build. Search exposes <code>a:</code> for the bucket and <code>is:member</code> / <code>is:support</code>
+          for the distinction.
+        </p>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>New authored content roots</h3><span class="chip new">new</span></div>
+<pre><code>website/content/
+  decks/&lt;slug&gt;.json         // decklists (§06)
+  blog/&lt;yyyy-mm-dd-slug&gt;/    // index.mdx + local images (§03)
+  lands.json                 // basic now, duals later — same schema (§06)
+  color-overrides.json       // colour for cards whose cost doesn't imply it
+  authors.json               // post bylines
+docs/**/*.md                 // existing — now published (§02)
+</code></pre>
+        <p>
+          <code>build-content.mjs</code> grows past 700 lines already; split it into
+          <code>scripts/content/{packages,images,decks,blog,docs,search-index}.mjs</code> with one orchestrator.
+          Each module keeps the current pattern: strict validation, explicit <code>fail()</code>, no silent skips.
+        </p>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>One master render, four tiers</h3><span class="chip">solved</span></div>
+        <p>
+          Current renders — in the package and on the site — are <strong>375 × 523 px</strong>, because that is what the
+          <code>sevenhalf</code> stylesheet declares and <code>--export-images</code> emits. Roughly 150 DPI: fine on
+          screen, visibly soft printed. The fix is verified: an MSE <strong>export template</strong> calling
+          <code>write_image_file(card, width:, height:)</code> re-renders at any size — 50 cards at 2480 × 3458 in ~14 s,
+          with genuinely sharp type rather than an upscale.
+        </p>
+        <ol class="steps">
+          <li>Ship <code>essentia-print.mse-export-template</code> in the repo, installed into MSE's data dir by the launcher, exporting <strong>1500 × 2092</strong> (600 DPI) into <code>renders_print/</code>. Past that only type gains detail — frame bitmaps are 375 × 523 and source art is 624 × 624.</li>
+          <li>Derivatives from that master: <strong>thumb</strong> 240 px (grids, deck rows), <strong>display</strong> 750 px (card page, hover), <strong>zoom</strong> 1500 px, <strong>print</strong> master PNG for PDFs.</li>
+          <li>Progressive quality: thumb paints first, display/zoom swap in after load — skipped when <code>saveData</code> or a 2G-class connection is reported, with a manual "load high quality" control always available.</li>
+          <li>Print masters are excluded from page-weight budgets and tracked under their own ceiling. Until masters exist, the PDF generator upscales and stamps a "draft resolution" footer.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="chapter" id="docs">
+      <h2><span class="num">02</span>Documentation system</h2>
+      <p>
+        Today the site hand-copies a fraction of the rules into two Astro pages
+        (<code>/rules/</code>, <code>/philosophy/</code>) while the real corpus —
+        design, conversion, zones, summoning, templating, deck building, four keyword modules,
+        four archetype modules — stays in <code>docs/</code>, invisible to visitors. The script sells this
+        as the place players go to decode keywords, so it becomes a first-class section of the site.
+      </p>
+
+      <div class="feature" data-state="rework">
+        <div class="feature-head"><h3>Publish <code>docs/</code> as a documentation site</h3><span class="chip rework">rework</span></div>
+        <ul>
+          <li>A build step copies <code>docs/**/*.md</code> into an Astro content collection, rewriting relative <code>.md</code> links to site routes and validating every internal anchor (fails the build on a dead link, extending <code>check-links.mjs</code>).</li>
+          <li>Route shape mirrors the existing documentation map: <code>/docs/</code>, <code>/docs/rules/…</code>, <code>/docs/design/…</code>, <code>/docs/keywords/…</code>, <code>/docs/archetypes/burning-abyss/…</code>.</li>
+          <li>Left rail = the doc tree from <code>docs/CONTEXT.md</code>. Right rail = existing <code>ChapterSummary</code> component fed by generated headings.</li>
+          <li><code>/rules/</code> and <code>/philosophy/</code> become curated landing pages that link into the corpus instead of duplicating it; duplicated prose is deleted so the docs stay single-source.</li>
+          <li>No per-page edit or source links — docs are for reading. A single GitHub link lives in the site footer for anyone who wants to contribute.</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Keyword registry &amp; auto-linking</h3><span class="chip new">new</span></div>
+        <p>
+          The whole compression bet — heavy keywords instead of paragraphs — only pays off if a keyword is one click
+          from its definition.
+        </p>
+        <ul>
+          <li>Build parses the four keyword modules into a registry: <code>{ id, term, category, definition, seeAlso[], archetype? }</code>.</li>
+          <li><code>/keywords/</code> index with category filters and instant filter box; <code>/keywords/&lt;term&gt;/</code> detail page with definition, related keywords, rules citations, and <em>every published card that uses it</em> (reverse index from §01).</li>
+          <li><code>RichText</code> gains a keyword pass: bold invocations in card rules text render as links with a hover/press definition popover — no layout shift, works with keyboard, degrades to a plain link without JS.</li>
+          <li>Search gains <code>kw:</code> (§05) so "show me every card with <strong>Detach</strong>" is one query.</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Missing explainer pages the script implies</h3><span class="chip new">new</span></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Route</th><th>Content</th><th>Source</th></tr></thead>
+            <tbody>
+              <tr><td><code>/docs/conversion/</code></td><td>ATK ÷ 400 → power/toughness, level → mana cost table, attribute → color mapping including the wind problem, why the ratio truncates</td><td><code>docs/design/CONVERSION.md</code></td></tr>
+              <tr><td><code>/docs/how-to-read-a-card/</code></td><td>Annotated card render: PSCT condition : cost ; effect, ability prefixes, Soft/Hard/Hard&nbsp;Linked, bold vs italic conventions</td><td><code>docs/rules/TEMPLATING.md</code></td></tr>
+              <tr><td><code>/docs/deck-building/</code></td><td>40+10 construction, 2-copy limit, land counts, Extra Deck = sideboard</td><td><code>docs/rules/DECK_BUILDING.md</code></td></tr>
+              <tr><td><code>/roadmap/</code></td><td>Shipped vs planned archetypes (Shaddoll, Spellbook, Kozmo), six-structure-deck target, set pipeline</td><td>new, generated from package stages</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>Licence rewrite.</strong> Everything created for this project — card designs, text, renders, code,
+        docs, the site itself — is free for anyone to use, modify and redistribute for any purpose (CC0-equivalent),
+        stated plainly on <code>/legal/</code>. Third-party material — Yu-Gi-Oh! names and source records, Magic
+        terminology and mana symbols, imported land artwork — stays under its owners' terms and is explicitly
+        excluded from that grant. No AI-specific endpoints are built; an agent cloning the repository already has
+        everything it needs.
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="chapter" id="blog">
+      <h2><span class="num">03</span>Blog</h2>
+      <p>
+        A real editorial channel, independent of the rules corpus and of release packages: design diaries,
+        video companions, format reports, archetype deep-dives.
+      </p>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Authoring format</h3><span class="chip new">new</span></div>
+        <p>
+          Posts are Markdown with components, so add <code>@astrojs/mdx</code> — the one dependency that makes
+          embedded decklists and card references possible inside prose. Front matter is validated by an Astro content
+          collection schema; an invalid post fails the build.
+        </p>
+<pre><code>---
+title: "Legend of the Alpha — project introduction"
+slug: legend-of-alpha-project-introduction
+date: 2026-08-01
+author: aron
+tags: [set-introduction, burning-abyss, nekroz]
+summary: "Why Essentia exists and what ships in Alpha 0.1."
+hero: ./hero.png
+video: "https://www.youtube.com/watch?v=…"   # optional companion
+relatedRelease: LOTA-0001-Alpha_0.1          # optional package link
+draft: false
+---
+
+Burning Abyss opens on &lt;Card id="burning-abyss-graff" /&gt;, and the deck I
+tested with is below.
+
+&lt;Decklist id="lota-alpha-burning-abyss" mode="compact" /&gt;
+</code></pre>
+        <p>
+          In-prose components: <code>&lt;Card&gt;</code> (inline name with hover preview),
+          <code>&lt;CardImage&gt;</code>, <code>&lt;Decklist&gt;</code> (§06), <code>&lt;Keyword&gt;</code>,
+          <code>&lt;PrintButton&gt;</code> (§07). The existing
+          <code>content/2026-08-01-legend-of-alpha-project-introduction/script.md</code> becomes the first migrated post.
+        </p>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Routes and feeds</h3><span class="chip new">new</span></div>
+        <ul>
+          <li><code>/blog/</code> — paginated index, newest first, hero card per post, tag chips.</li>
+          <li><code>/blog/&lt;slug&gt;/</code> — article with reading time, table of contents, prev/next, related release, related decks.</li>
+          <li><code>/blog/tag/&lt;tag&gt;/</code> — tag archives.</li>
+          <li><code>/blog/feed.xml</code> — separate from the existing card-updates feed; both linked in the footer and <code>&lt;head&gt;</code>.</li>
+          <li>Cross-links become bidirectional: release pages list posts that mention them (<code>relatedRelease</code>), replacing today's raw <code>contentPosts</code> URL list.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="chapter" id="home">
+      <h2><span class="num">04</span>Home &amp; release history</h2>
+
+      <div class="feature" data-state="rework">
+        <div class="feature-head"><h3>First visit explains, return visit shows the cards</h3><span class="chip rework">rework</span></div>
+        <ul>
+          <li><code>/</code> is the welcome page: a concise presentation of Essentia — the idea, the two starter decks, how to proxy and play, links onward. It stays the canonical page for search engines and for anyone arriving from the video.</li>
+          <li><code>/releases/</code> is the returning-visitor home, with no project explanation.</li>
+          <li>A small inline script on <code>/</code> redirects a visitor who carries <code>essentia.v1.visited</code> straight to <code>/releases/</code>; every page sets that flag. Without JS the visitor simply stays on the welcome page, and <code>/?welcome=1</code> always shows it — reachable any time from "About Essentia".</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="rework">
+        <div class="feature-head"><h3><code>/releases/</code> — latest release first</h3><span class="chip rework">rework</span></div>
+        <ol class="steps">
+          <li><strong>Hero</strong> — the newest package: set name, stage badge, version, release date, card count, one-line pitch, and actions: <em>Browse the set</em>, <em>Print proxies</em>, <em>Read the announcement</em>.</li>
+          <li><strong>Latest release grid</strong> — every card in that package, filterable in place by archetype and type, using the existing gallery card component.</li>
+          <li><strong>Release timeline</strong> — one entry per release, newest first: stage chip, version, date, count, decks included, announcement post. Each links to its package page.</li>
+          <li><strong>Entry points</strong> — Search, Decks, Docs, Blog, Print.</li>
+        </ol>
+        <p>
+          Version policy, per the existing TODO: release grids show <em>that package's</em> printing of a card,
+          while search, archetype, and section pages show the latest version only
+          (<code>publication-order.mjs</code> already computes this).
+        </p>
+      </div>
+
+      <div class="feature" data-state="extend">
+        <div class="feature-head"><h3>Releases index and package pages</h3><span class="chip extend">extend</span></div>
+        <ul>
+          <li>Add the missing <code>/releases/</code> index — today the package pages exist but nothing links to them.</li>
+          <li>Package page gains: changelog (cards added / changed / removed vs the previous package, computed from <code>sourceHash</code>), deck list section (§06), print buttons (§07), and the related posts block.</li>
+          <li>Card version pages gain a diff view: side-by-side rules text against the previous version, with changed segments highlighted.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="chapter" id="search">
+      <h2><span class="num">05</span>Search engine (Scryfall-grade)</h2>
+      <p>
+        The current search palette matches card names only, and <code>lib/query.ts</code> — a parser for
+        <code>q/text/type/rarity/date</code> — is dead code wired to zero pages. Replace both with a real
+        query language, a static index, and a dedicated results page.
+      </p>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Query language</h3><span class="chip new">new</span></div>
+        <p>
+          A Scryfall-style tokenizer → AST → evaluator in <code>src/lib/search/</code>:
+          bare words match name and rules text, <code>key:value</code> filters, comparison operators
+          <code>: = != &lt; &lt;= &gt; &gt;=</code>, quoted phrases, <code>-</code> negation, <code>OR</code>, and parentheses.
+        </p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Key</th><th>Matches</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><code>name:</code> / bare</td><td>card name, incl. former names</td><td><code>cir</code></td></tr>
+              <tr><td><code>o:</code> <code>oracle:</code></td><td>rules text substring or <code>/regex/</code></td><td><code>o:"send to grave"</code></td></tr>
+              <tr><td><code>t:</code> <code>type:</code></td><td>super/sub type tokens</td><td><code>t:fiend -t:token</code></td></tr>
+              <tr><td><code>c:</code> <code>color:</code></td><td>colors from casting cost, with <code>&gt;=</code> semantics</td><td><code>c:b</code>, <code>c&gt;=ub</code></td></tr>
+              <tr><td><code>mv:</code></td><td>mana value</td><td><code>mv&lt;=1</code></td></tr>
+              <tr><td><code>pow:</code> <code>tou:</code></td><td>power / toughness, numeric compare</td><td><code>pow&gt;=4 tou&lt;3</code></td></tr>
+              <tr><td><code>a:</code> <code>archetype:</code></td><td>archetype section</td><td><code>a:burning-abyss</code></td></tr>
+              <tr><td><code>kw:</code></td><td>keyword invocation (from the registry)</td><td><code>kw:detach</code></td></tr>
+              <tr><td><code>zone:</code></td><td><code>main</code> / <code>extra</code></td><td><code>zone:extra</code></td></tr>
+              <tr><td><code>is:</code></td><td><code>ritual</code>, <code>trap</code>, <code>fusion</code>, <code>synchro</code>, <code>xyz</code>, <code>link</code>, <code>support</code>, <code>tuner</code></td><td><code>is:xyz</code></td></tr>
+              <tr><td><code>set:</code> <code>s:</code></td><td>set id</td><td><code>set:lota-0001</code></td></tr>
+              <tr><td><code>stage:</code></td><td><code>alpha</code> / <code>beta</code> / <code>release</code></td><td><code>stage:alpha</code></td></tr>
+              <tr><td><code>r:</code> <code>rarity:</code></td><td>rarity</td><td><code>r&gt;=rare</code></td></tr>
+              <tr><td><code>date:</code> <code>year:</code></td><td>publication date compare</td><td><code>date&gt;=2026-08-01</code></td></tr>
+              <tr><td><code>order:</code> <code>direction:</code></td><td>name, mv, power, released, rarity, collection</td><td><code>order:mv direction:desc</code></td></tr>
+              <tr><td><code>unique:</code></td><td><code>cards</code> (default, latest version) / <code>prints</code> (all versions)</td><td><code>unique:prints</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Parser errors are surfaced inline — the failing token underlined, with a suggestion — never a blank result page.</p>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Index and runtime</h3><span class="chip new">new</span></div>
+        <ul>
+          <li>Build emits <code>/generated/search-index.json</code>: one compact record per card version with short keys. At 50 cards it is a few dozen KB; at 2,000 cards still well under 1&nbsp;MB and gzip-friendly.</li>
+          <li>Search runs entirely client-side in a Svelte island, fetched on first use (<code>connect-src 'self'</code> already permits it), cached in memory. No index request on pages that never search.</li>
+          <li>Query state lives in the URL: <code>/search/?q=t:fiend+mv%3C%3D1&amp;view=grid&amp;order=mv</code> — shareable, back-button correct, no client-side router needed.</li>
+          <li>The <kbd>⌘K</kbd> palette stays as the quick name jump, gains "Search full syntax for …" as its last row, handing the query to <code>/search/</code>.</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Results UI</h3><span class="chip new">new</span></div>
+        <div class="ascii" aria-hidden="true">┌───────────────────────────────────────────────────────────────┐
+│  [ t:fiend mv&lt;=1 a:burning-abyss                    ] (?)     │
+│  Archetype ▾  Type ▾  Color ▾  Cost ▾  Set ▾  Zone ▾  Reset   │
+├───────────────────────────────────────────────────────────────┤
+│  14 cards · order: mana value ▾ · view: grid ▾ · [Print all]  │
+│  ▢ card  ▢ card  ▢ card  ▢ card                               │
+└───────────────────────────────────────────────────────────────┘</div>
+        <ul>
+          <li><strong>Facet bar</strong> writes into the query string, so clicking chips and typing syntax stay in sync — the facets are just query sugar.</li>
+          <li><strong>Views:</strong> grid (renders), list (name · cost · type · P/T), text (plain rules text, printable), checklist (compact, for cube building).</li>
+          <li>Pre-rendered landing pages for SEO and for the "already sorted per archetype" ask: <code>/search/archetype/&lt;slug&gt;/</code>, <code>/search/type/&lt;type&gt;/</code>, <code>/search/set/&lt;set&gt;/</code> — static HTML with results inlined, hydrating into the live search when JS loads.</li>
+          <li>Every result set carries two bulk actions: <em>Add all to print basket</em> and <em>Copy as text list</em>.</li>
+          <li><code>/search/syntax/</code> documents the language with runnable examples, mirroring how Scryfall teaches it.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="chapter" id="decks">
+      <h2><span class="num">06</span>Decklists</h2>
+      <p>
+        Decks are authored by hand in the repository — no editor, no builder, display only.
+        Two presentation modes share one data source.
+      </p>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Deck data format</h3><span class="chip new">new</span></div>
+        <p>
+          Today <code>release.json</code> holds a flat array of card ids per deck: no quantities, no main/side split,
+          no lands — while <code>docs/rules/DECKLISTS_ALPHA_0.1.md</code> has all three. One authored file per deck,
+          validated against the catalog at build time:
+        </p>
+<pre><code>// website/content/decks/lota-alpha-burning-abyss.json
+{
+  "slug": "lota-alpha-burning-abyss",
+  "name": "Burning Abyss — Alpha 0.1 starter",
+  "archetype": "burning-abyss",
+  "package": "LOTA-0001-Alpha_0.1",
+  "author": "aron",
+  "updated": "2026-08-01",
+  "colors": ["B"],
+  "summary": "Fiend swarm into Xyz value. The deck that started the project.",
+  "sections": [
+    { "id": "main",  "label": "Main Deck",
+      "entries": [ { "card": "burning-abyss-graff", "qty": 2 },
+                   { "card": "burning-abyss-cir",   "qty": 2 },
+                   { "land": "swamp",               "qty": 14 } ] },
+    { "id": "extra", "label": "Extra Deck (Sideboard)",
+      "entries": [ { "card": "burning-abyss-dante", "qty": 2 } ] },
+    { "id": "flex",  "label": "Flex slots",
+      "entries": [ { "card": "maxx-c", "qty": 1 } ] }
+  ],
+  "notes": "Descent once per turn keeps the board honest."
+}</code></pre>
+        <p>Build-time validation: unknown card or land id fails; a card outside the referenced package fails; section totals are compared against the deck-building rules (40 main / 10 extra / 2-copy limit) as a warning, not a hard failure, so experimental lists stay publishable.</p>
+        <p><code>release.json.decks</code> stays the authoritative membership record; deck files must be a subset of it. Presentation data (quantities, sections, notes) lives only in the deck file — no duplication of card fields anywhere.</p>
+        <p>
+          <strong>A published deck never changes.</strong> It ships with a site update, carries that date, and stays
+          frozen. A revision is a new file with a new slug plus <code>supersedes</code> / <code>supersededBy</code> links;
+          the old page keeps working. CI (<code>check-immutable-decks.mjs</code>) fails a content-hash change on an
+          already-published deck.
+        </p>
+        <p>
+          <strong>Lands</strong> live in <code>content/lands.json</code> and are referenced as
+          <code>{ "land": "swamp", "qty": 14 }</code>. Scryfall's Alpha-set basic art is downloaded and vendored into
+          <code>public/generated/lands/</code> (CSP forbids hotlinking) and registered in
+          <code>asset-rights.json</code> under the third-party clause. The schema carries
+          <code>kind</code>, <code>colors</code> and <code>types</code> from day one, so adding duals later is a data
+          change with no code change — cards and lands flow through one <code>DeckEntry</code> type everywhere.
+        </p>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Mode 1 — embedded list (MTGGoldfish style)</h3><span class="chip new">new</span></div>
+        <p>
+          <code>&lt;Decklist id="…" mode="compact" /&gt;</code> for posts and docs: quantity + card name only,
+          grouped by section, in tight columns. Hovering a name pops the card render — reusing the existing
+          <code>data-card-preview</code> / <code>CardHoverPreview</code> mechanism, so this costs almost nothing to build.
+        </p>
+        <ul>
+          <li>Zero-JS baseline: names are links to card pages; the preview is progressive enhancement. On touch, tap opens the card page; long-press shows the preview.</li>
+          <li>Header row: deck name, archetype chip, card count, link to the full page, and a small <em>Print proxies</em> action.</li>
+          <li>Optional <code>sections="main,extra"</code> to embed only part of a list mid-article.</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Mode 2 — full decklist page</h3><span class="chip new">new</span></div>
+        <p><code>/decks/</code> index (filter by archetype, package, colors) and <code>/decks/&lt;slug&gt;/</code> detail:</p>
+        <ul>
+          <li>Visual mode (card renders in a grid, stacked by quantity) and text mode, toggled and remembered.</li>
+          <li>Breakdowns: mana curve, color split, type distribution, main vs extra counts, land count — all computed from the catalog, never authored.</li>
+          <li>Section columns grouped by card type inside each section, matching how deck sites present lists.</li>
+          <li>Author notes, related post, source package, and a "cards in this deck also appear in" cross-link.</li>
+          <li>Export bar: <strong>Proxy PDF</strong>, <strong>TXT</strong> (<code>2 Cir</code> line format, MTG-style), <strong>CSV</strong>, <strong>JSON</strong>, <strong>Copy to clipboard</strong>, <strong>Permalink</strong>. All generated in-browser; no server round-trip.</li>
+          <li><em>Open in print builder</em> hands the whole list to §08 with quantities preserved.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="chapter" id="print">
+      <h2><span class="num">07</span>Proxy print &amp; PDF engine</h2>
+      <p>
+        One engine, invoked from everywhere: any collection of <code>{ cardId, copies }</code> becomes a
+        print-ready PDF in the browser. This is the feature the script promises most directly.
+      </p>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Engine</h3><span class="chip new">new</span></div>
+        <ul>
+          <li><code>src/lib/print/</code> — layout maths (page size, card box, grid, margins, cut marks) shared with the existing Python tool's geometry so screen and repo output agree.</li>
+          <li>PDF built with <code>pdf-lib</code> (MIT), bundled locally and lazy-imported on first use only. It clears the CSP: no network, no eval. <code>check-licenses.mjs</code> already gates the licence.</li>
+          <li>Images fetched same-origin from <code>/generated/print/…</code>, embedded as PNG at 63 × 88 mm, 3 × 3 per A4 or Letter page.</li>
+          <li>Generation runs in a Web Worker with a progress bar (a 100-card sheet is a few seconds of image decoding); <code>harden-csp.mjs</code> gains <code>worker-src 'self'</code>. Download via object URL and a <code>download</code> anchor.</li>
+          <li>Deterministic output: same input list → byte-identical PDF, so a printed sheet can be reproduced later.</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Options exposed to the visitor</h3><span class="chip new">new</span></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Option</th><th>Values</th><th>Default</th></tr></thead>
+            <tbody>
+              <tr><td>Page size</td><td>A4 · Letter</td><td>A4</td></tr>
+              <tr><td>Copies</td><td>uniform 1–4, plus per-card override</td><td>deck quantity, else 1</td></tr>
+              <tr><td>Cut marks</td><td>corner marks · full grid lines · none</td><td>corner marks</td></tr>
+              <tr><td>Bleed / spacing</td><td>0 mm tight · 1 mm gap</td><td>tight</td></tr>
+              <tr><td>Card back</td><td>none · plain back page per sheet</td><td>none</td></tr>
+              <tr><td>Scale check</td><td>prints a 63 mm ruler on page 1</td><td>on</td></tr>
+              <tr><td>Sheet header</td><td>set / deck name + date footer</td><td>on</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A live preview renders page 1 to canvas before generation, so a wrong page size is visible before printing.</p>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3>Entry points</h3><span class="chip new">new</span></div>
+        <ul>
+          <li>Card page — <em>Add to print</em> with a copies stepper.</li>
+          <li>Gallery / archetype / section pages — multi-select then <em>Add selected</em>.</li>
+          <li>Search results — <em>Print all results</em> (that is "print a new batch": <code>date&gt;=2026-08-01</code> → PDF).</li>
+          <li>Release package page — <em>Print this release</em> (2 copies per card, matching the current Python default).</li>
+          <li>Deck page and embedded decklist — <em>Print this deck</em> with authored quantities.</li>
+          <li>Whole catalog — <em>Print everything</em> on <code>/print/</code>, with an explicit page-count and file-size warning.</li>
+        </ul>
+        <p>
+          The repository keeps <code>.script/generate_print_pdfs.py</code> for offline bulk runs; the web engine
+          becomes the visitor-facing path. Both consume the same print assets and the same layout constants.
+        </p>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="chapter" id="builder">
+      <h2><span class="num">08</span>Print builder page — no accounts</h2>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3><code>/print/</code></h3><span class="chip new">new</span></div>
+        <p>
+          A single page where a visitor assembles any set of cards and prints it — a proxy basket, not a deck editor,
+          and explicitly not an account.
+        </p>
+        <div class="ascii" aria-hidden="true">┌──────────────── /print/ ────────────────────────────────┐
+│ Add cards  [ search box: t:fiend a:burning-abyss   ]    │
+│ Quick add  [ Deck ▾ ] [ Release ▾ ] [ Archetype ▾ ]     │
+├─────────────────────────┬───────────────────────────────┤
+│ Basket (46 cards)       │ Options                       │
+│  2 ×  Burning Abyss Cir │  Page A4 ▾  Cut marks ▾       │
+│  2 ×  Graff        − +  │  Copies 1 ▾  Ruler ☑          │
+│  …                      │  Pages: 6 · ~8 MB             │
+│ [Clear] [Copy list]     │  [ Preview ] [ Download PDF ] │
+└─────────────────────────┴───────────────────────────────┘</div>
+        <ul>
+          <li><strong>State</strong> — <code>localStorage['essentia.print.v1']</code>, so the basket survives reloads and browsing. A persistent header badge shows the count from any page.</li>
+          <li><strong>Sharing without accounts</strong> — the basket encodes into the URL (<code>/print/?list=…</code>, ids + quantities, compressed and base64url'd) so a list can be pasted to a friend. Long lists fall back to the paste-a-text-list import.</li>
+          <li><strong>Import</strong> — paste a text decklist (<code>2 Cir</code> per line); names resolve through the same normalizer the search uses, with an unmatched-lines report the visitor can fix inline.</li>
+          <li><strong>Export</strong> — PDF (§07), TXT, JSON; plus <em>Save as deck file</em> which emits a ready-to-commit deck JSON for anyone opening a pull request.</li>
+          <li><strong>Print stylesheet</strong> — <code>@media print</code> fallback so the basket page itself prints usable card sheets if PDF generation is unavailable.</li>
+        </ul>
+      </div>
+
+      <div class="feature" data-state="new">
+        <div class="feature-head"><h3><code>/decks/mine/</code> — saved decklists, still no account</h3><span class="chip new">new</span></div>
+        <p>
+          Visitors keep as many decklists as they want, stored only in their own browser. Separate from published
+          deck files, but the same format and the same rendering components.
+        </p>
+        <ul>
+          <li><strong>Library</strong> — every saved deck with name, count, archetype, updated date, and actions: open, edit, duplicate, rename, delete, export, print. Plus <em>New deck</em>.</li>
+          <li><strong>Editor</strong> — <code>/decks/mine/&lt;id&gt;/</code>: add cards through the full search syntax, quantity steppers, sections (main / extra / flex, more addable), notes, live curve and counts, and the deck-building rules shown as non-blocking warnings.</li>
+          <li><strong>Storage</strong> — <code>essentia.v1.decks</code> with a versioned schema and migration function; <code>QuotaExceededError</code> is reported with an actionable message, and the page states plainly that decks live only in this browser.</li>
+          <li><strong>Portability</strong> — export/import JSON round-trips with the published deck format, so a local deck can be exported and submitted as a pull request unchanged; share links use the same URL encoding as the print basket.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="chapter" id="crosscut">
+      <h2><span class="num">09</span>Information architecture, quality, CI</h2>
+
+      <div class="cols">
+        <div class="feature" data-state="rework">
+          <div class="feature-head"><h3>Navigation</h3><span class="chip rework">rework</span></div>
+          <p>The archetype drawer currently is the whole navigation. New top level:</p>
+<pre><code>Cards ▾   → Search · Archetypes · Sets · Updates
+Decks     → /decks/
+Docs ▾    → Rules · Keywords · Design · How to read a card
+Blog      → /blog/
+Print     → /print/  (badge: basket count)
+About ▾   → Philosophy · Roadmap · Attribution &amp; licence · About Essentia</code></pre>
+          <p>The archetype drawer stays as a secondary rail on card surfaces. Footer gains GitHub, licence, both feeds, and the channel link.</p>
+        </div>
+
+        <div class="feature" data-state="extend">
+          <div class="feature-head"><h3>Performance budgets</h3><span class="chip extend">extend</span></div>
+          <ul>
+            <li>Route budgets in <code>check-budgets.mjs</code>: docs/blog ≤ 120 KB JS, search ≤ 250 KB (index excluded, fetched on demand), print ≤ 400 KB (pdf-lib lazily loaded).</li>
+            <li>Search index and print assets are excluded from the page budget but tracked separately with their own ceilings.</li>
+            <li>Zero-JS baseline for docs, blog, deck pages and card pages; islands only where interaction demands it.</li>
+          </ul>
+        </div>
+
+        <div class="feature" data-state="extend">
+          <div class="feature-head"><h3>Accessibility</h3><span class="chip extend">extend</span></div>
+          <ul>
+            <li>Search: combobox semantics, live result count, full keyboard operation, visible focus.</li>
+            <li>Hover previews must also work on focus and never trap the pointer; all previews carry alt text.</li>
+            <li>Deck tables are real tables with headers; PDF options are a labelled form.</li>
+            <li>Existing axe/Playwright pass extends to every new route.</li>
+          </ul>
+        </div>
+
+        <div class="feature" data-state="extend">
+          <div class="feature-head"><h3>Tests &amp; CI</h3><span class="chip extend">extend</span></div>
+          <ul>
+            <li>Unit: query tokenizer/AST/evaluator (replaces <code>query.test.ts</code>), keyword extraction, deck validation, print layout maths, text-list import parser.</li>
+            <li>E2E: search a syntax query, open a deck, embed preview on hover, generate a small PDF and assert the download, basket persistence across reloads.</li>
+            <li>Golden files: a fixed 9-card PDF byte-compared to catch layout regressions.</li>
+            <li>Deploy smoke list grows to <code>releases/</code>, <code>search/</code>, <code>decks/</code>, <code>decks/mine/</code>, <code>blog/</code>, <code>docs/</code>, <code>keywords/</code>, <code>print/</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>New routes at a glance</h4>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Route</th><th>Rendering</th><th>Islands</th><th>Phase</th></tr></thead>
+          <tbody>
+            <tr><td><code>/docs/**</code></td><td>static from <code>docs/</code></td><td>none</td><td class="num">1</td></tr>
+            <tr><td><code>/keywords/</code>, <code>/keywords/&lt;term&gt;/</code></td><td>static from registry</td><td>filter box</td><td class="num">1</td></tr>
+            <tr><td><code>/blog/</code>, <code>/blog/&lt;slug&gt;/</code>, <code>/blog/tag/&lt;tag&gt;/</code></td><td>MDX collection</td><td>none</td><td class="num">2</td></tr>
+            <tr><td><code>/</code> (welcome), <code>/releases/</code></td><td>static</td><td>visit routing, inline filter</td><td class="num">2</td></tr>
+            <tr><td><code>/search/</code>, <code>/search/syntax/</code>, <code>/search/&lt;facet&gt;/&lt;value&gt;/</code></td><td>static shell + client index</td><td>search app</td><td class="num">3</td></tr>
+            <tr><td><code>/decks/</code>, <code>/decks/&lt;slug&gt;/</code></td><td>static from deck files</td><td>view toggle, export</td><td class="num">4</td></tr>
+            <tr><td><code>/print/</code></td><td>static shell</td><td>basket + PDF worker</td><td class="num">5</td></tr>
+            <tr><td><code>/decks/mine/</code>, <code>/decks/mine/&lt;id&gt;/</code></td><td>static shell</td><td>local deck library + editor</td><td class="num">5</td></tr>
+            <tr><td><code>/roadmap/</code></td><td>static</td><td>none</td><td class="num">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="chapter" id="roadmap">
+      <h2><span class="num">10</span>Phased roadmap</h2>
+      <p>Each phase ships independently and leaves the site releasable. Sizes are relative, not calendar estimates.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th class="num">Phase</th><th>Delivers</th><th>Depends on</th><th class="num">Size</th></tr></thead>
+          <tbody>
+            <tr><td class="num">0</td><td>Catalog v4 (colors, mv, types, keywords, zone), build-script split, print-render pipeline, GitHub + licence + footer fixes</td><td>—</td><td class="num">M</td></tr>
+            <tr><td class="num">1</td><td>Docs publishing, keyword registry + card-text auto-linking, conversion &amp; how-to-read pages, <code>/roadmap/</code></td><td>0</td><td class="num">L</td></tr>
+            <tr><td class="num">2</td><td>Blog (MDX), welcome page + first-visit routing, <code>/releases/</code> hub, package changelog, version diffs</td><td>0</td><td class="num">M</td></tr>
+            <tr><td class="num">3</td><td>Search: query language, index, results page, facets, syntax docs, palette handoff</td><td>0</td><td class="num">L</td></tr>
+            <tr><td class="num">4</td><td>Decklists: data format + lands, embedded component, full pages, text exports, immutability gate</td><td>0, 2</td><td class="num">M</td></tr>
+            <tr><td class="num">5</td><td>PDF engine + print entry points everywhere + <code>/print/</code> basket + <code>/decks/mine/</code> local decklists</td><td>0, 4</td><td class="num">L</td></tr>
+            <tr><td class="num">6</td><td>Polish: navigation, budgets, a11y sweep, golden PDF tests, deploy smoke expansion</td><td>all</td><td class="num">S</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Phase&nbsp;0 is the only strict prerequisite. Phases 1–3 are independent of each other and can be reordered by
+        appetite; the fastest visible win is phase&nbsp;2, the highest-value one for players is phase&nbsp;5.
+      </p>
+    </section>
+
+    <!-- 11 -->
+    <section class="chapter" id="decisions">
+      <h2><span class="num">11</span>Open decisions</h2>
+      <h4>Settled</h4>
+      <ul>
+        <li>Archetype = authored bucket + name-derived membership, validated against each other.</li>
+        <li>Decks are frozen artifacts dated by the update that published them; revisions are new slugs.</li>
+        <li><code>@astrojs/mdx</code> approved. Videos link out — no third-party embeds.</li>
+        <li>Licence: everything project-created is free for any use; third-party material excluded.</li>
+        <li>No AI-specific endpoints, no per-page contribution links — one GitHub link in the footer.</li>
+        <li>Colour comes from casting cost plus an exception list — which ships empty, since no card needs one yet.</li>
+        <li><strong>Print resolution.</strong> Solved by an MSE export template at 1500 × 2092 (600 DPI); verified against the alpha set. No re-authoring of the stylesheet required.</li>
+        <li><strong>Land art.</strong> Scryfall Alpha basics, permanently — no project-owned replacement planned.</li>
+      </ul>
+      <h4>Still open</h4>
+      <ul>
+        <li><strong>Archetype migration diff.</strong> Does not exist yet — it is produced by the migration script during phase&nbsp;0. That script must print the cross-check table plus every <code>support</code>/<code>staple</code> card (Tour Guide, Manju, Senju, Preparation of Rites) and pause for approval before the folder heuristic is deleted.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="closing">
+    Plan drafted against the repository at commit <code>ed1fcee</code> · website catalog schema v3, 50 published cards, package <code>LOTA-0001-Alpha_0.1</code>.
+  </footer>
+</div>

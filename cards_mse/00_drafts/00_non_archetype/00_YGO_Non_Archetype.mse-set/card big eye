@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/07_xyz.md
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Big Eye
 	casting_cost: 2U
 	image: mse_images/xyz/embedded/image10.png
@@ -16,11 +16,11 @@ card:
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 3</i>
+		<i>2 Creatures MV 3</i>
 		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 1 Creature; gain control of the target as long as you control Big Eye. Big Eye cannot attack this turn.
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 4
+	power: 6
+	toughness: 5
 	card_code_text: 007/077 R
 	card_code_text_2: 007/077 R
 	card_code_text_3: 007/077 R

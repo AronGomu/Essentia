@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 05_fusion.md
 	time_created: 2026-07-11 12:11:25
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Coordius the Triphasic Dealmon
 	casting_cost: 1BB
 	image: mse_images/fusion/embedded/image2.png
@@ -19,14 +19,14 @@ card:
 	sub_type_4: 
 	rarity: rare
 	rule_text:
-		<i>1 <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Synchro</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> + 1 <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Xyz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> + 1 Link</i>
+		<i>1 Synchro + 1 Xyz + 1 Link</i>
 		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Fusion Summon</b> — You may pay 5 life up to 3 times; for each payment, choose 1 of these <i-auto>(no target)</i-auto> effects:
-		- <b>Return</b> 1 non-Creature card from your Grave to your Hand.
+		- <b>Return</b> 1 non-Creature card from Grave to Hand.
 		- <b>Destroy</b> 3 non-Creature permanents.
-		- Put X +1/+1 counters on “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Coordius</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”, where X is the difference between your life total and 1 opponent’s life total.
+		- Put X +1/+1 counters on “Coordius”, where X is the difference between your life total and 1 opponent’s life total.
 	flavor_text: <i-flavor></i-flavor>
-	power: 6
-	toughness: 6
+	power: 7
+	toughness: 7
 	card_code_text: 017/077 R
 	card_code_text_2: 017/077 R
 	card_code_text_3: 017/077 R

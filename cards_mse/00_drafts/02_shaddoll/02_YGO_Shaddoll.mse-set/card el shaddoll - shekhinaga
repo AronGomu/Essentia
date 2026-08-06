@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: El Shaddoll - Shekhinaga
 	casting_cost: 2G
 	image: mse_images/image14.png
@@ -23,11 +23,11 @@ card:
 	rarity: common
 	rule_text:
 		<i>1 “Shaddoll” Creature + 1 green Creature</i>
-		<i-auto>(1 - Triggered <kw-a><nospellcheck><key>Flash</key></nospellcheck></kw-a> Hard)</i-auto> You can <b>Reveal</b> 1 <i-auto>“Shaddoll”</i-auto> card from your Hand and <b>Target</b> 1 ability; <b>Discard</b> the revealed card and <b>Counter</b> the targeted ability.
+		<i-auto>(1 - Triggered <kw-a><nospellcheck><key>Flash</key></nospellcheck></kw-a> Hard)</i-auto> You can <b>Reveal</b> 1 <i-auto>“Shaddoll”</i-auto> card from Hand and <b>Target</b> 1 ability; <b>Discard</b> the revealed card and <b>Counter</b> the targeted ability.
 		<i-auto>(2 - Triggered)</i-auto> <b>Shaddoll Recovery</b>
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 6
+	power: 6
+	toughness: 7
 	card_code_text: 007/025 C
 	card_code_text_2: 007/025 C
 	card_code_text_3: 007/025 C

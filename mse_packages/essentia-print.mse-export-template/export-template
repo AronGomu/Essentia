@@ -1,0 +1,17 @@
+mse version: 2.0.0
+short name: Essentia Print
+full name: Essentia Print Master
+position hint: 999
+version: 2026-08-06
+
+depends on:
+	package: magic.mse-game
+	version: 2009-07-23
+
+game: magic
+create directory: true
+file type: *.txt|*.txt
+
+script:
+	for each card in cards do write_image_file(card, file: "{card.name}.png", width: 1500, height: 2092)
+	"ok"

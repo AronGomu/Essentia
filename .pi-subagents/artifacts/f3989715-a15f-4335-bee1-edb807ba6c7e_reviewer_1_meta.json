@@ -1,0 +1,142 @@
+{
+  "runId": "f3989715-a15f-4335-bee1-edb807ba6c7e",
+  "agent": "reviewer",
+  "task": "[Read from: /home/aron/projects/YGO-x-MTG/plan.md, /home/aron/projects/YGO-x-MTG/progress.md]\n\nReview website branding UI delta only for rendered output, SEO/accessibility, test coverage, malformed markup, stale user-visible brand. Contract: header/sidebar brand shows only `Essentia`; page titles/RSS use short name; legal/product first mention may use full `YGO × MTG: Essentia`. Inspect website current diff/files directly. Existing unrelated changes exist; do not review or modify them. Return evidence-backed findings only with severity + file:line. Do not edit files.\n\n## Acceptance Contract\nAcceptance level: attested\nCompletion is not accepted from prose alone. End with a structured acceptance report.\n\nCriteria:\n- criterion-1: Return concrete findings with file paths and severity when applicable\n\nRequired evidence: review-findings, residual-risks\n\nFinish with a fenced JSON block tagged `acceptance-report` in this shape:\nUse empty arrays when no items apply; array fields contain strings unless object entries are shown.\n`criteriaSatisfied[].status` must be exactly one of: satisfied, not-satisfied, not-applicable.\n`commandsRun[].result` must be exactly one of: passed, failed, not-run.\n`manualNotes` and `notes` are optional strings; an empty string means no note and does not satisfy `manual-notes` evidence.\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"specific proof\"\n    }\n  ],\n  \"changedFiles\": [\n    \"src/file.ts\"\n  ],\n  \"testsAddedOrUpdated\": [\n    \"test/file.test.ts\"\n  ],\n  \"commandsRun\": [\n    {\n      \"command\": \"command\",\n      \"result\": \"passed\",\n      \"summary\": \"short result\"\n    }\n  ],\n  \"validationOutput\": [\n    \"validation output or concise summary\"\n  ],\n  \"residualRisks\": [\n    \"none\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"short description of the diff\",\n  \"reviewFindings\": [\n    \"blocker: file.ts:12 - issue found, or no blockers\"\n  ],\n  \"manualNotes\": \"anything else the parent should know\"\n}\n```",
+  "exitCode": 0,
+  "model": "openai-codex/gpt-5.6-sol:high",
+  "attemptedModels": [
+    "openai-codex/gpt-5.6-sol:high"
+  ],
+  "modelAttempts": [
+    {
+      "model": "openai-codex/gpt-5.6-sol:high",
+      "success": true,
+      "exitCode": 0,
+      "usage": {
+        "input": 94965,
+        "output": 5918,
+        "cacheRead": 465408,
+        "cacheWrite": 0,
+        "cost": 0.885069,
+        "turns": 10
+      }
+    }
+  ],
+  "acceptance": {
+    "status": "attested",
+    "evidenceStatus": "attested",
+    "explicit": false,
+    "effectiveAcceptance": {
+      "level": "attested",
+      "explicit": false,
+      "inferredReason": [
+        "read-only/reviewer-style agent"
+      ],
+      "criteria": [
+        {
+          "id": "criterion-1",
+          "must": "Return concrete findings with file paths and severity when applicable",
+          "evidence": [
+            "review-findings",
+            "residual-risks"
+          ],
+          "severity": "required"
+        }
+      ],
+      "evidence": [
+        "review-findings",
+        "residual-risks"
+      ],
+      "verify": [],
+      "stopRules": []
+    },
+    "inferredReason": [
+      "read-only/reviewer-style agent"
+    ],
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "must": "Return concrete findings with file paths and severity when applicable",
+        "evidence": [
+          "review-findings",
+          "residual-risks"
+        ],
+        "severity": "required"
+      }
+    ],
+    "runtimeChecks": [],
+    "verifyRuns": [],
+    "childReport": {
+      "criteriaSatisfied": [
+        {
+          "id": "criterion-1",
+          "status": "satisfied",
+          "evidence": "Low-severity coverage finding at website/tests/e2e/showcase.spec.ts:7-9; verified branding evidence cited across components, SEO, RSS, legal page."
+        }
+      ],
+      "changedFiles": [
+        "website/DESIGN.md",
+        "website/PRODUCT.md",
+        "website/README.md",
+        "website/src/components/Navigation.svelte",
+        "website/src/components/Seo.astro",
+        "website/src/layouts/BaseLayout.astro",
+        "website/src/pages/404.astro",
+        "website/src/pages/archetypes/[slug].astro",
+        "website/src/pages/cards/[id].astro",
+        "website/src/pages/feed.xml.ts",
+        "website/src/pages/index.astro",
+        "website/src/pages/legal/index.astro",
+        "website/src/pages/philosophy/index.astro",
+        "website/src/pages/releases/[stage]/[package].astro",
+        "website/src/pages/rules/index.astro",
+        "website/src/pages/sections/non-archetype/[slug].astro",
+        "website/src/pages/updates/index.astro",
+        "website/src/styles/global.css",
+        "website/tests/e2e/showcase.spec.ts"
+      ],
+      "testsAddedOrUpdated": [
+        "website/tests/e2e/showcase.spec.ts"
+      ],
+      "commandsRun": [
+        {
+          "command": "cd website && git diff --check -- . && npm run test && npm run check && npm run build",
+          "result": "passed",
+          "summary": "24 unit tests passed; Astro check had 0 errors; build/dist scan passed."
+        },
+        {
+          "command": "cd website && npm run test:e2e",
+          "result": "failed",
+          "summary": "18 browser launches failed from missing host shared libs; no app assertion ran."
+        },
+        {
+          "command": "Python HTML/XML rendered-brand audit",
+          "result": "passed",
+          "summary": "Parsed 6 HTML files plus feed.xml; titles, brand links, legal full-name placement matched contract."
+        }
+      ],
+      "validationOutput": [
+        "Built page titles: Not found — Essentia; Essentia — The Blackfoil Archive; Attribution & provenance — Essentia; Cube philosophy — Essentia; Cube rules — Essentia; Card updates — Essentia.",
+        "Each built HTML page exposed two brand links, both exact text Essentia.",
+        "Full YGO × MTG: Essentia name appeared only on rendered legal page.",
+        "RSS channel title: Essentia card updates.",
+        "Astro dist scan: clean."
+      ],
+      "residualRisks": [
+        "Brand regression coverage checks only home title substring; header/sidebar/RSS exclusivity untested.",
+        "Browser visual plus axe validation not completed because Playwright browser deps are unavailable.",
+        "Dynamic card/archetype/release templates were source-inspected but not rendered because catalog is empty.",
+        "plan.md plus progress.md were absent at requested paths."
+      ],
+      "noStagedFiles": false,
+      "diffSummary": "Website brand UI, page metadata, RSS, legal first mention switched to Essentia contract. Existing unrelated staged files remain.",
+      "reviewFindings": [
+        "low: website/tests/e2e/showcase.spec.ts:7-9 - regex checks Essentia presence only; stale full brand plus untested header/sidebar/RSS could pass."
+      ],
+      "manualNotes": "Review-only: no files modified. Repo had 16 unrelated staged rename entries."
+    }
+  },
+  "transcriptPath": "/home/aron/projects/YGO-x-MTG/.pi-subagents/artifacts/f3989715-a15f-4335-bee1-edb807ba6c7e_reviewer_1_transcript.jsonl",
+  "skills": [],
+  "timestamp": 1785579096897
+}

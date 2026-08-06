@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compact duration quantity zone rule proposals</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .why p { margin:0 0 8px; }
+    .why p:last-child { margin-bottom:0; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    code,pre { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    code { font-size:.9em; }
+    pre { margin:8px 0 0; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#100d08; color:var(--text); white-space:pre-wrap; overflow:auto; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · UR-2026-08-02-Compact-Duration-Quantity-Zone</span>
+    <h1>Compact duration quantity zone rule proposals</h1>
+    <p class="lede">Choose exactly one option per item. Use Precision for notes, or for exact final wording when choosing REVISE / leaving no selection. Then click <b>Copy answer summary</b> and paste it into this session. Already settled (no vote): unqualified personal zones omit <code>your</code> — <code>docs/rules/ZONES.md</code> + ADR 0004. Soft note only: commas stay when they clarify order/dependency; bare serial actions may drop useless commas. <code>normalize=false</code>.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress"><span class="node">Evidence</span><span class="arrow">→</span><span class="node active"><b>3 decisions</b></span><span class="arrow">→</span><span class="node">Apply rules</span><span class="arrow">→</span><span class="node">ADR + verify</span></nav>
+
+  <section class="visuals" aria-label="Technical context">
+    <figure>
+      <figcaption><b>Current → proposed compact forms</b>Four cards expose three reusable wording compressions.</figcaption>
+      <svg viewBox="0 0 420 230" role="img" aria-labelledby="cmp-title cmp-desc">
+        <title id="cmp-title">Compact wording changes</title>
+        <desc id="cmp-desc">until the end of the turn becomes to end turn. Draw 1 card becomes Draw 1. on the Stack becomes on Stack.</desc>
+        <path class="svg-line" d="M188 42 H248 M188 112 H248 M188 182 H248"/>
+        <polygon class="svg-arrow" points="248,42 238,36 238,48"/>
+        <polygon class="svg-arrow" points="248,112 238,106 238,118"/>
+        <polygon class="svg-arrow" points="248,182 238,176 238,188"/>
+        <rect class="svg-node" x="8" y="18" width="180" height="48" rx="8"/>
+        <text class="svg-label" x="18" y="38">until the end of the turn</text>
+        <text class="svg-note" x="18" y="54">Alich · Veiler · TEMPLATING</text>
+        <rect class="svg-node active" x="248" y="18" width="164" height="48" rx="8"/>
+        <text class="svg-label svg-accent" x="262" y="47">to end turn</text>
+        <rect class="svg-node" x="8" y="88" width="180" height="48" rx="8"/>
+        <text class="svg-label" x="18" y="108">Draw 1 card / for each card</text>
+        <text class="svg-note" x="18" y="124">Draghig · Barbar · EVENTS</text>
+        <rect class="svg-node active" x="248" y="88" width="164" height="48" rx="8"/>
+        <text class="svg-label svg-accent" x="262" y="108">Draw 1</text>
+        <text class="svg-note" x="262" y="124">for each exiled</text>
+        <rect class="svg-node" x="8" y="158" width="180" height="48" rx="8"/>
+        <text class="svg-label" x="18" y="178">on the Stack / on the Field</text>
+        <text class="svg-note" x="18" y="194">Veiler · TEMPLATING:85</text>
+        <rect class="svg-node active" x="248" y="158" width="164" height="48" rx="8"/>
+        <text class="svg-label svg-accent" x="262" y="187">on Stack / on Field</text>
+      </svg>
+    </figure>
+    <figure>
+      <figcaption><b>Ownership + apply path</b>Rules land in TEMPLATING / ZONES / ACTIONS / EVENTS. MSE deferred.</figcaption>
+      <svg viewBox="0 0 420 230" role="img" aria-labelledby="own-title own-desc">
+        <title id="own-title">Decision ownership flow</title>
+        <desc id="own-desc">D1 duration R1 quantity D2 zone article update docs. MSE cards stay deferred under normalize false.</desc>
+        <rect class="svg-node active" x="16" y="18" width="388" height="42" rx="8"/>
+        <text class="svg-label svg-accent" x="34" y="44">D1 duration · R1 quantity card · D2 zone article</text>
+        <path class="svg-line" d="M210 60 V90 M90 90 V120 M210 90 V120 M330 90 V120"/>
+        <polygon class="svg-arrow" points="90,120 84,110 96,110"/>
+        <polygon class="svg-arrow" points="210,120 204,110 216,110"/>
+        <polygon class="svg-arrow" points="330,120 324,110 336,110"/>
+        <rect class="svg-node" x="16" y="120" width="148" height="48" rx="8"/>
+        <text class="svg-label" x="28" y="141">TEMPLATING.md</text>
+        <text class="svg-note" x="28" y="157">D1 R1 D2</text>
+        <rect class="svg-node" x="176" y="120" width="148" height="48" rx="8"/>
+        <text class="svg-label" x="188" y="141">ZONES ACTIONS</text>
+        <text class="svg-note" x="188" y="157">EVENTS</text>
+        <rect class="svg-node" x="336" y="120" width="68" height="48" rx="8"/>
+        <text class="svg-label" x="348" y="141">MSE</text>
+        <text class="svg-note" x="348" y="157">defer</text>
+        <text class="svg-note" x="70" y="198">Already settled: omit your on unqualified personal zones</text>
+      </svg>
+    </figure>
+  </section>
+
+  <form id="questions">
+    <fieldset data-question="D1 | Should same-turn duration use to end turn instead of until the end of the turn?">
+      <legend>D1 · Same-turn duration shorthand</legend>
+      <div class="why">
+        <p><b>Scope:</b> global temporary-duration syntax for effects that last until the current turn ends.</p>
+        <p><b>Existing rule/evidence:</b> <code>docs/rules/TEMPLATING.md:83</code> canonical form uses <code>until the end of the turn</code>. ADR 0007 locked ability-loss + P/T with that phrase. Corpus also mixes MTG-like <code>until end of turn</code> (Spellbook Power/Wisdom tests and MSE).</p>
+        <p><b>Conflict:</b> Alich proposes <code>... becomes 0/1 to end turn</code>; Effect Veiler proposes ability loss <code>to end turn</code>. Current MSE still prints long form:</p>
+        <pre>card burning abyss - alich:21
+… becomes 0/1 until the end of the turn.
+
+card effect veiler:18
+… until the end of the turn, it loses all abilities…</pre>
+        <p><b>Reason:</b> established long form contradicts requested compact duration token used on multiple cards.</p>
+        <p><b>Proposal:</b> Write same-turn end duration as <code>to end turn</code>. Replace <code>until the end of the turn</code> and bare <code>until end of turn</code> in card text and templates. Keep longer phrases only when duration is not the current turn (example: <code>until the end of the opponent’s next turn</code>).</p>
+        <p><b>Impact:</b> <code>docs/rules/TEMPLATING.md</code>; Alich, Effect Veiler, Clausolas, Dante, Maxx C, many +P/+T effects; related tests. Side effect: denser, less MTG-native prose; multi-turn durations stay explicit.</p>
+      </div>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="D1 | ACCEPT | Write same-turn end duration as to end turn. Replace until the end of the turn and until end of turn. Keep longer phrases only for non-current-turn durations."><span><b>Accept <code>to end turn</code></b><span class="rank">Recommended</span><span class="detail">Matches Alich/Veiler request. Multi-turn durations stay long-form.</span></span></label>
+        <label class="choice"><input type="checkbox" value="D1 | REJECT | Keep until the end of the turn as the canonical same-turn duration."><span><b>Keep long form</b><span class="rank">Alternative</span><span class="detail">TEMPLATING + ADR 0007 wording unchanged. Cards keep <code>until the end of the turn</code>.</span></span></label>
+        <label class="choice"><input type="checkbox" value="D1 | REVISE | Use precision text as final wording."><span><b>Revise rule</b><span class="rank">Custom</span><span class="detail">Example alternate: MTG-like <code>until end of turn</code>. Put exact final wording in Precision.</span></span></label>
+      </div>
+      <label class="precision">Precision / final wording<textarea name="precision-d1" placeholder="Notes, or exact final wording for REVISE / custom answer"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="R1 | Should quantity actions and counting anaphors omit default card?">
+      <legend>R1 · Default object is card — omit bare card</legend>
+      <div class="why">
+        <p><b>Scope:</b> compact action quantities and post-selection counting phrases.</p>
+        <p><b>Evidence:</b> Draghig shortens <code>Discard 1 card, then Draw 1 card</code> → <code>Discard 1 then Draw 1</code>. Barbar shortens <code>for each card exiled</code> → <code>for each exiled</code>. Spellbook Knowledge already uses <code>Draw 2</code> without <code>card</code> (ADR 0004). Phoenix Wing / Karma Cut tests already expect <code>Discard 1</code>.</p>
+        <pre>card burning abyss - draghig:21
+… Discard 1 card, then Draw 1 card.
+
+card burning abyss - barbar:21
+… for each card exiled.</pre>
+        <p><b>Current rule:</b> Named/archetype selectors omit generic <code>card(s)</code> (<code>TEMPLATING.md</code> Selectors). No rule covers bare <code>Draw N</code>/<code>Discard N</code> or counting anaphors. <code>EVENTS.md:22</code> still shows <code>**Draw** 1 card **On Opponent Creature Enter**</code>.</p>
+        <p><b>Proposal:</b> Default object of a quantity action or counting anaphor is a card. Omit bare <code>card</code>/<code>cards</code> after governing quantities and after a prior card selection already in scope. Canonical forms: <code>**Draw** 1</code>, <code>**Discard** 1</code>, <code>for each exiled</code>, <code>for each milled</code>. Keep an explicit noun when it restricts or disambiguates: type/qualifier (<code>Creature</code>, <code>nonland permanent</code>), named/archetype selector, structural noun (<code>top card of Deck</code>), or game term where <code>card</code> is not the default object (<code>card type</code>).</p>
+        <p><b>Boundaries:</b> Does not erase type words. Does not force dropping commas that mark ordered/dependent steps (<code>then</code>/<code>if you do</code> still govern order). Soft style only: drop commas that add no order/dependency signal.</p>
+        <p><b>Impact:</b> <code>docs/rules/TEMPLATING.md</code>, <code>docs/keywords/EVENTS.md</code>, action examples; Draghig, Barbar, Maxx C, Mathematician, Dante Pilgrim, Allure, Upstart, Twin Twisters, tests. Side effect: <code>for each exiled</code> is denser English; future normalization must keep restrictive nouns.</p>
+        <p><b>Already settled nearby:</b> unqualified <code>from Grave</code> (no <code>your</code>) remains owned by <code>ZONES.md</code> / ADR 0004 — not reopened here. Barbar’s <code>from your Grave</code> is normalization debt under that existing rule.</p>
+      </div>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="R1 | ACCEPT | Default object of quantity actions and counting anaphors is a card. Omit bare card/cards: Draw 1, Discard 1, for each exiled, for each milled. Keep explicit nouns for type, qualifier, named selector, structural top card, or non-default object terms."><span><b>Accept omit bare <code>card</code></b><span class="rank">Recommended</span><span class="detail">Covers Draw/Discard quantities and counting anaphors. Restrictive nouns stay.</span></span></label>
+        <label class="choice"><input type="checkbox" value="R1 | REJECT | Keep requiring card after bare quantities and counting phrases unless a named/archetype selector already omits it."><span><b>Keep current split</b><span class="rank">Alternative</span><span class="detail">Named selectors still omit <code>card(s)</code>; <code>Draw 1 card</code> stays valid default.</span></span></label>
+        <label class="choice"><input type="checkbox" value="R1 | REVISE | Use precision text as final wording."><span><b>Revise rule</b><span class="rank">Custom</span><span class="detail">Example: allow <code>Draw 1</code>/<code>Discard 1</code> but keep <code>for each card exiled</code>. Put exact final wording in Precision.</span></span></label>
+      </div>
+      <label class="precision">Precision / final wording<textarea name="precision-r1" placeholder="Notes, or exact final wording for REVISE / custom answer"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="D2 | Should zone prepositions drop the before bare zone names?">
+      <legend>D2 · No article before bare zone names</legend>
+      <div class="why">
+        <p><b>Scope:</b> prepositional zone references in card text and rule templates.</p>
+        <p><b>Existing rule/evidence:</b> Canonical zone names are bare initials-uppercase terms (<code>ZONES.md</code>). Newer prose already prefers article-free forms: <code>on Stack</code>, <code>on Field</code>, <code>from Grave</code> (<code>ACTIONS.md</code>, <code>CARD_TYPES.md</code>, <code>ZONES.md:20</code>). Conflict remains in <code>TEMPLATING.md:85</code> (<code>on the Field</code>) and many MSE lines.</p>
+        <p><b>Conflict:</b> Effect Veiler shortens <code>on the Stack</code> → <code>on Stack</code>, and generalizes to all zones.</p>
+        <pre>card effect veiler:18
+… Counter all its abilities on the Stack.
+
+TEMPLATING.md:85
+Ability loss on the Field ends when card leaves Field.</pre>
+        <p><b>Reason:</b> established template article contradicts compact zone style already half-adopted in keyword docs.</p>
+        <p><b>Proposal:</b> In card text and reusable templates, do not put <code>the</code> before a bare canonical zone name. Write <code>on Stack</code>, <code>on Field</code>, <code>from Grave</code>, <code>into Hand</code>, <code>from Deck</code>. Keep <code>the</code> only inside larger ordinary noun phrases that are not bare zone labels (example: <code>the top card of Deck</code> keeps <code>the top card</code>; zone stays bare).</p>
+        <p><b>Impact:</b> <code>docs/rules/TEMPLATING.md</code>, zone examples in <code>ACTIONS.md</code>/<code>EVENTS.md</code>/<code>CARD_TYPES.md</code>; Effect Veiler, Bagooska, Back Jack, Super Polymerization, Crane Crane, Tour Guide, many Field/Stack lines; tests. Side effect: broad future normalization across zone prepositions.</p>
+      </div>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="D2 | ACCEPT | Do not put the before a bare canonical zone name. Write on Stack, on Field, from Grave, into Hand, from Deck. Keep the only inside larger ordinary noun phrases that are not bare zone labels."><span><b>Accept article-free zones</b><span class="rank">Recommended</span><span class="detail">Aligns TEMPLATING with ZONES/ACTIONS compact style and Veiler request.</span></span></label>
+        <label class="choice"><input type="checkbox" value="D2 | REJECT | Allow the before zone names; keep on the Stack / on the Field as valid."><span><b>Keep optional article</b><span class="rank">Alternative</span><span class="detail">No global strip of <code>the</code> before zones. Veiler may keep <code>on the Stack</code>.</span></span></label>
+        <label class="choice"><input type="checkbox" value="D2 | REVISE | Use precision text as final wording."><span><b>Revise rule</b><span class="rank">Custom</span><span class="detail">Example: article-free only for Stack/Field, keep <code>the</code> elsewhere. Put exact final wording in Precision.</span></span></label>
+      </div>
+      <label class="precision">Precision / final wording<textarea name="precision-d2" placeholder="Notes, or exact final wording for REVISE / custom answer"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `UR-2026-08-02-Compact-Duration-Quantity-Zone — Compact duration quantity zone rule proposals\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

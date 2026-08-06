@@ -32,11 +32,11 @@ class TrapSupertypeTests(unittest.TestCase):
     def test_trap_references_use_current_english_vocabulary(self) -> None:
         rafflesia = (ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card traptrix rafflesia").read_text(encoding="utf-8-sig")
         self.assertIn("<i>2 Creatures MV 1</i>", rafflesia)
-        self.assertIn("<b>Send</b> 1 Trap from your Deck to Grave", rafflesia)
+        self.assertIn("<b>Send</b> 1 Trap from Deck to Grave", rafflesia)
         self.assertNotIn("error-spelling", rafflesia)
 
         back_jack = (ROOT / "cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set/card absolute king back jack").read_text(encoding="utf-8-sig")
-        self.assertIn("If it is a Trap, <b>Set</b> the card face down on the Field", back_jack)
+        self.assertIn("If it is a Trap, <b>Set</b> the card face down on Field", back_jack)
         self.assertIn("you may <b>Cast</b> it this turn", back_jack)
 
     def test_rules_preserve_trap_contract(self) -> None:

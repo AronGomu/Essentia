@@ -58,7 +58,23 @@ python .script/lint_mse_card_style.py
 python .script/release_package.py validate
 ```
 
-A package build exports aggregate renders, records provenance, creates one direct PDF, writes print manifest, then hashes package files.
+A package build exports aggregate renders, records provenance, then hashes package files. Printing is not part of the build; see [Printing](#printing).
+
+### Print masters
+
+Print masters are exported through `mse_packages/essentia-print.mse-export-template`, whose script calls `write_image_file(card, file:, width:, height:)` so MSE re-renders each card at 1500 × 2092 instead of upscaling the 1× bitmap. That is 600 DPI at 63.5 × 88.9 mm, exactly 4× the stylesheet's native 375 × 523 declared by `magic-sevenhalf.mse-style`.
+
+**Masters come from the export template, never from Preferences → Export scale.** Export scale is a per-machine UI preference; using it would make output depend on who ran the export. The template pins the size in tracked source, so every machine produces identical masters.
+
+MSE only loads packages from its own data directories, so `launcher/setup_mse.py` copies the template into `MSE_DATA_DIR` and fails setup when the installed copy is missing or stale. `--print-masters` verifies every exported PNG is exactly 1500 × 2092 and fails loudly if it is not — a wrong size means the installed template is stale or MSE ignored the size request.
+
+Requires an MSE build whose `write_image_file` accepts `width:`/`height:`. Provenance records the exporting MSE version; verify against it before trusting masters.
+
+```bash
+python .script/export_mse_renders.py <project> --output <dir> --print-masters
+```
+
+Masters land in `renders_print/` beside `renders/` and their hashes are recorded in the provenance `print` block (schema 3). Masters are optional: until a package has `renders_print/`, the website upscales the 1× render and marks it draft resolution.
 
 MSE export must be followed by real Save/Save As verification when source structure changes. If save fails, check missing includes, unresolved images/symbols, stale backup files, nested `.mse-set` projects, and generated files inside active projects.
 
@@ -70,9 +86,25 @@ Do not infer corruption from `3221225477` / `0xC0000005` alone. Build a sibling 
 
 - Aggregate: `{set}_{version}_all_cards.mse-set/`
 - Renders: `{set_dir}/renders/`
-- PDF: `{set_dir}/{set}_{version}_print.pdf`
-- Print audit: `{set_dir}/print-manifest.json`
+- Print masters (optional): `{set_dir}/renders_print/`
 - Render audit: `{set_dir}/render-provenance.json`
 - Package integrity: `{set_dir}/package-sha256.json`
 
-No root `print/` directory exists. Renders, PDF, provenance, aggregate, metadata, and component source belong to package status guard (`locked` = immutable).
+Packages never store PDFs. Renders, provenance, aggregate, metadata, and component source belong to package status guard (`locked` = immutable).
+
+## Printing
+
+Prints are one-off and disposable, so they are generated on demand from renders and never tracked. Print every public-stage package, two copies per card:
+
+```bash
+python .script/generate_print_pdfs.py
+```
+
+Output lands in ignored root `print/` as `{setId}-{version}_print.pdf` plus a sibling manifest. Useful flags:
+
+- `--copies N` — change the uniform copy count (default 2).
+- `--copies-for "Card Name=N"` — per-card exception; repeatable; `N` of 0 omits the card. Unknown names fail the run.
+- `--input PATH` — restrict to one `renders/` folder; repeatable.
+- `--output-dir`, `--dpi`, `--page-size`, `--card-width`, `--card-height`, `--separator-px`.
+
+A4 at 300 dpi with 2.5×3.5 in cards yields 9 cards per page. Reprint only when a card gets a new version; already-printed cards need no reprint.

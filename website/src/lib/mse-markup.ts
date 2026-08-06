@@ -1,26 +1,13 @@
+import { ALLOWED_MSE_TAGS, STRIPPED_MSE_TAGS } from '../../shared/mse-tags.mjs';
+
 const tagPattern = /<(\/)?([a-z][a-z0-9-]*)(?::[^>]*)?>/gi;
-const allowed = new Set([
-  'atom-sep',
-  'b',
-  'bullet',
-  'i',
-  'i-auto',
-  'i-flavor',
-  'key',
-  'kw-a',
-  'li',
-  'margin',
-  'nospellcheck',
-  'param-cost',
-  'param-number',
-  'soft',
-  'sym-auto',
-  'word-list-class-en',
-  'word-list-enchantment',
-  'word-list-race-en',
-  'word-list-spell',
-  'word-list-type-en',
-]);
+const allowed = new Set<string>(ALLOWED_MSE_TAGS);
+// Built from the shared list so a new presentational tag cannot be validated
+// but left un-stripped, which would leak escaped markup into the page.
+const strippedPattern = new RegExp(
+  `&lt;\\/?(?:${STRIPPED_MSE_TAGS.join('|')})(?::[^&]*)?&gt;`,
+  'gi',
+);
 
 function escapeHtml(value: string): string {
   return value
@@ -52,9 +39,6 @@ export function renderMseMarkup(value: string): string {
       /&lt;sym-auto&gt;([^<]*)&lt;\/sym-auto&gt;/gi,
       '<span class="mana-symbol" aria-label="$1">$1</span>',
     )
-    .replace(
-      /&lt;\/?(?:atom-sep|bullet|key|kw-a|li|margin|nospellcheck|param-cost|param-number|soft|word-list-class-en|word-list-enchantment|word-list-race-en|word-list-spell|word-list-type-en)(?::[^&]*)?&gt;/gi,
-      '',
-    );
+    .replace(strippedPattern, '');
   return html;
 }

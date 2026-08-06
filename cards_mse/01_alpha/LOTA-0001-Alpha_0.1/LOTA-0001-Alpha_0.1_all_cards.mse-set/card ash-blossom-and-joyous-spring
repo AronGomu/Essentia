@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card ash blossom  joyous spring
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-28 18:22:15
+	time_modified: 2026-08-05 10:26:38
 	name: Ash Blossom & Joyous Spring
 	casting_cost: R
 	image: images/ash-blossom-and-joyous-spring-image.png
@@ -15,10 +15,10 @@ card:
 	super_type: <word-list-type-en>Tuner Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Zombie</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> “Ash Blossom” and <b>Target</b> 1 Spell or ability whose effect interacts with the Deck <i-auto>(draw, <b>Mill X</b>, search, etc.)</i-auto>; <b>Counter</b> the target.
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> Ash Blossom and <b>Target</b> 1 Spell or ability whose effect interacts with Deck <i-auto>(draw, <b>Mill X</b>, search, etc.)</i-auto>; <b>Counter</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
-	toughness: 1
+	toughness: 4
 	card_code_text: 001/050 C
 	card_code_text_2: 001/050 C
 	card_code_text_3: 001/050 C

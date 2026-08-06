@@ -37,6 +37,7 @@ CONJUGATED_ACTION_FORMS = {
     "Returned": "returned",
     "Destroyed": "destroyed",
     "Sent": "sent",
+    "Shuffled": "shuffled",
     "Sacrificed": "sacrificed",
     "Revealed": "revealed",
 }
@@ -58,9 +59,10 @@ ACTION_ARGUMENT_RE = {
     "Target": re.compile(r"\s+(?:\d+|X\b|up to\b|\d+[–-]\d+)", re.I),
     "Counter": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|all\b|any\b|one\b|up to\b|\d+|X\b|target\b|targeted\b)", re.I),
     "Return": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|any\b|\d+|X\b)", re.I),
-    "Destroy": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|all\b|any\b|\d+|X\b)", re.I),
+    "Destroy": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|all\b|any\b|\d+|X\b|(?-i:[A-Z][A-Za-z0-9.'’_-]+))", re.I),
     "Send": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|all\b|any\b|\d+|X\b|top\b)", re.I),
-    "Cast": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|a\b|an\b|any\b|\d+|X\b)", re.I),
+    "Shuffle": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|all\b|any\b|one\b|up to\b|\d+|X\b|chosen\b|others\b|“[^”]+”|[A-Z][A-Za-z0-9.'’_-]+)"),
+    "Cast": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|a\b|an\b|any\b|\d+|X\b|(?-i:[A-Z][A-Za-z0-9.'’_-]+))", re.I),
     "Sacrifice": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|all\b|any\b|up to\b|\d+|X\b|“[^”]+”|[A-Z][A-Za-z0-9.'’_-]+)"),
     "Reveal": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|top\b|a\b|an\b|any\b|\d+|X\b)", re.I),
 }
@@ -84,6 +86,7 @@ ACTION_WORDS = (
     "Return",
     "Destroy",
     "Send",
+    "Shuffle",
     "Cast",
     "Sacrifice",
     "Reveal",

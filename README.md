@@ -38,6 +38,16 @@ python .script/release_package.py advance cards_mse/01_alpha/<setId-version> --t
 python .script/check_immutable_stages.py --base <merge-base>
 ```
 
+## Printing
+
+Prints are one-off and never tracked. Generate PDFs for every public-stage package from its renders, two copies per card:
+
+```bash
+python .script/generate_print_pdfs.py
+```
+
+PDFs and manifests land in ignored root `print/`. Use `--copies-for "Card Name=N"` for per-card exceptions and `--copies N` to change the uniform count. Details in [`docs/MSE.md`](docs/MSE.md#printing).
+
 See [`docs/RELEASES.md`](docs/RELEASES.md) and [`docs/MSE.md`](docs/MSE.md). Legend of the Alpha (`LOTA-0001`) Alpha_0.1 decklists are defined in [`docs/rules/DECKLISTS_ALPHA_0.1.md`](docs/rules/DECKLISTS_ALPHA_0.1.md); package lives at `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/` with status `open`.
 
 ## Showcase website

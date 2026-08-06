@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card d.d. crow
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-01 01:20:50
+	time_modified: 2026-08-02 23:52:17
 	name: D.D. Crow
 	casting_cost: B
 	image: mse_images/d-d-crow-image.png
@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Bird</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> D.D. Crow and <b>Target</b> 1 card in a Grave; <b>Exile</b> the target.
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> D.D. Crow and <b>Target</b> 1 card in Grave; <b>Exile</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 1

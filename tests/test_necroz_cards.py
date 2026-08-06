@@ -54,7 +54,10 @@ class NecrozCardTests(unittest.TestCase):
         for filename in INCLUDED:
             with self.subTest(filename=filename):
                 text = (PROJECT / filename).read_text(encoding="utf-8-sig")
-                rule = text.split("\trule_text:\n", 1)[1].split("\tflavor_text:", 1)[0]
+                if "\trule_text:\n" in text:
+                    rule = text.split("\trule_text:\n", 1)[1].split("\tflavor_text:", 1)[0]
+                else:
+                    rule = text.split("\trule_text:", 1)[1].split("\tflavor_text:", 1)[0]
                 for term in stale:
                     self.assertNotIn(term, rule)
                 self.assertNotIn("\tGY", rule)
@@ -67,15 +70,15 @@ class NecrozCardTests(unittest.TestCase):
 
     def test_key_mechanics_present(self) -> None:
         brionac = (PROJECT / "card nekroz - brionac").read_text(encoding="utf-8-sig")
-        self.assertIn("shuffle the target into its owner’s Deck", brionac)
-        self.assertIn("<b>Discard</b> <i-auto>“Brionac”</i-auto>", brionac)
+        self.assertIn("<b>Shuffle</b> it", brionac)
+        self.assertIn("<b>Discard</b> Brionac", brionac)
 
         catastor = (PROJECT / "card nekroz - catastor").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Reanimate</b>", catastor)
 
         exa = (PROJECT / "card nekroz - exa").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Release</b>", exa)
-        self.assertIn("ignoring the restrictions of Summon", exa)
+        self.assertIn("ignoring summoning restrictions", exa)
 
         unicore = (PROJECT / "card nekroz - unicore").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Salvage</b>", unicore)

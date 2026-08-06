@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/10_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 16:40:30
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Mathematician
 	casting_cost: U
 	image: mse_images/mathematician.jpg
@@ -16,11 +16,11 @@ card:
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Send</b> 1 MV 1 Creature from your Deck to Grave.
-		<i-auto>(2 - Triggered)</i-auto> <b>On Destroy</b> — <b>Draw</b> 1 card.
+		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Send</b> 1 MV 1 Creature from Deck to Grave.
+		<i-auto>(2 - Triggered)</i-auto> <b>On Destroy</b> — <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
 	power: 3
-	toughness: 2
+	toughness: 1
 	card_code_text: 013/013 C
 	card_code_text_2: 013/013 C
 	card_code_text_3: 013/013 C

@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/07_xyz.md
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Lyrilusc - Assembled Nightingale
 	casting_cost: 0
 	image: mse_images/xyz/embedded/image8.png
@@ -16,12 +16,12 @@ card:
 	sub_type: <word-list-race-en>Winged</word-list-race-en><atom-sep> </atom-sep><word-list-class-en>Beast</word-list-class-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 0</i>
-		<i-auto>(1 - Static)</i-auto> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Lyrilusc</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” can attack 1 additional time each combat for each material attached to it.
-		<i-auto>(2 - Static)</i-auto> “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Lyrilusc</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” gets +1/+1 for each material attached to it.
-		<i-auto>(3 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Detach 1</b>; “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Lyrilusc</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creatures you control gain <b><kw-a>Indestructible</kw-a></b> until the end of the turn.
+		<i>2 Creatures MV 0</i>
+		<i-auto>(1 - Static)</i-auto> “Lyrilusc” can attack 1 additional time each combat for each material attached to it.
+		<i-auto>(2 - Static)</i-auto> “Lyrilusc” gets +1/+1 for each material attached to it.
+		<i-auto>(3 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Detach 1</b>; “Lyrilusc” Creatures you control gain <b><kw-a>Indestructible</kw-a></b> to end turn.
 	flavor_text: <i-flavor></i-flavor>
-	power: 1
+	power: 0
 	toughness: 1
 	card_code_text: 040/077 R
 	card_code_text_2: 040/077 R

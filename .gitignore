@@ -18,5 +18,8 @@ website/playwright-report/
 website/test-results/
 website/coverage/
 
+# One-off print output
+/print/
+
 # Agent run-state scratch
 .agentsystem/

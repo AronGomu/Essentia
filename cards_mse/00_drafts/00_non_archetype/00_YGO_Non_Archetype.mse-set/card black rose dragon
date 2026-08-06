@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 06_synchro.md
 	time_created: 2026-07-11 12:11:45
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 18:39:22
 	name: Black Rose Dragon
 	casting_cost: 1RG
 	image: mse_images/synchro/embedded/image4.png
@@ -24,8 +24,8 @@ card:
 		<i-auto>(1 - Triggered)</i-auto> <b>On Enter</b> — You may <b>Destroy</b> all nonland permanents.
 		<i-auto>(2 - Activated Sorcery Soft)</i-auto> <b>Exile 1 Plant from Grave</b>; <b>Target</b> 1 Creature. It cannot block this turn.
 	flavor_text: <i-flavor></i-flavor>
-	power: 4
-	toughness: 3
+	power: 6
+	toughness: 4
 	card_code_text: 008/077 R
 	card_code_text_2: 008/077 R
 	card_code_text_3: 008/077 R

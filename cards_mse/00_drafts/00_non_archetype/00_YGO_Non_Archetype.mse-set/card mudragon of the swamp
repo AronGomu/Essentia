@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 05_fusion.md
 	time_created: 2026-07-11 12:11:29
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Mudragon of the Swamp
 	casting_cost: U
 	image: mse_images/fusion/embedded/image6.png
@@ -21,10 +21,10 @@ card:
 	rule_text:
 		<i>2 Creatures with the same color but different types</i>
 		<i-auto>(1 - Static)</i-auto> Choose 1 color. Creatures you control of the chosen color have <b><kw-a>Ward 3</kw-a></b>.
-		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> Choose a color; “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Mudragon</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” becomes that color until the end of the turn.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> Choose a color; “Mudragon” becomes that color to end turn.
 	flavor_text: <i-flavor></i-flavor>
-	power: 3
-	toughness: 3
+	power: 4
+	toughness: 4
 	card_code_text: 043/077 R
 	card_code_text_2: 043/077 R
 	card_code_text_3: 043/077 R

@@ -3,10 +3,13 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { catalog, formatDate, withBase } from '../../../lib/catalog';
 
 export function getStaticPaths() {
+  // Derived from release.route, which the sitemap, feed and every card-version
+  // page already link to. Recomputing the segment here let the two drift apart
+  // and orphaned this page behind 50 broken links.
   return catalog.releases.map((release) => ({
     params: {
       stage: release.stage,
-      package: `${release.setId}-${release.version.replaceAll('.', '-')}`,
+      package: release.route.split('/').filter(Boolean).at(-1),
     },
     props: { release },
   }));

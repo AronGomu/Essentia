@@ -1,5 +1,40 @@
 import catalogData from '../generated/catalog';
 
+export type ColorLetter = 'W' | 'U' | 'B' | 'R' | 'G';
+export type CardZone = 'main' | 'extra';
+export type ArchetypeRole = 'member' | 'support' | 'staple';
+
+export interface ImageTier {
+  avif?: string;
+  webp: string;
+  width: number;
+}
+
+export interface PrintImage {
+  url: string;
+  width: number;
+  height: number;
+  dpi: number;
+  /** True while the package has no renders_print/ master and the tier is upscaled. */
+  draftResolution: boolean;
+}
+
+export interface CardImages {
+  thumb: ImageTier;
+  display: ImageTier;
+  zoom: ImageTier;
+  print: PrintImage;
+  width: number;
+  height: number;
+}
+
+export interface CatalogKeyword {
+  id: string;
+  term: string;
+  category: 'action' | 'event' | 'ability' | 'cost-procedure' | 'archetype';
+  archetype: string | null;
+}
+
 export interface CardVersion {
   id: string;
   packageId: string;
@@ -23,13 +58,23 @@ export interface CardVersion {
   created: string | null;
   modified: string;
   support: boolean;
+  colors: ColorLetter[];
+  colorSource: 'cost' | 'override';
+  manaValue: number;
+  typeLine: string;
+  types: string[];
+  supertypes: string[];
+  zone: CardZone;
+  keywords: string[];
+  archetype: string | null;
+  archetypeRole: ArchetypeRole;
+  supports: string[];
+  oracleNormalized: string;
+  images: CardImages;
   sourceHash: string;
   renderHash: string;
   width: number;
   height: number;
-  render: string;
-  galleryWebp: string;
-  galleryAvif: string;
   releasedOn: string;
   stage: 'alpha' | 'beta' | 'release';
   stageLabel: 'ALPHA' | 'BETA' | 'Release';
@@ -59,9 +104,7 @@ export type GalleryCard = Pick<
   | 'ruleTextPlain'
   | 'modified'
   | 'support'
-  | 'render'
-  | 'galleryWebp'
-  | 'galleryAvif'
+  | 'images'
   | 'width'
   | 'height'
 >;
@@ -71,6 +114,7 @@ export interface CatalogSection {
   label: string;
   kind: 'non-archetype' | 'archetype';
   accent: string;
+  namePattern: string | null;
   intro: string;
   diagnostics: Array<{ sourceFile: string; reason: string }>;
   iconicId: string;
@@ -99,12 +143,13 @@ export interface ReleasePackage {
 }
 
 export interface Catalog {
-  schemaVersion: 3;
+  schemaVersion: 4;
   generatedAt: string;
   sections: CatalogSection[];
   cards: CatalogCard[];
   cardVersions: CardVersion[];
   releases: ReleasePackage[];
+  keywords: CatalogKeyword[];
   explanations: Record<string, string>;
   updates: Array<{
     cardId: string;
@@ -149,9 +194,7 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
     ruleTextPlain,
     modified,
     support,
-    render,
-    galleryWebp,
-    galleryAvif,
+    images,
     width,
     height,
   } = card;
@@ -165,12 +208,19 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
     ruleTextPlain,
     modified,
     support,
-    render,
-    galleryWebp,
-    galleryAvif,
+    images,
     width,
     height,
   };
+}
+
+export const keywordsByTerm = new Map(
+  catalog.keywords.map((keyword) => [keyword.term, keyword]),
+);
+
+/** The image a hover preview or social card should point at. */
+export function previewImage(card: { images: CardImages }): string {
+  return card.images.display.webp;
 }
 
 export function formatDate(value: string): string {

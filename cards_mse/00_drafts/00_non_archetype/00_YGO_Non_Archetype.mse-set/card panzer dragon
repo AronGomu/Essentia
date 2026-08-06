@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 05_fusion.md
 	time_created: 2026-07-11 12:11:30
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 18:39:22
 	name: Panzer Dragon
 	casting_cost: 1R
 	image: mse_images/fusion/embedded/image8.png
@@ -22,8 +22,8 @@ card:
 		<i>1 Machine + 1 Dragon</i>
 		<i-auto>(1 - Triggered)</i-auto> <b>On Destroy</b> — <b>Target</b> 1 non-Creature permanent; <b>Destroy</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	power: 1
-	toughness: 3
+	power: 2
+	toughness: 6
 	card_code_text: 046/077 R
 	card_code_text_2: 046/077 R
 	card_code_text_3: 046/077 R

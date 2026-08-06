@@ -29,7 +29,7 @@ CI rejects modifications inside committed `locked` packages through `.script/che
 
 ### Package metadata
 
-Set packages use `release.json`, and when built: `package-sha256.json`, `render-provenance.json`, and `print-manifest.json`.
+Set packages use `release.json`, and when built: `package-sha256.json` and `render-provenance.json`. Packages never store PDFs; printing is a separate one-off step (see [MSE printing](MSE.md#printing)).
 
 ```json
 {
@@ -63,7 +63,7 @@ Rules:
 
 - Draft → Alpha: **move** selected cards/projects into an `open` alpha package.
 - Edit while `status` is `open`.
-- `python .script/release_package.py rebuild <package>` regenerates aggregate/renders/PDF/hashes and stays `open`.
+- `python .script/release_package.py rebuild <package>` regenerates aggregate/renders/hashes and stays `open`.
 - `python .script/release_package.py lock <package> --released-on YYYY-MM-DD` rebuilds then sets `status` to `locked`.
 - Locked Alpha → Beta: `python .script/release_package.py advance <locked-package> --to-stage 02_beta --version Beta_X.Y` copies component source into a new open beta package. Never edit the locked alpha package.
 - Locked Beta → Release: same advance into `03_release` with `Release_X.Y`.
@@ -80,12 +80,10 @@ cards_mse/{01_alpha|02_beta|03_release}/{setId}-{version}/
   {setId}-{version}_all_cards.mse-set/
   renders/
   render-provenance.json
-  print-manifest.json
-  {setId}-{version}_print.pdf
   package-sha256.json
 ```
 
-Aggregate MSE projects are generated, read-only, and never independently edited. Renders and PDF remain tracked because website CI cannot run MSE.
+Aggregate MSE projects are generated, read-only, and never independently edited. Renders remain tracked because website CI cannot run MSE.
 
 ## Lock policy
 

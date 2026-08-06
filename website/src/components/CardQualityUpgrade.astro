@@ -1,0 +1,81 @@
+---
+/**
+ * Progressive card-image quality (spec §0.5.4).
+ *
+ * Every <CardPicture> renders the `thumb` tier so the first paint is cheap.
+ * After load this upgrades them to the `display` tier — unless the visitor is
+ * on Save-Data or a 2g-class connection, in which case the upgrade is opt-in
+ * through the control below. Without JS the thumb tier stays, which is a
+ * complete and usable page.
+ */
+---
+
+<button
+  type="button"
+  class="quality-upgrade"
+  data-quality-upgrade
+  hidden
+  aria-live="polite"
+>
+  Load high quality images
+</button>
+
+<script>
+  import {
+    IMAGE_QUALITY_KEY,
+    migrateImageQuality,
+    readStored,
+    writeStored,
+  } from '../lib/storage';
+
+  const control = document.querySelector<HTMLButtonElement>(
+    '[data-quality-upgrade]',
+  );
+
+  function upgrade(): void {
+    for (const picture of document.querySelectorAll<HTMLElement>(
+      '[data-card-picture]',
+    )) {
+      const avif = picture.dataset.upgradeAvif;
+      const webp = picture.dataset.upgradeWebp;
+      if (!webp) continue;
+      const sources = picture.querySelectorAll('source');
+      for (const source of sources) {
+        if (source.type === 'image/avif' && avif) source.srcset = avif;
+        if (source.type === 'image/webp') source.srcset = webp;
+      }
+      const img = picture.querySelector('img');
+      if (img) img.src = webp;
+      delete picture.dataset.cardPicture;
+    }
+    control?.setAttribute('hidden', '');
+  }
+
+  function saveDataPreferred(): boolean {
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    if (!connection) return false;
+    return (
+      connection.saveData === true ||
+      connection.effectiveType === 'slow-2g' ||
+      connection.effectiveType === '2g'
+    );
+  }
+
+  const stored = readStored(IMAGE_QUALITY_KEY, migrateImageQuality);
+  const mode = stored?.mode ?? 'auto';
+
+  if (mode === 'high' || (mode === 'auto' && !saveDataPreferred())) {
+    if (document.readyState === 'complete') upgrade();
+    else globalThis.addEventListener('load', upgrade, { once: true });
+  } else if (control) {
+    control.removeAttribute('hidden');
+    control.addEventListener('click', () => {
+      writeStored(IMAGE_QUALITY_KEY, { schemaVersion: 1, mode: 'high' });
+      upgrade();
+    });
+  }
+</script>

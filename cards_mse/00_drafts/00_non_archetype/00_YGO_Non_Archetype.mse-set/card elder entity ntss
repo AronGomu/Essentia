@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 05_fusion.md
 	time_created: 2026-07-11 12:11:27
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Elder Entity N'tss
 	casting_cost: W
 	image: mse_images/fusion/embedded/image3.png
@@ -19,13 +19,13 @@ card:
 	sub_type_4: 
 	rarity: rare
 	rule_text:
-		<i>1 <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Synchro</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Creature + 1 <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Xyz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Creature
+		<i>1 Synchro Creature + 1 Xyz Creature
 		<b>Fusion Alternative Cost</b> — <b>Send</b> the materials from your Field to Grave without using a <b>Fusion Summon</b>.</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Summon</b> 1 Creature with <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1 or less from your Hand.
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Summon</b> 1 Creature with MV 1 or less from Hand.
 		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Target</b> 1 non-Creature permanent; <b>Destroy</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 2
+	power: 6
+	toughness: 3
 	card_code_text: 023/077 R
 	card_code_text_2: 023/077 R
 	card_code_text_3: 023/077 R

@@ -555,12 +555,9 @@ def validate_package(package: Path, require_artifacts: bool | None = None) -> No
     if require_artifacts or (package / "aggregate-manifest.json").exists():
         validate_aggregate(package)
     if require_artifacts:
-        stem = package_stem(metadata["setId"], metadata["version"])
         required = (
             package / "renders",
             package / "render-provenance.json",
-            package / "print-manifest.json",
-            package / f"{stem}_print.pdf",
             package / "package-sha256.json",
         )
         missing = [str(path) for path in required if not path.exists()]
@@ -631,39 +628,29 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
             )
 
 
-def build_artifacts(package: Path, aggregate: Path) -> None:
-    metadata = release_metadata(package)
-    stem = package_stem(metadata["setId"], metadata["version"])
+def build_artifacts(package: Path, aggregate: Path, *, print_masters: bool = False) -> None:
+    """
+    Export renders and provenance.
+
+    With print_masters=True the exporter additionally writes renders_print/
+    beside renders/ via the Essentia print export template. Masters are optional:
+    the website upscales the 1x render and flags draft resolution when absent.
+    """
     renders = package / "renders"
-    subprocess.run(
-        [
-            sys.executable,
-            str(SCRIPT_DIR / "export_mse_renders.py"),
-            str(aggregate),
-            "--output",
-            str(renders),
-        ],
-        cwd=REPO_ROOT,
-        check=True,
-    )
+    command = [
+        sys.executable,
+        str(SCRIPT_DIR / "export_mse_renders.py"),
+        str(aggregate),
+        "--output",
+        str(renders),
+    ]
+    if print_masters:
+        command.append("--print-masters")
+    subprocess.run(command, cwd=REPO_ROOT, check=True)
     generated_provenance = renders / "render-provenance.json"
     if not generated_provenance.is_file():
         raise LifecycleError(f"render exporter omitted provenance: {generated_provenance}")
     generated_provenance.replace(package / "render-provenance.json")
-    subprocess.run(
-        [
-            sys.executable,
-            str(SCRIPT_DIR / "create_proxy_pdf.py"),
-            "--input",
-            str(renders),
-            "--output",
-            str(package / f"{stem}_print.pdf"),
-            "--manifest",
-            str(package / "print-manifest.json"),
-        ],
-        cwd=REPO_ROOT,
-        check=True,
-    )
 
 
 def rebuild(

@@ -86,7 +86,16 @@ def read_title(set_file: Path) -> str | None:
         return None
     text = set_file.read_text(encoding="utf-8-sig", errors="replace")
     match = re.search(r"^\s*title:\s*(.+)$", text, re.MULTILINE)
-    return match.group(1).strip() if match else None
+    if not match:
+        return None
+    return re.sub(r"^Essentia\s+--\s+", "", match.group(1).strip())
+
+
+def project_root_path(project: Path) -> str:
+    try:
+        return project.resolve().relative_to(REPO_ROOT.resolve()).as_posix()
+    except ValueError:
+        return project.resolve().as_posix()
 
 
 def count_cards(set_file: Path) -> int:
@@ -141,7 +150,7 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, obj
                 "title": read_title(set_file) or project.stem,
                 "count": count_cards(set_file),
                 "path": project,
-                "relative": relative.as_posix(),
+                "relative": project_root_path(project),
                 "lifecycle": lifecycle,
                 "group": group,
                 "set_name": set_name,
@@ -323,7 +332,7 @@ def build_gui(projects: list[dict[str, object]]) -> None:
 
     tk.Label(
         header,
-        text="Magic Set Editor projects",
+        text="Essentia Magic Set...",
         font=("Segoe UI", 22, "bold"),
         fg=TEXT,
         bg=BG,
@@ -456,20 +465,7 @@ def build_gui(projects: list[dict[str, object]]) -> None:
                 canvas.yview_moveto(0)
                 continue
 
-            prior_group: tuple[str, object] | None = None
             for project in visible:
-                group_key = (str(project["group"]), project["set_name"])
-                if group_key != prior_group:
-                    set_suffix = f" / {group_key[1]}" if group_key[1] else ""
-                    tk.Label(
-                        scroll_frame,
-                        text=f"{group_key[0]}{set_suffix}",
-                        font=("Segoe UI", 11, "bold"),
-                        fg=ACCENT,
-                        bg=BG,
-                    ).pack(anchor="w", pady=(12 if prior_group else 0, 8))
-                    prior_group = group_key
-
                 project_path = project["path"]
                 card = tk.Frame(
                     scroll_frame,
@@ -484,18 +480,11 @@ def build_gui(projects: list[dict[str, object]]) -> None:
 
                 tk.Label(
                     card,
-                    text=str(project["title"]),
-                    font=("Segoe UI", 12, "bold"),
+                    text=f"{project['title']} · {project['count']} cards",
+                    font=("Segoe UI", 16, "bold"),
                     fg=TEXT,
                     bg=PANEL,
                 ).grid(row=0, column=0, sticky="w")
-                tk.Label(
-                    card,
-                    text=f"{project['doc_title']} · {project['name']} · {project['count']} cards",
-                    font=("Segoe UI", 9),
-                    fg=MUTED,
-                    bg=PANEL,
-                ).grid(row=1, column=0, sticky="w", pady=(4, 0))
                 tk.Label(
                     card,
                     text=str(project["relative"]),
@@ -504,10 +493,10 @@ def build_gui(projects: list[dict[str, object]]) -> None:
                     bg=PANEL,
                     wraplength=560,
                     justify="left",
-                ).grid(row=2, column=0, sticky="w", pady=(5, 0))
+                ).grid(row=1, column=0, sticky="w", pady=(5, 0))
 
                 button_frame = tk.Frame(card, bg=PANEL)
-                button_frame.grid(row=0, column=1, rowspan=3, padx=(18, 0), sticky="e")
+                button_frame.grid(row=0, column=1, rowspan=2, padx=(18, 0), sticky="e")
                 ttk.Button(
                     button_frame,
                     text="Open in MSE",

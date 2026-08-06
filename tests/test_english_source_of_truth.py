@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import re
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -42,7 +43,6 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
         for relative in (
             "MSE_projects",
             "mse",
-            "print",
             "rule_reviews",
             "docs/French",
             "FRENCH_ARCHIVE_SHA256SUMS",
@@ -51,6 +51,18 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             "DECKLISTS_ALPHA_0.1.md",
         ):
             self.assertFalse((ROOT / relative).exists(), relative)
+
+    def test_print_output_root_is_never_tracked(self) -> None:
+        """Prints are one-off build output, so root print/ must stay ignored."""
+        self.assertIn("/print/", (ROOT / ".gitignore").read_text(encoding="utf-8"))
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", "print"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        self.assertEqual(tracked.stdout.strip(), "")
 
     def test_five_draft_projects_are_english_and_complete(self) -> None:
         projects = sorted(DRAFTS.glob("*/*.mse-set"))
@@ -148,9 +160,9 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             self.assertRegex(text, r"(?i)locked")
             self.assertRegex(text, r"(?i)never edit|reject")
 
-    def test_proxy_pdf_defaults_read_public_packages_only(self) -> None:
-        script = ROOT / ".script" / "create_proxy_pdf.py"
-        spec = importlib.util.spec_from_file_location("create_proxy_pdf", script)
+    def test_print_pdf_defaults_read_public_packages_only(self) -> None:
+        script = ROOT / ".script" / "generate_print_pdfs.py"
+        spec = importlib.util.spec_from_file_location("generate_print_pdfs", script)
         assert spec and spec.loader
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)

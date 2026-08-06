@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/13_spellbook/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: Spellbook Library of the Crescent
 	casting_cost: U
 	image: mse_images/image13.png
@@ -17,7 +17,7 @@ card:
 	rarity: common
 	rule_text:
 		<b>Spell Affinity</b>
-		<i-auto>(1 - Resolution)</i-auto> If you control 1 Wizard MV 2+, <b>Search</b> 1 <i-auto>“Spellbook”</i-auto>. Otherwise, <b>Reveal</b> 3 <i-auto>“Spellbook”</i-auto> from Deck. An opponent chooses 1 of them. Put the chosen card into Hand, then shuffle the others into Deck.
+		<i-auto>(1 - Resolution)</i-auto> If you control 1 Wizard MV 2+, <b>Search</b> 1 <i-auto>“Spellbook”</i-auto>. Otherwise, <b>Reveal</b> 3 <i-auto>“Spellbook”</i-auto> from Deck. An opponent chooses 1 of them. Put the chosen card into Hand, then <b>Shuffle</b> the others.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 003/016 C
 	card_code_text_2: 003/016 C

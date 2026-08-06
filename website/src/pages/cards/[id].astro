@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardPicture from '../../components/CardPicture.astro';
 import ImageZoom from '../../components/ImageZoom.svelte';
 import Markdown from '../../components/Markdown.astro';
 import RichText from '../../components/RichText.astro';
@@ -31,7 +32,7 @@ const related = sectionCards
   .sort((a, b) => a.id.localeCompare(b.id))
   .slice(0, 3);
 const base = import.meta.env.BASE_URL;
-const render = withBase(base, card.render);
+const zoomImage = withBase(base, card.images.zoom.webp);
 const explanation = catalog.explanations[card.id];
 const versions = catalog.cardVersions
   .filter((version) => version.id === card.id)
@@ -44,26 +45,21 @@ const versions = catalog.cardVersions
 <BaseLayout
   title={`${card.name} — Essentia`}
   description={`${card.name}: ${card.superType}. ${card.ruleTextPlain.slice(0, 130)}`}
-  image={card.render}
+  image={card.images.display.webp}
   accent={section.accent}
   theme={section.slug}
 >
   <article class="page-shell card-detail">
     <div class="render-column">
-      <picture>
-        <source srcset={withBase(base, card.galleryAvif)} type="image/avif" />
-        <source srcset={withBase(base, card.galleryWebp)} type="image/webp" />
-        <img
-          src={render}
-          alt={`${card.name} card render`}
-          width={card.width}
-          height={card.height}
-          fetchpriority="high"
-        />
-      </picture>
+      <CardPicture
+        card={card}
+        tier="display"
+        eager
+        alt={`${card.name} card render`}
+      />
       <ImageZoom
         client:load
-        src={render}
+        src={zoomImage}
         alt={`${card.name} card render`}
         width={card.width}
         height={card.height}

@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: 08_link.md
 	time_created: 2026-07-11 12:12:30
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Accesscode Talker
 	casting_cost: RRWW
 	image: mse_images/link/imported/image1.png
@@ -18,11 +18,11 @@ card:
 	rule_text:
 		<i>2+ Creatures</i>
 		<b>Haste</b>
-		<i-auto>(1 - Static)</i-auto> Your opponents cannot respond to <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Accesscode</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Talker’s abilities.
-		<i-auto>(2 - Triggered)</i-auto> <b>On Link Summon</b> — “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Accesscode</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” gains +X/+0 until the end of the turn, where X is 2 times the Link <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Lvl</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> of a Link Creature from your Grave.
+		<i-auto>(1 - Static)</i-auto> Your opponents cannot respond to Accesscode Talker’s abilities.
+		<i-auto>(2 - Triggered)</i-auto> <b>On Link Summon</b> — “Accesscode” gains +X/+0 to end turn, where X is 2 times the Link Lvl of a Link Creature from Grave.
 		<i-auto>(3 - Activated Sorcery Hard)</i-auto> <b>Exile</b> 1 Link Creature from your Field or Grave and <b>Target</b> 1 card; <b>Destroy</b> the target.
 	flavor_text: <i-flavor></i-flavor>
-	power: 4
+	power: 5
 	toughness: 4
 	card_code_text: 002/077 R
 	card_code_text_2: 002/077 R

@@ -1,5 +1,6 @@
 ---
 import CardHoverPreview from '../components/CardHoverPreview.astro';
+import CardQualityUpgrade from '../components/CardQualityUpgrade.astro';
 import Navigation from '../components/Navigation.svelte';
 import SearchPalette from '../components/SearchPalette.svelte';
 import Seo from '../components/Seo.astro';
@@ -87,14 +88,19 @@ const searchCards = catalog.cards.map(
     <CardHoverPreview />
     <footer class="site-footer">
       <p>
-        Fan-made card-design archive. Yu-Gi-Oh! and Magic: The Gathering remain
-        property of their respective owners.
+        Everything created for this project is free to use, modify, and
+        redistribute, including commercially. Yu-Gi-Oh! and Magic: The Gathering
+        remain property of their respective owners.
       </p>
       <nav aria-label="Footer">
-        <a href={`${base}legal/`}>Attribution & provenance</a><a
+        <a href={`${base}legal/`}>Licence & attribution</a><a
           href={`${base}updates/`}>Card updates</a
+        ><a href={`${base}feed.xml`}>Card feed</a><a
+          href="https://github.com/AronGomu/YGO-x-MTG"
+          rel="noopener noreferrer">GitHub repository</a
         >
       </nav>
+      <CardQualityUpgrade />
     </footer>
   </body>
 </html>

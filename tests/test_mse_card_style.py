@@ -58,6 +58,16 @@ class MseCardStyleTests(unittest.TestCase):
             )
             self.assertEqual(LINTER.lint(root), [])
 
+    def test_named_self_action_arguments_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_project(
+                root,
+                "<b>Cast</b> <i-auto>Test Card</i-auto> for free. "
+                "If you cannot, <b>Destroy</b> <i-auto>Test Card</i-auto>.",
+            )
+            self.assertEqual(LINTER.lint(root), [])
+
     def test_invalid_style_reports_exact_rule_ids(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

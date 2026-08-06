@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/07_xyz.md
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:52:57
 	name: Bamboozling Gossip Shadow
 	casting_cost: U
 	image: mse_images/xyz/embedded/image14.png
@@ -16,11 +16,11 @@ card:
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: rare
 	rule_text:
-		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i>2 Creatures MV 1</i>
 		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Detach 2</b> and <b>Target</b> 1 ability; <b>Counter</b> the target. Each player draws 1 card.
 	flavor_text: <i-flavor></i-flavor>
 	power: 2
-	toughness: 5
+	toughness: 6
 	card_code_text: 006/077 R
 	card_code_text_2: 006/077 R
 	card_code_text_3: 006/077 R

@@ -14,6 +14,11 @@ Decision evidence lives here after rule/design review.
 - [0006 — MSE frame mapping](accepted/0006-mse-frame-mapping.md)
 - [0007 — Legend of Alpha rule reconciliation](accepted/0007-legend-of-alpha-rule-reconciliation.md)
 - [0008 — Open/locked package lifecycle](accepted/0008-open-locked-lifecycle.md)
+- [0009 — Reference wording](accepted/0009-reference-wording.md)
+- [0010 — Compact duration, quantity card, zone article](accepted/0010-compact-duration-quantity-zone.md)
+- [0011 — Shuffle action](accepted/0011-shuffle-action.md)
+- [0012 — Summon bypass, event casing, zone articles, Ritual-alone](accepted/0012-summon-bypass-event-zone.md)
+- [0013 — Activation condition colon and Title self-name](accepted/0013-activation-condition-self-name-title.md)
 
 ## Proposed
 

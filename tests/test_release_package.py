@@ -119,10 +119,6 @@ class ReleasePackageTests(unittest.TestCase):
         (package / "renders").mkdir(exist_ok=True)
         (package / "renders" / "Card One.png").write_bytes(b"png")
         (package / "render-provenance.json").write_text("{}\n", encoding="utf-8")
-        (package / "print-manifest.json").write_text("{}\n", encoding="utf-8")
-        metadata = release.release_metadata(package)
-        stem = release.package_stem(metadata["setId"], metadata["version"])
-        (package / f"{stem}_print.pdf").write_bytes(b"%PDF-1.4\n%%EOF\n")
 
     def test_release_metadata_requires_status_and_set_id(self) -> None:
         package, _ = self.open_package([("card one", "Card One")])
@@ -193,7 +189,7 @@ class ReleasePackageTests(unittest.TestCase):
         self.fake_artifacts(package, aggregate)
         release.write_package_hashes(package)
         release.validate_package_hashes(package)
-        (package / "print-manifest.json").write_text("changed\n", encoding="utf-8")
+        (package / "render-provenance.json").write_text("changed\n", encoding="utf-8")
         with self.assertRaisesRegex(release.LifecycleError, "package hash mismatch"):
             release.validate_package_hashes(package)
 

@@ -3,26 +3,65 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Attribution & provenance — Essentia"
-  description="Fan-project, source, asset, and mana-symbol attribution for Essentia."
+  title="Licence & attribution — Essentia"
+  description="Everything created for Essentia is free for any use. Third-party material is excluded and remains under its owners' terms."
 >
   <article class="page-shell legal-copy">
-    <h1>Attribution & provenance</h1><p>
-      YGO × MTG: Essentia is an independent, non-commercial fan design project.
-      Yu-Gi-Oh! card names and characters belong to Konami and their respective
-      rights holders. Magic: The Gathering terminology and mana symbols belong
-      to Wizards of the Coast.
-    </p><h2>Source-backed cards</h2><p>
+    <h1>Licence &amp; attribution</h1>
+
+    <h2>What you may freely use</h2><p>
+      Everything created for this project — the card designs, the rules and card
+      text, the renders, the code, the documentation, and this website — is free
+      for anyone to use, modify, and redistribute for any purpose, including
+      commercially. No permission is needed, no attribution is required, and no
+      fee applies. The project waives its rights in this material as far as the
+      law allows, equivalent to a
+      <a
+        href="https://creativecommons.org/publicdomain/zero/1.0/"
+        rel="noopener noreferrer">CC0 1.0 public-domain dedication</a
+      >. The full dedication text ships as the <code>LICENSE</code> file in the repository.
+    </p>
+
+    <h2>What is excluded</h2><p>
+      The grant above covers only material created for this project. It does
+      <strong>not</strong> cover third-party material, which remains under its own
+      owners' terms and is explicitly excluded:
+    </p>
+    <ul>
+      <li>
+        Yu-Gi-Oh! card names, characters, and the official source records this
+        project adapts from — Konami and their respective rights holders.
+      </li>
+      <li>
+        Magic: The Gathering terminology and mana symbols — Wizards of the
+        Coast.
+      </li>
+      <li>
+        Imported land artwork reproduced for proxy printing — the original
+        artists and their publishers.
+      </li>
+    </ul><p>
+      Essentia is an independent, unofficial fan design project. It is not
+      produced, endorsed, or approved by Konami or Wizards of the Coast. Nothing
+      here grants you rights in their trademarks or artwork, and reusing this
+      project's material does not transfer any such rights to you.
+    </p>
+
+    <h2>Source-backed cards</h2><p>
       Published text comes from English folder-form Magic Set Editor projects in
       this repository. Card pages expose an allowlisted public data shape;
       editor notes, local paths, and unknown source fields are never public.
-    </p><h2>Artwork and renders</h2><p>
+    </p>
+
+    <h2>Artwork and renders</h2><p>
       Canonical card renders are preserved in source projects. Public copies are
       regenerated without embedded source metadata. Publication remains subject
       to project asset approval and withdrawal records; withdrawing an asset
       removes it from future website output but cannot erase public Git history
       or existing clones.
-    </p><h2>Immutable release history</h2><p>
+    </p>
+
+    <h2>Immutable release history</h2><p>
       ALPHA, BETA, and Release packages preserve exact card versions, canonical
       render hashes, aggregate manifests, and release metadata. They document
       published history; editable draft projects remain card-content source.

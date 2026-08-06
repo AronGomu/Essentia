@@ -20,28 +20,28 @@ ACTIVE_EXPECTED_CARDS = {
         "(1 - Activated",
         "Flash",
         "Hard)",
-        "<b>Counter</b> the target",
+        "<b>Counter</b> it",
         "power: 0",
-        "toughness: 1",
+        "toughness: 4",
     ),
     "card d.d. crow": (
         "name: D.D. Crow",
         "casting_cost: B",
         "sub_type: <word-list-race-en>Bird</word-list-race-en>",
         "(1 - Activated",
-        "<b>Target</b> 1 card in a Grave; <b>Exile</b> the target",
+        "<b>Target</b> 1 card in Grave; <b>Exile</b> it",
     ),
     "card effect veiler": (
         "name: Effect Veiler",
         "casting_cost: W",
         "sub_type: <word-list-race-en>Wizard</word-list-race-en>",
-        "the target loses all abilities, and <b>Counter</b> all abilities of the target on the Stack",
+        "it loses all abilities, and <b>Counter</b> all its abilities on Stack",
     ),
     "card maxx c": (
         "name: Maxx “C”",
         "casting_cost: G",
         "sub_type: <word-list-race-en>Insect</word-list-race-en>",
-        "<b>Draw</b> 1 card <b>On Opponent Creature Enter</b>",
+        "<b>Draw</b> 1 <b>On Opponent Creature Enter</b>",
     ),
 }
 

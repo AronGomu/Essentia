@@ -12,17 +12,19 @@ Proper summon means:
 - Ritual Creature via Ritual Summon;
 - Link Creature via Link Summon.
 
-A direct effect does not bypass requirement unless it performs matching summon or says `ignoring the restrictions of summon`. That permission makes movement legal but does not count as proper summon. After proper summon, card may return by other means subject to card/rule restrictions.
+A direct effect does not bypass requirement unless it performs matching summon or says `ignoring summoning restrictions`. That permission makes movement legal but does not count as proper summon. After proper summon, card may return by other means subject to card/rule restrictions.
 
 ## Generic movement
 
-**Summon**, **Hand Summon**, **Reanimate**, and **Release** do not bypass proper-summon requirement. Never infer `ignoring the restrictions of summon`; explicit card design decision required.
+**Summon**, **Hand Summon**, **Reanimate**, and **Release** do not bypass proper-summon requirement. Never infer `ignoring summoning restrictions`; explicit card design decision required.
 
 Fusion, Synchro, Xyz, and Link Creature movement to Hand or Deck follows optional owner replacement in [`ZONES.md`](ZONES.md).
 
 ## Ritual
 
 **Ritual Summon** puts one or more Ritual Creatures onto Field using stated materials/conditions. Material mana value equals Ritual Creature mana value by default; card may explicitly allow greater/equal payment. Multiple creatures use plural agreement.
+
+When one named permanent may alone satisfy Ritual material/sacrifice for a selector family, write: `[full self-name] can satisfy Ritual sacrifice of [selector] alone.` Example: `Shurit can satisfy Ritual sacrifice of *“Nekroz”* alone.`
 
 ## Fusion
 

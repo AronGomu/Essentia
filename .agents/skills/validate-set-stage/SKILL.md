@@ -1,6 +1,6 @@
 ---
 name: validate-set-stage
-description: Lock one open Essentia set package (rebuild aggregate/renders/PDF/hashes, set status locked), append docs/SET_PROMOTIONS.md, commit and push. Args: package path or set id + stage. Trigger — "validate set", "lock alpha package", "/validate-set-stage".
+description: Lock one open Essentia set package (rebuild aggregate/renders/hashes, set status locked), append docs/SET_PROMOTIONS.md, commit and push. Args: package path or set id + stage. Trigger — "validate set", "lock alpha package", "/validate-set-stage".
 ---
 
 # Validate / lock set package

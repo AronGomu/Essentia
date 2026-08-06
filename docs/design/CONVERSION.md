@@ -14,9 +14,14 @@ Baseline applies to Main Deck monsters plus Fusion, Synchro, and Xyz creatures. 
 
 ## Statistics
 
-- Power = `⌊ATK / 500⌋`.
-- Toughness = `⌊DEF / 500⌋`.
-- Minimum is 1 except intentional adaptation for hand traps or defensive non-archetype cards.
+Life-total ratio (script: `.script/apply_stat_conversion.py`):
+
+- Power = `floor(ATK * 20 / 8000)` (truncate toward 0).
+- Toughness = `max(1, floor(DEF * 20 / 8000))` (truncate toward 0; never 0 toughness).
+- Same as ATK/8000 of YGO starting life, scaled to 20 MTG life.
+- Examples: 2000 ATK → 5 power; 1900 ATK → 4.75 → 4 power; Cir 1600/1200 → 4/3; 0 DEF → 1 toughness.
+- Non-numeric ATK/DEF (`?`, `—` on Links) → leave that MSE field unchanged.
+- Re-apply with `python .script/apply_stat_conversion.py --write` after original_cards updates.
 
 ## Colors
 

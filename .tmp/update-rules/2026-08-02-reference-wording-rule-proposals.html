@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference wording rule proposals</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · UR-2026-08-02-Reference-Wording</span>
+    <h1>Reference wording rule proposals</h1>
+    <p class="lede">Choose exactly one option per item. Use Precision for notes, or for exact final wording when choosing REVISE. Then click Copy answer summary and paste it into this session.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress"><span class="node">Evidence</span><span class="arrow">→</span><span class="node active"><b>3 decisions</b></span><span class="arrow">→</span><span class="node">Apply rules</span><span class="arrow">→</span><span class="node">ADR + verify</span></nav>
+
+  <section class="visuals" aria-label="Technical context">
+    <!-- Prefer inline SVG. Every image needs role="img", aria-labelledby, title, and desc. -->
+    <figure>
+  <figcaption><b>Current → proposed references</b>Three requested cards expose two reusable reference patterns.</figcaption>
+  <svg viewBox="0 0 420 205" role="img" aria-labelledby="ref-title ref-desc">
+    <title id="ref-title">Reference wording changes</title>
+    <desc id="ref-desc">Ash Blossom and Book of Moon replace the target with it. Bagooska and Book of Moon replace generic self references with printed names.</desc>
+    <path class="svg-line" d="M170 42 H245 M170 102 H245 M170 162 H245"/>
+    <polygon class="svg-arrow" points="245,42 235,36 235,48"/><polygon class="svg-arrow" points="245,102 235,96 235,108"/><polygon class="svg-arrow" points="245,162 235,156 235,168"/>
+    <rect class="svg-node" x="8" y="20" width="162" height="44" rx="8"/><text class="svg-label" x="20" y="39">the target</text><text class="svg-note" x="20" y="55">Ash Blossom</text>
+    <rect class="svg-node active" x="245" y="20" width="166" height="44" rx="8"/><text class="svg-label svg-accent" x="260" y="47">it</text>
+    <rect class="svg-node" x="8" y="80" width="162" height="44" rx="8"/><text class="svg-label" x="20" y="99">this card</text><text class="svg-note" x="20" y="115">Bagooska</text>
+    <rect class="svg-node active" x="245" y="80" width="166" height="44" rx="8"/><text class="svg-label svg-accent" x="260" y="107">Bagooska</text>
+    <rect class="svg-node" x="8" y="140" width="162" height="44" rx="8"/><text class="svg-label" x="20" y="159">this Spell</text><text class="svg-note" x="20" y="175">Book of Moon</text>
+    <rect class="svg-node active" x="245" y="140" width="166" height="44" rx="8"/><text class="svg-label svg-accent" x="260" y="167">Book of Moon</text>
+  </svg>
+</figure>
+<figure>
+  <figcaption><b>Rule ownership + requested scope</b>Rules belong in TEMPLATING.md. normalize=false leaves MSE unchanged this round.</figcaption>
+  <svg viewBox="0 0 420 205" role="img" aria-labelledby="scope-title scope-desc">
+    <title id="scope-title">Decision application flow</title>
+    <desc id="scope-desc">Three decisions update templating documentation and tests. Card normalization remains deferred.</desc>
+    <rect class="svg-node active" x="16" y="18" width="388" height="42" rx="8"/><text class="svg-label svg-accent" x="34" y="44">D1 target · R1 self-name · D2 free cost</text>
+    <path class="svg-line" d="M210 60 V91 M210 91 H92 V120 M210 91 H328 V120"/>
+    <polygon class="svg-arrow" points="92,120 86,110 98,110"/><polygon class="svg-arrow" points="328,120 322,110 334,110"/>
+    <rect class="svg-node" x="16" y="120" width="152" height="48" rx="8"/><text class="svg-label" x="32" y="141">docs/rules/</text><text class="svg-label" x="32" y="157">TEMPLATING.md</text>
+    <rect class="svg-node" x="252" y="120" width="152" height="48" rx="8"/><text class="svg-label" x="268" y="141">MSE cards</text><text class="svg-note" x="268" y="157">deferred</text>
+    <text class="svg-note" x="120" y="193">ADR records accepted, revised, rejected outcomes</text>
+  </svg>
+</figure>
+  </section>
+
+  <form id="questions">
+    <!-- Repeat one fieldset per frontier question. Keep data-question unique. -->
+    <fieldset data-question="D1 | Should immediate target references use pronouns instead of the target phrase?">
+  <legend>D1 · Immediate target references</legend>
+  <div class="why">
+    <p><b>Scope:</b> global target-reference syntax.</p>
+    <p><b>Existing rule/evidence:</b> <code>docs/rules/TEMPLATING.md:64</code> requires <code>Target 1 Creature; the target ...</code>; <code>docs/keywords/ACTIONS.md:7</code> also uses <code>the target</code> as noun evidence.</p>
+    <p><b>Conflict:</b> Ash Blossom line 18 proposes <code>Counter it</code>; Book of Moon line 20 proposes <code>turn it face down</code>. Existing mutable cards/tests contain both styles, including <code>test_non_archetype_creatures.py:23</code> and <code>test_non_archetype_non_creatures.py:34</code>.</p>
+    <p><b>Reason:</b> current global template directly contradicts requested compact pronoun syntax.</p>
+    <p><b>Proposal:</b> After a target is identified in the same ability, use <code>it</code>/<code>its</code> for one object and <code>them</code>/<code>their</code> for multiple objects. Retain an explicit noun phrase only when a pronoun would be ambiguous or a typed/linked reference is required, such as <code>the targeted “Spellbook”</code>.</p>
+    <p><b>Impact:</b> <code>docs/rules/TEMPLATING.md</code>, target templates in <code>docs/keywords/ACTIONS.md</code>, related tests; Ash Blossom and Book of Moon when later normalized. Side effect: broad future normalization may touch many cards and must preserve possessive/plural grammar.</p>
+  </div>
+  <div class="choices">
+    <label class="choice"><input type="checkbox" value="D1 | ACCEPT | Use it/its or them/their after same-ability targeting; retain explicit noun phrases only for ambiguity or typed/linked references."><span><b>Accept pronoun-first syntax</b><span class="rank">Recommended</span><span class="detail">Adopts requested wording with ambiguity, plurality, and linked-reference boundaries.</span></span></label>
+    <label class="choice"><input type="checkbox" value="D1 | REJECT | Keep the current the target template."><span><b>Keep current template</b><span class="rank">Alternative</span><span class="detail">Ash Blossom and Book of Moon retain <code>the target</code>.</span></span></label>
+    <label class="choice"><input type="checkbox" value="D1 | REVISE | Use precision text as final wording."><span><b>Revise rule</b><span class="rank">Custom</span><span class="detail">Define narrower pronoun or exception policy below.</span></span></label>
+  </div>
+  <label class="precision">Precision / final wording<textarea aria-label="D1 precision"></textarea></label>
+</fieldset>
+
+<fieldset data-question="R1 | Should concrete card text prefer the printed self-name over this card or this Spell?">
+  <legend>R1 · Printed self-name references</legend>
+  <div class="why">
+    <p><b>Scope:</b> global self-reference syntax in concrete card text.</p>
+    <p><b>Evidence:</b> Bagooska line 20 proposes <code>Destroy Bagooska</code>; Book of Moon line 19 proposes <code>Cast Book of Moon ...</code>. Existing cards already mix named self-reference with <code>this card</code>/<code>this Spell</code>.</p>
+    <p><b>Current rule:</b> <code>docs/rules/TEMPLATING.md:5-9</code> defines formatting for full self-names and generic <code>this card</code>, but no preference between them.</p>
+    <p><b>Proposal:</b> In concrete card rules text, prefer the full printed MSE self-name, without quotation marks, over <code>this card</code>, <code>this Creature</code>, or <code>this Spell</code>. Keep generic self-reference in reusable keyword/rule definitions where no concrete card name exists; use a pronoun after the object is already clear in the same sentence.</p>
+    <p><b>Impact:</b> <code>docs/rules/TEMPLATING.md</code>, Bagooska and Book of Moon when later normalized, plus any future whole-set normalization. Side effect: longer names consume more card space; renamed cards require text sync.</p>
+  </div>
+  <div class="choices">
+    <label class="choice"><input type="checkbox" value="R1 | ACCEPT | Prefer full printed self-name without quotes in concrete card text; keep generic self-reference in reusable definitions."><span><b>Accept printed self-name rule</b><span class="rank">Recommended</span><span class="detail">Matches requested Bagooska and Book of Moon syntax.</span></span></label>
+    <label class="choice"><input type="checkbox" value="R1 | REJECT | Keep this card and this Spell as valid default self-references."><span><b>Keep generic self-reference</b><span class="rank">Alternative</span><span class="detail">Treat both requested changes as local wording only.</span></span></label>
+    <label class="choice"><input type="checkbox" value="R1 | REVISE | Use precision text as final wording."><span><b>Revise rule</b><span class="rank">Custom</span><span class="detail">Define shorter-name, card-type, or space-pressure exceptions below.</span></span></label>
+  </div>
+  <label class="precision">Precision / final wording<textarea aria-label="R1 precision"></textarea></label>
+</fieldset>
+
+<fieldset data-question="D2 | Should zero-mana alternative costs use for free instead of without paying its mana cost?">
+  <legend>D2 · Free-cast phrase</legend>
+  <div class="why">
+    <p><b>Scope:</b> global zero-mana alternative-cost syntax.</p>
+    <p><b>Existing rule/evidence:</b> Book of Moon line 19, Spellbook Magician, Upstart Goblin, <code>docs/04_spellbook/KEYWORDS.md:5</code>, and <code>test_non_archetype_non_creatures.py:33</code> use <code>without paying its mana cost</code>.</p>
+    <p><b>Conflict:</b> requested Book of Moon text changes that established phrase to <code>Cast Book of Moon for free</code>, although no explicit third rule was listed.</p>
+    <p><b>Proposal:</b> For an alternative cost of zero mana, write <code>you may Cast [full self-name] for free</code>. <code>for free</code> replaces only the mana payment; additional costs and casting restrictions still apply unless separately waived.</p>
+    <p><b>Impact:</b> <code>docs/rules/TEMPLATING.md</code>, Spellbook keyword wording, related tests, Book of Moon and other free-cast cards when later normalized. Side effect: wording is shorter but less native to Magic rules and needs an explicit additional-cost boundary.</p>
+  </div>
+  <div class="choices">
+    <label class="choice"><input type="checkbox" value="D2 | ACCEPT | Use Cast [full self-name] for free for zero-mana alternative costs; additional costs and restrictions still apply."><span><b>Accept “for free” syntax</b><span class="rank">Requested</span><span class="detail">Makes Book of Moon example exact and defines rules boundary.</span></span></label>
+    <label class="choice"><input type="checkbox" value="D2 | REJECT | Keep without paying its mana cost as canonical Magic wording."><span><b>Keep current Magic wording</b><span class="rank">Safer</span><span class="detail">Book of Moon can still adopt its printed name while retaining established cost phrase.</span></span></label>
+    <label class="choice"><input type="checkbox" value="D2 | REVISE | Use precision text as final wording."><span><b>Revise rule</b><span class="rank">Custom</span><span class="detail">Provide exact alternative-cost phrase below.</span></span></label>
+  </div>
+  <label class="precision">Precision / final wording<textarea aria-label="D2 precision"></textarea></label>
+</fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `UR-2026-08-02-Reference-Wording — Reference wording rule proposals\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

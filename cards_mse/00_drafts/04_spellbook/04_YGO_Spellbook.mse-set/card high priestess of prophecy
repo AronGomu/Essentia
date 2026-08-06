@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/13_spellbook/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 18:39:22
 	name: High Priestess of Prophecy
 	casting_cost: 2W
 	image: image2.png
@@ -19,8 +19,8 @@ card:
 		<b>Alternative Cost</b> — <b>Reveal</b> 3 non-Creature <i-auto>“Spellbook”</i-auto> from Hand.
 		<i-auto>(1 - Activated Flash Soft)</i-auto> <b>Exile</b> 1 <i-auto>“Spellbook”</i-auto> from Hand or Grave and <b>Target</b> 1 nonland permanent; <b>Destroy</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	power: 5
-	toughness: 4
+	power: 6
+	toughness: 5
 	card_code_text: 001/016 C
 	card_code_text_2: 001/016 C
 	card_code_text_3: 001/016 C

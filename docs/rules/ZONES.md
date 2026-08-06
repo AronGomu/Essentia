@@ -13,7 +13,9 @@ Canonical card-text zones are `Hand`, `Field`, `Deck`, `Grave`, `Exile`, `Sidebo
 
 Use initial uppercase. Keep standalone zone terms plain. Bold only when term belongs to larger atomic keyword such as **Exile from Grave** or **On Send Grave**.
 
-Always use `Deck`, never `library`. Always use `Grave`, never `graveyard`, `GY`, `GYD`, or `G.Y.`.
+Do not put `the`, `a`, or `an` before a bare canonical zone name. Write `on Stack`, `on Field`, `from Grave`, `into Hand`, `from Deck`, `from Sideboard`. Keep articles only inside larger ordinary noun phrases that are not bare zone labels (example: `the top card of Deck`).
+
+Always use `Deck`, never `library`. Always use `Grave`, never `graveyard`, `GY`, `GYD`, or `G.Y`.
 
 ## Stack
 

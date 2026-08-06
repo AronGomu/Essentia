@@ -40,10 +40,17 @@ from mse_content import (  # noqa: E402
     visual_source_hash,
 )
 
-PROVENANCE_SCHEMA = 2
-SUPPORTED_PROVENANCE_SCHEMAS = {1, PROVENANCE_SCHEMA}
+PROVENANCE_SCHEMA = 3
+SUPPORTED_PROVENANCE_SCHEMAS = {1, 2, PROVENANCE_SCHEMA}
 RENDER_TRANSFORM = {"id": "transparent-white-corners", "version": 1}
 CORNER_SCAN_DIVISOR = 10
+# Print masters come from the export template, never from Preferences -> Export
+# scale, so the size is identical on every machine. 1500 x 2092 is 600 DPI at
+# 63.5 x 88.9 mm, exactly 4x the stylesheet's native 375 x 523.
+PRINT_TEMPLATE = "essentia-print.mse-export-template"
+PRINT_WIDTH = 1500
+PRINT_HEIGHT = 2092
+PRINT_DIR_NAME = "renders_print"
 PIXEL_HASH_CHUNK_ROWS = 64
 UNSAFE_FILENAME = re.compile(r'[<>:"/\\|?*]')
 
@@ -200,6 +207,111 @@ def build_provenance(project: Path, cards: list, render_dir: Path, config: MSECo
     }
 
 
+def export_print_masters(project: Path, output: Path, config: MSEConfig) -> dict[str, object]:
+    """
+    Export print masters through the Essentia print export template.
+
+    The template calls write_image_file(card, width:, height:), so MSE re-renders
+    each card at 1500 x 2092 rather than upscaling the 1x bitmap. The same corner
+    transform is applied; its scan span is width / CORNER_SCAN_DIVISOR, so it is
+    resolution independent.
+    """
+    cards = load_manifest(project)
+    for card in cards:
+        validate_export_name(card.name)
+    with tempfile.TemporaryDirectory(prefix="mse-print-export-") as temporary:
+        temporary_path = Path(temporary)
+        result = subprocess.run(
+            [str(config.cli), "--export", PRINT_TEMPLATE, str(project), str(temporary_path)],
+            capture_output=True,
+            text=True,
+            timeout=900,
+            check=False,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"MSE print export failed ({result.returncode})\n"
+                f"stdout={result.stdout}\nstderr={result.stderr}\n"
+                f"Is {PRINT_TEMPLATE} installed? Run launcher/setup_mse.py."
+            )
+        exports = sorted(temporary_path.rglob("*.png"))
+        if len(exports) != len(cards):
+            raise MSESourceError(
+                f"print export produced {len(exports)} PNGs; expected {len(cards)}"
+            )
+        actual_by_key: dict[str, Path] = {}
+        for exported in exports:
+            key = filename_key(exported.stem)
+            if key in actual_by_key:
+                raise MSESourceError(f"print export filename collision: {exported.name}")
+            width, height = decode_png(exported)
+            if (width, height) != (PRINT_WIDTH, PRINT_HEIGHT):
+                raise MSESourceError(
+                    f"print master {exported.name} is {width}x{height}, "
+                    f"expected {PRINT_WIDTH}x{PRINT_HEIGHT}: the installed "
+                    f"{PRINT_TEMPLATE} is stale or MSE ignored the size request"
+                )
+            make_white_corners_transparent(exported)
+            decode_png(exported)
+            actual_by_key[key] = exported
+
+        expected_by_key: dict[str, object] = {}
+        for card in cards:
+            key = filename_key(card.name)
+            if key in expected_by_key:
+                raise MSESourceError(f"card filename collision: {card.name}")
+            expected_by_key[key] = card
+        if actual_by_key.keys() != expected_by_key.keys():
+            raise MSESourceError(
+                "print export names differ: "
+                f"missing={sorted(expected_by_key.keys() - actual_by_key.keys())} "
+                f"extra={sorted(actual_by_key.keys() - expected_by_key.keys())}"
+            )
+
+        staging = output.parent / f".{output.name}.staging"
+        if staging.exists():
+            shutil.rmtree(staging)
+        staging.mkdir(parents=True)
+        try:
+            for key, card in expected_by_key.items():
+                destination = staging / render_filename(card.name)
+                if destination.resolve().parent != staging.resolve():
+                    raise MSESourceError(f"print filename escapes staging: {card.name}")
+                shutil.copyfile(actual_by_key[key], destination)
+            print_block = {
+                "template": PRINT_TEMPLATE,
+                "width": PRINT_WIDTH,
+                "height": PRINT_HEIGHT,
+                "cards": [
+                    {
+                        "id": card.source_name,
+                        "print": render_filename(card.name),
+                        "printHash": sha256_file(staging / render_filename(card.name)),
+                    }
+                    for card in cards
+                ],
+            }
+            backup = output.parent / f".{output.name}.previous"
+            if backup.exists():
+                shutil.rmtree(backup)
+            if output.exists():
+                output.replace(backup)
+            try:
+                staging.replace(output)
+            except BaseException:
+                if output.exists():
+                    shutil.rmtree(output)
+                if backup.exists():
+                    backup.replace(output)
+                raise
+            if backup.exists():
+                shutil.rmtree(backup)
+        finally:
+            if staging.exists():
+                shutil.rmtree(staging)
+    return print_block
+
+
 def inspect_project(project: Path) -> tuple[list, list[dict[str, object]]]:
     cards = load_manifest(project)
     provenance = load_provenance(project / "render-provenance.json")
@@ -353,6 +465,14 @@ def parse_args() -> argparse.Namespace:
         help="fresh-export to a temporary directory, verify pixel equality, then write canonical provenance",
     )
     parser.add_argument("--dry-run", action="store_true", help="validate sources and print planned JSON without exporting")
+    parser.add_argument(
+        "--print-masters",
+        action="store_true",
+        help=(
+            f"also export {PRINT_WIDTH}x{PRINT_HEIGHT} print masters via {PRINT_TEMPLATE} "
+            f"into {PRINT_DIR_NAME}/ beside the render output"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -445,12 +565,17 @@ def main() -> int:
                     newline="\n",
                 )
                 timestamp_updates.append(card.source_name)
+    print_count = 0
+    if args.print_masters:
+        print_output = output.parent / PRINT_DIR_NAME if not args.canonical else project / PRINT_DIR_NAME
+        provenance["print"] = export_print_masters(project, print_output, config)
+        print_count = len(provenance["print"]["cards"])
     if not args.canonical:
         provenance_path = output / "render-provenance.json"
         provenance_path.write_text(
             json.dumps(provenance, indent=2) + "\n", encoding="utf-8"
         )
-    print(json.dumps({"event": "mse.render.complete", "project": project.name, "count": len(cards), "output": str(output), "timestampUpdates": timestamp_updates}))
+    print(json.dumps({"event": "mse.render.complete", "project": project.name, "count": len(cards), "output": str(output), "printMasters": print_count, "timestampUpdates": timestamp_updates}))
     return 0
 
 

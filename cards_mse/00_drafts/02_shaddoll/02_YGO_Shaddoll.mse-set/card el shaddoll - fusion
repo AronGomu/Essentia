@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/11_shaddoll/CONTEXT.md
 	time_created: 2026-07-11 00:33:44
-	time_modified: 2026-07-24 13:53:09
+	time_modified: 2026-08-02 23:25:22
 	name: El Shaddoll - Fusion
 	casting_cost: U/B
 	image: mse_images/image19.png
@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Fusion Summon Instant</word-list-type-en>
 	sub_type:
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Fusion Summon</b> 1 <i-auto>“Shaddoll”</i-auto> Creature using Creatures from your Hand or Field as materials.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Fusion Summon</b> 1 <i-auto>“Shaddoll”</i-auto> Creature using Creatures from Hand or Field as materials.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 005/025 C
 	card_code_text_2: 005/025 C
