@@ -279,8 +279,10 @@ git grep -n "WEBSITE_V2_SPEC" -- TODO.md docs README.md
 | `python .script/check_immutable_stages.py --base $(git merge-base HEAD origin/main)` | 0 | pass — `locked lifecycle packages OK` |
 | `python .script/audit_python_dependencies.py` | 0 | pass — `python audit: 1 locked packages clean` |
 | `cd website && npm ci && npm run ci` | 0 | pass — `format:check`, `lint`, `check`, `test`, `build`; `dist scan: clean` |
-| `cd website && npm run test:e2e` | 1 | skipped — Playwright browsers absent: `Executable doesn't exist at /home/aron/.cache/ms-playwright/webkit-2311/pw_run.sh`. Enable with `cd website && npx playwright install`. |
+| `cd website && npm run test:e2e` | 1 | not measurable on this host — see below |
 | `git diff --check` | 0 | pass |
+
+On `npm run test:e2e`: `npx playwright install` was run and the browser payloads did download, so "browsers absent" was not the real cause. The run still fails at launch because the prebuilt binaries cannot link against this NixOS host's libraries — `chrome-headless-shell: error while loading shared libraries: libglib-2.0.so.0: cannot open shared object file`, with `libstdc++.so.6`, `libX11.so.6` and others likewise missing. `npx playwright install --with-deps` cannot fix this either; it shells out to `apt-get`. This gate is therefore CI-only on a non-FHS host. CI covers it: `.github/workflows/verify-website.yml:58` runs `npx playwright install --with-deps chromium firefox webkit` before `npm run test:e2e` at line 79. Running it locally would need an FHS environment (`steam-run`, `buildFHSUserEnv`) or the distro-packaged browsers via `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` plus `executablePath`.
 
 No failure is attributable to RST-101 … RST-104: the branch's 53 failing tests are the same 53 that fail on `main @ 4882457`, and the lint output is unchanged. `release.json` still reports `"status": "open"`; this plan never ran `release_package.py lock`.
 
