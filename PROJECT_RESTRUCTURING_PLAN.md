@@ -1,758 +1,308 @@
 # Project Restructuring Plan
 
+Autonomous execution edition. Rewritten 2026-08-06. **Decisions D-001 … D-023 ratified by the repository owner on 2026-08-06.**
+
+## How to run this plan
+
+- Every decision this plan needs is already frozen in [Frozen decisions](#frozen-decisions). No user input is required at any step.
+- The frozen decisions are accepted, not proposals. Treat them as binding. Changing one requires a new ADR plus a superseding `D-###` entry in this file; never silently reinterpret an existing entry.
+- Residual-ambiguity policy, in order: follow existing repo convention → pick the most reversible option → fail closed → record the new choice as a `D-###` entry in this file inside the same commit → continue. Never stop to ask.
+- Actions this plan never performs: lock a package (D-016), deploy or publish, force-push, delete user-authored content, rewrite history. Excluding them is a decision, not an open question.
+- Done means the [Verification gate](#verification-gate) exits clean. Partial delivery is not done.
+- Source-of-truth discipline holds throughout: card fields live only in MSE, this plan links owners instead of restating them.
+
 ## Status
 
-Implemented 2026-07-31. Legacy paths below document migration inputs, not current locations. First set: **Legend of Alpha**. First planned version: **0.1**.
+The original restructuring (STR-001 … CI-016, implemented 2026-07-31) landed, then was superseded in place by the open/locked lifecycle in [ADR 0008](docs/ADR/accepted/0008-open-locked-lifecycle.md). Its ticket set is closed; the old 7-directory pre-stage scheme in that plan no longer describes the repository. Full original text remains in git history at commit `4882457`.
 
-Card/deck selection was deferred during restructuring. Burning Abyss and Nekroz selections are now defined in `docs/rules/DECKLISTS_ALPHA_0.1.md` and assembled in Pre-ALPHA.
+| Original ticket | Outcome | Evidence |
+| --- | --- | --- |
+| STR-001, STR-002 | Done, contract restated for open/locked | `docs/RELEASES.md` |
+| DOC-003, DOC-004 | Done | `docs/CONTEXT.md`, `docs/{design,rules,keywords}/`, `docs/0{1..4}_*/` |
+| DOC-005 | Done | `docs/ADR/accepted/`, `docs/ADR/proposed/0003-nekroz-reconciliation.md` |
+| ORG-006, ORG-007 | Done | `cards_mse/00_drafts/*/`, absent `MSE_projects`, `mse`, `rule_reviews`, French archive |
+| TOOL-008, TOOL-009 | Done | `launcher/`, `.script/` |
+| LIFE-010, LIFE-011 | Done, reshaped by ADR 0008 | `.script/release_package.py`, `.script/check_immutable_stages.py` |
+| BUILD-012 | Done | `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/LOTA-0001-Alpha_0.1_all_cards.mse-set/` |
+| BUILD-013 | Superseded by D-007 | `.script/generate_print_pdfs.py`, ignored `print/` |
+| WEB-014, WEB-015 | Done for packages; feature surfaces moved to `WEBSITE_V2_SPEC.md` (D-018) | `website/scripts/build-content.mjs`, `.github/workflows/verify-website.yml` |
+| CI-016 | Done, re-run as [Verification gate](#verification-gate) | `.github/workflows/verify-website.yml` |
 
-## Goals
+Remaining work is RST-101 … RST-105 below.
 
-- Make existing MSE files sole card-content source of truth.
-- Move every current English MSE project into explicit draft storage.
-- Introduce mutable staging plus immutable ALPHA/BETA/Release history.
-- Publish website content from immutable stages only.
-- Replace duplicated docs with focused, linked modules.
-- Preserve old card versions through immutable MSE packages.
-- Keep canonical renders available to website CI.
-- Isolate launcher code.
-- Remove obsolete French archive, aggregate, print, planning content.
+## Frozen decisions
 
-## Source-of-truth rules
+Status: **ratified 2026-08-06**. All 23 entries are accepted with no exceptions and no pending review. Entries carrying an **Action** line have a ticket that propagates them into the owning document; the decision itself is already settled.
 
-- Card name, rules text, cost, type, rarity, stats, art refs, frame: MSE only.
-- Current Nekroz source: existing `03_YGO_Nekroz.mse-set`.
-- `website/content/snapshots/nekroz/001-2026-07-17.json` is not card source.
-- Docs must not duplicate card-by-card values.
-- Website must never write MSE source.
-- Stable card IDs, release dates, deck membership, content-post URLs may live in metadata.
-- Metadata must not duplicate card fields.
-- Aggregate MSE projects exist only in ALPHA/BETA/Release packages.
-- Aggregate MSE projects are generated, read-only, never independently edited.
+### D-001 — Lifecycle model
 
-## Lifecycle
+**Decision:** Four stage directories `cards_mse/{00_drafts,01_alpha,02_beta,03_release}` plus a per-package `status` of `open` or `locked`. The `pre_alpha`/`pre_beta`/`pre_release` staging directories and the `02_alpha`/`04_beta`/`06_released` numbering are dead.
+**Why:** Assembly is just an `open` package; a separate staging directory duplicated card homes.
+**Owner:** `docs/RELEASES.md`, ADR 0008.
 
-| Directory | Meaning | Mutable | Website |
-| --- | --- | ---: | ---: |
-| `00_drafts` | Ideas, current projects, future drafts | Yes | Ignore |
-| `01_pre_alpha` | ALPHA candidate assembly | Yes | Ignore |
-| `02_alpha` | Printed first-test sets | No | Publish/history |
-| `03_pre_beta` | BETA candidate assembly | Yes | Ignore |
-| `04_beta` | Printed second-test sets | No | Publish/history |
-| `05_pre_release` | Final release candidate assembly | Yes | Ignore |
-| `06_released` | Official releases | No | Publish/history |
+### D-002 — Stage markers
 
-### Promotion rules
+**Decision:** `set_info.artist` is `DRAFT` in drafts and `{set_name} Alpha` / `{set_name} Beta` / `{set_name} Release` inside packages. Mismatch fails validation.
+**Owner:** `docs/RELEASES.md`, `.script/release_package.py validate`.
 
-- Draft → Pre-ALPHA: move/copy selected working projects.
-- Pre-ALPHA → ALPHA: validate package, generate aggregate/renders/PDF, commit immutable package, empty source staging.
-- ALPHA → Pre-BETA: copy immutable ALPHA package. Never move/edit ALPHA.
-- Pre-BETA → BETA: validate package, generate aggregate/renders/PDF, commit immutable package, empty source staging.
-- BETA → Pre-Release: copy immutable BETA package. Never move/edit BETA.
-- Pre-Release → Release: validate package, generate aggregate/renders/PDF, commit immutable package, empty source staging.
-- Post-release correction: duplicate released source into mutable staging, edit, promote as new version.
-- Latest version selection must use lifecycle/version metadata, never filesystem mtime/glob order.
+### D-003 — Identity grammar
 
-### Immutable-stage enforcement
+**Decision:** `setId` matches `AAAA-0000` (2–8 uppercase letters, dash, 4 digits) and stays stable across stages. `version` is `Alpha_X.Y` / `Beta_X.Y` / `Release_X.Y` and must match the package stage. Package folder is `{setId}-{version}`. First set: `LOTA-0001`, Legend of the Alpha, `Alpha_0.1`.
 
-Paths under `02_alpha`, `04_beta`, `06_released` become immutable after commit.
+### D-004 — Version numbering
 
-CI merge-base guard must reject:
+**Decision:** `X` is the milestone, `Y` the iteration. `advance` carries the current `X.Y` into the next stage unchanged. A correction after lock creates a new package in the same stage with `Y + 1`. An `open` package never bumps its version; edits happen in place followed by `rebuild`.
+**Why:** Makes version ordering total and derivable without mtime, and keeps one number line per milestone across stages.
 
-- source modification;
-- deletion;
-- rename;
-- render replacement;
-- PDF replacement;
-- provenance replacement;
-- aggregate replacement.
+### D-005 — Aggregate project
 
-New child versions remain allowed.
+**Decision:** `{setId}-{version}_all_cards.mse-set` is generated, read-only, and regenerated by `release_package.py rebuild`. Hand edits are drift and must fail validation. The launcher hides aggregates from the project menu.
 
-## MSE painter markers
+### D-006 — Renders and provenance
 
-Requested painter-name slot maps to `set_info.artist`.
+**Decision:** `renders/`, `render-provenance.json`, and `package-sha256.json` are tracked inside the package. Website CI cannot run MSE, so a missing or stale render fails the build, closed, with no placeholder fallback.
 
-| Stage | Required value |
+### D-007 — PDFs
+
+**Decision:** Packages never contain PDFs. Printing is a standalone one-off step writing `{setId}-{version}_print.pdf` plus a manifest into the git-ignored root `print/`. Supersedes the original plan's in-package PDF.
+**Why:** Prints are disposable output of tracked renders; tracking them bloated the immutable hash for no reproducible gain.
+**Owner:** `docs/MSE.md#printing`, `.script/generate_print_pdfs.py`.
+
+### D-008 — Print quantities
+
+**Decision:** Uniform **2 copies per distinct package card**, matching the tool default and the shipped manifest. Per-card exceptions use `--copies-for "Card Name=N"`; `N` of 0 drops the card; unknown names fail loudly. The original "3 copies per distinct card per deck, 6 when shared by 2 decks" rule is dropped.
+**Why:** Alpha_0.1 decklists never exceed 2 copies of a card, so 3/6 printed waste and contradicted the shipped tool.
+**Action:** RST-101.
+
+### D-009 — Copy limits
+
+**Decision:** No rarity-based copy limits exist. Deck legality allows at most **2 copies of a distinct card per deck**, matching the Alpha_0.1 lists. If a rarity system ships later, mythic starts at 1 copy per deck and is revisited by ADR.
+**Why:** The existing decklists already encode the constraint; leaving it "undecided" blocked deck validation with no design benefit.
+**Action:** RST-102.
+
+### D-010 — Card ownership
+
+**Decision:** A card has exactly one mutable home: a draft project or a single `open` package. Draft → package is a move, never a copy. `locked` packages each keep their own snapshot copy; that is the only intentional duplication. No parallel archetype copies of a card already in an open package.
+
+### D-011 — Website visibility
+
+**Decision:** The website publishes `01_alpha`, `02_beta`, and `03_release` packages whether `open` or `locked`. `00_drafts` is never published. A draft-only repository builds a valid empty catalog rather than failing.
+
+### D-012 — Latest resolution
+
+**Decision:** The current version of a card resolves by stage rank plus version order, never by filesystem mtime or glob order.
+
+### D-013 — Card source
+
+**Decision:** MSE is the only card source. The legacy `website/content/snapshots/nekroz` JSON is deleted permanently; no JSON, YAML, or database card source may be reintroduced. Metadata may hold stable IDs, dates, deck membership, and content URLs only.
+
+### D-014 — Decklists
+
+**Decision:** Gameplay quantities live in `docs/rules/DECKLISTS_ALPHA_0.1.md`. Package `release.json` `decks[]` stores `{"id", "cards": [stableId]}` membership only, no quantities and no card fields.
+
+### D-015 — Archetype changelogs
+
+**Decision:** Create `docs/<archetype>/CHANGELOG.md` only after a locked package actually changes that archetype. Never create empty changelog files.
+
+### D-016 — Locking Alpha_0.1
+
+**Decision:** `cards_mse/01_alpha/LOTA-0001-Alpha_0.1` stays `open`. This plan never runs `release_package.py lock`. Locking is a publication boundary that a human triggers explicitly with the documented command.
+**Why:** Playtest iteration on Alpha_0.1 is still open; locking would force every further fix into a new package version.
+
+### D-017 — Historical references
+
+**Decision:** `docs/ADR/**` and `CHANGELOG.md` keep legacy paths verbatim as decision evidence. Stale-path gates exclude those two locations and only those.
+
+### D-018 — Website feature work
+
+**Decision:** Deck pages, blog/changelog surface, and the historical release grid are owned by `WEBSITE_V2_SPEC.md` and tracked in `TODO.md`. This plan neither restates nor re-decides them.
+
+### D-019 — French archive
+
+**Decision:** Deleted permanently. No restoration, no translation policy, no checksum manifest. A test asserts the absence.
+
+### D-020 — Launcher
+
+**Decision:** Launcher code lives in `launcher/` and imports `launcher.mse_config`. `launcher/.env` and `launcher/.mse_launcher.log` are runtime files and stay git-ignored. Project discovery is recursive over `cards_mse/`, grouped by stage/group/set.
+
+### D-021 — Test runner
+
+**Decision:** `python -m unittest discover -s tests`, matching CI. pytest is not a dependency and must not be added; `requirements-dev.lock` is hash-pinned and changes only through a deliberate dependency ticket.
+
+### D-022 — Script scope
+
+**Decision:** Automation lives in `.script/`. No ordinary script may write into a `locked` package; `.script/check_immutable_stages.py` is the enforcing gate and runs against the merge base in CI.
+
+### D-023 — Definition of done
+
+**Decision:** A ticket is done when its acceptance commands exit 0 and `git diff --check` is clean. Reporting is factual: a skipped or failing gate is stated with its output, never summarized as passing.
+
+## Contract pointers
+
+Single owner per topic. This plan links; it does not duplicate.
+
+| Topic | Owner |
 | --- | --- |
-| Draft | `DRAFT` |
-| Pre-ALPHA | `{set_name} Pre-ALPHA` |
-| ALPHA | `{set_name} ALPHA` |
-| Pre-BETA | `{set_name} Pre-BETA` |
-| BETA | `{set_name} BETA` |
-| Pre-Release | `{set_name} Pre-Release` |
-| Released | `{set_name} Release` |
+| Stages, statuses, promotion, lock policy, package shape | `docs/RELEASES.md` |
+| MSE authoring, markers, aggregate, renders, printing | `docs/MSE.md` |
+| Rules, deck building, templating | `docs/RULES.md` and `docs/rules/` |
+| Design and conversion | `docs/DESIGN.md` and `docs/design/` |
+| Keywords | `docs/KEYWORDS.md` and `docs/keywords/` |
+| Decisions and evidence | `docs/ADR/README.md` |
+| Website architecture and remaining feature phases | `WEBSITE_V2_SPEC.md`, `website/README.md` |
+| Card fields | `cards_mse/**/*.mse-set` only |
 
-Legend of Alpha ALPHA example:
+## Remaining tickets
 
-```text
-set_info:
-    artist: Legend of Alpha ALPHA
+Execute in order. Each is independently committable.
+
+### RST-101 — Align proxy-quantity rule with the print tool
+
+**Goal:** Documentation states the quantity rule the tool actually implements (D-008).
+
+**Work:**
+
+- [ ] Rewrite the "Proxy quantities" section of `docs/rules/DECK_BUILDING.md`: uniform 2 copies per distinct package card, `--copies-for "Card Name=N"` for exceptions, `N` of 0 omits, unknown name fails the run.
+- [ ] Link `docs/MSE.md#printing` from that section instead of restating flags.
+- [ ] Remove any other statement of the 3-per-deck / 6-when-shared rule.
+
+**Commands:**
+
+```bash
+git grep -In "3 copies\|6 copies\|copies per deck" -- docs README.md
+python -m unittest discover -s tests
 ```
 
-## Target card tree
+**Acceptance:**
 
-```text
-cards_mse/
-  00_drafts/
-    00_non_archetype/
-      00_YGO_Non_Archetype.mse-set/
-    01_burning_abyss/
-      01_YGO_Burning_Abyss.mse-set/
-    02_shaddoll/
-      02_YGO_Shaddoll.mse-set/
-    03_nekroz/
-      03_YGO_Nekroz.mse-set/
-    04_spellbook/
-      04_YGO_Spellbook.mse-set/
+- [ ] The grep returns no hit outside `docs/ADR/**` and `CHANGELOG.md`.
+- [ ] `docs/rules/DECK_BUILDING.md` names 2 copies and the override flag.
+- [ ] Test suite exits 0.
 
-  01_pre_alpha/
-    {XX}_{group}/
-      [...mse projects...]
+### RST-102 — Close the copy-limit decision
 
-  02_alpha/
-    {set_name}_{X.X}/
-      [...component mse projects...]
-      {set_name}_{X.X}_all_cards.mse-set/
-      renders/
-      {set_name}_{X.X}_print.pdf
+**Goal:** No rule module says a decision is undecided (D-009).
 
-  03_pre_beta/
-    {XX}_{group}/
-      [...mse projects...]
+**Work:**
 
-  04_beta/
-    {set_name}_{X.X}/
-      [...component mse projects...]
-      {set_name}_{X.X}_all_cards.mse-set/
-      renders/
-      {set_name}_{X.X}_print.pdf
+- [ ] Add `docs/ADR/accepted/0014-deck-copy-limits.md` recording D-009: no rarity-based limits, 2 copies per distinct card per deck, mythic at 1 copy only if a rarity system ships, revisit by future ADR.
+- [ ] Link it from the Accepted list in `docs/ADR/README.md`.
+- [ ] Replace the "Mythic copy limits remain undecided" line in `docs/rules/DECK_BUILDING.md` with the decided rule plus an ADR link.
 
-  05_pre_release/
-    {XX}_{group}/
-      [...mse projects...]
+**Commands:**
 
-  06_released/
-    {set_name}_{X.X}/
-      [...component mse projects...]
-      {set_name}_{X.X}_all_cards.mse-set/
-      renders/
-      {set_name}_{X.X}_print.pdf
+```bash
+git grep -In "undecided\|TBD\|to be decided" -- docs ':!docs/ADR'
+python -m unittest discover -s tests
 ```
 
-Legend of Alpha 0.1 example:
+**Acceptance:**
 
-```text
-cards_mse/02_alpha/Legend_of_Alpha_0.1/
+- [ ] Grep clean outside `docs/ADR/**`.
+- [ ] ADR 0014 exists, is listed in the index, and states status accepted.
+- [ ] Test suite exits 0.
+
+**Depends on:** RST-101 (same file).
+
+### RST-103 — Encode the stale-path gate as a test
+
+**Goal:** Legacy lifecycle paths cannot silently return (D-001, D-017).
+
+**Work:**
+
+- [ ] Extend `tests/test_english_source_of_truth.py` with a test that walks `git ls-files`, skips `docs/ADR/`, `CHANGELOG.md`, `PROJECT_RESTRUCTURING_PLAN.md`, and non-UTF-8 files, and fails on the tokens `MSE_projects`, `rule_reviews`, `cards_mse/02_alpha`, `cards_mse/04_beta`, `cards_mse/06_released`, `01_pre_alpha`, `03_pre_beta`, `05_pre_release`.
+- [ ] Keep the existing legacy-root and print-tracking assertions untouched.
+
+**Commands:**
+
+```bash
+python -m unittest discover -s tests
 ```
 
-### Generated release artifacts
+**Acceptance:**
 
-- `renders/` sits beside aggregate MSE project.
-- `{set_name}_{X.X}_print.pdf` sits directly beside aggregate MSE project.
-- No `print/` directory.
-- Renders remain tracked. Website CI cannot run MSE.
-- PDF remains tracked as immutable package artifact.
-- Renders/PDF/provenance belong to immutable package hash/guard.
-- No `.gitignore` rule for immutable renders.
+- [ ] Suite green on the clean tree.
+- [ ] Temporarily writing `cards_mse/02_alpha` into a tracked doc makes the new test fail; revert the probe afterwards.
 
-## Existing project moves
+### RST-104 — One owner per open work item
 
-```text
-MSE_projects/03_YGO_Non_Archetype_Creatures.mse-set
-MSE_projects/05_YGO_Staples_Fusion.mse-set
-MSE_projects/06_YGO_Staples_Synchro.mse-set
-MSE_projects/07_YGO_Staples_Xyz.mse-set
-MSE_projects/08_YGO_Staples_Link.mse-set
-MSE_projects/09_YGO_Non_Archetype_Non_Creatures.mse-set
-→ cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set
+**Goal:** No open item exists without a named owning document (D-018).
 
-MSE_projects/10_YGO_Burning_Abyss.mse-set
-→ cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set
+**Work:**
 
-MSE_projects/11_YGO_Shaddoll.mse-set
-→ cards_mse/00_drafts/02_shaddoll/02_YGO_Shaddoll.mse-set
+- [ ] In `TODO.md`, annotate each open item with its owning `WEBSITE_V2_SPEC.md` phase or ticket id.
+- [ ] Add a one-line pointer in `WEBSITE_V2_SPEC.md` stating that `TODO.md` tracks its execution order.
+- [ ] Add a pointer to this plan from `docs/CONTEXT.md` change-ownership section so restructuring decisions are discoverable.
 
-MSE_projects/12_YGO_Necroz.mse-set
-→ cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set
+**Commands:**
 
-MSE_projects/13_YGO_Spellbook.mse-set
-→ cards_mse/00_drafts/04_spellbook/04_YGO_Spellbook.mse-set
-
-MSE_projects/ensure_original_images.py
-→ .script/ensure_original_images.py
+```bash
+git grep -n "WEBSITE_V2_SPEC" -- TODO.md docs README.md
 ```
 
-Every moved English project receives `set_info.artist: DRAFT`.
+**Acceptance:**
 
-## Target docs tree
+- [ ] Every unchecked `TODO.md` item names an owner.
+- [ ] `docs/CONTEXT.md` links this plan.
 
-```text
-docs/
-  CONTEXT.md
-  DESIGN.md
-  RULES.md
-  KEYWORDS.md
-  RELEASES.md
-  MSE.md
+### RST-105 — Final verification gate and closure
 
-  design/
-    CONVERSION.md
-    BALANCE.md
-    FRAMES.md
+**Goal:** Prove the plan complete.
 
-  rules/
-    DECK_BUILDING.md
-    ZONES.md
-    CARD_TYPES.md
-    SUMMONING.md
-    TEMPLATING.md
+**Work:**
 
-  keywords/
-    ACTIONS.md
-    EVENTS.md
-    ABILITIES.md
-    COSTS_AND_PROCEDURES.md
+- [ ] Run the full [Verification gate](#verification-gate).
+- [ ] Fix any fallout inside the tickets above; do not widen scope.
+- [ ] Append a closure line to this section recording the date and commit of the green run.
 
-  ADR/
-    README.md
-    accepted/
-    proposed/
+**Acceptance:**
 
-  01_burning_abyss/
-    CONTEXT.md
-    DESIGN.md
-    RULES.md
-    KEYWORDS.md
+- [ ] Every gate command exits 0.
+- [ ] `git diff --check` clean.
+- [ ] `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/release.json` still reports `"status": "open"` (D-016).
 
-  02_shaddoll/
-    CONTEXT.md
-    DESIGN.md
-    RULES.md
-    KEYWORDS.md
+**Depends on:** RST-101 … RST-104.
 
-  03_nekroz/
-    CONTEXT.md
-    DESIGN.md
-    RULES.md
-    KEYWORDS.md
+## Verification gate
 
-  04_spellbook/
-    CONTEXT.md
-    DESIGN.md
-    RULES.md
-    KEYWORDS.md
+```bash
+python -m unittest discover -s tests
+python .script/lint_mse_card_style.py
+python .script/release_package.py validate
+python .script/check_immutable_stages.py --base "$(git merge-base HEAD origin/main)"
+python .script/audit_python_dependencies.py
+cd website && npm ci && npm run ci
+cd website && npm run test:e2e
+git diff --check
 ```
 
-### Global doc ownership
-
-- `CONTEXT.md`: nav, folder ownership, source-of-truth map.
-- `DESIGN.md`: design index, big-picture cube principles.
-- `RULES.md`: rules index, core invariants.
-- `KEYWORDS.md`: keyword taxonomy/index.
-- `RELEASES.md`: lifecycle, promotion, immutability.
-- `MSE.md`: authoring, painter markers, aggregate generation, renders.
-- `design/CONVERSION.md`: Yu-Gi-Oh! → Magic level/stat/color conversion.
-- `design/BALANCE.md`: power level, interaction, design constraints.
-- `design/FRAMES.md`: validated MSE frame decisions.
-- `rules/DECK_BUILDING.md`: rarity limits, deck/sideboard rules, mulligan.
-- `rules/ZONES.md`: Hand/Field/Deck/Grave/Exile/Sideboard/Stack.
-- `rules/CARD_TYPES.md`: Trap, face-down, Extra Deck types.
-- `rules/SUMMONING.md`: Ritual/Fusion/Synchro/Xyz/Link/proper summon.
-- `rules/TEMPLATING.md`: PSCT, costs, targeting, prefixes, formatting.
-- `keywords/ACTIONS.md`: action keywords.
-- `keywords/EVENTS.md`: event keywords.
-- `keywords/ABILITIES.md`: ability keywords.
-- `keywords/COSTS_AND_PROCEDURES.md`: cost/procedure keywords.
-
-### Archetype doc ownership
-
-- `CONTEXT.md`: local nav, scope, owning MSE projects.
-- `DESIGN.md`: identity, colors, play patterns, design constraints.
-- `RULES.md`: archetype-specific rules/exceptions.
-- `KEYWORDS.md`: archetype-specific keyword dictionary.
-
-Future file:
-
-```text
-{archetype}/CHANGELOG.md
-```
-
-Create only after real released archetype changes exist. Do not create empty CHANGELOG files during restructure.
-
-Non-archetype groups remain storage/type buckets. Shared Fusion/Synchro/Xyz/Link/Ritual/Trap rules remain global.
-
-### Existing docs migration
-
-```text
-docs/index.md + docs/context.md
-→ docs/CONTEXT.md
-
-docs/01_cube_overview.md + design sections from docs/02_rules_keywords_card_design.md
-→ docs/DESIGN.md + docs/design/{CONVERSION,BALANCE,FRAMES}.md
-
-rule sections from docs/context.md + docs/02_rules_keywords_card_design.md
-→ docs/RULES.md + docs/rules/{DECK_BUILDING,ZONES,CARD_TYPES,SUMMONING,TEMPLATING}.md
-
-keyword defs from docs/context.md + docs/02_rules_keywords_card_design.md
-→ docs/KEYWORDS.md + docs/keywords/{ACTIONS,EVENTS,ABILITIES,COSTS_AND_PROCEDURES}.md
-
-release/MSE workflow sections
-→ docs/RELEASES.md + docs/MSE.md
-
-docs/10_archetype_burning_abyss.md
-→ docs/01_burning_abyss/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
-
-docs/11_archetype_shaddoll.md
-→ docs/02_shaddoll/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
-
-docs/12_archetype_necroz.md
-→ docs/03_nekroz/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
-
-docs/13_archetype_spellbook.md
-→ docs/04_spellbook/{CONTEXT,DESIGN,RULES,KEYWORDS}.md
-
-docs/frame_candidates.md
-→ docs/ADR/accepted/<id>-mse-frame-mapping.md
-
-docs/_keyword_inventory_report.md
-→ accepted definitions in KEYWORDS modules; required evidence under ADR
-
-rule_reviews/*.md
-→ docs/ADR/accepted/ or docs/ADR/proposed/ based on status
-```
-
-Applied reviews become accepted ADRs. Unresolved Nekroz review remains proposed. No invented decisions.
-
-## Launcher target
-
-```text
-launcher/
-  __init__.py
-  mse_config.py
-  setup_mse.py
-  mse_project_menu.pyw
-  .env                  # ignored runtime config
-  .mse_launcher.log     # ignored runtime log
-```
-
-Moves:
-
-```text
-mse_config.py → launcher/mse_config.py
-setup_mse.py → launcher/setup_mse.py
-mse_project_menu.pyw → launcher/mse_project_menu.pyw
-.env → launcher/.env
-.mse_launcher.log → launcher/.mse_launcher.log
-```
-
-Requirements:
-
-- Imports use `launcher.mse_config`.
-- Setup default points to repo `cards_mse/`.
-- Launcher recursively discovers `.mse-set` projects.
-- UI groups projects by lifecycle/group/set.
-- Released state remains visible.
-- Launcher keeps existing diagnostics.
-
-## Website content rules
-
-- Website folder location remains unchanged.
-- Root `DESIGN.md` moves to `website/DESIGN.md`.
-- Root `PRODUCT.md` moves to `website/PRODUCT.md`.
-- Mutable stages `00`, `01`, `03`, `05` are ignored fail-closed.
-- Immutable stages `02`, `04`, `06` publish/history.
-- Current card = latest lifecycle/version by stable identity.
-- Search/feed/sitemap/assets use same public graph.
-- Tracked package renders provide website image input.
-- Missing/stale render or provenance blocks build.
-- Draft-only repo publishes zero card routes plus clear empty state.
-- Legacy Nekroz snapshot cannot override MSE.
-- Legacy Nekroz snapshot route/data/assets are removed.
-
-## Deletions
-
-```text
-mse/
-print/
-MSE_projects/French/
-docs/French/
-rule_reviews/French/
-FRENCH_ARCHIVE_SHA256SUMS
-website_implementation_plan.md
-website_validation_report.md
-```
-
-Also remove related French archive tests, docs, skills, checksums, policy refs.
-
-Current root proxy PDFs are drafts. Delete them. Future PDFs live directly inside immutable set packages.
-
-## Unchanged locations
-
-```text
-original_cards/
-original_images/
-tests/       # location unchanged; contents updated
-website/     # location unchanged
-```
-
-# Tickets
-
-## STR-001 — Freeze filesystem/lifecycle contract
-
-**Goal:** Record approved paths, stages, markers, lock rules.
-
-**Work:**
-
-- Document lifecycle dirs.
-- Document confirmed website visibility.
-- Document painter-marker values.
-- Document generated aggregate contract.
-- Document French archive deletion.
-- Document `Legend of Alpha` naming.
-
-**Acceptance:**
-
-- One meaning per stage/path.
-- Mutable/immutable boundary explicit.
-- No card fields duplicated outside MSE.
-
-## STR-002 — Preserve worktree; inventory refs
-
-**Goal:** Safe atomic migration.
-
-**Work:**
-
-- Preserve current uncommitted creature-project/launcher edits.
-- Inventory static imports, Python imports, string paths, docs links, CI routes, tests, skills, config refs, generated reports.
-- Read full reference-sweep checklist before moves.
-- Produce final `git mv` list.
-
-**Acceptance:**
-
-- Every moved/deleted path has reference list.
-- No unrelated user work overwritten.
-
-**Dependencies:** STR-001.
-
-## DOC-003 — Rebuild modular global docs
-
-**Goal:** Concise indexes plus focused modules.
-
-**Work:**
-
-- Create root indexes.
-- Create `RELEASES.md`, `MSE.md`.
-- Create design/rules/keyword modules.
-- Deduplicate existing content.
-- Link every doc from `docs/CONTEXT.md`.
-- Keep card values out.
-
-**Acceptance:**
-
-- Every old English rule/design statement mapped once.
-- Details have one owning module.
-- No contradictory duplicate rules.
-- Links pass.
-
-**Dependencies:** STR-001.
-
-## DOC-004 — Split archetype docs
-
-**Goal:** Local context/design/rules/keywords.
-
-**Work:**
-
-- Create archetype dirs 10–13.
-- Add local `CONTEXT.md`.
-- Split each old archetype doc.
-- Link shared terms to global docs.
-- Document future `CHANGELOG.md` policy without empty files.
-- Update tests/skills refs.
-
-**Acceptance:**
-
-- Every current archetype has 4 current docs.
-- Future CHANGELOG policy documented.
-- No card values copied from MSE.
-
-**Dependencies:** DOC-003.
-
-## DOC-005 — Convert rule reviews to ADRs
-
-**Goal:** Decisions live under `docs/ADR`.
-
-**Work:**
-
-- Add ADR template/index.
-- Convert applied reviews to accepted ADRs.
-- Convert unresolved Nekroz review to proposed ADR.
-- Move frame decision into accepted ADR.
-- Update rule workflows to create proposed ADRs.
-- Remove `rule_reviews/` after complete migration.
-
-**Acceptance:**
-
-- Decision evidence retained.
-- Accepted/proposed statuses truthful.
-- `rule_reviews/` absent.
-
-**Dependencies:** DOC-003.
-
-## ORG-006 — Rename card root; move English projects to drafts
-
-**Goal:** Current cards become explicit unpublished drafts.
-
-**Work:**
-
-- Rename project domain to `cards_mse/`.
-- Move 10 English MSE projects into numbered draft groups.
-- Set every project `set_info.artist: DRAFT`.
-- Move `ensure_original_images.py` to `.script/`.
-- Preserve card fields/content.
-
-**Acceptance:**
-
-- All 10 projects open in MSE.
-- Nekroz content unchanged except marker/path refs.
-- Every English project exists under `00_drafts`.
-- Website publishes none.
-
-**Dependencies:** STR-002.
-
-## ORG-007 — Delete obsolete/archive content; move website context
-
-**Goal:** Requested top-level cleanup.
-
-**Work:**
-
-- Delete `mse/`.
-- Delete French archive/content/checksum/policies.
-- Delete root `print/` PDFs.
-- Move root website design/product docs into `website/`.
-- Delete obsolete website plan/report.
-- Remove empty roots.
-
-**Acceptance:**
-
-- Requested old paths absent.
-- Website context refs updated.
-- No active utility deleted accidentally.
-
-**Dependencies:** STR-002.
-
-## TOOL-008 — Move launcher into `launcher/`
-
-**Goal:** Isolate launcher/config.
-
-**Work:**
-
-- Move tracked launcher files.
-- Move ignored env/log defaults.
-- Add importable package.
-- Update commands/docs/tests.
-- Add recursive MSE discovery.
-- Group UI by lifecycle/group/set.
-
-**Acceptance:**
-
-- `python launcher/setup_mse.py` configures repo.
-- `launcher/mse_project_menu.pyw` opens nested projects.
-- Config points to `cards_mse`.
-- Log writes under `launcher/`.
-
-**Dependencies:** ORG-006.
-
-## TOOL-009 — Update scripts/tests/skills for new paths
-
-**Goal:** Remove stale root assumptions.
-
-**Work:**
-
-- Update `.script/*` discovery.
-- Update Python test paths.
-- Update card skills docs/ADR/SOT paths.
-- Add explicit stage-aware read/write scope.
-- Regenerate keyword inventory from intended source scope.
-
-**Acceptance:**
-
-- Python suite passes.
-- Old-path grep clean outside historical ADR evidence.
-- Ordinary scripts cannot edit immutable stages.
-
-**Dependencies:** DOC-003–005, ORG-006, TOOL-008.
-
-## LIFE-010 — Add stage/painter validator
-
-**Goal:** Path state matches MSE-visible state.
-
-**Work:**
-
-- Validate stage marker.
-- Validate set/version folder grammar.
-- Validate component/aggregate projects.
-- Reject misplaced projects/unknown stages.
-
-**Acceptance:**
-
-- Draft without `DRAFT` fails.
-- ALPHA without `{set_name} ALPHA` fails.
-- BETA without `{set_name} BETA` fails.
-- Marker failure names exact path/project.
-
-**Dependencies:** ORG-006, TOOL-009.
-
-## LIFE-011 — Add promotion/immutability workflow
-
-**Goal:** Safe staging plus locked history.
-
-**Work:**
-
-- Add explicit promotion command/workflow.
-- Copy immutable predecessor into mutable next stage.
-- Empty Pre-ALPHA/Pre-BETA/Pre-Release after successful promotion.
-- Hash package before lock.
-- Add CI merge-base guard for `02/04/06`.
-- Reject mtime-based latest selection.
-
-**Acceptance:**
-
-- Child version promotion succeeds.
-- Committed ALPHA/BETA/Release edit fails CI.
-- Draft/pre-stage edit passes.
-- Immutable predecessor remains present.
-
-**Dependencies:** LIFE-010.
-
-## BUILD-012 — Generate aggregate MSE project
-
-**Goal:** One contextual MSE project without second manual SOT.
-
-**Work:**
-
-- Collect component manifests.
-- Resolve stable identity explicitly.
-- Generate `{set}_{version}_all_cards.mse-set`.
-- Copy/import local images safely.
-- Preserve exact card fields/render inputs.
-- Validate aggregate union/hash equality.
-- Reject direct aggregate drift.
-
-**Acceptance:**
-
-- Aggregate count/hash equals component union.
-- Duplicate/conflicting card fails.
-- Aggregate opens in MSE.
-- Regeneration deterministic.
-
-**Dependencies:** LIFE-010.
-
-## BUILD-013 — Generate colocated renders/PDF
-
-**Goal:** Website-ready renders plus one direct PDF.
-
-**Work:**
-
-- Export to `{set_dir}/renders/`.
-- Generate `{set_dir}/{set}_{version}_print.pdf`.
-- Generate auditable print manifest.
-- Apply future decklist print rule: 3 copies/distinct card/deck; shared card across 2 decks gives 6; gameplay qty ignored.
-- Track renders/PDF/provenance.
-- Include outputs in immutable guard.
-
-**Acceptance:**
-
-- Render path correct.
-- PDF path correct.
-- No `print/` directory.
-- PDF count matches manifest when decklists exist.
-- Website CI reads tracked renders.
-
-**Dependencies:** BUILD-012. Exact decklists deferred.
-
-## WEB-014 — Cut website to immutable MSE stages
-
-**Goal:** Mutable stages invisible; snapshots non-authoritative.
-
-**Work:**
-
-- Remove hard-coded 10-project registry.
-- Remove Nekroz snapshot as source/history.
-- Resolve `02_alpha`, `04_beta`, `06_released` only.
-- Ignore `00_drafts`, `01_pre_alpha`, `03_pre_beta`, `05_pre_release`.
-- Resolve latest card by stable identity/lifecycle/version.
-- Use tracked renders.
-- Add empty state before first ALPHA package.
-
-**Acceptance:**
-
-- Draft-only repo publishes zero cards.
-- Current Nekroz draft remains hidden.
-- Valid immutable package publishes only its cards.
-- Snapshot cannot override MSE.
-- Search/feed/sitemap/assets share one public graph.
-
-**Dependencies:** LIFE-011, BUILD-012.
-
-## WEB-015 — Release/deck/history/content foundations
-
-**Goal:** Preserve public release/version model under new hierarchy.
-
-**Work:**
-
-- Add ALPHA/BETA/Release package pages.
-- Add stable card version history model.
-- Expose old exact MSE versions/renders.
-- Use immutable package dates, not MSE edit timestamps, for release history.
-- Prepare deck/content metadata contracts without creating Legend of Alpha decklists.
-
-**Acceptance:**
-
-- Immutable package history renders correctly.
-- Current card defaults to latest version.
-- Old versions remain reachable.
-- Mutable-stage content remains absent.
-
-**Dependencies:** WEB-014.
-
-## CI-016 — Full verification/stale-path sweep
-
-**Goal:** Prove migration complete.
-
-**Checks:**
-
-- Python tests.
-- Website format/lint/type/unit/build/E2E.
-- MSE source/style/render/provenance.
-- Stage/painter markers.
-- Immutable-stage guard.
-- Docs links/ADR index.
-- French archive absence.
-- Old-path grep.
-- `git diff --check`.
-
-**Acceptance:**
-
-- All gates pass.
-- No runtime route expects legacy Nekroz snapshot.
-- No root `MSE_projects`, `mse`, `print`, `rule_reviews`, old website plan/report.
-
-**Dependencies:** All prior tickets.
-
-# Delivery order
-
-1. **Structure:** STR-001–ORG-007.
-2. **Tooling/lifecycle:** TOOL-008–LIFE-011.
-3. **Package/render/print:** BUILD-012–013.
-4. **Website cutover/foundations:** WEB-014–015.
-5. **Verification:** CI-016.
-
-# Explicit non-goals
-
-- Do not choose Legend of Alpha 0.1 cards yet.
-- Do not create Burning Abyss/Nekroz decklists yet.
-- Do not populate `01_pre_alpha` yet.
-- Do not create first immutable ALPHA package yet.
-- Do not decide mythic deck-copy limit yet.
-- Do not create empty archetype CHANGELOG files.
+Notes:
+
+- MSE render export and `generate_print_pdfs.py` need a local MSE install; they are not gate commands. Renders change only through `release_package.py rebuild`.
+- `npm run ci` covers `format:check`, `lint`, `check`, `test`, and `build`.
+- Anything failing gets reported with its output, per D-023.
+
+## Non-goals
+
+- Lock `LOTA-0001-Alpha_0.1` (D-016).
+- Restate or re-decide website v2 features (D-018).
+- Re-introduce a non-MSE card source (D-013).
+- Create empty archetype changelogs (D-015).
+- Add pytest or other dev dependencies (D-021).
+- Restore French content (D-019).
+
+## Appendix — superseded structure
+
+The original plan's directory scheme maps forward as follows. ADR 0008 holds the full rationale.
+
+| Original | Current |
+| --- | --- |
+| `01_pre_alpha` | dropped; assembly happens in an `open` alpha package |
+| `02_alpha` | `01_alpha` plus package `status` |
+| `03_pre_beta` | dropped |
+| `04_beta` | `02_beta` plus package `status` |
+| `05_pre_release` | dropped |
+| `06_released` | `03_release` plus package `status` |
+| `{set_name}_{X.X}` folder | `{setId}-{version}`, e.g. `LOTA-0001-Alpha_0.1` |
+| `{set_name}_{X.X}_print.pdf` in package | ignored root `print/`, generated on demand (D-007) |
+| `{set_name} ALPHA` marker | `{set_name} Alpha` (D-002) |

@@ -198,24 +198,24 @@ with no visual regressions.
 
 ### 1.1 Publish `docs/`
 
-1. `docs.mjs` copies `docs/**/*.md` into an Astro content collection, rewriting relative `.md` links to
+1. [ ] `docs.mjs` copies `docs/**/*.md` into an Astro content collection, rewriting relative `.md` links to
    site routes and validating internal anchors (extend `scripts/check-links.mjs`; dead link = build failure).
-2. Routes: `/docs/`, `/docs/rules/*`, `/docs/design/*`, `/docs/keywords/*`, `/docs/archetypes/<slug>/*`.
-3. Left rail from the documentation map in `docs/CONTEXT.md`; right rail reuses `ChapterSummary` fed by
+2. [ ] Routes: `/docs/`, `/docs/rules/*`, `/docs/design/*`, `/docs/keywords/*`, `/docs/archetypes/<slug>/*`.
+3. [ ] Left rail from the documentation map in `docs/CONTEXT.md`; right rail reuses `ChapterSummary` fed by
    generated headings.
-4. `/rules/` and `/philosophy/` become curated landing pages linking into the corpus; delete the prose that
+4. [ ] `/rules/` and `/philosophy/` become curated landing pages linking into the corpus; delete the prose that
    duplicates docs so the corpus stays single-source.
-5. No edit/source links on doc pages.
+5. [ ] No edit/source links on doc pages.
 
 ### 1.2 Keyword registry
 
-1. Parse `docs/KEYWORDS.md` + `docs/keywords/*.md` + archetype `KEYWORDS.md` files into
+1. [ ] Parse `docs/KEYWORDS.md` + `docs/keywords/*.md` + archetype `KEYWORDS.md` files into
    `{ id, term, category, definition, seeAlso[], archetype? }`.
-2. `/keywords/` index with category filter and client-side filter box; `/keywords/<term>/` detail page with
+2. [ ] `/keywords/` index with category filter and client-side filter box; `/keywords/<term>/` detail page with
    definition, related keywords, and every published card using it (reverse index from `card.keywords`).
-3. `RichText` gains a keyword pass: bold invocations become links with a hover/focus definition popover;
+3. [ ] `RichText` gains a keyword pass: bold invocations become links with a hover/focus definition popover;
    without JS they remain plain links.
-4. Unknown bold phrase in card text ⇒ build failure (enforces the closed taxonomy).
+4. [ ] Unknown bold phrase in card text ⇒ build failure (enforces the closed taxonomy).
 
 ### 1.3 New explainer pages
 
@@ -226,8 +226,16 @@ with no visual regressions.
 | `/docs/deck-building/` | 40 + 10, 2-copy limit, land counts, Extra Deck = sideboard | `docs/rules/DECK_BUILDING.md` |
 | `/roadmap/` | Shipped vs planned archetypes and sets | generated from package stages + authored notes |
 
-**Phase 1 acceptance:** every `docs/` file reachable from `/docs/`; every bold keyword in every published card
-resolves to a keyword page; zero JS required to read any doc.
+- [ ] `/docs/conversion/`
+- [ ] `/docs/how-to-read-a-card/`
+- [ ] `/docs/deck-building/`
+- [ ] `/roadmap/`
+
+**Phase 1 acceptance:**
+
+- [ ] every `docs/` file reachable from `/docs/`
+- [ ] every bold keyword in every published card resolves to a keyword page
+- [ ] zero JS required to read any doc
 
 ---
 
@@ -247,21 +255,26 @@ Available components in prose: `<Card id>`, `<CardImage id>`, `<Keyword term>`, 
 
 Videos are **linked out**, never embedded (CSP forbids third-party frames). Render a poster + link card.
 
+- [ ] Add `@astrojs/mdx`
+- [ ] Blog content collection at `website/content/blog/<yyyy-mm-dd-slug>/index.mdx` with front-matter schema
+- [ ] Prose components: `<Card id>`, `<CardImage id>`, `<Keyword term>`, `<Decklist id mode>`, `<PrintButton>`
+- [ ] Video poster + link card (never an embed)
+
 ### 2.2 Blog routes
 
-- `/blog/` paginated index, `/blog/<slug>/`, `/blog/tag/<tag>/`, `/blog/feed.xml`.
-- Both feeds (`/feed.xml` cards, `/blog/feed.xml` posts) linked in `<head>` and footer.
-- Release pages list posts whose `relatedRelease` matches, replacing the raw `contentPosts` URL list.
-- Migrate `content/2026-08-01-legend-of-alpha-project-introduction/script.md` as the first post.
+- [ ] `/blog/` paginated index, `/blog/<slug>/`, `/blog/tag/<tag>/`, `/blog/feed.xml`.
+- [ ] Both feeds (`/feed.xml` cards, `/blog/feed.xml` posts) linked in `<head>` and footer.
+- [ ] Release pages list posts whose `relatedRelease` matches, replacing the raw `contentPosts` URL list.
+- [ ] Migrate `content/2026-08-01-legend-of-alpha-project-introduction/script.md` as the first post.
 
 ### 2.3 Home, welcome, and first-visit routing
 
-- **`/`** renders the welcome/presentation landing page: what Essentia is, the core idea, the two starter
+- [ ] **`/`** renders the welcome/presentation landing page: what Essentia is, the core idea, the two starter
   decks, how to proxy and play, links to search/decks/docs/blog. This is the canonical page for search engines.
-- **`/releases/`** is the returning-visitor home: latest package hero (set, stage, version, date, count,
+- [ ] **`/releases/`** is the returning-visitor home: latest package hero (set, stage, version, date, count,
   actions: browse, print, announcement), full card grid for that release, then the release timeline
   (one entry per release, newest first) linking to package pages.
-- **Routing rule**, implemented as a small inline script in the `<head>` of `/` only:
+- [ ] **Routing rule**, implemented as a small inline script in the `<head>` of `/` only:
   ```js
   // known visitor → straight to the release hub
   if (localStorage.getItem('essentia.v1.visited') === '1'
@@ -271,19 +284,23 @@ Videos are **linked out**, never embedded (CSP forbids third-party frames). Rend
   ```
   Every page sets `essentia.v1.visited = '1'` on load. Without JS the visitor stays on the welcome page.
   Footer/nav keeps a permanent "About Essentia" link to `/?welcome=1` so the presentation stays reachable.
-- Nav "Home" points to `/releases/`.
+- [ ] Nav "Home" points to `/releases/`.
 
 ### 2.4 Release surfaces
 
-- `/releases/` index (also the home target), `/releases/<stage>/<package>/` detail.
-- Package page gains: changelog vs previous package (added / changed / removed, computed from `sourceHash`),
+- [ ] `/releases/` index (also the home target), `/releases/<stage>/<package>/` detail.
+- [ ] Package page gains: changelog vs previous package (added / changed / removed, computed from `sourceHash`),
   decks in the package (Phase 4), print actions (Phase 5), related posts.
-- Card version pages gain a rules-text diff against the previous version.
-- Version policy: release grids show that package's printing; search/archetype/section pages show the
+- [ ] Card version pages gain a rules-text diff against the previous version.
+- [ ] Version policy: release grids show that package's printing; search/archetype/section pages show the
   latest version only (`publication-order.mjs` already computes this).
 
-**Phase 2 acceptance:** first visit lands on `/`; second visit lands on `/releases/`; `?welcome=1` always
-shows the landing page; no-JS visitors always get the landing page and can reach releases via nav.
+**Phase 2 acceptance:**
+
+- [ ] first visit lands on `/`
+- [ ] second visit lands on `/releases/`
+- [ ] `?welcome=1` always shows the landing page
+- [ ] no-JS visitors always get the landing page and can reach releases via nav
 
 ---
 
@@ -315,25 +332,36 @@ Operators: `: = != < <= > >=`, quoted phrases, `-` negation, `OR`, parentheses. 
 failing token inline with a suggestion — never a blank page. Delete `src/lib/query.ts` and rewrite
 `tests/unit/query.test.ts` against the new parser.
 
+- [ ] `src/lib/search/tokenizer.ts`
+- [ ] `src/lib/search/parser.ts` (AST)
+- [ ] `src/lib/search/evaluate.ts`
+- [ ] every key in the table above, with operators, quoting, negation, `OR`, parentheses
+- [ ] parse errors surface the failing token inline with a suggestion
+- [ ] delete `src/lib/query.ts`; rewrite `tests/unit/query.test.ts` against the new parser
+
 ### 3.2 Index and runtime
 
-- `search-index.mjs` emits `public/generated/search-index.json`: one compact record per card version,
+- [ ] `search-index.mjs` emits `public/generated/search-index.json`: one compact record per card version,
   short keys, sorted deterministically.
-- Fetched on first use by a Svelte island, cached in memory; never requested on pages that do not search.
-- Query state in the URL: `/search/?q=…&view=grid&order=mv`.
+- [ ] Fetched on first use by a Svelte island, cached in memory; never requested on pages that do not search.
+- [ ] Query state in the URL: `/search/?q=…&view=grid&order=mv`.
 
 ### 3.3 UI
 
-- `/search/` with facet bar (archetype, type, colour, cost, set, zone, rarity) that writes into the query
+- [ ] `/search/` with facet bar (archetype, type, colour, cost, set, zone, rarity) that writes into the query
   string — facets are sugar over the same syntax.
-- Views: grid, list, text, checklist. Bulk actions: *Add all to print basket*, *Copy as text list*.
-- Pre-rendered facet landing pages with results inlined, hydrating into live search:
+- [ ] Views: grid, list, text, checklist. Bulk actions: *Add all to print basket*, *Copy as text list*.
+- [ ] Pre-rendered facet landing pages with results inlined, hydrating into live search:
   `/search/archetype/<slug>/`, `/search/type/<type>/`, `/search/set/<set>/`.
-- `/search/syntax/` documents the language with runnable examples.
-- The `⌘K` palette remains the quick name jump and gains a "Search full syntax for …" row handing off to `/search/`.
+- [ ] `/search/syntax/` documents the language with runnable examples.
+- [ ] The `⌘K` palette remains the quick name jump and gains a "Search full syntax for …" row handing off to `/search/`.
 
-**Phase 3 acceptance:** every key in the table works with negation and comparison; facets and typed syntax
-stay in sync; results pages are shareable and back/forward correct; index fetched at most once per session.
+**Phase 3 acceptance:**
+
+- [ ] every key in the table works with negation and comparison
+- [ ] facets and typed syntax stay in sync
+- [ ] results pages are shareable and back/forward correct
+- [ ] index fetched at most once per session
 
 ---
 
@@ -378,6 +406,13 @@ fails; totals computed and compared against deck-building rules (40 main / 10 ex
 
 `release.json.decks` stays the authoritative membership record; deck files must be a subset of it.
 
+- [ ] `website/content/decks/<slug>.json` format + loader in `scripts/content/decks.mjs`
+- [ ] `supersedes` / `supersededBy` linking; superseded pages stay live
+- [ ] `check-immutable-decks.mjs` fails on a content-hash change without a slug change
+- [ ] build validation: unknown card id fails, card outside referenced package fails, unknown land id fails
+- [ ] deck-building totals (40 main / 10 extra / 2-copy limit) as a **warning**, never a failure
+- [ ] deck files validated as a subset of `release.json.decks`
+
 ### 4.2 Land registry
 
 New `website/content/lands.json` — designed now so duals and utility lands drop in later without schema change:
@@ -396,36 +431,40 @@ New `website/content/lands.json` — designed now so duals and utility lands dro
 }
 ```
 
-- Land art is **downloaded and vendored** into `website/public/generated/lands/` (CSP forbids hotlinking,
+- [ ] Land art is **downloaded and vendored** into `website/public/generated/lands/` (CSP forbids hotlinking,
   and the source asks not to hotlink). Add a `rights` entry per image in `content/asset-rights.json` so
   `check-rights.mjs` covers them; they fall under the third-party clause of `/legal/`, not the free-use grant.
-- Use **Scryfall's Alpha-set basic land images** — that is the decision, not a placeholder. There is no
+- [ ] Use **Scryfall's Alpha-set basic land images** — that is the decision, not a placeholder. There is no
   project-owned basic land and no plan to render one, so no replacement work is scheduled; `rights` stays
   `wotc-basic-land` indefinitely.
-- Deck entries use `{ "land": "<id>", "qty": n }`; everything downstream (deck page, exports, print engine)
+- [ ] Deck entries use `{ "land": "<id>", "qty": n }`; everything downstream (deck page, exports, print engine)
   treats cards and lands through one `DeckEntry` union type so adding duals is a data change only.
-- Future non-basic lands may set `kind: "dual"`, extra `colors`, and their own art without code changes.
+- [ ] Future non-basic lands may set `kind: "dual"`, extra `colors`, and their own art without code changes.
 
 ### 4.3 Embedded mode (MTGGoldfish style)
 
 `<Decklist id="…" mode="compact" sections="main,extra" />` for posts and docs:
 
-- Quantity + card name only, grouped by section, tight columns.
-- Hover preview reuses the existing `data-card-preview` attribute and `CardHoverPreview` component.
-- No-JS: names are links to card pages. Touch: tap opens the card page, long-press previews.
-- Header row: deck name, archetype chip, card count, link to the full page, small *Print proxies* action.
+- [ ] Quantity + card name only, grouped by section, tight columns.
+- [ ] Hover preview reuses the existing `data-card-preview` attribute and `CardHoverPreview` component.
+- [ ] No-JS: names are links to card pages. Touch: tap opens the card page, long-press previews.
+- [ ] Header row: deck name, archetype chip, card count, link to the full page, small *Print proxies* action.
 
 ### 4.4 Full deck pages
 
-- `/decks/` index (filter by archetype, package, colours) and `/decks/<slug>/`.
-- Visual mode (renders, stacked by quantity) and text mode, toggle remembered in local storage.
-- Computed breakdowns: mana curve, colour split, type distribution, main/extra counts, land count.
-- Author notes, related post, source package, supersedes/superseded links.
-- Export bar: **Proxy PDF** (Phase 5), **TXT** (`2 Cir` lines), **CSV**, **JSON**, **Copy**, **Permalink**.
-- *Open in print builder* hands the list to Phase 5 with quantities preserved.
+- [ ] `/decks/` index (filter by archetype, package, colours) and `/decks/<slug>/`.
+- [ ] Visual mode (renders, stacked by quantity) and text mode, toggle remembered in local storage.
+- [ ] Computed breakdowns: mana curve, colour split, type distribution, main/extra counts, land count.
+- [ ] Author notes, related post, source package, supersedes/superseded links.
+- [ ] Export bar: **Proxy PDF** (Phase 5), **TXT** (`2 Cir` lines), **CSV**, **JSON**, **Copy**, **Permalink**.
+- [ ] *Open in print builder* hands the list to Phase 5 with quantities preserved.
 
-**Phase 4 acceptance:** deck pages render from data only; embedded lists work in blog and docs; a deck file
-edit without a slug change fails CI; adding a dual land requires no code change.
+**Phase 4 acceptance:**
+
+- [ ] deck pages render from data only
+- [ ] embedded lists work in blog and docs
+- [ ] a deck file edit without a slug change fails CI
+- [ ] adding a dual land requires no code change
 
 ---
 
@@ -433,18 +472,21 @@ edit without a slug change fails CI; adding a dual land requires no code change.
 
 ### 5.1 PDF engine
 
-- `src/lib/print/` holds layout maths (page size, 63 × 88 mm card box, 3 × 3 grid, margins, cut marks),
+- [ ] `src/lib/print/` holds layout maths (page size, 63 × 88 mm card box, 3 × 3 grid, margins, cut marks),
   shared constants with `.script/generate_print_pdfs.py` so web and repo output agree.
-- `pdf-lib` (MIT) bundled locally, lazy-imported on first use; `check-licenses.mjs` covers it.
-- Images fetched same-origin from the `print` tier (0.5) and embedded as PNG.
-- Generation runs in a Web Worker with a progress bar; add `worker-src 'self'` in `harden-csp.mjs`.
+- [ ] `pdf-lib` (MIT) bundled locally, lazy-imported on first use; `check-licenses.mjs` covers it.
+- [ ] Images fetched same-origin from the `print` tier (0.5) and embedded as PNG.
+- [ ] Generation runs in a Web Worker with a progress bar; add `worker-src 'self'` in `harden-csp.mjs`.
   Download via object URL + `download` anchor.
-- Deterministic output: identical input list ⇒ byte-identical PDF.
-- Lands are printable when `printable: true`.
+- [ ] Deterministic output: identical input list ⇒ byte-identical PDF.
+- [ ] Lands are printable when `printable: true`.
 
 Options: page size (A4/Letter), copies (uniform + per-card override), cut marks (corner/grid/none),
 spacing (tight/1 mm), optional plain card back, 63 mm ruler on page 1, sheet header/footer.
 Live canvas preview of page 1 before generation.
+
+- [ ] options: page size, copies (uniform + per-card override), cut marks, spacing, plain card back, 63 mm ruler, sheet header/footer
+- [ ] live canvas preview of page 1 before generation
 
 ### 5.2 Entry points
 
@@ -452,22 +494,29 @@ Card page · gallery/archetype/section multi-select · search results (*Print al
 release package (*Print this release*, 2 copies default) · deck page and embedded decklist ·
 whole catalog from `/print/` with page-count and file-size warning.
 
+- [ ] card page
+- [ ] gallery / archetype / section multi-select
+- [ ] search results (*Print all results*)
+- [ ] release package (*Print this release*, 2 copies default)
+- [ ] deck page and embedded decklist
+- [ ] whole catalog from `/print/` with page-count and file-size warning
+
 ### 5.3 `/print/` — basket
 
-- Add cards by search box, or quick-add a deck / release / archetype.
-- Basket rows with quantity steppers, running page count and estimated file size.
-- State: `essentia.v1.print-basket`; header badge shows the count site-wide.
-- Share without accounts: basket encodes into `/print/?list=<base64url>`; long lists fall back to text import.
-- Import: paste a text decklist (`2 Cir` per line), names resolved through the search normalizer, with an
+- [ ] Add cards by search box, or quick-add a deck / release / archetype.
+- [ ] Basket rows with quantity steppers, running page count and estimated file size.
+- [ ] State: `essentia.v1.print-basket`; header badge shows the count site-wide.
+- [ ] Share without accounts: basket encodes into `/print/?list=<base64url>`; long lists fall back to text import.
+- [ ] Import: paste a text decklist (`2 Cir` per line), names resolved through the search normalizer, with an
   inline report of unmatched lines.
-- Export: PDF, TXT, JSON, and *Save as deck file* emitting a commit-ready deck JSON.
-- `@media print` stylesheet so the page itself prints usable sheets if PDF generation fails.
+- [ ] Export: PDF, TXT, JSON, and *Save as deck file* emitting a commit-ready deck JSON.
+- [ ] `@media print` stylesheet so the page itself prints usable sheets if PDF generation fails.
 
 ### 5.4 `/decks/mine/` — local decklists (no account)
 
 Local, browser-only decklists, distinct from published deck files.
 
-- Storage:
+- [ ] Storage:
   ```json
   { "schemaVersion": 1,
     "decks": [ { "id": "uuid", "name": "My BA build", "created": "…", "updated": "…",
@@ -476,26 +525,30 @@ Local, browser-only decklists, distinct from published deck files.
                                               { "land": "swamp", "qty": 14 } ] } ] } ] }
   ```
   under `essentia.v1.decks`, with a migration function keyed on `schemaVersion`.
-- `/decks/mine/` lists all saved decks (name, card count, archetype guess, updated date) with
+- [ ] `/decks/mine/` lists all saved decks (name, card count, archetype guess, updated date) with
   **open, edit, duplicate, rename, delete, export, print** actions, plus **new deck**.
-- `/decks/mine/<id>/` is the editor: add cards via the search box (full Phase 3 syntax), quantity steppers,
+- [ ] `/decks/mine/<id>/` is the editor: add cards via the search box (full Phase 3 syntax), quantity steppers,
   section assignment (main / extra / flex, sections addable), notes, live curve and count readouts, and the
   same deck-building warnings as published decks (never blocking).
-- Reuses the deck rendering components from Phase 4; the only difference is the data source.
-- Import/export JSON round-trips with the published deck format, so a local deck can be exported and
+- [ ] Reuses the deck rendering components from Phase 4; the only difference is the data source.
+- [ ] Import/export JSON round-trips with the published deck format, so a local deck can be exported and
   submitted as a pull request unchanged.
-- Share link: same URL encoding as the print basket (`/decks/mine/?import=<base64url>`).
-- Handle `QuotaExceededError` explicitly with a message telling the visitor to export and delete old decks.
-- Clear-all control, and a note on the page that decks live only in this browser.
+- [ ] Share link: same URL encoding as the print basket (`/decks/mine/?import=<base64url>`).
+- [ ] Handle `QuotaExceededError` explicitly with a message telling the visitor to export and delete old decks.
+- [ ] Clear-all control, and a note on the page that decks live only in this browser.
 
-**Phase 5 acceptance:** a 100-card PDF generates without freezing the UI; the same list twice produces
-identical bytes; basket and local decks survive reload; PDF cards measure 63 × 88 mm when printed at 100 %.
+**Phase 5 acceptance:**
+
+- [ ] a 100-card PDF generates without freezing the UI
+- [ ] the same list twice produces identical bytes
+- [ ] basket and local decks survive reload
+- [ ] PDF cards measure 63 × 88 mm when printed at 100 %
 
 ---
 
 ## Phase 6 — Polish
 
-1. **Navigation:**
+1. [ ] **Navigation:**
    ```
    Cards ▾  Search · Archetypes · Sets · Updates
    Decks ▾  Published decks · My decklists
@@ -505,18 +558,18 @@ identical bytes; basket and local decks survive reload; PDF cards measure 63 × 
    About ▾  Philosophy · Roadmap · Attribution & licence · About Essentia
    ```
    Archetype drawer stays as a secondary rail on card surfaces. Footer: GitHub, licence, both feeds, channel.
-2. **Budgets** in `check-budgets.mjs`: docs/blog ≤ 120 KB JS, search ≤ 250 KB (index excluded, tracked
+2. [ ] **Budgets** in `check-budgets.mjs`: docs/blog ≤ 120 KB JS, search ≤ 250 KB (index excluded, tracked
    separately), print ≤ 400 KB (pdf-lib lazy), print masters under their own total ceiling.
-3. **Accessibility:** combobox semantics and live result counts in search; hover previews also trigger on
+3. [ ] **Accessibility:** combobox semantics and live result counts in search; hover previews also trigger on
    focus and never trap the pointer; deck tables are real tables; print options are a labelled form;
    axe/Playwright pass extended to every new route.
 4. **Tests:**
-   - Unit — tokenizer/parser/evaluator, keyword extraction, archetype member/role validation, colour
+   - [ ] Unit — tokenizer/parser/evaluator, keyword extraction, archetype member/role validation, colour
      overrides, deck validation, land registry, print layout maths, text-list import, storage migrations.
-   - E2E — syntax search, deck page, embedded hover preview, PDF download, basket persistence, local deck
+   - [ ] E2E — syntax search, deck page, embedded hover preview, PDF download, basket persistence, local deck
      CRUD, first-visit vs returning-visit routing.
-   - Golden file — fixed 9-card PDF byte-compared to catch layout regressions.
-5. **CI:** extend the deploy smoke route list with `releases/`, `search/`, `decks/`, `decks/mine/`, `blog/`,
+   - [ ] Golden file — fixed 9-card PDF byte-compared to catch layout regressions.
+5. [ ] **CI:** extend the deploy smoke route list with `releases/`, `search/`, `decks/`, `decks/mine/`, `blog/`,
    `docs/`, `keywords/`, `print/`. Add `check-immutable-decks.mjs` to `npm run ci`.
 
 ---
