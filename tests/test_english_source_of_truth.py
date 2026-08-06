@@ -16,6 +16,31 @@ INTENTIONAL_UNINCLUDED_CARDS: dict[str, set[str]] = {
     "03_YGO_Nekroz.mse-set": set(),
 }
 EMPTY_DRAFT_PROJECTS = {"03_YGO_Nekroz.mse-set"}
+# D-001: the live lifecycle is cards_mse/{00_drafts,01_alpha,02_beta,03_release}
+# plus a per-package open/locked status. Every token below names a path scheme
+# that the restructuring retired; none of them may reappear in tracked content.
+STALE_PATH_TOKENS = (
+    "MSE_projects",
+    "rule_reviews",
+    "cards_mse/02_alpha",
+    "cards_mse/04_beta",
+    "cards_mse/06_released",
+    "01_pre_alpha",
+    "03_pre_beta",
+    "05_pre_release",
+)
+# D-017: docs/ADR/** and CHANGELOG.md keep the legacy paths verbatim as decision
+# evidence, and PROJECT_RESTRUCTURING_PLAN.md documents the superseded scheme in
+# its appendix. .pi-subagents/ holds frozen transcripts of past agent runs -- the
+# same category of historical record, machine-written and never re-read as repo
+# content. This test file is skipped because the legacy-root assertion above must
+# keep naming MSE_projects and rule_reviews literally.
+STALE_PATH_EXEMPT_PREFIXES = ("docs/ADR/", ".pi-subagents/")
+STALE_PATH_EXEMPT_FILES = (
+    "CHANGELOG.md",
+    "PROJECT_RESTRUCTURING_PLAN.md",
+    "tests/test_english_source_of_truth.py",
+)
 FRENCH_MARKERS = re.compile(
     r"[àâçéèêëîïôùûüÿœæ]|"
     r"\b(?:votre|depuis|ciblez|carte|cartes|créature|créatures|détruisez|"
@@ -63,6 +88,39 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
             check=True,
         )
         self.assertEqual(tracked.stdout.strip(), "")
+
+    def test_stale_lifecycle_paths_are_absent_from_tracked_files(self) -> None:
+        """Dead pre-stage directories and pre-rename tool paths must not return."""
+        listing = subprocess.run(
+            ["git", "ls-files", "-z"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        offenders: list[str] = []
+        scanned = 0
+        for relative in listing.stdout.split("\0"):
+            if not relative:
+                continue
+            if relative.startswith(STALE_PATH_EXEMPT_PREFIXES):
+                continue
+            if relative in STALE_PATH_EXEMPT_FILES:
+                continue
+            path = ROOT / relative
+            if not path.is_file():
+                continue
+            try:
+                text = path.read_bytes().decode("utf-8")
+            except UnicodeDecodeError:
+                # .mse-set members, images and PDFs are tracked; they carry no prose.
+                continue
+            scanned += 1
+            for token in STALE_PATH_TOKENS:
+                if token in text:
+                    offenders.append(f"{relative}: {token}")
+        self.assertTrue(scanned, "no UTF-8 tracked files were scanned")
+        self.assertEqual(offenders, [], "stale lifecycle paths:\n" + "\n".join(offenders))
 
     def test_five_draft_projects_are_english_and_complete(self) -> None:
         projects = sorted(DRAFTS.glob("*/*.mse-set"))

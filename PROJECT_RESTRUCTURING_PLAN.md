@@ -210,8 +210,8 @@ python -m unittest discover -s tests
 
 **Work:**
 
-- [ ] Extend `tests/test_english_source_of_truth.py` with a test that walks `git ls-files`, skips `docs/ADR/`, `CHANGELOG.md`, `PROJECT_RESTRUCTURING_PLAN.md`, and non-UTF-8 files, and fails on the tokens `MSE_projects`, `rule_reviews`, `cards_mse/02_alpha`, `cards_mse/04_beta`, `cards_mse/06_released`, `01_pre_alpha`, `03_pre_beta`, `05_pre_release`.
-- [ ] Keep the existing legacy-root and print-tracking assertions untouched.
+- [x] Extend `tests/test_english_source_of_truth.py` with a test that walks `git ls-files`, skips `docs/ADR/`, `CHANGELOG.md`, `PROJECT_RESTRUCTURING_PLAN.md`, and non-UTF-8 files, and fails on the tokens `MSE_projects`, `rule_reviews`, `cards_mse/02_alpha`, `cards_mse/04_beta`, `cards_mse/06_released`, `01_pre_alpha`, `03_pre_beta`, `05_pre_release`.
+- [x] Keep the existing legacy-root and print-tracking assertions untouched.
 
 **Commands:**
 
@@ -221,8 +221,8 @@ python -m unittest discover -s tests
 
 **Acceptance:**
 
-- [ ] Suite green on the clean tree.
-- [ ] Temporarily writing `cards_mse/02_alpha` into a tracked doc makes the new test fail; revert the probe afterwards.
+- [x] Suite green on the clean tree.
+- [x] Temporarily writing `cards_mse/02_alpha` into a tracked doc makes the new test fail; revert the probe afterwards.
 
 ### RST-104 — One owner per open work item
 
