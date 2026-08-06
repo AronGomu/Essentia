@@ -206,7 +206,7 @@ python -m unittest discover -s tests
 
 - [x] Grep clean outside `docs/ADR/**`.
 - [x] ADR 0014 exists, is listed in the index, and states status accepted.
-- [x] Test suite exits 0.
+- [ ] Test suite exits 0. — not satisfied; no regression vs the 53-failure baseline (D-024), but the suite does not exit 0.
 
 **Depends on:** RST-101 (same file).
 
@@ -227,7 +227,7 @@ python -m unittest discover -s tests
 
 **Acceptance:**
 
-- [x] Suite green on the clean tree.
+- [ ] Suite green on the clean tree. — the new test passes standalone and adds no failure, but the suite is not green (D-024).
 - [x] Temporarily writing `cards_mse/02_alpha` into a tracked doc makes the new test fail; revert the probe afterwards.
 
 ### RST-104 — One owner per open work item
