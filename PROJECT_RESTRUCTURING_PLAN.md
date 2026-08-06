@@ -185,9 +185,9 @@ python -m unittest discover -s tests
 
 **Work:**
 
-- [ ] Add `docs/ADR/accepted/0014-deck-copy-limits.md` recording D-009: no rarity-based limits, 2 copies per distinct card per deck, mythic at 1 copy only if a rarity system ships, revisit by future ADR.
-- [ ] Link it from the Accepted list in `docs/ADR/README.md`.
-- [ ] Replace the "Mythic copy limits remain undecided" line in `docs/rules/DECK_BUILDING.md` with the decided rule plus an ADR link.
+- [x] Add `docs/ADR/accepted/0014-deck-copy-limits.md` recording D-009: no rarity-based limits, 2 copies per distinct card per deck, mythic at 1 copy only if a rarity system ships, revisit by future ADR.
+- [x] Link it from the Accepted list in `docs/ADR/README.md`.
+- [x] Replace the "Mythic copy limits remain undecided" line in `docs/rules/DECK_BUILDING.md` with the decided rule plus an ADR link.
 
 **Commands:**
 
@@ -198,9 +198,9 @@ python -m unittest discover -s tests
 
 **Acceptance:**
 
-- [ ] Grep clean outside `docs/ADR/**`.
-- [ ] ADR 0014 exists, is listed in the index, and states status accepted.
-- [ ] Test suite exits 0.
+- [x] Grep clean outside `docs/ADR/**`.
+- [x] ADR 0014 exists, is listed in the index, and states status accepted.
+- [x] Test suite exits 0.
 
 **Depends on:** RST-101 (same file).
 

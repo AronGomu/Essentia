@@ -6,7 +6,11 @@ Main Deck contains normal Main Deck cards, including Ritual Creatures. Sideboard
 
 Exact Burning Abyss and Nekroz decklists for Legend of the Alpha Alpha_0.1 live in [`DECKLISTS_ALPHA_0.1.md`](DECKLISTS_ALPHA_0.1.md). Package `release.json` records their stable-card membership; gameplay quantities remain in the decklist.
 
-No project-wide rarity copy limits beyond approved deck metadata are currently defined. Mythic copy limits remain undecided.
+## Copy limits
+
+No rarity-based copy limits exist. A deck may contain at most 2 copies of a distinct card, counting Main Deck and Sideboard together. Basic lands are exempt and stay unlimited.
+
+If a rarity system ships later, mythic starts at 1 copy per deck. See [ADR 0014](../ADR/accepted/0014-deck-copy-limits.md).
 
 ## Cube mulligan
 

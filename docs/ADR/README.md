@@ -19,6 +19,7 @@ Decision evidence lives here after rule/design review.
 - [0011 — Shuffle action](accepted/0011-shuffle-action.md)
 - [0012 — Summon bypass, event casing, zone articles, Ritual-alone](accepted/0012-summon-bypass-event-zone.md)
 - [0013 — Activation condition colon and Title self-name](accepted/0013-activation-condition-self-name-title.md)
+- [0014 — Deck copy limits](accepted/0014-deck-copy-limits.md)
 
 ## Proposed
 
