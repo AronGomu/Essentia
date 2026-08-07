@@ -242,7 +242,7 @@ with no visual regressions.
 
 ---
 
-## Phase 2 — Blog, welcome, releases
+## Phase 2 — Blog and releases
 
 ### 2.1 MDX
 
@@ -270,24 +270,10 @@ Videos are **linked out**, never embedded (CSP forbids third-party frames). Rend
 - [ ] Release pages list posts whose `relatedRelease` matches, replacing the raw `contentPosts` URL list.
 - [ ] Migrate `content/2026-08-01-legend-of-alpha-project-introduction/script.md` as the first post.
 
-### 2.3 Home, welcome, and first-visit routing
+### 2.3 Home is the single entry point
 
-- [ ] **`/`** renders the welcome/presentation landing page: what Essentia is, the core idea, the two starter
-  decks, how to proxy and play, links to search/decks/docs/blog. This is the canonical page for search engines.
-- [ ] **`/releases/`** is the returning-visitor home: latest package hero (set, stage, version, date, count,
-  actions: browse, print, announcement), full card grid for that release, then the release timeline
-  (one entry per release, newest first) linking to package pages.
-- [ ] **Routing rule**, implemented as a small inline script in the `<head>` of `/` only:
-  ```js
-  // known visitor → straight to the release hub
-  if (localStorage.getItem('essentia.v1.visited') === '1'
-      && !location.search.includes('welcome=1')) {
-    location.replace(BASE + 'releases/');
-  }
-  ```
-  Every page sets `essentia.v1.visited = '1'` on load. Without JS the visitor stays on the welcome page.
-  Footer/nav keeps a permanent "About Essentia" link to `/?welcome=1` so the presentation stays reachable.
-- [ ] Nav "Home" points to `/releases/`.
+- The home page `/` is the single entry point to the site. There is no welcome page and no first-visit redirect.
+- The header links to `/docs/`, `/blog/`, `/decks/`.
 
 ### 2.4 Release surfaces
 
@@ -298,12 +284,7 @@ Videos are **linked out**, never embedded (CSP forbids third-party frames). Rend
 - [ ] Version policy: release grids show that package's printing; search/archetype/section pages show the
   latest version only (`publication-order.mjs` already computes this).
 
-**Phase 2 acceptance:**
-
-- [ ] first visit lands on `/`
-- [ ] second visit lands on `/releases/`
-- [ ] `?welcome=1` always shows the landing page
-- [ ] no-JS visitors always get the landing page and can reach releases via nav
+**Phase 2 acceptance:** see the `- [ ]` checklists in 2.1, 2.2, and 2.4 above.
 
 ---
 
@@ -581,7 +562,7 @@ Local, browser-only decklists, distinct from published deck files.
 
 ```
 Phase 0 ──┬── Phase 1 (docs, keywords)
-          ├── Phase 2 (blog, welcome, releases)
+          ├── Phase 2 (blog, releases)
           ├── Phase 3 (search)
           └── Phase 4 (decklists) ── Phase 5 (print, builder, local decks) ── Phase 6 (polish)
 ```

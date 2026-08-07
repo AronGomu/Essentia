@@ -170,6 +170,7 @@ export interface CatalogPost {
 export interface Catalog {
   schemaVersion: 6;
   generatedAt: string;
+  heroSectionSlug: string;
   sections: CatalogSection[];
   cards: CatalogCard[];
   cardVersions: CardVersion[];

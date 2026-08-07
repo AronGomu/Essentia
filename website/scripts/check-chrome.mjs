@@ -43,6 +43,46 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: page is missing a breadcrumb`);
   }
 
+  if (file === 'index.html') {
+    if (
+      !html.includes('The Yu-Gi-Oh! Feel.') ||
+      !html.includes('With Magic Rules.')
+    ) {
+      problems.push(`${file}: hero headline copy changed`);
+    }
+
+    if (
+      !html.includes(
+        'Explore the Essentia project. Discover the best Yu-Gi-Oh has to offer within MTG game system.',
+      )
+    ) {
+      problems.push(`${file}: hero lead copy changed`);
+    }
+
+    const heroActionsMatch = html.match(
+      /<div class="hero-actions"[\s\S]*?<\/div>/,
+    );
+    const heroActionsBlock = heroActionsMatch ? heroActionsMatch[0] : '';
+    const heroCtaHref = `${base}docs/`;
+    if (
+      !heroActionsBlock.includes(`href="${heroCtaHref}"`) ||
+      !heroActionsBlock.includes('>Learn about Essentia<')
+    ) {
+      problems.push(
+        `${file}: hero CTA must be "Learn about Essentia" pointing at <base>docs/`,
+      );
+    }
+
+    const heroArtMatch = html.match(/<img class="hero-art"[^>]*>/);
+    const heroArtTag = heroArtMatch ? heroArtMatch[0] : '';
+    const srcMatch = heroArtTag.match(/src="([^"]*)"/);
+    const heroArtSrc = srcMatch ? srcMatch[1] : '';
+    const heroArtRe = new RegExp(`^${base}art/[a-z0-9-]+-hero\\.webp$`);
+    if (!heroArtRe.test(heroArtSrc)) {
+      problems.push(`${file}: hero art must use the section hero image`);
+    }
+  }
+
   return problems;
 }
 

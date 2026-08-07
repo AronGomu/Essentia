@@ -91,6 +91,13 @@ export async function loadRegistries() {
   );
   if (!nonArchetype) fail('section registry needs a non-archetype section');
 
+  const heroSectionSlug = sectionData.hero?.sectionSlug;
+  if (
+    typeof heroSectionSlug !== 'string' ||
+    !sectionsBySlug.has(heroSectionSlug)
+  )
+    fail('section registry: hero.sectionSlug must name a known section');
+
   const bySource = new Map();
   const byId = new Map();
   const aliases = new Set();
@@ -149,7 +156,14 @@ export async function loadRegistries() {
       aliases.add(alias);
     }
   }
-  return { sections, sectionsBySlug, nonArchetype, bySource, byId };
+  return {
+    sections,
+    sectionsBySlug,
+    nonArchetype,
+    bySource,
+    byId,
+    heroSectionSlug,
+  };
 }
 
 /**

@@ -67,21 +67,21 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Add the five cases above to `website/tests/unit/chrome.test.ts`.
-- [ ] 2. Add the four home-hero rules to `website/scripts/check-chrome.mjs`.
-- [ ] 3. Add `"hero": { "sectionSlug": "nekroz" }` to `website/content/sections.json` between `schemaVersion` and `sections`.
-- [ ] 4. Validate it in `loadRegistries()` (`website/scripts/content/identity.mjs`) and return `heroSectionSlug`.
-- [ ] 5. Write `heroSectionSlug` into the `catalog` object literal in `website/scripts/content/orchestrator.mjs`; add `heroSectionSlug: string` to `Catalog` in `website/src/lib/catalog.ts`.
-- [ ] 6. In `website/src/pages/index.astro`, replace `const heroSection = catalog.sections[0];` with
+- [x] 1. Add the five cases above to `website/tests/unit/chrome.test.ts`. Evidence: red run showed 4 new failures before rule impl; green run `npx vitest run tests/unit/chrome.test.ts` → 14/14 pass.
+- [x] 2. Add the four home-hero rules to `website/scripts/check-chrome.mjs`. Evidence: rules added, gated on `file === 'index.html'`; `npm run build` chrome gate prints `chrome: 151 pages carry the site header` (no hero complaint).
+- [x] 3. Add `"hero": { "sectionSlug": "nekroz" }` to `website/content/sections.json` between `schemaVersion` and `sections`. Evidence: file contains the key at that position; `npm run content:check` passes.
+- [x] 4. Validate it in `loadRegistries()` (`website/scripts/content/identity.mjs`) and return `heroSectionSlug`. Evidence: `fail('section registry: hero.sectionSlug must name a known section')` added; `heroSectionSlug` in the returned object; `npm run content:check` passes.
+- [x] 5. Write `heroSectionSlug` into the `catalog` object literal in `website/scripts/content/orchestrator.mjs`; add `heroSectionSlug: string` to `Catalog` in `website/src/lib/catalog.ts`. Evidence: `npm run build` succeeds (astro build reads `catalog.heroSectionSlug` without type error); `npm run check` → 0 errors, 0 warnings.
+- [x] 6. In `website/src/pages/index.astro`, replace `const heroSection = catalog.sections[0];` with
       `const heroSection = catalog.sections.find((section) => section.slug === catalog.heroSectionSlug) ?? catalog.sections[0];`
-      and replace `const heroImage = heroSection?.image;` with `const heroImage = heroSection?.heroImage;`. Delete the now-unused `heroRoute` and `heroLabel` constants.
-- [ ] 7. Replace the `<h1>` content with `The Yu-Gi-Oh! Feel.<br />With Magic Rules.`
-- [ ] 8. Replace the lead `<p>` content with `Explore the Essentia project. Discover the best Yu-Gi-Oh has to offer within MTG game system.`
-- [ ] 9. Replace the primary link with `<a class="primary-link" href={withBase(base, '/docs/')}>Learn about Essentia</a>`. Keep the secondary link untouched.
-- [ ] 10. In the `hasPublication === false` fallback, change the primary link to `withBase(base, '/docs/')` with the label `Learn about Essentia`, and keep the secondary `/rules/` link.
-- [ ] 11. Set the hero `<img>` `width="624" height="624"` — the committed asset is a square crop, so these carry the 1:1 aspect ratio and no layout shift is introduced. Do not hard-code a pixel size in CSS off these numbers; a later higher-resolution replacement keeps the same ratio.
-- [ ] 12. In `WEBSITE_V2_SPEC.md`, delete the whole `### 2.3 Home, welcome, and first-visit routing` subsection and replace it with a three-line note: the home page `/` is the single entry point, there is no welcome page and no first-visit redirect, and the header links to `/docs/`, `/blog/`, `/decks/`. Update the Phase 2 heading `## Phase 2 — Blog, welcome, releases` to `## Phase 2 — Blog and releases`.
-- [ ] 13. Run `npm run content:check`, `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
+      and replace `const heroImage = heroSection?.image;` with `const heroImage = heroSection?.heroImage;`. Delete the now-unused `heroRoute` and `heroLabel` constants. Evidence: `grep -n "heroRoute\|heroLabel" website/src/pages/index.astro` → no matches; `dist/index.html` hero `src="/art/nekroz-hero.webp"`.
+- [x] 7. Replace the `<h1>` content with `The Yu-Gi-Oh! Feel.<br />With Magic Rules.` Evidence: `dist/index.html` contains `<h1 data-astro-cid-lcdefpme>The Yu-Gi-Oh! Feel.<br data-astro-cid-lcdefpme>With Magic Rules.`.
+- [x] 8. Replace the lead `<p>` content with `Explore the Essentia project. Discover the best Yu-Gi-Oh has to offer within MTG game system.` Evidence: `dist/index.html` contains that exact string verbatim.
+- [x] 9. Replace the primary link with `<a class="primary-link" href={withBase(base, '/docs/')}>Learn about Essentia</a>`. Keep the secondary link untouched. Evidence: `dist/index.html` `.hero-actions` block: `<a class="primary-link" href="/docs/" ...>Learn about Essentia</a><a class="secondary-link" href="/updates/" ...>See what changed</a>`.
+- [x] 10. In the `hasPublication === false` fallback, change the primary link to `withBase(base, '/docs/')` with the label `Learn about Essentia`, and keep the secondary `/rules/` link. Evidence: `website/src/pages/index.astro` fallback branch primary link now reads `href={withBase(base, '/docs/')}` / `Learn about Essentia`, secondary still `/rules/`; `astro check` (via `npm run check`) type-checks both branches with 0 errors.
+- [x] 11. Set the hero `<img>` `width="624" height="624"`. Evidence: `dist/index.html` `class="hero-art" src="/art/nekroz-hero.webp" alt="" width="624" height="624"`; no pixel size added to `<style>` block off these numbers.
+- [x] 12. In `WEBSITE_V2_SPEC.md`, delete `### 2.3 Home, welcome, and first-visit routing` and replace with a three-line note; update Phase 2 heading. Evidence: `grep -c "welcome" WEBSITE_V2_SPEC.md` → 1 (only the note itself, stating there is no welcome page); heading now `## Phase 2 — Blog and releases`; stale "Phase 2 acceptance" bullets and dependency-order diagram label describing the deleted first-visit rule were also updated for consistency (residual cleanup beyond the literal step, logged in report).
+- [x] 13. Run `npm run content:check`, `npm run build`, `npm run format`, `npm run lint`, `npm run check`. Evidence: all five ran clean — content:check reports `3 sections... 1 posts`; build → 151 pages, chrome/404/csp/scan gates clean; format → all files "(unchanged)"; lint → 0 output (clean); check → `0 errors, 0 warnings, 224 hints`.
 
 ## Outputs
 
@@ -91,11 +91,11 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/chrome.test.ts` — all pass
-- [ ] `cd website && npm run build` — chrome gate reports no hero complaint
-- [ ] `cd website && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/`, the hero is Trishula art at full sharpness; the primary button opens `/docs/`
-- [ ] manual check: `grep -c "welcome" ../WEBSITE_V2_SPEC.md` returns no planned welcome route
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — the draft-only fallback branch still renders (verify by temporarily pointing `OUT_DIR` at a build with no published package, or by reading the branch)
-- [ ] commit msg draft: `feat(website): rebuild the home hero around the Nekroz art and the docs entry point`
+- [x] `cd website && npx vitest run tests/unit/chrome.test.ts` — all pass. Evidence: `Test Files 1 passed (1)`, `Tests 14 passed (14)`.
+- [x] `cd website && npm run build` — chrome gate reports no hero complaint. Evidence: build output ends `chrome: 151 pages carry the site header` (no thrown error, exit 0).
+- [x] `cd website && npm run links:check` — exit 0. Evidence: `links: 151 pages clean`.
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/`, the hero is Trishula art at full sharpness; the primary button opens `/docs/`. **Substitution logged**: no browser/e2e harness on this host (Playwright cannot run per environment constraint) — verified via static-equivalent inspection of the built `dist/index.html` instead: `class="hero-art" src="/art/nekroz-hero.webp" ... width="624" height="624"` (the committed T11 Nekroz Trishula asset, full resolution, no thumb/generated path) and `<a class="primary-link" href="/docs/" ...>Learn about Essentia</a>`.
+- [x] manual check: `grep -c "welcome" ../WEBSITE_V2_SPEC.md` returns no planned welcome route. Evidence: `grep -c "welcome" WEBSITE_V2_SPEC.md` → `1`, and that one line is the new note itself stating there is no welcome page (`- The home page \`/\` is the single entry point to the site. There is no welcome page and no first-visit redirect.`) — no remaining line *plans* one.
+- [x] `cd website && npm run ci` — exit 0. Evidence: `echo $?` → `0`; log shows `format:check`, `lint`, `check` (0 errors/0 warnings), `test` (`20 passed`, `160 passed`), `build` (151 pages, all gates clean) all ran in sequence.
+- [x] app functional — the draft-only fallback branch still renders. Evidence: `node_modules/.bin/astro check` (via `npm run check`) type-checks `index.astro` end-to-end including the `hasPublication === false` branch with 0 errors; branch source read confirms `primary-link` now points at `/docs/` labeled `Learn about Essentia`, secondary still `/rules/`. No live no-package build was run (would require temporarily emptying `content/releases`, an irreversible-feeling data mutation out of scope for this ticket) — logged as a residual verification gap, not a pass/fail blocker since the branch is unchanged in structure, only link target/label.
+- [x] commit msg draft: `feat(website): rebuild the home hero around the Nekroz art and the docs entry point`. Used verbatim as the commit message.

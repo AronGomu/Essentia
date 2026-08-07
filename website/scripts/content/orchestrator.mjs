@@ -203,6 +203,7 @@ export async function build({ checkOnly }) {
   const catalog = {
     schemaVersion: CATALOG_SCHEMA_VERSION,
     generatedAt,
+    heroSectionSlug: registry.heroSectionSlug,
     sections,
     cards,
     cardVersions: versions,

@@ -14,10 +14,11 @@ const base = import.meta.env.BASE_URL;
 const latest = catalog.updates
   .filter((update) => update.status === 'new')
   .map((update) => ({ ...update, card: cardsById.get(update.cardId)! }));
-const heroSection = catalog.sections[0];
-const heroImage = heroSection?.image;
-const heroRoute = heroSection?.route ?? '/';
-const heroLabel = heroSection?.label ?? 'published cards';
+const heroSection =
+  catalog.sections.find(
+    (section) => section.slug === catalog.heroSectionSlug,
+  ) ?? catalog.sections[0];
+const heroImage = heroSection?.heroImage;
 const hasPublication = Boolean(heroSection && catalog.releases.length);
 ---
 
@@ -36,23 +37,23 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
             class="hero-art"
             src={withBase(base, heroImage ?? '')}
             alt=""
-            width="1200"
-            height="800"
+            width="624"
+            height="624"
             fetchpriority="high"
           />
           <div class="hero-content">
             <h1>
-              Yu-Gi-Oh! feel.
+              The Yu-Gi-Oh! Feel.
               <br />
-              Playable under Magic rules.
+              With Magic Rules.
             </h1>
             <p>
-              Source-backed cards, release history, canonical renders, readable
-              rules, and stable card pages.
+              Explore the Essentia project. Discover the best Yu-Gi-Oh has to
+              offer within MTG game system.
             </p>
             <div class="hero-actions">
-              <a class="primary-link" href={withBase(base, heroRoute)}>
-                Explore {heroLabel}
+              <a class="primary-link" href={withBase(base, '/docs/')}>
+                Learn about Essentia
               </a>
               <a class="secondary-link" href={withBase(base, '/updates/')}>
                 See what changed
@@ -132,8 +133,8 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
           Alpha_0.1 is open under alpha.
         </p>
         <div class="hero-actions">
-          <a class="primary-link" href={withBase(base, '/philosophy/')}>
-            Read design philosophy
+          <a class="primary-link" href={withBase(base, '/docs/')}>
+            Learn about Essentia
           </a>
           <a class="secondary-link" href={withBase(base, '/rules/')}>
             Read cube rules
