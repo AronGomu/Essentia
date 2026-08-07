@@ -97,11 +97,11 @@ Run: `cd website && npx vitest run tests/unit/preflight.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/preflight.test.ts` with the five cases above.
-- [ ] 2. Create `website/scripts/check-preflight.mjs` exporting `HERO_SOURCES` and `preflightIssues`, plus the CLI tail.
-- [ ] 3. Add `"preflight": "node scripts/check-preflight.mjs"` to `website/package.json` scripts.
-- [ ] 4. Run `cd website && npm run format` then `npm run lint`.
-- [ ] 5. Record the baseline: run `cd website && npm run ci` and note pass/fail in the commit body.
+- [x] 1. Create `website/tests/unit/preflight.test.ts` with the five cases above.
+- [x] 2. Create `website/scripts/check-preflight.mjs` exporting `HERO_SOURCES` and `preflightIssues`, plus the CLI tail.
+- [x] 3. Add `"preflight": "node scripts/check-preflight.mjs"` to `website/package.json` scripts.
+- [x] 4. Run `cd website && npm run format` then `npm run lint`.
+- [x] 5. Record the baseline: run `cd website && npm run ci` and note pass/fail in the commit body.
 
 No human step. `npm install` already ran in `website/` on 2026-08-07 (`up to date, 469 packages`); Node is `v24.18.0`; all five source illustrations are committed.
 
@@ -113,9 +113,9 @@ No human step. `npm install` already ran in `website/` on 2026-08-07 (`up to dat
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/preflight.test.ts` — 5 passed
-- [ ] `cd website && npm run preflight` — exits 0 and prints `preflight: node 24, deps, 5 source illustrations ready`
-- [ ] `cd website && npm run lint && npm run format:check` — exit 0
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — no page changed, site builds unchanged
-- [ ] commit msg draft: `chore(website): add a preflight gate for toolchain and source art`
+- [x] `cd website && npx vitest run tests/unit/preflight.test.ts` — 5 passed
+- [x] `cd website && npm run preflight` — exits 0 and prints `preflight: node 24, deps, 5 source illustrations ready`
+- [x] `cd website && npm run lint && npm run format:check` — exit 0
+- [x] `cd website && npm run ci` — exit 0
+- [x] app functional — no page changed, site builds unchanged
+- [x] commit msg draft: `chore(website): add a preflight gate for toolchain and source art`
