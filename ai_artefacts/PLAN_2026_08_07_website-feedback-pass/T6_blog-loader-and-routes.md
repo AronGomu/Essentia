@@ -79,20 +79,20 @@ Run: `cd website && npx vitest run tests/unit/blog.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/blog.test.ts` with the seven cases above.
-- [ ] 2. Create `website/scripts/content/blog.mjs` with `ALLOWED_POST_KEYS`, `parseFrontMatter`, `loadPosts`.
-- [ ] 3. `loadPosts` reads `path.join(CONTENT, 'blog')`; if the directory is absent it returns `[]`. For each entry: reject symlinks and non-directories via `fail()`, require the name to match `/^\d{4}-\d{2}-\d{2}-[a-z0-9-]+$/`, read `index.md`, cap at `262_144` bytes, reject a body matching `/<\/?[A-Za-z][^>]*>/` with `fail(\`post ${slug}: raw HTML is not allowed\`)`.
-- [ ] 4. Create `website/content/blog/2026-08-01-legend-of-alpha-project-introduction/index.md`. Front matter:
+- [x] 1. Create `website/tests/unit/blog.test.ts` with the seven cases above. Evidence: red run shows `Cannot find module '../../scripts/content/blog.mjs'`.
+- [x] 2. Create `website/scripts/content/blog.mjs` with `ALLOWED_POST_KEYS`, `parseFrontMatter`, `loadPosts`. Evidence: file created, imported cleanly by test.
+- [x] 3. `loadPosts` reads `path.join(CONTENT, 'blog')`; if the directory is absent it returns `[]`. For each entry: reject symlinks and non-directories via `fail()`, require the name to match `/^\d{4}-\d{2}-\d{2}-[a-z0-9-]+$/`, read `index.md`, cap at `262_144` bytes, reject a body matching `/<\/?[A-Za-z][^>]*>/` with `fail(\`post ${slug}: raw HTML is not allowed\`)`. Evidence: `npx vitest run tests/unit/blog.test.ts` — 7 passed.
+- [x] 4. Create `website/content/blog/2026-08-01-legend-of-alpha-project-introduction/index.md`. Front matter:
       `title: Legend of the Alpha — project introduction`, `date: 2026-08-01`, `author: Aron Gomu`,
       `summary: The first Essentia package, what is in it, and how the cube plays.`, `tags: release, alpha`.
-      Body: the prose of root `content/2026-08-01-legend-of-alpha-project-introduction/script.md`, converted to article form — strip any teleprompter/section-timing scaffolding, keep the headings and paragraphs, replace any raw HTML with Markdown, and point card mentions at `/cards/<id>/` routes.
-- [ ] 5. Import `loadPosts` in `website/scripts/content/orchestrator.mjs`, await it beside `loadDocs()`, and add `posts` to the `catalog` object literal.
-- [ ] 6. Bump `CATALOG_SCHEMA_VERSION` to `6`; add `CatalogPost` and `posts: CatalogPost[]` to `website/src/lib/catalog.ts` and change `schemaVersion: 5` to `6`; update `website/tests/unit/catalog.test.ts`.
-- [ ] 7. Create `website/src/pages/blog/index.astro`: `BaseLayout title="Blog — Essentia" description="Announcements and design notes from the Essentia project." accent="relic"`, a `.page-shell` with `<h1>Blog</h1>` and `<ul class="post-list">` of `<li><a href={withBase(base, post.route)}><h2>{post.title}</h2></a><p class="post-meta">{formatDate(post.date)} · {post.author}</p><p>{post.summary}</p></li>`. When `catalog.posts.length === 0`, render `<p>No posts published yet.</p>`.
-- [ ] 8. Create `website/src/pages/blog/[slug].astro` with `getStaticPaths()` over `catalog.posts`, rendering `<article class="page-shell post-body"><h1>{post.title}</h1><p class="post-meta">{formatDate(post.date)} · {post.author}</p><Markdown value={post.body} /></article>`.
-- [ ] 9. Add `.post-list { list-style: none; padding: 0; display: grid; gap: var(--space-4); }`, `.post-meta { color: var(--silver-ink); margin: 0.2rem 0 0.6rem; }`, `.post-body { max-width: 52rem; }` to `website/src/styles/global.css`.
-- [ ] 10. Extend the orchestrator summary line with `, ${posts.length} posts`.
-- [ ] 11. Run `npm run content:check`, `npm run format`, `npm run lint`, `npm run check`.
+      Body: the prose of root `content/2026-08-01-legend-of-alpha-project-introduction/script.md`, converted to article form — strip any teleprompter/section-timing scaffolding, keep the headings and paragraphs, replace any raw HTML with Markdown, and point card mentions at `/cards/<id>/` routes. Evidence: file created; `loads the migrated post` test passes (slug/date match).
+- [x] 5. Import `loadPosts` in `website/scripts/content/orchestrator.mjs`, await it beside `loadDocs()`, and add `posts` to the `catalog` object literal. Evidence: `orchestrator.mjs` diff (import + `const posts = await loadPosts();` + `posts,` in catalog literal).
+- [x] 6. Bump `CATALOG_SCHEMA_VERSION` to `6`; add `CatalogPost` and `posts: CatalogPost[]` to `website/src/lib/catalog.ts` and change `schemaVersion: 5` to `6`; update `website/tests/unit/catalog.test.ts`. Evidence: files edited; see Validation `npm run ci` run below.
+- [x] 7. Create `website/src/pages/blog/index.astro`: `BaseLayout title="Blog — Essentia" description="Announcements and design notes from the Essentia project." accent="relic"`, a `.page-shell` with `<h1>Blog</h1>` and `<ul class="post-list">` of `<li><a href={withBase(base, post.route)}><h2>{post.title}</h2></a><p class="post-meta">{formatDate(post.date)} · {post.author}</p><p>{post.summary}</p></li>`. When `catalog.posts.length === 0`, render `<p>No posts published yet.</p>`. Evidence: file created.
+- [x] 8. Create `website/src/pages/blog/[slug].astro` with `getStaticPaths()` over `catalog.posts`, rendering `<article class="page-shell post-body"><h1>{post.title}</h1><p class="post-meta">{formatDate(post.date)} · {post.author}</p><Markdown value={post.body} /></article>`. Evidence: file created.
+- [x] 9. Add `.post-list { list-style: none; padding: 0; display: grid; gap: var(--space-4); }`, `.post-meta { color: var(--silver-ink); margin: 0.2rem 0 0.6rem; }`, `.post-body { max-width: 52rem; }` to `website/src/styles/global.css`. Evidence: rules appended after the `forced-colors` media query.
+- [x] 10. Extend the orchestrator summary line with `, ${posts.length} posts`. Evidence: `orchestrator.mjs` summary line now ends `${docs.length} docs, ${posts.length} posts`.
+- [x] 11. Run `npm run content:check`, `npm run format`, `npm run lint`, `npm run check`. Evidence: content:check → `1 posts`; format → 1 file reformatted (blog.mjs); lint → 0 errors; check → 0 errors (after fixing implicit-any/PathLike types in `tests/unit/blog.test.ts`).
 
 ## Outputs
 
@@ -102,11 +102,11 @@ Run: `cd website && npx vitest run tests/unit/blog.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/blog.test.ts` — 7 passed
-- [ ] `cd website && npm run content:check` — summary line ends with `1 posts`
-- [ ] `cd website && npm run build` — `dist/blog/index.html` and `dist/blog/legend-of-alpha-project-introduction/index.html` exist
-- [ ] `cd website && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/blog/`, click through to the post, confirm it reads correctly with JavaScript disabled
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every pre-existing route unchanged
+- [x] `cd website && npx vitest run tests/unit/blog.test.ts` — 7 passed. Evidence: `Test Files 1 passed (1)` / `Tests 7 passed (7)`.
+- [x] `cd website && npm run content:check` — summary line ends with `1 posts`. Evidence: `content: 1 releases, 3 sections, 50 current cards, 50 versions, 73 keywords, 38 docs, 1 posts`.
+- [x] `cd website && npm run build` — `dist/blog/index.html` and `dist/blog/legend-of-alpha-project-introduction/index.html` exist. Evidence: both files present (31780 and 55516 bytes); build exit 0, 150 pages built.
+- [x] `cd website && npm run links:check` — exit 0. Evidence: `links: 150 pages clean`, EXIT:0.
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/blog/`, click through to the post, confirm it reads correctly with JavaScript disabled. **Substitution logged:** no browser/e2e harness on this host (Playwright cannot run) — satisfied via static-equivalent evidence instead: inspected `dist/blog/index.html` (`<h1>Blog</h1>`, `.post-list`, link `href="/blog/legend-of-alpha-project-introduction/"`) and `dist/blog/legend-of-alpha-project-introduction/index.html` (`<h1>Legend of the Alpha — project introduction</h1>`, one `<article>`, 2 occurrences of a `/cards/burning-abyss-cir/` cross-link). Pages are fully pre-rendered static HTML (Astro static build, no client hydration on this route), so they read correctly with JavaScript disabled by construction.
+- [x] `cd website && npm run ci` — exit 0. Evidence: EXIT:0; `Test Files 15 passed (15)` / `Tests 115 passed (115)`; build 150 pages; `dist scan: clean`.
+- [x] app functional — every pre-existing route unchanged. Evidence: `npm run ci`'s full test suite (route-404.test.ts, docs-routes.test.ts, catalog.test.ts, etc.) all pass; `dist/` still contains `archetypes/`, `cards/`, `docs/`, `releases/`, `sections/`, `rules/`, `philosophy/`, `legal/`, `updates/`, `feed.xml`, `sitemap.xml`, `robots.txt`, `404.html` alongside the new `blog/`; page count moved 148 → 150 (exactly the two new blog routes); `links:check` reports all 150 pages clean.
 - [ ] commit msg draft: `feat(website): publish a blog section with the first project post`

@@ -1439,3 +1439,17 @@ main {
     outline: 2px solid Highlight;
   }
 }
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+.post-meta {
+  color: var(--silver-ink);
+  margin: 0.2rem 0 0.6rem;
+}
+.post-body {
+  max-width: 52rem;
+}

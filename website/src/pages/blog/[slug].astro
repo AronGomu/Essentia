@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Markdown from '../../components/Markdown.astro';
+import { catalog, formatDate, type CatalogPost } from '../../lib/catalog';
+
+export function getStaticPaths() {
+  return catalog.posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CatalogPost;
+}
+
+const { post } = Astro.props;
+---
+
+<BaseLayout
+  title={`${post.title} — Essentia`}
+  description={post.summary}
+  accent="relic"
+>
+  <article class="page-shell post-body">
+    <h1>{post.title}</h1>
+    <p class="post-meta">
+      {formatDate(post.date)} · {post.author}
+    </p>
+    <Markdown value={post.body} />
+  </article>
+</BaseLayout>

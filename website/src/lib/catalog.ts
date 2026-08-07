@@ -155,8 +155,19 @@ export interface CatalogDoc {
   headings: Array<{ id: string; text: string; level: number }>;
 }
 
+export interface CatalogPost {
+  slug: string;
+  route: string;
+  title: string;
+  date: string;
+  author: string;
+  summary: string;
+  tags: string[];
+  body: string;
+}
+
 export interface Catalog {
-  schemaVersion: 5;
+  schemaVersion: 6;
   generatedAt: string;
   sections: CatalogSection[];
   cards: CatalogCard[];
@@ -174,6 +185,7 @@ export interface Catalog {
     versionRoute: string;
   }>;
   docs: CatalogDoc[];
+  posts: CatalogPost[];
   publicationDiagnostics: Array<{
     sectionSlug: string;
     sourceFile: string;
