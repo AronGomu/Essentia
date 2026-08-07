@@ -3,6 +3,13 @@
 .env.*.tmp
 .mse_launcher.log
 
+# Vendored Magic Set Editor payload. MSE/manifest.json pins it by sha256; the
+# files themselves are GPL binaries and third-party frame art/fonts this CC0
+# repository cannot redistribute. Populate with launcher/setup_mse.py --source.
+/MSE/*
+!/MSE/manifest.json
+!/MSE/README.md
+
 # Python bytecode
 __pycache__/
 *.py[cod]
@@ -23,3 +30,6 @@ website/coverage/
 
 # Agent run-state scratch
 .agentsystem/
+
+# graphify knowledge graph output
+graphify-out/

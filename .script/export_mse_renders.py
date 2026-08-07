@@ -221,8 +221,12 @@ def export_print_masters(project: Path, output: Path, config: MSEConfig) -> dict
         validate_export_name(card.name)
     with tempfile.TemporaryDirectory(prefix="mse-print-export-") as temporary:
         temporary_path = Path(temporary)
+        # The template declares `create directory: true`, so MSE ignores the given
+        # path as a folder and writes the PNGs to a sibling `<stem>-files/`. Naming
+        # a file inside the temporary directory keeps that sibling inside it too.
+        target = temporary_path / "print.txt"
         result = subprocess.run(
-            [str(config.cli), "--export", PRINT_TEMPLATE, str(project), str(temporary_path)],
+            [str(config.cli), "--export", PRINT_TEMPLATE, str(project), str(target)],
             capture_output=True,
             text=True,
             timeout=900,

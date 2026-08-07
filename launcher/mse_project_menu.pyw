@@ -1,4 +1,4 @@
-#!/mnt/data/Softwares/Full-Magic-Pack-main/python-tk/bin/python3
+#!/usr/bin/env python3
 """Native no-terminal launcher for Essentia MSE projects.
 
 Double-click this .pyw file on Windows to open a small GUI. Buttons launch each

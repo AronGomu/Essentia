@@ -4,11 +4,25 @@ Magic Set Editor is editor/rendering tooling. Folder-form `.mse-set` projects un
 
 ## Local setup
 
+Magic Set Editor is vendored under [`MSE/`](../MSE/README.md) — executable, the 20 data
+packages the cards render with, fonts, and resources. `MSE/manifest.json` is tracked and
+pins every file by sha256; the payload is untracked because it is a GPLv2 binary plus
+third-party frame art and fonts this CC0 repository cannot redistribute.
+
 ```bash
-python launcher/setup_mse.py
+python launcher/setup_mse.py --source "/path/to/Full-Magic-Pack"   # first time
+python launcher/setup_mse.py                                       # re-verify and re-wire
+python launcher/setup_mse.py --verify                              # hashes only, no writes
 ```
 
-Setup writes ignored `launcher/.env` keys `MSE_ROOT`, `MSE_EXECUTABLE`, `MSE_CLI`, `MSE_DATA_DIR`, `MSE_FONTS_DIR`, and `MSE_PROJECTS_DIR`. Read `CONTEXT.md` under configured MSE root when present.
+Setup writes ignored `launcher/.env` keys `MSE_ROOT`, `MSE_EXECUTABLE`, `MSE_CLI`,
+`MSE_DATA_DIR`, `MSE_FONTS_DIR`, and `MSE_PROJECTS_DIR`. A populated `MSE/` also works
+without `.env`: `MSEConfig.load()` falls back to the vendored layout.
+
+MSE resolves packages only through `~/.magicseteditor` and typefaces only through
+fontconfig, so setup points both at `MSE/`. It replaces symlinks only and never deletes
+a real `~/.magicseteditor/data` directory. Fonts are exact: adding one the canonical
+renders were not produced with silently changes output.
 
 Launch nested projects with `launcher/mse_project_menu.pyw`. Diagnostics write to ignored `launcher/.mse_launcher.log`.
 
@@ -68,7 +82,9 @@ Print masters are exported through `mse_packages/essentia-print.mse-export-templ
 
 MSE only loads packages from its own data directories, so `launcher/setup_mse.py` copies the template into `MSE_DATA_DIR` and fails setup when the installed copy is missing or stale. `--print-masters` verifies every exported PNG is exactly 1500 × 2092 and fails loudly if it is not — a wrong size means the installed template is stale or MSE ignored the size request.
 
-Requires an MSE build whose `write_image_file` accepts `width:`/`height:`. Provenance records the exporting MSE version; verify against it before trusting masters.
+The template declares `create directory: true`, so MSE writes the PNGs to a sibling `<stem>-files/` rather than into the path it is handed. The export passes a filename inside its temporary directory to keep that sibling in scope.
+
+Requires an MSE build whose `write_image_file` accepts `width:`/`height:` — the vendored `MSE/bin/magicseteditor` does. Provenance records the exporting MSE version; verify against it before trusting masters.
 
 ```bash
 python .script/export_mse_renders.py <project> --output <dir> --print-masters

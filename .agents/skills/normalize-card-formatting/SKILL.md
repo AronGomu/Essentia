@@ -54,8 +54,7 @@ Read these files **completely on every invocation**, because this skill exists s
 2. `docs/RULES.md`;
 3. the matching archetype `CONTEXT.md`, `DESIGN.md`, `RULES.md`, and `KEYWORDS.md` modules;
 4. two or three complete sibling card files demonstrating each relevant card type/frame;
-5. `CONTEXT.md` under `MSE_ROOT`, if it exists, after loading `MSEConfig` from `launcher/mse_config.py`;
-6. any project-specific tests or generator/synchronizer that can rewrite the scoped cards.
+5. any project-specific tests or generator/synchronizer that can rewrite the scoped cards.
 
 Treat `docs/RULES.md` as the index. Follow its links to the single owning rule module; use `docs/rules/TEMPLATING.md` for syntax/PSCT and `docs/KEYWORDS.md` for keyword taxonomy. Apply rules dynamically from current files. If modules contradict, do not guess or rewrite mechanics: preserve affected text and report `path:line` evidence.
 

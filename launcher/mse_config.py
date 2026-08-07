@@ -9,6 +9,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
+from launcher.mse_vendor import (
+    BIN_DIR,
+    DATA_DIR,
+    EXECUTABLE_NAME,
+    FONT_DIR,
+    VENDOR_ROOT,
+)
+
 LAUNCHER_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = LAUNCHER_ROOT.parent
 DEFAULT_ENV_PATH = LAUNCHER_ROOT / ".env"
@@ -19,6 +27,25 @@ REQUIRED_ENV_KEYS = (
     "MSE_FONTS_DIR",
     "MSE_PROJECTS_DIR",
 )
+
+
+def vendored_values(vendor_root: Path = VENDOR_ROOT) -> dict[str, str]:
+    """Derive configuration from the repository's own MSE tree.
+
+    The vendored tree is the default installation, so a checkout that has been
+    populated works without an .env file at all.
+    """
+    executable = vendor_root / BIN_DIR / EXECUTABLE_NAME
+    if not executable.is_file():
+        return {}
+    return {
+        "MSE_ROOT": str(vendor_root),
+        "MSE_EXECUTABLE": str(executable),
+        "MSE_CLI": str(executable),
+        "MSE_DATA_DIR": str(vendor_root / DATA_DIR),
+        "MSE_FONTS_DIR": str(vendor_root / FONT_DIR),
+        "MSE_PROJECTS_DIR": str(REPO_ROOT / "cards_mse"),
+    }
 
 
 def load_env_file(env_path: Path = DEFAULT_ENV_PATH) -> dict[str, str]:
@@ -106,7 +133,8 @@ class MSEConfig:
 
     @classmethod
     def load(cls, env_path: Path = DEFAULT_ENV_PATH) -> "MSEConfig":
-        values = load_env_file(env_path)
+        values = vendored_values()
+        values.update(load_env_file(env_path))
         # Explicit process environment values are useful in CI and override .env.
         values.update({key: os.environ[key] for key in (*REQUIRED_ENV_KEYS, "MSE_CLI") if key in os.environ})
         return cls.from_values(values)

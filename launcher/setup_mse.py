@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Validate a Magic Set Editor installation and generate the local .env file."""
+"""Verify the vendored Magic Set Editor tree, wire it to this host, write .env."""
 
 from __future__ import annotations
 
 import argparse
 import filecmp
-import os
 import re
 import shutil
 import sys
@@ -17,6 +16,16 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from launcher.mse_config import DEFAULT_ENV_PATH, MSEConfig, write_env_file
+from launcher.mse_vendor import (
+    FONT_FILES,
+    VENDOR_ROOT,
+    VendorError,
+    install_tree,
+    install_user_fonts,
+    link_user_packages,
+    load_manifest,
+    verify_tree,
+)
 
 PROJECTS_DIR = REPO_ROOT / "cards_mse"
 MSE_PACKAGES_DIR = REPO_ROOT / "mse_packages"
@@ -24,26 +33,10 @@ MSE_PACKAGES_DIR = REPO_ROOT / "mse_packages"
 # must be copied in. Print masters depend on this template being present and
 # current; a stale copy silently exports at the wrong resolution.
 REPO_PACKAGES = ("essentia-print.mse-export-template",)
-EXECUTABLE_CANDIDATES = (
-    "mse.exe",
-    "magicseteditor.exe",
-    "mse",
-    "magicseteditor",
-    "Magic Set Editor.app/Contents/MacOS/mse",
-    "Magic Set Editor.app/Contents/MacOS/Magic Set Editor",
-)
-CLI_CANDIDATES = ("mse.com", "magicseteditor.com", "mse", "magicseteditor")
-FONT_DIR_CANDIDATES = ("Magic-Fonts", "fonts", "Fonts")
-# These fonts are used by the Magic frames shipped with the reference full MSE bundle.
-REQUIRED_FONT_FILES = (
-    "beleren-bold_P1.01.ttf",
-    "belerensmallcaps-bold.ttf",
-    "MATRIX.TTF",
-    "matrixb.ttf",
-    "matrixbsc.ttf",
-    "mplantin.ttf",
-    "mplantinit.ttf",
-)
+EXECUTABLE_CANDIDATES = ("bin/magicseteditor", "bin/mse")
+CLI_CANDIDATES = ("bin/magicseteditor", "bin/mse")
+FONT_DIR_CANDIDATES = ("fonts",)
+REQUIRED_FONT_FILES = FONT_FILES
 
 
 @dataclass(frozen=True)
@@ -144,7 +137,7 @@ def _find_font_dir(root: Path) -> Path | None:
 
 
 def validate_mse_root(
-    root: Path,
+    root: Path = VENDOR_ROOT,
     projects_dir: Path = PROJECTS_DIR,
 ) -> tuple[MSEConfig | None, list[str]]:
     """Return a complete config or every actionable installation error."""
@@ -152,14 +145,12 @@ def validate_mse_root(
     projects_dir = projects_dir.resolve()
     errors: list[str] = []
     if not root.is_dir():
-        return None, [f"MSE root is not a directory: {root}"]
+        return None, [f"Vendored MSE tree is not a directory: {root}"]
 
     executable = _find_first(root, EXECUTABLE_CANDIDATES)
     if executable is None:
         errors.append(
-            "MSE executable not found (expected one of: "
-            + ", ".join(EXECUTABLE_CANDIDATES)
-            + ")"
+            "MSE executable not found (expected one of: " + ", ".join(EXECUTABLE_CANDIDATES) + ")"
         )
 
     data_dir = root / "data"
@@ -212,7 +203,7 @@ def validate_mse_root(
 
 
 def configure(
-    root: Path,
+    root: Path = VENDOR_ROOT,
     env_path: Path = DEFAULT_ENV_PATH,
     projects_dir: Path = PROJECTS_DIR,
 ) -> MSEConfig:
@@ -244,38 +235,54 @@ def configure(
     return config
 
 
-def _prompt_for_root() -> Path:
-    while True:
-        raw_path = input("Path to the Magic Set Editor root: ").strip().strip('"')
-        if not raw_path:
-            print("Please enter a path.", file=sys.stderr)
-            continue
-        root = Path(os.path.expandvars(raw_path)).expanduser()
-        config, errors = validate_mse_root(root)
-        if config is not None:
-            return root
-        print("This installation is not ready for Essentia:", file=sys.stderr)
-        for error in errors:
-            print(f"  - {error}", file=sys.stderr)
-        print("Try another path.\n", file=sys.stderr)
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate Magic Set Editor and generate this repository's .env file."
+        description="Verify the vendored Magic Set Editor tree and generate this repository's .env file."
     )
     parser.add_argument(
-        "--mse-root",
+        "--source",
         type=Path,
-        help="MSE installation root. If omitted, the script prompts until a valid path is provided.",
+        help=(
+            "Populate MSE/ from a Full Magic Pack checkout. Required the first time, "
+            "because the payload is untracked."
+        ),
+    )
+    parser.add_argument(
+        "--verify",
+        action="store_true",
+        help="Only check MSE/ against MSE/manifest.json; change nothing.",
     )
     parser.add_argument("--env-file", type=Path, default=DEFAULT_ENV_PATH, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    root = args.mse_root or _prompt_for_root()
     try:
-        config = configure(root, args.env_file)
-    except ValueError as exc:
+        manifest = load_manifest()
+        if args.source is not None:
+            copied = install_tree(args.source, manifest=manifest)
+            print(f"event=config.mse.vendored files={len(copied)} source={args.source}")
+        problems = verify_tree(manifest=manifest)
+    except VendorError as exc:
+        parser.error(str(exc))
+
+    if problems:
+        detail = "\n  - ".join(problems[:20])
+        extra = "" if len(problems) <= 20 else f"\n  ... and {len(problems) - 20} more"
+        parser.error(
+            f"Vendored MSE tree does not match MSE/manifest.json:\n  - {detail}{extra}\n"
+            "Re-run with --source /path/to/Full-Magic-Pack to repopulate it."
+        )
+
+    if args.verify:
+        print(f"event=config.mse.verified files={len(manifest.entries)} root={VENDOR_ROOT}")
+        return 0
+
+    try:
+        config = configure(VENDOR_ROOT, args.env_file)
+        for entry in link_user_packages():
+            print(f"event=config.mse.linked link={entry}")
+        for name in install_user_fonts():
+            print(f"event=config.mse.font.installed file={name}")
+    except (ValueError, VendorError) as exc:
         parser.error(str(exc))
 
     print(f"event=config.mse.written path={args.env_file.resolve()}")
