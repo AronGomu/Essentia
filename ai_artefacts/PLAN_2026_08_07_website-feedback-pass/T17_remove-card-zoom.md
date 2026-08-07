@@ -53,16 +53,16 @@ Run: `cd website && npx vitest run tests/unit/catalog.test.ts tests/unit/chrome.
 
 ## Impl steps
 
-- [ ] 1. Add the four cases above to the two test files.
-- [ ] 2. Add the gate rule to `website/scripts/check-chrome.mjs`.
-- [ ] 3. In `website/src/pages/cards/[id].astro`, delete the `ImageZoom` import, the `zoomImage` constant, and the `<ImageZoom …>` element. `.render-column` keeps only `<CardPicture card={card} tier="display" eager alt={…} />`.
-- [ ] 4. Apply the same three deletions to `website/src/pages/cards/[id]/versions/[package].astro`.
-- [ ] 5. `git rm website/src/components/ImageZoom.svelte`.
-- [ ] 6. Remove the `zoom` entry from `TIERS` in `website/scripts/content/images.mjs`.
-- [ ] 7. Remove `zoom: ImageTier;` from `CardImages` in `website/src/lib/catalog.ts`.
-- [ ] 8. `grep -rn "zoom" website/src website/scripts website/tests --include='*.astro' --include='*.ts' --include='*.mjs' --include='*.svelte'` and clear every remaining hit outside `src/generated/` (which the build regenerates).
-- [ ] 9. Delete `website/public/generated/` and rebuild so no stale `*-zoom.webp` survives: `rm -rf public/generated && npm run build`.
-- [ ] 10. Run `npm run budgets:check`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the four cases above to the two test files. Evidence: `website/tests/unit/catalog.test.ts` gained `exposes no zoom tier on any card` + `still exposes thumb, display and print tiers`; `website/tests/unit/chrome.test.ts` gained `flags a leftover zoom trigger` + `accepts a card page without it`.
+- [x] 2. Add the gate rule to `website/scripts/check-chrome.mjs`. Evidence: `chromeIssues` now pushes `${file}: the full-size card viewer must be gone` when html contains `zoom-trigger` or `zoom-dialog`, applied to all files (added next to the breadcrumb check).
+- [x] 3. In `website/src/pages/cards/[id].astro`, delete the `ImageZoom` import, the `zoomImage` constant, and the `<ImageZoom …>` element. `.render-column` keeps only `<CardPicture card={card} tier="display" eager alt={…} />`. Evidence: `grep -n "ImageZoom\|zoomImage" website/src/pages/cards/[id].astro` returns nothing.
+- [x] 4. Apply the same three deletions to `website/src/pages/cards/[id]/versions/[package].astro`. Evidence: `grep -n "ImageZoom\|zoomImage" "website/src/pages/cards/[id]/versions/[package].astro"` returns nothing.
+- [x] 5. `git rm website/src/components/ImageZoom.svelte`. Evidence: `git rm` output `rm 'website/src/components/ImageZoom.svelte'`; file no longer on disk.
+- [x] 6. Remove the `zoom` entry from `TIERS` in `website/scripts/content/images.mjs`. Evidence: `TIERS` now lists only `thumb` and `display`.
+- [x] 7. Remove `zoom: ImageTier;` from `CardImages` in `website/src/lib/catalog.ts`. Evidence: `CardImages` interface now has `thumb`, `display`, `print`, `width`, `height` only.
+- [x] 8. `grep -rn "zoom" website/src website/scripts website/tests --include='*.astro' --include='*.ts' --include='*.mjs' --include='*.svelte'` and clear every remaining hit outside `src/generated/` (which the build regenerates). Evidence: only remaining hits are `src/generated/catalog.ts` (stale build artifact, regenerated in step 9), `scripts/check-chrome.mjs` (the new gate rule), and `tests/unit/catalog.test.ts`/`tests/unit/chrome.test.ts` (the new test cases) — all intentional.
+- [x] 9. Delete `website/public/generated/` and rebuild so no stale `*-zoom.webp` survives: `rm -rf public/generated && npm run build`. Evidence: build exits with `chrome: 151 pages carry the site header`, no viewer complaint logged; `find public/generated -name '*-zoom.webp'` returns empty.
+- [x] 10. Run `npm run budgets:check`, `npm run format`, `npm run lint`, `npm run check`. Evidence: `budgets:check` → `budgets: 9 JS, 151 HTML, 205 images, 50 print masters (16 MiB) within limits` (down from 255 images); `format` reformatted `tests/unit/catalog.test.ts` (own new test cases), all else unchanged; `lint` exit clean, no output; `check` exit 0 (only pre-existing unrelated `playwright-report/` trace-viewer warnings, no errors in project source).
 
 ## Outputs
 
@@ -72,11 +72,11 @@ Run: `cd website && npx vitest run tests/unit/catalog.test.ts tests/unit/chrome.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — full suite green
-- [ ] `cd website && npm run build` — chrome gate reports no viewer complaint; `find public/generated -name '*-zoom.webp'` returns nothing
-- [ ] `cd website && npm run budgets:check` — exit 0; JS total lower than before this commit
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/cards/nekroz-trishula/` — the card render shows with no zoom button, and clicking the image does nothing
-- [ ] manual check: `/cards/nekroz-trishula/versions/alpha-LOTA-0001-Alpha-0-1/` behaves the same
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — card pages otherwise unchanged
-- [ ] commit msg draft: `feat(website): drop the full-size card viewer and its image tier`
+- [x] `cd website && npx vitest run` — full suite green. Evidence: `Test Files 23 passed (23)`, `Tests 192 passed (192)`.
+- [x] `cd website && npm run build` — chrome gate reports no viewer complaint; `find public/generated -name '*-zoom.webp'` returns nothing. Evidence: build output ends `chrome: 151 pages carry the site header` (no complaint line); `find` returned empty.
+- [x] `cd website && npm run budgets:check` — exit 0; JS total lower than before this commit. Evidence: `budgets: 9 JS, 151 HTML, 205 images, 50 print masters (16 MiB) within limits`, exit 0; image count dropped 255 → 205 (one fewer island, `ImageZoom.svelte` no longer ships as a JS chunk — no `zoom`-named file under `dist/_astro`).
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/cards/nekroz-trishula/` — the card render shows with no zoom button, and clicking the image does nothing. **Substitution (no browser/e2e harness on this host):** inspected built `dist/cards/nekroz-trishula/index.html` directly — `.render-column` contains only the `<picture>` from `CardPicture`, no `zoom-trigger`/`zoom-dialog`/`ImageZoom` markup; `grep` for those strings returns no match (exit 1).
+- [x] manual check: `/cards/nekroz-trishula/versions/alpha-LOTA-0001-Alpha-0-1/` behaves the same. **Substitution:** same grep against `dist/cards/nekroz-trishula/versions/alpha-LOTA-0001-Alpha-0-1/index.html` — no match (exit 1).
+- [x] `cd website && npm run ci` — exit 0. Evidence: see report body — full `npm run ci` run, exit 0.
+- [x] app functional — card pages otherwise unchanged. Evidence: rendered `dist/cards/nekroz-trishula/index.html` transcription column (title, cost, type line, rules text, P/T, release history, pager, related section) all present and unchanged in shape.
+- [x] commit msg draft: `feat(website): drop the full-size card viewer and its image tier`

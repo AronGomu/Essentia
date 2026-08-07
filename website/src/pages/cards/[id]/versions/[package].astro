@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import CardPicture from '../../../../components/CardPicture.astro';
-import ImageZoom from '../../../../components/ImageZoom.svelte';
 import RichText from '../../../../components/RichText.astro';
 import {
   catalog,
@@ -19,7 +18,6 @@ export function getStaticPaths() {
 const { card } = Astro.props;
 const current = cardsById.get(card.id)!;
 const base = import.meta.env.BASE_URL;
-const zoomImage = withBase(base, card.images.zoom.webp);
 ---
 
 <BaseLayout
@@ -41,13 +39,6 @@ const zoomImage = withBase(base, card.images.zoom.webp);
         tier="display"
         eager
         alt={`${card.name} card render from ${card.stageLabel} ${card.version}`}
-      />
-      <ImageZoom
-        client:load
-        src={zoomImage}
-        alt={`${card.name} card render from ${card.stageLabel} ${card.version}`}
-        width={card.width}
-        height={card.height}
       />
     </div>
     <div class="card-transcription">

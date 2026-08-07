@@ -17,7 +17,6 @@ import {
 export const TIERS = [
   { name: 'thumb', width: 240, formats: ['avif', 'webp'] },
   { name: 'display', width: 750, formats: ['avif', 'webp'] },
-  { name: 'zoom', width: 1500, formats: ['webp'] },
 ];
 
 export const PRINT_MASTER = { width: 1500, height: 2092, dpi: 600 };

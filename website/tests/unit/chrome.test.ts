@@ -358,3 +358,31 @@ ${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
     ).toBe(true);
   });
 });
+
+describe('the full-size card viewer must be gone', () => {
+  it('flags a leftover zoom trigger', () => {
+    const issues = chromeIssues(
+      'cards/x/index.html',
+      '<button class="zoom-trigger">',
+      '/',
+    );
+    expect(
+      issues.some((issue) =>
+        issue.includes('the full-size card viewer must be gone'),
+      ),
+    ).toBe(true);
+  });
+
+  it('accepts a card page without it', () => {
+    const issues = chromeIssues(
+      'cards/x/index.html',
+      '<div class="card-transcription"><h1>Card</h1></div>',
+      '/',
+    );
+    expect(
+      issues.some((issue) =>
+        issue.includes('the full-size card viewer must be gone'),
+      ),
+    ).toBe(false);
+  });
+});

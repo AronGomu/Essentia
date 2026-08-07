@@ -43,6 +43,10 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: page is missing a breadcrumb`);
   }
 
+  if (html.includes('zoom-trigger') || html.includes('zoom-dialog')) {
+    problems.push(`${file}: the full-size card viewer must be gone`);
+  }
+
   if (/^(archetypes|sections)\//.test(file)) {
     if (html.includes('class="day-group"')) {
       problems.push(`${file}: gallery must not group by date`);

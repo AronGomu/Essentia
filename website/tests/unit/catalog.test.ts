@@ -80,4 +80,14 @@ describe('immutable publication graph', () => {
       );
     }
   });
+
+  it('exposes no zoom tier on any card', () => {
+    expect(catalog.cards.every((card) => !('zoom' in card.images))).toBe(true);
+  });
+
+  it('still exposes thumb, display and print tiers', () => {
+    expect(Object.keys(catalog.cards[0]!.images)).toEqual(
+      expect.arrayContaining(['thumb', 'display', 'print', 'width', 'height']),
+    );
+  });
 });

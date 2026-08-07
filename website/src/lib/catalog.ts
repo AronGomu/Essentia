@@ -22,7 +22,6 @@ export interface PrintImage {
 export interface CardImages {
   thumb: ImageTier;
   display: ImageTier;
-  zoom: ImageTier;
   print: PrintImage;
   width: number;
   height: number;
