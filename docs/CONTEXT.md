@@ -47,6 +47,8 @@
 
 Non-archetype groups are storage/type buckets. Shared Fusion, Synchro, Xyz, Link, Ritual, and Trap rules remain global.
 
+A website archetype section lists printed-name members plus any support card explicitly marked `linked: true` in `website/content/identities.json`. Support cards without an explicit link live in the non-archetype section instead, but they keep their `archetype`/`role` fields so the related-cards rule can still surface their archetype affinity.
+
 ## Language
 
 Canonical content is English. Card names, types, subtypes, and archetype names remain English. Full official Yu-Gi-Oh! names stay in `original_cards/`; MSE `name:` stores the cube name. When documentation must show a mapping, use `[original name] => [cube name]`.

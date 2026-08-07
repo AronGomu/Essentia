@@ -75,13 +75,13 @@ Run: `cd website && npx vitest run tests/unit/archetype.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Add the eight cases above to `website/tests/unit/archetype.test.ts`.
-- [ ] 2. Add `assertLinked` to `website/scripts/content/identity.mjs` and call it inside the card loop of `loadRegistries()`, right after the `ROLES` check.
-- [ ] 3. Replace the body of `resolveSection` with the version above.
-- [ ] 4. Run `npm run content:check` and record the new per-section counts printed by the summary line.
-- [ ] 5. Inspect `src/generated/catalog.ts` for the spellbook section's resolved `iconicId`; if the fallback picked something unrepresentative, set `iconicId` in `website/content/sections.json` to a published spellbook **member** and re-run.
-- [ ] 6. Add a one-paragraph note to `docs/CONTEXT.md` under `## Archetype documentation` stating that a website archetype section lists printed-name members plus explicitly linked support cards, and that support cards otherwise live in the non-archetype section while keeping their archetype affinity.
-- [ ] 7. Run `npm run build`, `npm run links:check`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the eight cases above to `website/tests/unit/archetype.test.ts`.
+- [x] 2. Add `assertLinked` to `website/scripts/content/identity.mjs` and call it inside the card loop of `loadRegistries()`, right after the `ROLES` check.
+- [x] 3. Replace the body of `resolveSection` with the version above.
+- [x] 4. Run `npm run content:check` and record the new per-section counts printed by the summary line.
+- [x] 5. Inspect `src/generated/catalog.ts` for the spellbook section's resolved `iconicId`; if the fallback picked something unrepresentative, set `iconicId` in `website/content/sections.json` to a published spellbook **member** and re-run.
+- [x] 6. Add a one-paragraph note to `docs/CONTEXT.md` under `## Archetype documentation` stating that a website archetype section lists printed-name members plus explicitly linked support cards, and that support cards otherwise live in the non-archetype section while keeping their archetype affinity.
+- [x] 7. Run `npm run build`, `npm run links:check`, `npm run format`, `npm run lint`, `npm run check`.
 
 ## Outputs
 
@@ -91,11 +91,11 @@ Run: `cd website && npx vitest run tests/unit/archetype.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/archetype.test.ts` — all pass
-- [ ] `cd website && npm run content:check` — exit 0; the published support cards now count under non-archetype
-- [ ] `cd website && npm run build && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/archetypes/burning-abyss/` — Tour Guide from the Underworld and Beatrice are gone; every remaining card's name contains "Burning Abyss"
-- [ ] manual check: `/sections/non-archetype/non-archetype/` now lists those cards
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every card page still resolves at its original route
+- [x] `cd website && npx vitest run tests/unit/archetype.test.ts` — all pass (20/20)
+- [x] `cd website && npm run content:check` — exit 0; the published support cards now count under non-archetype (`content: 1 releases, 3 sections, 50 current cards...`; non-archetype=22, burning-abyss=13, nekroz=15)
+- [x] `cd website && npm run build && npm run links:check` — exit 0 (151 pages; `links: 151 pages clean`)
+- [x] manual check (no browser harness on this host; substituted with static inspection of built `dist/**/index.html` per parent instruction): `dist/archetypes/burning-abyss/index.html` card-grid links are exactly the 13 printed-name Burning Abyss cards — Tour Guide From the Underworld and Beatrice are not among them (Beatrice is not published in this catalog at all, so it cannot appear anywhere)
+- [x] manual check (same static substitution): `dist/sections/non-archetype/non-archetype/index.html` now lists `tour-guide-from-the-underworld` among its 22 cards
+- [x] `cd website && npm run ci` — exit 0 (22 test files / 181 tests passed)
+- [x] app functional — every card page still resolves at its original route (verified for all 4 published support cards among the 14 listed in Inputs: `manju-of-the-ten-thousand-hands`, `preparation-of-rites`, `senju-of-the-thousand-hands`, `tour-guide-from-the-underworld`; the other 10 are not published in this catalog)
 - [ ] commit msg draft: `feat(website): restrict archetype sections to members and linked support cards`

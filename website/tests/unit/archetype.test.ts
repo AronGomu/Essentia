@@ -1,6 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { assertMembership } from '../../scripts/content/identity.mjs';
+import {
+  assertLinked,
+  assertMembership,
+  resolveSection,
+} from '../../scripts/content/identity.mjs';
 import { catalog } from '../../src/lib/catalog';
 
 const content = (name: string) =>
@@ -102,6 +106,84 @@ describe('membership cross-check', () => {
   });
 });
 
+describe('resolveSection', () => {
+  const nonArchetype = { slug: 'non-archetype', kind: 'non-archetype' };
+  const burningAbyss = { slug: 'burning-abyss', kind: 'archetype' };
+  const sectionRegistry = {
+    sectionsBySlug: new Map([
+      ['burning-abyss', burningAbyss],
+      ['non-archetype', nonArchetype],
+    ]),
+    nonArchetype,
+  };
+
+  it('keeps a named member in its archetype', () => {
+    expect(
+      resolveSection(
+        {
+          stableId: 'nekroz-trishula',
+          role: 'member',
+          archetype: 'burning-abyss',
+        },
+        sectionRegistry,
+      ),
+    ).toBe(burningAbyss);
+  });
+
+  it('moves an unlinked support card out', () => {
+    expect(
+      resolveSection(
+        {
+          stableId: 'tour-guide-from-the-underworld',
+          role: 'support',
+          archetype: 'burning-abyss',
+        },
+        sectionRegistry,
+      ),
+    ).toBe(nonArchetype);
+  });
+
+  it('keeps an explicitly linked support card', () => {
+    expect(
+      resolveSection(
+        {
+          stableId: 'tour-guide-from-the-underworld',
+          role: 'support',
+          archetype: 'burning-abyss',
+          linked: true,
+        },
+        sectionRegistry,
+      ),
+    ).toBe(burningAbyss);
+  });
+
+  it('keeps staples in non-archetype', () => {
+    expect(
+      resolveSection({ role: 'staple', archetype: null }, sectionRegistry),
+    ).toBe(nonArchetype);
+  });
+});
+
+describe('assertLinked', () => {
+  it('rejects linked on a member', () => {
+    expect(() =>
+      assertLinked({ stableId: 'x', role: 'member', linked: true }),
+    ).toThrow('content: identity x: linked is support-only');
+  });
+
+  it('rejects a non-boolean linked', () => {
+    expect(() =>
+      assertLinked({ stableId: 'x', role: 'support', linked: 'yes' }),
+    ).toThrow('content: identity x: linked must be a boolean');
+  });
+
+  it('allows linked absent', () => {
+    expect(() =>
+      assertLinked({ stableId: 'x', role: 'support' }),
+    ).not.toThrow();
+  });
+});
+
 describe('authored archetype registry', () => {
   it('gives every identity an explicit archetype and role', () => {
     const identities = content('identities.json');
@@ -123,9 +205,45 @@ describe('authored archetype registry', () => {
       else expect(section.namePattern).toBeUndefined();
   });
 
-  it('routes published cards into the section their archetype names', () => {
-    for (const card of catalog.cards)
-      expect(card.sectionSlug).toBe(card.archetype ?? 'non-archetype');
+  it('routes published cards into the section their archetype names or explicit links', () => {
+    const identities = content('identities.json');
+    const byId = new Map(
+      identities.cards.map((identity: { stableId: string }) => [
+        identity.stableId,
+        identity,
+      ]),
+    );
+    for (const card of catalog.cards) {
+      const identity = byId.get(card.id) as
+        | { role: string; linked?: boolean }
+        | undefined;
+      const inArchetype =
+        identity?.role === 'member' || identity?.linked === true;
+      expect(card.sectionSlug).toBe(
+        inArchetype ? card.archetype : 'non-archetype',
+      );
+    }
+  });
+
+  it('archetype sections hold only members and linked support cards', () => {
+    const identities = content('identities.json');
+    const byId = new Map(
+      identities.cards.map((identity: { stableId: string }) => [
+        identity.stableId,
+        identity,
+      ]),
+    );
+    for (const section of catalog.sections) {
+      if (section.kind !== 'archetype') continue;
+      for (const cardId of section.cardIds) {
+        const identity = byId.get(cardId) as
+          | { role: string; linked?: boolean }
+          | undefined;
+        expect(identity?.role === 'member' || identity?.linked === true).toBe(
+          true,
+        );
+      }
+    }
   });
 });
 

@@ -30,6 +30,15 @@ export function assertHeroImage(section, provenanceKeys, exists) {
 
 const ROLES = new Set(['member', 'support', 'staple']);
 
+/** Fails when `linked` is present on a card that is not an authored support card. */
+export function assertLinked(identity) {
+  if (identity.linked === undefined) return;
+  if (typeof identity.linked !== 'boolean')
+    fail(`content: identity ${identity.stableId}: linked must be a boolean`);
+  if (identity.linked === true && identity.role !== 'support')
+    fail(`content: identity ${identity.stableId}: linked is support-only`);
+}
+
 /**
  * Membership mirrors the in-game rule: a card belongs to an archetype when its
  * printed name contains the archetype string. Anything else is authored.
@@ -112,6 +121,7 @@ export async function loadRegistries() {
       fail(`invalid identity ${item.stableId ?? 'unknown'}`);
     if (!ROLES.has(item.role))
       fail(`identity ${item.stableId}: role must be member|support|staple`);
+    assertLinked(item);
     if (item.archetype === undefined)
       fail(
         `identity ${item.stableId}: archetype is required (null for staples)`,
@@ -206,9 +216,15 @@ export function assertMembership(identity, cardName, registry) {
     );
 }
 
-/** Section membership follows the authored archetype, never the folder layout. */
+/**
+ * Section membership: printed-name members always sit in their archetype;
+ * support cards only when explicitly linked; everything else is non-archetype.
+ */
 export function resolveSection(identity, registry) {
-  if (!identity.archetype) return registry.nonArchetype;
+  const inArchetype =
+    identity.role === 'member' ||
+    (identity.role === 'support' && identity.linked === true);
+  if (!inArchetype || !identity.archetype) return registry.nonArchetype;
   const section = registry.sectionsBySlug.get(identity.archetype);
   if (!section)
     fail(`${identity.stableId}: unresolved archetype ${identity.archetype}`);
