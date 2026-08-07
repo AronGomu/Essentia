@@ -64,7 +64,7 @@ describe('rewriteDocLinks', () => {
 describe('loadDocs', () => {
   it('loads every published doc', async () => {
     const docs = await loadDocs();
-    expect(docs.length).toBe(37);
+    expect(docs.length).toBe(38);
   });
 
   it('excludes ADRs', async () => {

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Markdown from '../../components/Markdown.astro';
+import ChapterSummary from '../../components/ChapterSummary.astro';
+import DocsRail from '../../components/DocsRail.astro';
+import { catalog } from '../../lib/catalog';
+import { docsRailGroups } from '../../lib/docs';
+
+const doc = catalog.docs.find((entry) => entry.route === '/docs/');
+if (!doc) throw new Error('docs: PRESENTATION.md is missing');
+
+const base = import.meta.env.BASE_URL;
+const groups = docsRailGroups(catalog.docs);
+const chapters = doc.headings
+  .filter((heading) => heading.level === 2)
+  .map((heading) => ({ href: `#${heading.id}`, label: heading.text }));
+---
+
+<BaseLayout
+  title="Essentia — the project"
+  description="What Essentia is: Yu-Gi-Oh! identities rebuilt as Magic cards."
+  accent="relic"
+>
+  <div class="docs-shell">
+    <DocsRail groups={groups} currentRoute={doc.route} {base} />
+    <article class="docs-body">
+      <h1>{doc.title}</h1>
+      <Markdown value={doc.body} />
+    </article>
+    <ChapterSummary items={chapters} />
+  </div>
+</BaseLayout>

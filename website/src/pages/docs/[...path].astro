@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Markdown from '../../components/Markdown.astro';
+import ChapterSummary from '../../components/ChapterSummary.astro';
+import DocsRail from '../../components/DocsRail.astro';
+import { catalog, type CatalogDoc } from '../../lib/catalog';
+import { docsRailGroups } from '../../lib/docs';
+
+export function getStaticPaths() {
+  return catalog.docs
+    .filter((doc) => doc.route !== '/docs/')
+    .map((doc) => ({
+      params: { path: doc.route.slice('/docs/'.length).replace(/\/$/, '') },
+      props: { doc },
+    }));
+}
+
+interface Props {
+  doc: CatalogDoc;
+}
+
+const { doc } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const groups = docsRailGroups(catalog.docs);
+const chapters = doc.headings
+  .filter((heading) => heading.level === 2)
+  .map((heading) => ({ href: `#${heading.id}`, label: heading.text }));
+const description = doc.body
+  .replace(/[#*_`>|-]/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .slice(0, 150);
+---
+
+<BaseLayout title={`${doc.title} — Essentia`} description={description}>
+  <div class="docs-shell">
+    <DocsRail groups={groups} currentRoute={doc.route} {base} />
+    <article class="docs-body">
+      <h1>{doc.title}</h1>
+      <Markdown value={doc.body} />
+    </article>
+    <ChapterSummary items={chapters} />
+  </div>
+</BaseLayout>

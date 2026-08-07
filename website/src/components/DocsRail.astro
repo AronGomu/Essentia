@@ -1,0 +1,34 @@
+---
+import { withBase } from '../lib/catalog';
+import type { DocsRailGroup } from '../lib/docs';
+
+interface Props {
+  groups: DocsRailGroup[];
+  currentRoute: string;
+  base: string;
+}
+
+const { groups, currentRoute, base } = Astro.props;
+---
+
+<nav class="docs-rail" aria-label="Documentation">
+  {
+    groups.map((group) => (
+      <div>
+        <p class="nav-label">{group.label}</p>
+        <ul>
+          {group.docs.map((doc) => (
+            <li>
+              <a
+                href={withBase(base, doc.route)}
+                aria-current={doc.route === currentRoute ? 'page' : undefined}
+              >
+                {doc.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</nav>
