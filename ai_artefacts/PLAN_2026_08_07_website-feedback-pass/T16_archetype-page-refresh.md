@@ -59,18 +59,40 @@ Run: `cd website && npx vitest run tests/unit/section-dates.test.ts tests/unit/c
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/section-dates.test.ts` with the first three cases; add the last three to `website/tests/unit/chrome.test.ts`.
-- [ ] 2. Add `'packageId'` and `'releasedOn'` to the `GalleryCard` `Pick` list in `website/src/lib/catalog.ts` and to the destructuring plus the return object of `toGalleryCard`.
-- [ ] 3. Rewrite `website/src/components/CardGallery.astro`:
-      frontmatter becomes `const sorted = [...cards].sort((a, b) => a.name.localeCompare(b.name));`
-      body becomes a single `<div class="card-grid">` mapping `sorted`, each entry keeping the existing `<a class="gallery-card" href data-card-preview>` + `CardPicture` + `.card-caption` markup, with `eager={index < 8}`, and adding `{isLatestRelease(card) && <span class="tile-badge">New</span>}` as the anchor's first child.
-      Delete `date`, `groups`, `ranks`, and the `Object.groupBy` import usage.
-- [ ] 4. In `website/src/pages/archetypes/[slug].astro`, change the hero `<img>` to `src={withBase(base, section.heroImage)}` with `width="624" height="624"` (the committed asset is a square crop), and change the stat label from `Latest update` to `Latest release`.
-- [ ] 5. Apply the identical hero-image and label change to `website/src/pages/sections/non-archetype/[slug].astro`.
-- [ ] 6. Add the two gate rules to `website/scripts/check-chrome.mjs`.
-- [ ] 7. In `website/src/styles/global.css`, delete the `.day-group` and `.day-group > h2` rules; add `.gallery-card { position: relative; }` so `.tile-badge` (added in T14) anchors correctly, and confirm `.tile-badge`'s `z-index: 2` sits above the card image.
-- [ ] 8. Grep for other `CardGallery` consumers (`grep -rn "CardGallery" website/src`) and confirm each still renders correctly after the prop-shape change.
-- [ ] 9. Run `npm run build`, `npm run links:check`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Create `website/tests/unit/section-dates.test.ts` with the first three cases; add the last three to `website/tests/unit/chrome.test.ts`.
+      _Criterion:_ both files exist with the six named cases and `npx vitest run tests/unit/section-dates.test.ts tests/unit/chrome.test.ts` reports failures for the not-yet-implemented cases (red).
+      _Evidence:_ red run — `Test Files 2 failed (2) / Tests 4 failed | 24 passed (28)`; failures were `gallery card carries its package`, `flags a date-grouped gallery`, `flags a thumb-tier hero`, `applies the gallery rules to the non-archetype section page`.
+- [x] 2. Add `'packageId'` and `'releasedOn'` to the `GalleryCard` `Pick` list in `website/src/lib/catalog.ts` and to the destructuring plus the return object of `toGalleryCard`.
+      _Criterion:_ the `gallery card carries its package` case passes and `npm run check` reports no type error.
+      _Evidence:_ `section dates > gallery card carries its package` passes; `astro check` → `Result (104 files): 0 errors, 0 warnings`.
+- [x] 3. Rewrite `website/src/components/CardGallery.astro`:
+  - [x] 3a. frontmatter becomes `const sorted = [...cards].sort((a, b) => a.name.localeCompare(b.name));`
+        _Criterion:_ the file contains that exact line.
+        _Evidence:_ line 15 of `website/src/components/CardGallery.astro`; the 15 Nekroz captions in `dist/archetypes/nekroz/index.html` come out in DOM order `Brionac → Catastor → … → Valkyrus`, byte-identical to `sort` of that list.
+  - [x] 3b. body becomes a single `<div class="card-grid">` mapping `sorted`, each entry keeping the existing `<a class="gallery-card" href data-card-preview>` + `CardPicture` + `.card-caption` markup, with `eager={index < 8}`, and adding `{isLatestRelease(card) && <span class="tile-badge">New</span>}` as the anchor's first child.
+        _Criterion:_ built `dist/archetypes/nekroz/index.html` holds exactly one `<div class="card-grid">` and one `tile-badge` per card.
+        _Evidence:_ nekroz 1 card-grid / 15 gallery-card / 15 tile-badge; burning-abyss 1 / 13 / 13; non-archetype 1 / 22 / 22.
+  - [x] 3c. Delete `date`, `groups`, `ranks`, and the `Object.groupBy` import usage.
+        _Criterion:_ `grep -n "day-group\|Object.groupBy\|ranks" src/components/CardGallery.astro` returns nothing.
+        _Evidence:_ grep returns no match; `day-group` count in all three built pages is 0.
+- [x] 4. In `website/src/pages/archetypes/[slug].astro`, change the hero `<img>` to `src={withBase(base, section.heroImage)}` with `width="624" height="624"` (the committed asset is a square crop), and change the stat label from `Latest update` to `Latest release`.
+      _Criterion:_ built `dist/archetypes/nekroz/index.html` contains `<img src="/art/nekroz-hero.webp"` with `width="624" height="624"` inside `.catalog-hero-art`, and the string `Latest release`.
+      _Evidence:_ `<div class="catalog-hero-art"><img src="/art/nekroz-hero.webp" alt="Nekroz iconic card artwork" width="624" height="624" fetchpriority="high">` and `Latest release <strong>August 1, 2026</strong>`; same for burning-abyss with `/art/burning-abyss-hero.webp`.
+- [x] 5. Apply the identical hero-image and label change to `website/src/pages/sections/non-archetype/[slug].astro`.
+      _Criterion:_ built `dist/sections/non-archetype/non-archetype/index.html` shows the same two properties.
+      _Evidence:_ `<img src="/art/non-archetype-hero.webp" … width="624" height="624">` and `Latest release <strong>August 1, 2026</strong>`.
+- [x] 6. Add the two gate rules to `website/scripts/check-chrome.mjs`.
+      _Criterion:_ the three chrome gate cases pass and `node scripts/check-chrome.mjs` exits 0 over the real `dist`.
+      _Evidence:_ `chrome: 151 pages carry the site header` (exit 0); mutation probe on the real built HTML — regrouped nekroz → `["archetypes/nekroz/index.html: gallery must not group by date"]`, thumb hero → `["archetypes/nekroz/index.html: hero art must use the section hero image"]`, regrouped non-archetype → `["sections/non-archetype/non-archetype/index.html: gallery must not group by date"]`, unmutated pages → `[]`.
+- [x] 7. In `website/src/styles/global.css`, delete the `.day-group` and `.day-group > h2` rules; add `.gallery-card { position: relative; }` so `.tile-badge` (added in T14) anchors correctly, and confirm `.tile-badge`'s `z-index: 2` sits above the card image.
+      _Criterion:_ `grep -c day-group src/styles/global.css` is 0, and the compiled `dist/_astro/*.css` contains `.gallery-card{position:relative` plus `.tile-badge{position:absolute…z-index:2`.
+      _Evidence:_ `grep -c day-group src/styles/global.css` → 0, and 0 in the compiled CSS too. Compiled: `.gallery-card{gap:.75rem;width:100%;max-width:25rem;text-decoration:none;display:grid;position:relative}` and `.tile-badge{z-index:2;…;position:absolute;top:.9rem;right:.9rem}`. `.gallery-card img` declares no `z-index`, so the badge's `z-index: 2` on a positioned ancestor paints above it.
+- [x] 8. Grep for other `CardGallery` consumers (`grep -rn "CardGallery" website/src`) and confirm each still renders correctly after the prop-shape change.
+      _Criterion:_ every consumer listed by the grep is covered by an inspected built page.
+      _Evidence:_ the grep lists exactly two consumers — `src/pages/archetypes/[slug].astro` and `src/pages/sections/non-archetype/[slug].astro`. Both build clean and both were inspected in `dist` (3 pages total: nekroz, burning-abyss, non-archetype). No other consumer exists.
+- [x] 9. Run `npm run build`, `npm run links:check`, `npm run format`, `npm run lint`, `npm run check`.
+      _Criterion:_ each command exits 0.
+      _Evidence:_ `build` → `151 page(s) built` + `csp` + `dist scan: clean` + `404: redirects to site root` + `chrome: 151 pages carry the site header`; `links:check` → `links: 151 pages clean` (exit 0); `format` → all files formatted (it reflowed one line in `tests/unit/chrome.test.ts`); `lint` → eslint exit 0; `check` → `0 errors, 0 warnings`. `budgets:check` also run → `budgets: 10 JS, 151 HTML, 255 images, 50 print masters (16 MiB) within limits`.
 
 ## Outputs
 
@@ -80,11 +102,22 @@ Run: `cd website && npx vitest run tests/unit/section-dates.test.ts tests/unit/c
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/section-dates.test.ts tests/unit/chrome.test.ts` — all pass
-- [ ] `cd website && npm run build && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` — one alphabetical grid, no date headings, the header reads `Latest release August 1, 2026`, and no date anywhere on the page is later than it
-- [ ] manual check: the Nekroz hero image is the same illustration as the Nekroz tile on `/`
-- [ ] manual check: every card from LOTA-0001 carries a `New` badge
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — the non-archetype section page renders with the same treatment
-- [ ] commit msg draft: `feat(website): flatten the archetype gallery and fix its release date`
+- [x] `cd website && npx vitest run tests/unit/section-dates.test.ts tests/unit/chrome.test.ts` — all pass
+      _Evidence:_ `Test Files 2 passed (2) / Tests 28 passed (28)`. Red run before the fix was `2 failed / 4 failed | 24 passed`.
+- [x] `cd website && npm run build && npm run links:check` — exit 0
+      _Evidence:_ `[build] 151 page(s) built in 629ms` → `chrome: 151 pages carry the site header`; `links: 151 pages clean`. Both exit 0.
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` — one alphabetical grid, no date headings, the header reads `Latest release August 1, 2026`, and no date anywhere on the page is later than it
+      _Substituted:_ no browser / Playwright harness on this host, so this was satisfied statically against the built `dist/archetypes/nekroz/index.html` rather than a served page.
+      _Evidence:_ exactly one `<div class="card-grid">`, zero occurrences of `day-group`, 15 `.gallery-card` anchors whose captions are in strict alphabetical order (`Nekroz - Brionac` … `Nekroz - Valkyrus`, verified byte-equal to `sort`); the header prints `Latest release <strong>August 1, 2026</strong>`; and a sweep of every rendered date on the page (`grep -oE '(January|…|December) [0-9]{1,2}, [0-9]{4}'` plus an ISO-date sweep) returns the single value `August 1, 2026` and no ISO dates at all. The old incoherence — day headings built from `card.modified` (2026-08-03) sitting above a `2026-08-01` header — is structurally gone because the grouping is gone.
+- [x] manual check: the Nekroz hero image is the same illustration as the Nekroz tile on `/`
+      _Substituted:_ static asset-path comparison instead of a visual browser check.
+      _Evidence:_ the home tile for `/archetypes/nekroz/` in `dist/index.html` uses `src="/art/nekroz-hero.webp"`; the archetype hero in `dist/archetypes/nekroz/index.html` uses `src="/art/nekroz-hero.webp"`. Identical asset, so identical illustration.
+- [x] manual check: every card from LOTA-0001 carries a `New` badge
+      _Substituted:_ counted in the built HTML instead of in a browser.
+      _Evidence:_ `catalog.releases` holds exactly one package, `alpha-LOTA-0001-Alpha-0-1` (`releasedOn 2026-08-01`), so every published card belongs to it. Badge count equals gallery-card count on every gallery page: nekroz 15/15, burning-abyss 13/13, non-archetype 22/22 — 50 of 50 cards badged, matching the home page's `View all 50 new cards`.
+- [x] `cd website && npm run ci` — exit 0
+      _Evidence:_ `CI_EXIT=0`; `Test Files 23 passed (23) / Tests 188 passed (188)`; `Result (104 files): 0 errors, 0 warnings`; `[build] 151 page(s) built`.
+- [x] app functional — the non-archetype section page renders with the same treatment
+      _Evidence:_ `dist/sections/non-archetype/non-archetype/index.html` — 1 card-grid, 0 day-group, 22 gallery cards each with a `tile-badge`, hero `<img src="/art/non-archetype-hero.webp" width="624" height="624">`, header `Latest release <strong>August 1, 2026</strong>`, one `<nav class="breadcrumb">`. `chromeIssues` on the real file returns `[]`.
+- [x] commit msg draft: `feat(website): flatten the archetype gallery and fix its release date`
+      _Evidence:_ used verbatim as the commit subject — see the SHA in the report.

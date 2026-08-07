@@ -42,7 +42,7 @@ const base = import.meta.env.BASE_URL;
           <span><strong>{section.count}</strong> published cards</span>{
             section.latestModified && (
               <span>
-                Latest update{' '}
+                Latest release{' '}
                 <strong>{formatDate(section.latestModified)}</strong>
               </span>
             )
@@ -51,10 +51,10 @@ const base = import.meta.env.BASE_URL;
       </div>
       <div class="catalog-hero-art">
         <img
-          src={withBase(base, section.image)}
+          src={withBase(base, section.heroImage)}
           alt={`${section.label} iconic card artwork`}
-          width="1200"
-          height="800"
+          width="624"
+          height="624"
           fetchpriority="high"
         />
       </div>

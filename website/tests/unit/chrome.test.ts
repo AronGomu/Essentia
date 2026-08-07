@@ -289,4 +289,72 @@ ${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
       ),
     ).toBe(true);
   });
+
+  const compliantGalleryHtml = `
+<header class="site-header">
+  <nav class="utility-nav" aria-label="Sections">
+    <a href="/docs/">Learn about Essentia</a>
+    <a href="/blog/">Blog</a>
+    <a href="/decks/">Decks</a>
+  </nav>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Archive</a></nav>
+</header>
+<section class="catalog-hero">
+  <div class="catalog-stats"><span>Latest release <strong>August 1, 2026</strong></span></div>
+  <div class="catalog-hero-art">
+    <img src="/art/nekroz-hero.webp" alt="" width="624" height="624" />
+  </div>
+</section>
+<div class="card-grid">
+  <a class="gallery-card" href="/cards/nekroz-brionac/"><span class="tile-badge">New</span></a>
+</div>
+`;
+
+  it('accepts a flat gallery', () => {
+    expect(
+      chromeIssues('archetypes/nekroz/index.html', compliantGalleryHtml, '/'),
+    ).toEqual([]);
+  });
+
+  it('flags a date-grouped gallery', () => {
+    const html = compliantGalleryHtml.replace(
+      '<div class="card-grid">',
+      '<section class="day-group"><h2>August 3, 2026</h2><div class="card-grid">',
+    );
+    const issues = chromeIssues('archetypes/nekroz/index.html', html, '/');
+    expect(
+      issues.some((issue) => issue.includes('gallery must not group by date')),
+    ).toBe(true);
+  });
+
+  it('flags a thumb-tier hero', () => {
+    const html = compliantGalleryHtml.replace(
+      'src="/art/nekroz-hero.webp"',
+      'src="/generated/releases/nekroz-thumb.webp"',
+    );
+    const issues = chromeIssues('archetypes/nekroz/index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('hero art must use the section hero image'),
+      ),
+    ).toBe(true);
+  });
+
+  it('applies the gallery rules to the non-archetype section page', () => {
+    expect(
+      chromeIssues(
+        'sections/non-archetype/non-archetype/index.html',
+        compliantGalleryHtml,
+        '/',
+      ),
+    ).toEqual([]);
+    const issues = chromeIssues(
+      'sections/non-archetype/non-archetype/index.html',
+      compliantGalleryHtml.replace('card-grid', 'day-group'),
+      '/',
+    );
+    expect(
+      issues.some((issue) => issue.includes('gallery must not group by date')),
+    ).toBe(true);
+  });
 });

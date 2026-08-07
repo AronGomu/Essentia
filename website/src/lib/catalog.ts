@@ -107,6 +107,8 @@ export type GalleryCard = Pick<
   | 'images'
   | 'width'
   | 'height'
+  | 'packageId'
+  | 'releasedOn'
 >;
 
 export interface CatalogSection {
@@ -241,6 +243,8 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
     images,
     width,
     height,
+    packageId,
+    releasedOn,
   } = card;
   return {
     id,
@@ -255,6 +259,8 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
     images,
     width,
     height,
+    packageId,
+    releasedOn,
   };
 }
 

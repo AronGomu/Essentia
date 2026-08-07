@@ -1,5 +1,10 @@
 ---
-import { previewImage, withBase, type GalleryCard } from '../lib/catalog';
+import {
+  isLatestRelease,
+  previewImage,
+  withBase,
+  type GalleryCard,
+} from '../lib/catalog';
 import CardPicture from './CardPicture.astro';
 
 interface Props {
@@ -8,37 +13,25 @@ interface Props {
 }
 
 const { cards, base } = Astro.props;
-const date = (value: string) => value.slice(0, 10);
-const groups = Object.entries(
-  Object.groupBy(cards, (card) => date(card.modified)),
-).sort(([a], [b]) => b.localeCompare(a));
-const ranks = new Map(cards.map((card, index) => [card.id, index]));
+const sorted = [...cards].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
-{
-  groups.map(([day, dayCards]) => (
-    <section class="day-group" aria-labelledby={`day-${day}`}>
-      <h2 id={`day-${day}`}>
-        {new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(
-          new Date(`${day}T12:00:00`),
-        )}
-      </h2>
-      <div class="card-grid">
-        {dayCards?.map((card) => (
-          <a
-            class="gallery-card"
-            href={withBase(base, card.route)}
-            data-card-preview={withBase(base, previewImage(card))}
-          >
-            <CardPicture card={card} eager={(ranks.get(card.id) ?? 4) < 4} />
-            <span class="card-caption">
-              <strong>{card.name}</strong>
-              <span>{card.superType}</span>
-              {card.support && <small>Support card</small>}
-            </span>
-          </a>
-        ))}
-      </div>
-    </section>
-  ))
-}
+<div class="card-grid">
+  {
+    sorted.map((card, index) => (
+      <a
+        class="gallery-card"
+        href={withBase(base, card.route)}
+        data-card-preview={withBase(base, previewImage(card))}
+      >
+        {isLatestRelease(card) && <span class="tile-badge">New</span>}
+        <CardPicture card={card} eager={index < 8} />
+        <span class="card-caption">
+          <strong>{card.name}</strong>
+          <span>{card.superType}</span>
+          {card.support && <small>Support card</small>}
+        </span>
+      </a>
+    ))
+  }
+</div>

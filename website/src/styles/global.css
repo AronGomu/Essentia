@@ -743,13 +743,6 @@
   .catalog-stats strong {
     color: var(--cardstock);
   }
-  .day-group {
-    margin-block: var(--space-6);
-  }
-  .day-group > h2 {
-    border-bottom: 1px solid var(--ruleline);
-    padding-bottom: 0.8rem;
-  }
   .card-grid {
     display: grid;
     grid-template-columns: repeat(
@@ -760,6 +753,7 @@
     gap: clamp(1rem, 3vw, 2rem);
   }
   .gallery-card {
+    position: relative;
     width: 100%;
     max-width: 25rem;
     display: grid;

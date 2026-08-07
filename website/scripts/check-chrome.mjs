@@ -43,6 +43,23 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: page is missing a breadcrumb`);
   }
 
+  if (/^(archetypes|sections)\//.test(file)) {
+    if (html.includes('class="day-group"')) {
+      problems.push(`${file}: gallery must not group by date`);
+    }
+
+    const heroArtMatch = html.match(
+      /<div class="catalog-hero-art"[\s\S]*?<\/div>/,
+    );
+    const heroArtBlock = heroArtMatch ? heroArtMatch[0] : '';
+    const heroImgMatch = heroArtBlock.match(/<img[^>]*\ssrc="([^"]*)"/);
+    const heroImgSrc = heroImgMatch ? heroImgMatch[1] : '';
+    const sectionHeroRe = new RegExp(`^${base}art/[a-z0-9-]+-hero\\.webp$`);
+    if (!sectionHeroRe.test(heroImgSrc)) {
+      problems.push(`${file}: hero art must use the section hero image`);
+    }
+  }
+
   if (file === 'index.html') {
     if (
       !html.includes('The Yu-Gi-Oh! Feel.') ||
