@@ -35,6 +35,14 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: header still links to Rules or Philosophy`);
   }
 
+  if (
+    file !== 'index.html' &&
+    file !== '404.html' &&
+    !html.includes('<nav class="breadcrumb"')
+  ) {
+    problems.push(`${file}: page is missing a breadcrumb`);
+  }
+
   return problems;
 }
 

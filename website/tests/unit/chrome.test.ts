@@ -62,4 +62,33 @@ describe('chromeIssues', () => {
   it('exempts the 404 document', () => {
     expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
   });
+
+  it('accepts a page with a breadcrumb', () => {
+    const issues = chromeIssues(
+      'rules/index.html',
+      '<nav class="breadcrumb">…</nav>',
+      '/',
+    );
+    expect(
+      issues.some((issue) => issue.includes('page is missing a breadcrumb')),
+    ).toBe(false);
+  });
+
+  it('flags a page without one', () => {
+    const issues = chromeIssues('rules/index.html', '<html></html>', '/');
+    expect(
+      issues.some((issue) => issue.includes('page is missing a breadcrumb')),
+    ).toBe(true);
+  });
+
+  it('exempts the home page', () => {
+    const issues = chromeIssues('index.html', '<html></html>', '/');
+    expect(
+      issues.some((issue) => issue.includes('page is missing a breadcrumb')),
+    ).toBe(false);
+  });
+
+  it('exempts the 404 document from the breadcrumb rule', () => {
+    expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
+  });
 });

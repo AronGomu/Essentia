@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Markdown from '../../components/Markdown.astro';
 import ChapterSummary from '../../components/ChapterSummary.astro';
 import DocsRail from '../../components/DocsRail.astro';
-import { catalog, type CatalogDoc } from '../../lib/catalog';
+import { catalog, withBase, type CatalogDoc } from '../../lib/catalog';
 import { docsRailGroups } from '../../lib/docs';
 
 export function getStaticPaths() {
@@ -32,7 +32,15 @@ const description = doc.body
   .slice(0, 150);
 ---
 
-<BaseLayout title={`${doc.title} — Essentia`} description={description}>
+<BaseLayout
+  title={`${doc.title} — Essentia`}
+  description={description}
+  breadcrumb={[
+    { label: 'Archive', href: base },
+    { label: 'Docs', href: withBase(base, 'docs/') },
+    { label: doc.title },
+  ]}
+>
   <div class="docs-shell">
     <DocsRail groups={groups} currentRoute={doc.route} {base} />
     <article class="docs-body">

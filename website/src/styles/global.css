@@ -236,6 +236,24 @@
     border-color: var(--accent);
     background: var(--sleeve);
   }
+  .breadcrumb {
+    margin-right: auto;
+  }
+  .breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.82rem;
+    color: var(--silver-ink);
+  }
+  .breadcrumb li + li::before {
+    content: '/';
+    margin-right: 0.35rem;
+    opacity: 0.6;
+  }
   main,
   .site-footer {
     margin-left: var(--sidebar);
@@ -1419,6 +1437,9 @@ main {
     min-height: 2.45rem;
     font-size: 0.85rem;
     padding: 0.35rem 0.5rem;
+  }
+  .breadcrumb li:not(:last-child) {
+    display: none;
   }
   html[data-theme='spellbook'] body::after {
     left: 1rem;

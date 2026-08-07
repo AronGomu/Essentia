@@ -11,12 +11,14 @@ const chapters = [
   { href: '#actions', label: 'Cube actions' },
   { href: '#archetypes', label: 'Archetypes' },
 ];
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout
   title="Cube rules — Essentia"
   description="Rules unique to the Essentia cube, including face-down cards, Traps, Extra Deck summons, timing, and archetype mechanics."
   theme="home"
+  breadcrumb={[{ label: 'Archive', href: base }, { label: 'Rules' }]}
 >
   <article class="page-shell info-page">
     <header>

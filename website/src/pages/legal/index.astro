@@ -1,10 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout
   title="Licence & attribution — Essentia"
   description="Everything created for Essentia is free for any use. Third-party material is excluded and remains under its owners' terms."
+  breadcrumb={[
+    { label: 'Archive', href: base },
+    { label: 'Licence & attribution' },
+  ]}
 >
   <article class="page-shell legal-copy">
     <h1>Licence &amp; attribution</h1>

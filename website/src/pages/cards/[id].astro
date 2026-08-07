@@ -48,6 +48,11 @@ const versions = catalog.cardVersions
   image={card.images.display.webp}
   accent={section.accent}
   theme={section.slug}
+  breadcrumb={[
+    { label: 'Archive', href: base },
+    { label: section.label, href: withBase(base, section.route) },
+    { label: card.name },
+  ]}
 >
   <article class="page-shell card-detail">
     <div class="render-column">
@@ -66,7 +71,6 @@ const versions = catalog.cardVersions
       />
     </div>
     <div class="card-transcription">
-      <p><a href={withBase(base, section.route)}>{section.label}</a> / Card</p>
       <h1>{card.name}</h1>
       {
         card.castingCost && (

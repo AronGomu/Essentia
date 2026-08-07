@@ -26,6 +26,11 @@ const byId = new Map(versions.map((card) => [card.id, card]));
   title={`${release.setName} ${release.stageLabel} ${release.version} — Essentia`}
   description={`Immutable ${release.stageLabel} ${release.version} package containing ${release.count} cards.`}
   accent="relic"
+  breadcrumb={[
+    { label: 'Archive', href: base },
+    { label: 'Releases' },
+    { label: release.setName },
+  ]}
 >
   <article class="page-shell prose-page">
     <p class="eyebrow">Immutable release package</p>

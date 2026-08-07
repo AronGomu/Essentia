@@ -10,12 +10,14 @@ const chapters = [
   { href: '#source', label: 'Source-backed design' },
   { href: '#avoids', label: 'What the cube avoids' },
 ];
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout
   title="Cube philosophy — Essentia"
   description="Design philosophy behind translating Yu-Gi-Oh! identities into a high-power Magic cube."
   theme="home"
+  breadcrumb={[{ label: 'Archive', href: base }, { label: 'Philosophy' }]}
 >
   <article class="page-shell info-page philosophy-page">
     <header>

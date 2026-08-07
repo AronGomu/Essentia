@@ -28,6 +28,11 @@ const zoomImage = withBase(base, card.images.zoom.webp);
   image={card.images.display.webp}
   accent={card.sectionAccent}
   theme={card.sectionSlug}
+  breadcrumb={[
+    { label: 'Archive', href: base },
+    { label: card.name, href: withBase(base, current.route) },
+    { label: `${card.stageLabel} ${card.version}` },
+  ]}
 >
   <article class="page-shell card-detail">
     <div class="render-column">
@@ -46,9 +51,6 @@ const zoomImage = withBase(base, card.images.zoom.webp);
       />
     </div>
     <div class="card-transcription">
-      <p>
-        <a href={withBase(base, current.route)}>{card.name}</a> / Immutable version
-      </p>
       <h1>{card.name}</h1>
       <p>
         <strong>{card.stageLabel} {card.version}</strong> · Published {
