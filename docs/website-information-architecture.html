@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia website — information architecture</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.route { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+      td.src { font-family: var(--mono); color: var(--muted); }
+      .pipe { display: grid; gap: .5rem; margin: 1rem 0; }
+      .stage { display: grid; grid-template-columns: 12rem 1fr; gap: .8rem; align-items: start;
+               border: 1px solid var(--line); background: var(--panel); padding: .7rem .9rem; }
+      .stage b { color: var(--accent-2); font-size: .85rem; text-transform: uppercase; letter-spacing: .07em; }
+      .stage p { margin: 0; font-size: .88rem; color: var(--muted); }
+      .stage p code { color: var(--ink); }
+      .flowline { text-align: center; color: var(--line); font-size: 1.1rem; margin: -.2rem 0; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p { margin: .3rem 0; color: var(--muted); font-size: .88rem; }
+      .card.gate { border-left: 3px solid var(--ok); }
+      .card.rule { border-left: 3px solid var(--accent); }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .25rem 0; }
+      .note { border-left: 3px solid var(--warn); background: #131318; padding: .7rem 1rem; margin: 1.2rem 0; font-size: .92rem; }
+      footer { margin-top: 3rem; color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Essentia website — information architecture</h1>
+      <p class="sub">
+        Route map, navigation model, and content pipeline for <code>website/</code> after the
+        2026-08-07 feedback pass. Companion to <code>WEBSITE_V2_SPEC.md</code>, which remains the
+        long-form plan; this document describes what the site <em>is</em>, not what it may become.
+      </p>
+
+      <h2>Route map</h2>
+      <p>Static output, <code>trailingSlash: 'always'</code>, configurable <code>BASE_PATH</code>, no backend.</p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Route</th><th>Purpose</th><th>Source</th><th>JS</th></tr></thead>
+          <tbody>
+            <tr><td class="route">/</td><td>Entry point for every visitor: hero, new cards, archetype tiles</td><td class="src">src/pages/index.astro</td><td>hover preview only</td></tr>
+            <tr><td class="route">/docs/</td><td>Project presentation — the first page of the documentation</td><td class="src">docs/PRESENTATION.md</td><td>none</td></tr>
+            <tr><td class="route">/docs/&lt;group&gt;/&lt;doc&gt;/</td><td>Every published repo doc, left rail + chapter summary</td><td class="src">docs/**/*.md except docs/ADR/**</td><td>none</td></tr>
+            <tr><td class="route">/blog/</td><td>Post index, newest first</td><td class="src">website/content/blog/*/index.md</td><td>none</td></tr>
+            <tr><td class="route">/blog/&lt;slug&gt;/</td><td>One post</td><td class="src">same</td><td>none</td></tr>
+            <tr><td class="route">/decks/</td><td>Browser-local decklist manager</td><td class="src">localStorage essentia.v1.decks</td><td>required</td></tr>
+            <tr><td class="route">/archetypes/&lt;slug&gt;/</td><td>Archetype gallery, alphabetical, NEW badges</td><td class="src">catalog.sections (kind archetype)</td><td>hover preview only</td></tr>
+            <tr><td class="route">/sections/non-archetype/&lt;slug&gt;/</td><td>Staples and unlinked support cards</td><td class="src">catalog.sections (kind non-archetype)</td><td>hover preview only</td></tr>
+            <tr><td class="route">/cards/&lt;id&gt;/</td><td>Current card version: render, rules text with rulings, release history, related cards</td><td class="src">catalog.cards</td><td>none</td></tr>
+            <tr><td class="route">/cards/&lt;id&gt;/versions/&lt;package&gt;/</td><td>One historical printing</td><td class="src">catalog.cardVersions</td><td>none</td></tr>
+            <tr><td class="route">/releases/&lt;stage&gt;/&lt;package&gt;/</td><td>One release package</td><td class="src">catalog.releases</td><td>none</td></tr>
+            <tr><td class="route">/updates/</td><td>Every card change, newest first</td><td class="src">catalog.updates</td><td>none</td></tr>
+            <tr><td class="route">/rules/ · /philosophy/ · /legal/</td><td>Standing prose pages</td><td class="src">authored Astro</td><td>none</td></tr>
+            <tr><td class="route">/feed.xml · /sitemap.xml · /robots.txt</td><td>Machine surfaces</td><td class="src">generated</td><td>—</td></tr>
+            <tr><td class="route">/404.html</td><td>Noindex meta-refresh to the site base</td><td class="src">src/pages/404.astro</td><td>none</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Navigation model</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Left rail — the catalog</h4>
+          <p><code>Navigation.svelte</code>. Non-archetype group plus one entry per archetype, each with its published count. Collapses to a modal drawer under 58rem.</p>
+        </div>
+        <div class="card">
+          <h4>Header — three destinations</h4>
+          <p>Breadcrumb (left), brand, then <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then the search palette. Identical on every page.</p>
+        </div>
+        <div class="card">
+          <h4>Breadcrumb — one component</h4>
+          <p><code>Breadcrumb.astro</code>, passed by every page except <code>/</code>. Ancestors collapse under 44rem, leaving the current page label.</p>
+        </div>
+        <div class="card">
+          <h4>Footer — links then licence</h4>
+          <p>Licence &amp; attribution, card updates, card feed, GitHub. The licence sentence sits beneath them as one small line.</p>
+        </div>
+        <div class="card">
+          <h4>Hover preview</h4>
+          <p>One overlay per page, driven by <code>data-card-preview</code> and <code>data-card-keywords</code> on any card link. Shows the enlarged render plus one ruling box per Essentia keyword. Suppressed on coarse pointers.</p>
+        </div>
+        <div class="card">
+          <h4>Search</h4>
+          <p><code>SearchPalette.svelte</code>, name-scored over the whole catalog. Same scoring function feeds the deck editor's add-card box.</p>
+        </div>
+      </div>
+
+      <h2>Content pipeline</h2>
+      <p><code>npm run build</code> is one deterministic, offline chain. No step calls a network service.</p>
+      <div class="pipe">
+        <div class="stage"><b>1 · Registries</b><p><code>identity.mjs</code> loads <code>sections.json</code> + <code>identities.json</code>, compiles archetype name patterns, validates hero art and provenance, resolves each card's section.</p></div>
+        <div class="flowline">↓</div>
+        <div class="stage"><b>2 · Keywords</b><p><code>keywords.mjs</code> loads the closed registry — term, category, archetype, definition, origin, owning doc. An unknown bold phrase in card text fails the build.</p></div>
+        <div class="flowline">↓</div>
+        <div class="stage"><b>3 · Packages</b><p><code>packages.mjs</code> walks <code>cards_mse/{01_alpha,02_beta,03_release}</code>, parses MSE fields, derives colours, types, zone and keywords, and hashes sources.</p></div>
+        <div class="flowline">↓</div>
+        <div class="stage"><b>4 · Images</b><p><code>images.mjs</code> derives the <code>thumb</code> and <code>display</code> tiers plus the print master with sharp. Hero art is committed, never derived here.</p></div>
+        <div class="flowline">↓</div>
+        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target.</p></div>
+        <div class="flowline">↓</div>
+        <div class="stage"><b>6 · Catalog</b><p><code>orchestrator.mjs</code> selects the current version per card, builds sections, updates and releases, and writes <code>src/generated/catalog.ts</code> plus the rights inventory.</p></div>
+        <div class="flowline">↓</div>
+        <div class="stage"><b>7 · Render &amp; gate</b><p>Astro builds static HTML, <code>harden-csp.mjs</code> replaces <code>'unsafe-inline'</code> with per-file hashes, then the dist gates run.</p></div>
+      </div>
+
+      <h2>Build gates</h2>
+      <div class="grid">
+        <div class="card gate"><h4>scan-dist</h4><p>No symlink, no unexpected extension, no local path, no private key, no source map, no embedded image metadata, no surviving <code>'unsafe-inline'</code>.</p></div>
+        <div class="card gate"><h4>check-404</h4><p><code>dist/404.html</code> is a zero-delay noindex redirect to the base, and never regains the not-found page.</p></div>
+        <div class="card gate"><h4>check-chrome</h4><p>Every page carries the three header links and a breadcrumb; the home hero keeps its copy, art and CTA; galleries carry no date groups; the licence line sits under the footer links.</p></div>
+        <div class="card gate"><h4>check-links</h4><p>Every internal <code>href</code> and <code>src</code> in every built page resolves to a real file.</p></div>
+        <div class="card gate"><h4>check-budgets</h4><p>JS total ≤ 350 KiB, HTML ≤ 500 KiB per page, image ≤ 3 MiB each, print masters ≤ 400 MiB total.</p></div>
+        <div class="card gate"><h4>check-rights</h4><p>Every published render is covered by an owner-approved rights record before a public artifact ships.</p></div>
+      </div>
+
+      <h2>Rules the architecture enforces</h2>
+      <div class="grid">
+        <div class="card rule"><h4>MSE is the only card source</h4><p>The website never writes card data. Anything archetype-, deck- or presentation-related lives in <code>website/content/*.json</code>.</p></div>
+        <div class="card rule"><h4>Membership mirrors the game</h4><p>A card belongs to an archetype when its printed name says so. Support cards join a section only through an explicit <code>linked: true</code>.</p></div>
+        <div class="card rule"><h4>Closed keyword taxonomy</h4><p>Every bold phrase on a card must resolve to a registered keyword with a ruling, an origin and an owning doc. Unknown phrases fail the build.</p></div>
+        <div class="card rule"><h4>Zero-JS baseline</h4><p>Docs, blog, card, archetype and release pages are fully readable without script. <code>/decks/</code> is the single documented exception.</p></div>
+        <div class="card rule"><h4>Locked CSP</h4><p><code>default-src 'none'</code> with hashed inline content. Any new capability must be bundled locally; <code>harden-csp.mjs</code> is the only place the policy changes.</p></div>
+        <div class="card rule"><h4>Fail loudly</h4><p>Every build step validates its inputs and calls <code>fail()</code> on anything unknown. No silent fallback, no unclassified bucket.</p></div>
+      </div>
+
+      <div class="note">
+        <b>Not built, still planned.</b> <code>WEBSITE_V2_SPEC.md</code> continues to describe a keyword index
+        (<code>/keywords/</code>), a search page, published decklists, a release hub (<code>/releases/</code>),
+        and a print basket. None of them exist. The feedback pass deliberately built the minimum that the three
+        header buttons require, and deleted the spec's welcome-page routing rather than implementing it.
+      </div>
+
+      <footer>
+        Sources: <code>WEBSITE_V2_SPEC.md</code> · <code>docs/CONTEXT.md</code> ·
+        <code>docs/ADR/proposed/0015</code>–<code>0019</code> ·
+        <code>ai_artefacts/PLAN_2026_08_07_website-feedback-pass.md</code>
+      </footer>
+    </div>
+  </body>
+</html>
