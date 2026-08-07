@@ -107,6 +107,29 @@ export function chromeIssues(file, html, base) {
     if (html.includes('new-card-carousel')) {
       problems.push(`${file}: the new-card carousel must be gone`);
     }
+
+    if (!/<h2 id="catalog-heading"[^>]*>Archetypes<\/h2>/.test(html)) {
+      problems.push(`${file}: section grid must be titled "Archetypes"`);
+    }
+
+    if (
+      html.includes('Published sections') ||
+      html.includes('Current card versions selected from lifecycle metadata.')
+    ) {
+      problems.push(`${file}: the "Published sections" copy must be gone`);
+    }
+
+    const tileArtRe = new RegExp(`^${base}art/[a-z0-9-]+-hero\\.webp$`);
+    const tileBlocks =
+      html.match(/<a class="section-tile"[\s\S]*?<\/a>/g) ?? [];
+    for (const tile of tileBlocks) {
+      const tileSrcMatch = tile.match(/<img[^>]*src="([^"]*)"/);
+      const tileSrc = tileSrcMatch ? tileSrcMatch[1] : '';
+      if (!tileArtRe.test(tileSrc)) {
+        problems.push(`${file}: section tiles must use the hero art`);
+        break;
+      }
+    }
   }
 
   return problems;

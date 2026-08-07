@@ -16,6 +16,10 @@ const compliantHtml = `
   <a class="primary-link" href="/docs/">Learn about Essentia</a>
   <a class="secondary-link" href="/updates/">See what changed</a>
 </div>
+<h2 id="catalog-heading">Archetypes</h2>
+<a class="section-tile" href="/sections/nekroz/">
+  <img src="/art/nekroz-hero.webp" alt="" />
+</a>
 `;
 
 describe('chromeIssues', () => {
@@ -69,6 +73,10 @@ describe('chromeIssues', () => {
   <a class="primary-link" href="/YGO-x-MTG/docs/">Learn about Essentia</a>
   <a class="secondary-link" href="/YGO-x-MTG/updates/">See what changed</a>
 </div>
+<h2 id="catalog-heading">Archetypes</h2>
+<a class="section-tile" href="/YGO-x-MTG/sections/nekroz/">
+  <img src="/YGO-x-MTG/art/nekroz-hero.webp" alt="" />
+</a>
 `;
     expect(chromeIssues('index.html', html, '/YGO-x-MTG/')).toEqual([]);
   });
@@ -121,6 +129,10 @@ describe('chromeIssues', () => {
   <a class="primary-link" href="/docs/">Learn about Essentia</a>
   <a class="secondary-link" href="/updates/">See what changed</a>
 </div>
+<h2 id="catalog-heading">Archetypes</h2>
+<a class="section-tile" href="/sections/nekroz/">
+  <img src="/art/nekroz-hero.webp" alt="" />
+</a>
 `;
 
   it('accepts the new hero copy', () => {
@@ -230,6 +242,50 @@ ${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
     expect(
       issues.some((issue) =>
         issue.includes('new-cards section must link "View all N new cards"'),
+      ),
+    ).toBe(true);
+  });
+
+  const archetypeTile = `
+<a class="section-tile" href="/sections/nekroz/">
+  <img src="/art/nekroz-hero.webp" alt="" />
+</a>
+`;
+
+  it('accepts the new heading', () => {
+    const html =
+      compliantHomeHtml +
+      `<h2 id="catalog-heading">Archetypes</h2>` +
+      archetypeTile;
+    expect(chromeIssues('index.html', html, '/')).toEqual([]);
+  });
+
+  it('flags the old heading', () => {
+    const html =
+      compliantHomeHtml +
+      `<h2 id="catalog-heading">Published sections</h2><p>Current card versions selected from lifecycle metadata.</p>` +
+      archetypeTile;
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('the "Published sections" copy must be gone'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a thumb-tier tile image', () => {
+    const html =
+      compliantHomeHtml +
+      `<h2 id="catalog-heading">Archetypes</h2>` +
+      `
+<a class="section-tile" href="/sections/nekroz/">
+  <img src="/generated/releases/nekroz-thumb.webp" alt="" />
+</a>
+`;
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('section tiles must use the hero art'),
       ),
     ).toBe(true);
   });

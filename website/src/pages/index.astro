@@ -8,6 +8,7 @@ import {
   previewImage,
   withBase,
   formatDate,
+  sectionHasNewCards,
 } from '../lib/catalog';
 
 const base = import.meta.env.BASE_URL;
@@ -100,18 +101,20 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
         <section aria-labelledby="catalog-heading">
           <div class="page-shell section-heading">
             <div>
-              <h2 id="catalog-heading">Published sections</h2>
-              <p>Current card versions selected from lifecycle metadata.</p>
+              <h2 id="catalog-heading">Archetypes</h2>
             </div>
           </div>
           <div class="section-menu">
             {catalog.sections.map((section) => (
               <a class="section-tile" href={withBase(base, section.route)}>
+                {sectionHasNewCards(section) && (
+                  <span class="tile-badge">New</span>
+                )}
                 <img
-                  src={withBase(base, section.image)}
+                  src={withBase(base, section.heroImage)}
                   alt=""
-                  width="1200"
-                  height="800"
+                  width="624"
+                  height="624"
                   loading="lazy"
                 />
                 <div>

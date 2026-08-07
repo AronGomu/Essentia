@@ -215,6 +215,14 @@ export function isLatestRelease(card: { packageId: string }): boolean {
   return latestRelease !== null && card.packageId === latestRelease.id;
 }
 
+/** True when any card currently in this section came from the newest release package. */
+export function sectionHasNewCards(section: { cardIds: string[] }): boolean {
+  return section.cardIds.some((id) => {
+    const card = cardsById.get(id);
+    return card ? isLatestRelease(card) : false;
+  });
+}
+
 export function withBase(base: string, route: string): string {
   return `${base.replace(/\/$/, '')}/${route.replace(/^\//, '')}`;
 }

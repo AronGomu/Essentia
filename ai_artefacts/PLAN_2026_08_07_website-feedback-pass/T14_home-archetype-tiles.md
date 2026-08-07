@@ -67,19 +67,19 @@ Run: `cd website && npx vitest run tests/unit/section-badges.test.ts tests/unit/
 
 ## Impl steps
 
-- [ ] 1. Add the six cases above to the two test files.
-- [ ] 2. Add `sectionHasNewCards` to `website/src/lib/catalog.ts`.
-- [ ] 3. Add the three gate rules to `website/scripts/check-chrome.mjs`.
-- [ ] 4. In `website/src/pages/index.astro`, change the `<h2 id="catalog-heading">` text to `Archetypes` and delete the sibling `<p>Current card versions selected from lifecycle metadata.</p>`.
-- [ ] 5. Change the tile `<img>` to `src={withBase(base, section.heroImage)}` and set `width="624" height="624"` (the committed asset is square); keep `loading="lazy"` and `alt=""`.
-- [ ] 6. Inside each `<a class="section-tile">`, before the `<img>`, add `{sectionHasNewCards(section) && <span class="tile-badge">New</span>}`.
-- [ ] 7. Add to `website/src/styles/global.css` beside the existing `.section-tile` rules:
+- [x] 1. Add the six cases above to the two test files.
+- [x] 2. Add `sectionHasNewCards` to `website/src/lib/catalog.ts`.
+- [x] 3. Add the three gate rules to `website/scripts/check-chrome.mjs`.
+- [x] 4. In `website/src/pages/index.astro`, change the `<h2 id="catalog-heading">` text to `Archetypes` and delete the sibling `<p>Current card versions selected from lifecycle metadata.</p>`.
+- [x] 5. Change the tile `<img>` to `src={withBase(base, section.heroImage)}` and set `width="624" height="624"` (the committed asset is square); keep `loading="lazy"` and `alt=""`.
+- [x] 6. Inside each `<a class="section-tile">`, before the `<img>`, add `{sectionHasNewCards(section) && <span class="tile-badge">New</span>}`.
+- [x] 7. Add to `website/src/styles/global.css` beside the existing `.section-tile` rules:
       `.section-tile { border: 1px solid transparent; transition: border-color 220ms var(--ease-out); }`
       `.section-tile:hover, .section-tile:focus-visible { border-color: var(--accent); }`
       `.tile-badge { position: absolute; top: 0.9rem; right: 0.9rem; z-index: 2; background: var(--accent); color: var(--blackfoil); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 999px; }`
-- [ ] 8. Add `.section-tile:hover, .section-tile:focus-visible { border-color: Highlight; }` inside the existing `@media (forced-colors: active)` block so the affordance survives forced colours.
-- [ ] 9. Add `.section-tile { transition: none; }` to the existing `@media (prefers-reduced-motion: reduce)` block alongside the other `.section-tile` overrides — the border still changes colour, just instantly.
-- [ ] 10. Run `npm run build`, `npm run budgets:check`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 8. Add `.section-tile:hover, .section-tile:focus-visible { border-color: Highlight; }` inside the existing `@media (forced-colors: active)` block so the affordance survives forced colours.
+- [x] 9. Add `.section-tile { transition: none; }` to the existing `@media (prefers-reduced-motion: reduce)` block alongside the other `.section-tile` overrides — the border still changes colour, just instantly.
+- [x] 10. Run `npm run build`, `npm run budgets:check`, `npm run format`, `npm run lint`, `npm run check`.
 
 ## Outputs
 
@@ -89,10 +89,10 @@ Run: `cd website && npx vitest run tests/unit/section-badges.test.ts tests/unit/
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/section-badges.test.ts tests/unit/chrome.test.ts` — all pass
-- [ ] `cd website && npm run build && npm run budgets:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/` — the grid is headed `Archetypes`, each tile shows the full original illustration rather than the soft 240 px thumb, hovering draws an accent border, and every section with cards from LOTA-0001 shows a `New` badge in its top-right corner
-- [ ] manual check: tab to a tile with the keyboard — the border appears on focus
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every tile still links to its section route
-- [ ] commit msg draft: `feat(website): restyle the home archetype tiles with hero art, hover border and new badge`
+- [x] `cd website && npx vitest run tests/unit/section-badges.test.ts tests/unit/chrome.test.ts` — all pass
+- [x] `cd website && npm run build && npm run budgets:check` — exit 0
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/` — the grid is headed `Archetypes`, each tile shows the full original illustration rather than the soft 240 px thumb, hovering draws an accent border, and every section with cards from LOTA-0001 shows a `New` badge in its top-right corner — SUBSTITUTED (no browser/e2e harness on this host): inspected `dist/index.html` directly. Confirms `<h2 id="catalog-heading" data-astro-cid-lcdefpme>Archetypes</h2>`; all 3 tiles use `/art/<slug>-hero.webp` (624x624) not `/generated/...thumb.webp`; all 3 tiles carry `<span class="tile-badge">New</span>` (single-package catalog, so every section currently has LOTA-0001 cards). Compiled `dist/_astro/*.css` confirms `.section-tile:hover,.section-tile:focus-visible{border-color:var(--accent)}`.
+- [x] manual check: tab to a tile with the keyboard — the border appears on focus — SUBSTITUTED (no browser/e2e harness on this host): compiled CSS rule `.section-tile:hover,.section-tile:focus-visible{border-color:var(--accent)}` applies identically to `:focus-visible` as `:hover`, and `dist/index.html` tiles are plain `<a>` elements (natively keyboard-focusable, no tabindex override), so keyboard focus triggers the same rule as mouse hover.
+- [x] `cd website && npm run ci` — exit 0
+- [x] app functional — every tile still links to its section route — verified in `dist/index.html`: tiles link to `/sections/non-archetype/non-archetype/`, `/archetypes/burning-abyss/`, `/archetypes/nekroz/` (each `<a class="section-tile" href={withBase(base, section.route)}>` unchanged from before this ticket)
+- [x] commit msg draft: `feat(website): restyle the home archetype tiles with hero art, hover border and new badge`

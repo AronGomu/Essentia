@@ -563,6 +563,25 @@
     overflow: hidden;
     background: var(--blackfoil);
     text-decoration: none;
+    border: 1px solid transparent;
+    transition: border-color 220ms var(--ease-out);
+  }
+  .section-tile:hover,
+  .section-tile:focus-visible {
+    border-color: var(--accent);
+  }
+  .tile-badge {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    z-index: 2;
+    background: var(--accent);
+    color: var(--blackfoil);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
   }
   .section-tile img {
     position: absolute;
@@ -886,6 +905,9 @@
     .update-item a:hover img,
     .update-item a:focus-visible img {
       transform: none;
+    }
+    .section-tile {
+      transition: none;
     }
   }
   @media (pointer: coarse) {
@@ -1468,6 +1490,10 @@ main {
   .mobile-drawer li a[aria-current='page'],
   .search-panel li[aria-selected='true'] {
     outline: 2px solid Highlight;
+  }
+  .section-tile:hover,
+  .section-tile:focus-visible {
+    border-color: Highlight;
   }
 }
 
