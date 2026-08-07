@@ -122,6 +122,7 @@ export interface CatalogSection {
   count: number;
   latestModified: string;
   image: string;
+  heroImage: string;
   cardIds: string[];
 }
 

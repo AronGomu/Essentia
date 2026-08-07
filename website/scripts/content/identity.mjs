@@ -1,6 +1,32 @@
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { CONTENT, fail } from './shared.mjs';
+import { CONTENT, WEBSITE, fail } from './shared.mjs';
+
+/**
+ * @param {{ slug: string, heroImage?: string }} section
+ * @param {Set<string>} provenanceKeys keys present in content/art-provenance.json
+ * @param {(relativeToPublic: string) => boolean} exists
+ * @returns {void} calls fail() on any violation
+ */
+export function assertHeroImage(section, provenanceKeys, exists) {
+  const { slug, heroImage } = section;
+  if (!heroImage) fail(`content: section ${slug}: heroImage is required`);
+  const expected = `/art/${slug}-hero.webp`;
+  if (
+    heroImage !== expected ||
+    !/^\/art\/[a-z0-9-]+-hero\.webp$/.test(heroImage)
+  )
+    fail(`content: section ${slug}: heroImage must match ${expected}`);
+  if (!exists(path.join('art', `${slug}-hero.webp`)))
+    fail(
+      `content: section ${slug}: heroImage file public${heroImage} is missing`,
+    );
+  if (!provenanceKeys.has(heroImage))
+    fail(
+      `content: section ${slug}: heroImage has no entry in content/art-provenance.json`,
+    );
+}
 
 const ROLES = new Set(['member', 'support', 'staple']);
 
@@ -29,6 +55,15 @@ export async function loadRegistries() {
   if (identityData.schemaVersion !== 3 || !Array.isArray(identityData.cards))
     fail('identity registry must use schemaVersion 3');
 
+  const provenanceData = JSON.parse(
+    await readFile(path.join(CONTENT, 'art-provenance.json'), 'utf8'),
+  );
+  const provenanceKeys = new Set(
+    (provenanceData.art ?? []).map((entry) => entry.key),
+  );
+  const publicExists = (relativeToPublic) =>
+    existsSync(path.join(WEBSITE, 'public', relativeToPublic));
+
   const sections = new Map();
   const sectionsBySlug = new Map();
   for (const item of sectionData.sections) {
@@ -41,6 +76,7 @@ export async function loadRegistries() {
       sectionsBySlug.has(item.slug)
     )
       fail(`invalid section ${item.group ?? 'unknown'}`);
+    assertHeroImage(item, provenanceKeys, publicExists);
     const record = { ...item };
     if (item.kind === 'archetype')
       record.namePatternRe = compileNamePattern(item.namePattern, item.group);

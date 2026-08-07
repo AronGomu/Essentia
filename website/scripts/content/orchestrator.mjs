@@ -154,6 +154,7 @@ export async function build({ checkOnly }) {
         b.releasedOn.localeCompare(a.releasedOn),
       )[0].releasedOn,
       image: iconic.images.thumb.webp,
+      heroImage: section.heroImage,
       cardIds: sectionCards.map((card) => card.id),
     });
   }

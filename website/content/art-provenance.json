@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "note": "Hero art is converted from the original Konami illustration with sharp. No generative service is used. Yu-Gi-Oh! remains property of its owners.",
+  "art": [
+    {
+      "key": "/art/non-archetype-hero.webp",
+      "source": "original_images/Effect Monster/Ash Blossom & Joyous Spring.jpg",
+      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "generatedOn": "2026-08-07"
+    },
+    {
+      "key": "/art/burning-abyss-hero.webp",
+      "source": "original_images/Xyz/Dante, Traveler of the Burning Abyss.jpg",
+      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "generatedOn": "2026-08-07"
+    },
+    {
+      "key": "/art/shaddoll-hero.webp",
+      "source": "original_images/Fusion/El Shaddoll Construct.jpg",
+      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "generatedOn": "2026-08-07"
+    },
+    {
+      "key": "/art/nekroz-hero.webp",
+      "source": "original_images/Ritual/Nekroz of Trishula.jpg",
+      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "generatedOn": "2026-08-07"
+    },
+    {
+      "key": "/art/spellbook-hero.webp",
+      "source": "original_images/Effect Monster/High Priestess of Prophecy.jpg",
+      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "generatedOn": "2026-08-07"
+    }
+  ]
+}
