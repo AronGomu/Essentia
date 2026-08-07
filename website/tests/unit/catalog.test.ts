@@ -40,7 +40,7 @@ describe('immutable publication graph', () => {
   });
 
   it('publishes open/locked packages, never drafts', () => {
-    expect(catalog.schemaVersion).toBe(4);
+    expect(catalog.schemaVersion).toBe(5);
     expect(catalog.releases.length).toBeGreaterThan(0);
     expect(catalog.cards.length).toBeGreaterThan(0);
     expect(catalog.cardVersions.length).toBeGreaterThan(0);

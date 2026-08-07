@@ -142,8 +142,21 @@ export interface ReleasePackage {
   count: number;
 }
 
+export interface CatalogDoc {
+  id: string;
+  path: string;
+  route: string;
+  title: string;
+  group: string;
+  groupLabel: string;
+  order: number;
+  /** Full Markdown body after link rewriting, with the `# Title` line removed. */
+  body: string;
+  headings: Array<{ id: string; text: string; level: number }>;
+}
+
 export interface Catalog {
-  schemaVersion: 4;
+  schemaVersion: 5;
   generatedAt: string;
   sections: CatalogSection[];
   cards: CatalogCard[];
@@ -160,6 +173,7 @@ export interface Catalog {
     packageId: string;
     versionRoute: string;
   }>;
+  docs: CatalogDoc[];
   publicationDiagnostics: Array<{
     sectionSlug: string;
     sourceFile: string;

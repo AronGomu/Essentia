@@ -80,7 +80,8 @@ export const DOC_GROUPS = [
 Link rewriting rules for `rewriteDocLinks(body, relativePath, knownPaths)`:
 
 - `](./RULES.md)` / `](../rules/ZONES.md)` / `](ZONES.md#field)` → resolve against `path.posix.dirname(relativePath)`, look the result up in `knownPaths` (a `Set` of published relative paths), emit `docRoute(target)` plus the original `#anchor`.
-- A resolved target under `docs/ADR/` or absent from `knownPaths` → `fail(\`doc ${relativePath}: unpublished link target ${target}\`)`.
+- A resolved target under `docs/ADR/` → rewrite to the GitHub repo URL `https://github.com/AronGomu/YGO-x-MTG/blob/main/<target>`, exactly like an out-of-`docs/` target. ADRs stay off the site, but the citation must survive. **Do not fail the build on these, and do not edit the citing doc.** Six published docs cite ADRs today and every one of them is legitimate: `docs/CONTEXT.md`, `docs/03_nekroz/CONTEXT.md`, `docs/03_nekroz/RULES.md`, `docs/04_spellbook/RULES.md` (two links), `docs/rules/DECK_BUILDING.md`, `docs/design/FRAMES.md`.
+- A resolved target under `docs/` but absent from `knownPaths` → `fail(\`doc ${relativePath}: unpublished link target ${target}\`)`.
 - A resolved target outside `docs/` (for example `](../cards_mse/)`) → rewrite to the GitHub repo URL `https://github.com/AronGomu/YGO-x-MTG/blob/main/<target>`.
 - `https://`, `mailto:`, and bare `#anchor` links are left untouched.
 
@@ -94,7 +95,8 @@ Link rewriting rules for `rewriteDocLinks(body, relativePath, knownPaths)`:
 | `rewrites a sibling link` | `rewriteDocLinks('[Zones](rules/ZONES.md)', 'docs/RULES.md', set)` | `[Zones](/docs/rules/zones/)` |
 | `keeps the anchor` | `rewriteDocLinks('[F](rules/ZONES.md#field)', 'docs/RULES.md', set)` | `[F](/docs/rules/zones/#field)` |
 | `rewrites an out-of-docs link to GitHub` | `rewriteDocLinks('[src](../cards_mse/)', 'docs/CONTEXT.md', set)` | contains `https://github.com/AronGomu/YGO-x-MTG/blob/main/cards_mse/` |
-| `fails on an ADR link` | `rewriteDocLinks('[a](ADR/README.md)', 'docs/CONTEXT.md', set)` | throws containing `unpublished link target` |
+| `rewrites an ADR link to GitHub` | `rewriteDocLinks('[a](ADR/README.md)', 'docs/CONTEXT.md', set)` | contains `https://github.com/AronGomu/YGO-x-MTG/blob/main/docs/ADR/README.md` |
+| `fails on a missing docs target` | `rewriteDocLinks('[x](rules/NOPE.md)', 'docs/RULES.md', set)` | throws containing `unpublished link target` |
 | `loads every published doc` | `await loadDocs()` | length equals the count of `docs/**/*.md` minus `docs/ADR/**`, currently `37` (overview 2 + design 4 + rules 7 + keywords 5 + project 3 + archetypes 16) |
 | `excludes ADRs` | `await loadDocs()` | no entry whose `path` starts `docs/ADR/` |
 | `extracts titles and outlines` | entry for `docs/keywords/EVENTS.md` | `title === 'Event keywords'`, `headings` includes `{ id: 'combat-entry', text: 'Combat/entry', level: 2 }` |
@@ -104,16 +106,28 @@ Run: `cd website && npx vitest run tests/unit/docs-corpus.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/docs-corpus.test.ts` with the eleven cases above.
-- [ ] 2. Create `website/scripts/content/docs.mjs` with `DOC_GROUPS`, `docRoute`, `rewriteDocLinks`, `loadDocs`.
-- [ ] 3. In `loadDocs`, walk `path.join(ROOT, 'docs')` with `readdir(..., {withFileTypes:true})`, skip `ADR`, reject symlinks with `fail()`, reject files over `262_144` bytes.
-- [ ] 4. Parse each file: first line matching `/^#\s+(.+)$/` is the title and is removed from `body`; `#{2,4}` headings become `headings` entries via `headingSlug` imported from `../../src/lib/markdown.ts`. If importing TS from an `.mjs` build script is not possible, duplicate the four-line slug function locally and add a unit test asserting both agree.
-- [ ] 5. Import `loadDocs` in `website/scripts/content/orchestrator.mjs`, call it after `loadKeywordRegistry()`, and add `docs` to the `catalog` object literal.
-- [ ] 6. Bump `CATALOG_SCHEMA_VERSION` to `5` in `orchestrator.mjs`.
-- [ ] 7. In `website/src/lib/catalog.ts` add `export interface CatalogDoc { id, path, route, title, group, groupLabel, order, body, headings }` with `headings: Array<{ id: string; text: string; level: number }>`, add `docs: CatalogDoc[]` to `Catalog`, and change `schemaVersion: 4` to `schemaVersion: 5`.
-- [ ] 8. Update the schemaVersion expectation in `website/tests/unit/catalog.test.ts`.
-- [ ] 9. Extend the orchestrator's final `process.stdout.write` summary with `, ${docs.length} docs`.
-- [ ] 10. Run `npm run content:check`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Create `website/tests/unit/docs-corpus.test.ts` with the twelve cases above.
+      *Criterion:* the file exists and `npx vitest run tests/unit/docs-corpus.test.ts` collects exactly 12 tests.
+- [x] 2. Create `website/scripts/content/docs.mjs` with `DOC_GROUPS`, `docRoute`, `rewriteDocLinks`, `loadDocs`.
+      *Criterion:* all four symbols import cleanly in the test run; the `docRoute` and `rewriteDocLinks` cases pass.
+- [x] 3. In `loadDocs`, walk `path.join(ROOT, 'docs')` with `readdir(..., {withFileTypes:true})`, skip `ADR`, reject symlinks with `fail()`, reject files over `262_144` bytes.
+      *Criterion:* the `loads every published doc` and `excludes ADRs` cases pass (37 entries, none under `docs/ADR/`).
+- [x] 4. Parse each file: first line matching `/^#\s+(.+)$/` is the title and is removed from `body`; `#{2,4}` headings become `headings` entries via `headingSlug` imported from `../../src/lib/markdown.ts`. If importing TS from an `.mjs` build script is not possible, duplicate the four-line slug function locally and add a unit test asserting both agree.
+      *Criterion:* the `extracts titles and outlines` case passes; `node -e "import('./src/lib/markdown.ts')"` resolves, so no local slug duplicate is needed.
+- [x] 5. Import `loadDocs` in `website/scripts/content/orchestrator.mjs`, call it after `loadKeywordRegistry()`, and add `docs` to the `catalog` object literal.
+      *Criterion:* `npm run content:check` exits 0 and `src/generated/catalog.ts` contains a `"docs"` key with 37 entries.
+- [x] 6. Bump `CATALOG_SCHEMA_VERSION` to `5` in `orchestrator.mjs`.
+      *Criterion:* the generated `src/generated/catalog.ts` begins with `"schemaVersion": 5`.
+- [x] 7. In `website/src/lib/catalog.ts` add `export interface CatalogDoc { id, path, route, title, group, groupLabel, order, body, headings }` with `headings: Array<{ id: string; text: string; level: number }>`, add `docs: CatalogDoc[]` to `Catalog`, and change `schemaVersion: 4` to `schemaVersion: 5`.
+      *Criterion:* `npm run check` (astro check) exits 0 with 0 errors.
+- [x] 8. Update the schemaVersion expectation in `website/tests/unit/catalog.test.ts`.
+      *Criterion:* `npx vitest run tests/unit/catalog.test.ts` passes.
+- [x] 9. Extend the orchestrator's final `process.stdout.write` summary with `, ${docs.length} docs`.
+      *Criterion:* the `npm run content:check` summary line ends with `37 docs`.
+- [x] 10. Run `npm run content:check`, `npm run format`, `npm run lint`, `npm run check`.
+      *Criterion:* every one of the four commands exits 0.
+- [x] 11. Corpus precondition: `docs/rules/DECKLISTS_ALPHA_0.1.md` carries no `#` heading at all, so the Requirements guard "a doc with no `# ` first heading fails the build" makes the 37-doc target unreachable. Promote its first line to `# Release Alpha 0.1` — the one-character data fix that satisfies the guard. No other line of any doc body is edited.
+      *Criterion:* `head -1 docs/rules/DECKLISTS_ALPHA_0.1.md` prints `# Release Alpha 0.1` and `loadDocs()` returns 37 entries without failing.
 
 ## Outputs
 
@@ -123,10 +137,10 @@ Run: `cd website && npx vitest run tests/unit/docs-corpus.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/docs-corpus.test.ts` — all pass
-- [ ] `cd website && npm run content:check` — exit 0, summary line ends with `37 docs`
-- [ ] `cd website && npm run test` — full suite green
-- [ ] `cd website && npm run check && npm run lint && npm run format:check` — exit 0
-- [ ] `cd website && npm run build` — exit 0
-- [ ] app functional — no visible page change; the site builds and every existing route still resolves
+- [x] `cd website && npx vitest run tests/unit/docs-corpus.test.ts` — all pass
+- [x] `cd website && npm run content:check` — exit 0, summary line ends with `37 docs`
+- [x] `cd website && npm run test` — full suite green
+- [x] `cd website && npm run check && npm run lint && npm run format:check` — exit 0
+- [x] `cd website && npm run build` — exit 0
+- [x] app functional — no visible page change; the site builds and every existing route still resolves
 - [ ] commit msg draft: `feat(website): load the docs corpus into the catalog`

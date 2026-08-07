@@ -22,10 +22,11 @@ import {
 } from '../publication-order.mjs';
 import { loadRegistries } from './identity.mjs';
 import { assertOverridesResolved, loadColorOverrides } from './fields.mjs';
+import { loadDocs } from './docs.mjs';
 import { loadKeywordRegistry } from './keywords.mjs';
 import { discover } from './packages.mjs';
 
-export const CATALOG_SCHEMA_VERSION = 4;
+export const CATALOG_SCHEMA_VERSION = 5;
 
 async function introFromDoc(relative, label) {
   const text = await readFile(path.join(ROOT, relative), 'utf8');
@@ -76,6 +77,7 @@ export async function build({ checkOnly }) {
   const registry = await loadRegistries();
   const colorOverrides = await loadColorOverrides();
   const keywordRegistry = await loadKeywordRegistry();
+  const docs = await loadDocs();
 
   if (!checkOnly) {
     await rm(GENERATED_PUBLIC, { recursive: true, force: true });
@@ -205,6 +207,7 @@ export async function build({ checkOnly }) {
     keywords,
     explanations,
     updates,
+    docs,
     publicationDiagnostics: [],
   };
 
@@ -227,7 +230,7 @@ export async function build({ checkOnly }) {
   ]);
 
   process.stdout.write(
-    `content: ${packages.length} releases, ${sections.length} sections, ${cards.length} current cards, ${versions.length} versions, ${keywords.length} keywords\n`,
+    `content: ${packages.length} releases, ${sections.length} sections, ${cards.length} current cards, ${versions.length} versions, ${keywords.length} keywords, ${docs.length} docs\n`,
   );
   if (draftResolutionCount)
     process.stdout.write(
