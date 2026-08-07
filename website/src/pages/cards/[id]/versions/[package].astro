@@ -18,6 +18,9 @@ export function getStaticPaths() {
 const { card } = Astro.props;
 const current = cardsById.get(card.id)!;
 const base = import.meta.env.BASE_URL;
+const ruleDefinitions = new Map(
+  catalog.keywords.map((keyword) => [keyword.term, keyword.definition]),
+);
 ---
 
 <BaseLayout
@@ -58,7 +61,11 @@ const base = import.meta.env.BASE_URL;
       <p class="type-line">
         {card.superType}{card.subType && ` — ${card.subType}`}
       </p>
-      <RichText value={card.ruleText} class="rules-text" />
+      <RichText
+        value={card.ruleText}
+        class="rules-text"
+        definitions={ruleDefinitions}
+      />
       {
         card.flavorTextPlain && (
           <RichText value={card.flavorText} class="flavor-text" />

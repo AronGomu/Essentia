@@ -1,4 +1,5 @@
 import { ALLOWED_MSE_TAGS, STRIPPED_MSE_TAGS } from '../../shared/mse-tags.mjs';
+import { normalizeKeyword, splitComposite } from '../../shared/keywords.mjs';
 
 const tagPattern = /<(\/)?([a-z][a-z0-9-]*)(?::[^>]*)?>/gi;
 const allowed = new Set<string>(ALLOWED_MSE_TAGS);
@@ -18,7 +19,55 @@ function escapeHtml(value: string): string {
     .replaceAll("'", '&#39;');
 }
 
-export function renderMseMarkup(value: string): string {
+function unescapeHtml(value: string): string {
+  return value
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+    .replaceAll('&amp;', '&');
+}
+
+export interface MseMarkupOptions {
+  definitions?: Map<string, string>;
+}
+
+/**
+ * Appends `(ruling)` reminder text after each bold keyword phrase that
+ * resolves against `definitions`. Runs after the bold conversion, over the
+ * produced HTML — never over raw MSE source.
+ */
+function appendReminders(
+  html: string,
+  definitions: Map<string, string>,
+): string {
+  return html.replace(
+    /<strong>([\s\S]*?)<\/strong>/g,
+    (match, inner: string) => {
+      const raw = unescapeHtml(
+        inner
+          .replace(/<[^>]*>/g, '')
+          .replace(/\s+/g, ' ')
+          .trim(),
+      );
+      if (!raw) return match;
+      const rulings: string[] = [];
+      for (const part of splitComposite(raw)) {
+        const term = normalizeKeyword(part);
+        const ruling = definitions.get(term);
+        if (ruling) rulings.push(ruling);
+      }
+      if (!rulings.length) return match;
+      const joined = rulings.map((ruling) => escapeHtml(ruling)).join(' ');
+      return `${match}<span class="reminder">(${joined})</span>`;
+    },
+  );
+}
+
+export function renderMseMarkup(
+  value: string,
+  options?: MseMarkupOptions,
+): string {
   const stack: string[] = [];
   for (const match of value.matchAll(tagPattern)) {
     const tag = match[2]!.toLowerCase();
@@ -40,5 +89,6 @@ export function renderMseMarkup(value: string): string {
       '<span class="mana-symbol" aria-label="$1">$1</span>',
     )
     .replace(strippedPattern, '');
+  if (options?.definitions) html = appendReminders(html, options.definitions);
   return html;
 }

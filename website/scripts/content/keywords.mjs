@@ -1,6 +1,13 @@
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { CONTENT, ROOT, fail } from './shared.mjs';
+import {
+  normalizeQuotes,
+  normalizeKeyword,
+  splitComposite,
+} from '../../shared/keywords.mjs';
+
+export { normalizeQuotes, normalizeKeyword, splitComposite };
 
 const CATEGORIES = new Set([
   'action',
@@ -26,31 +33,6 @@ async function docExists(relative) {
   } catch {
     return false;
   }
-}
-
-/** Curly quotes in card text must compare equal to straight quotes in the registry. */
-function normalizeQuotes(value) {
-  return value.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
-}
-
-/**
- * `Detach 1`, `Detach 2` and `Detach X` are one keyword with a parameter.
- * Fold standalone integer / X tokens to `N` so the registry holds one entry.
- */
-export function normalizeKeyword(phrase) {
-  return normalizeQuotes(phrase)
-    .split(/\s+/)
-    .map((token) => (/^(?:\d+|X)$/.test(token) ? 'N' : token))
-    .join(' ')
-    .trim();
-}
-
-/** `Detach 1 and Mill 3` and `Negate & Destroy` each invoke two keywords. */
-export function splitComposite(phrase) {
-  return phrase
-    .split(/\s+(?:and|&)\s+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
 }
 
 export async function loadKeywordRegistry(

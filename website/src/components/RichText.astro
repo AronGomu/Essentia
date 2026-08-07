@@ -4,9 +4,10 @@ import { renderMseMarkup } from '../lib/mse-markup';
 interface Props {
   value: string;
   class?: string;
+  definitions?: Map<string, string>;
 }
-const { value, class: className } = Astro.props;
-const html = renderMseMarkup(value);
+const { value, class: className, definitions } = Astro.props;
+const html = renderMseMarkup(value, definitions ? { definitions } : undefined);
 ---
 
 <div class={className} set:html={html} />

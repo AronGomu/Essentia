@@ -840,6 +840,18 @@
   .rules-text em {
     color: var(--silver-ink);
   }
+  .reminder {
+    display: inline;
+    font-style: italic;
+    font-size: 0.88em;
+    color: var(--silver-ink);
+    margin-left: 0.25rem;
+  }
+  @media (forced-colors: active) {
+    .reminder {
+      color: GrayText;
+    }
+  }
   .card-facts {
     display: flex;
     flex-wrap: wrap;

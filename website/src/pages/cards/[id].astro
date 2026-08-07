@@ -32,6 +32,9 @@ const related = sectionCards
   .slice(0, 3);
 const base = import.meta.env.BASE_URL;
 const explanation = catalog.explanations[card.id];
+const ruleDefinitions = new Map(
+  catalog.keywords.map((keyword) => [keyword.term, keyword.definition]),
+);
 const versions = catalog.cardVersions
   .filter((version) => version.id === card.id)
   .sort(
@@ -73,7 +76,11 @@ const versions = catalog.cardVersions
       <p class="type-line">
         {card.superType}{card.subType && ` — ${card.subType}`}
       </p>
-      <RichText value={card.ruleText} class="rules-text" />
+      <RichText
+        value={card.ruleText}
+        class="rules-text"
+        definitions={ruleDefinitions}
+      />
       {
         card.flavorTextPlain && (
           <RichText value={card.flavorText} class="flavor-text" />

@@ -87,15 +87,15 @@ Run: `cd website && npx vitest run tests/unit/mse-markup.test.ts tests/unit/shar
 
 ## Impl steps
 
-- [ ] 1. Add the cases above to `website/tests/unit/mse-markup.test.ts` and create `website/tests/unit/shared-keywords.test.ts`.
-- [ ] 2. Create `website/shared/keywords.mjs` holding `normalizeQuotes`, `normalizeKeyword`, `splitComposite` moved verbatim from `website/scripts/content/keywords.mjs`.
-- [ ] 3. In `website/scripts/content/keywords.mjs`, import the three functions from `../../shared/keywords.mjs` and re-export them so `extractKeywords` and the existing tests keep working unchanged.
-- [ ] 4. Add `MseMarkupOptions` and the reminder pass to `website/src/lib/mse-markup.ts`, running it as the final step of `renderMseMarkup`.
-- [ ] 5. Add `definitions?: Map<string, string>` to `RichText.astro`'s `Props` and forward it: `renderMseMarkup(value, definitions ? { definitions } : undefined)`.
-- [ ] 6. Build `ruleDefinitions` in `website/src/pages/cards/[id].astro` and pass it to the rules-text `RichText` only.
-- [ ] 7. Apply the same change to `website/src/pages/cards/[id]/versions/[package].astro`.
-- [ ] 8. Add to `website/src/styles/global.css`: `.reminder { display: inline; font-style: italic; font-size: 0.88em; color: var(--silver-ink); margin-left: 0.25rem; }` and `@media (forced-colors: active) { .reminder { color: GrayText; } }`.
-- [ ] 9. Run `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the cases above to `website/tests/unit/mse-markup.test.ts` and create `website/tests/unit/shared-keywords.test.ts`.
+- [x] 2. Create `website/shared/keywords.mjs` holding `normalizeQuotes`, `normalizeKeyword`, `splitComposite` moved verbatim from `website/scripts/content/keywords.mjs`.
+- [x] 3. In `website/scripts/content/keywords.mjs`, import the three functions from `../../shared/keywords.mjs` and re-export them so `extractKeywords` and the existing tests keep working unchanged.
+- [x] 4. Add `MseMarkupOptions` and the reminder pass to `website/src/lib/mse-markup.ts`, running it as the final step of `renderMseMarkup`.
+- [x] 5. Add `definitions?: Map<string, string>` to `RichText.astro`'s `Props` and forward it: `renderMseMarkup(value, definitions ? { definitions } : undefined)`.
+- [x] 6. Build `ruleDefinitions` in `website/src/pages/cards/[id].astro` and pass it to the rules-text `RichText` only.
+- [x] 7. Apply the same change to `website/src/pages/cards/[id]/versions/[package].astro`.
+- [x] 8. Add to `website/src/styles/global.css`: `.reminder { display: inline; font-style: italic; font-size: 0.88em; color: var(--silver-ink); margin-left: 0.25rem; }` and `@media (forced-colors: active) { .reminder { color: GrayText; } }`.
+- [x] 9. Run `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
 
 ## Outputs
 
@@ -105,10 +105,10 @@ Run: `cd website && npx vitest run tests/unit/mse-markup.test.ts tests/unit/shar
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/mse-markup.test.ts tests/unit/shared-keywords.test.ts tests/unit/keywords.test.ts` — all pass
-- [ ] `cd website && npm run build` — exit 0; `dist/cards/*/index.html` HTML stays under the 500 KiB per-page budget (`npm run budgets:check`)
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/cards/nekroz-trishula/` — each bold keyword in the rules text is followed by an italic parenthesised ruling; the flavour text has none
-- [ ] manual check: open a gallery and the home page — card names and captions are unchanged, no reminder text leaks there
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every card page renders; no `Unknown MSE tag` regression
+- [x] `cd website && npx vitest run tests/unit/mse-markup.test.ts tests/unit/shared-keywords.test.ts tests/unit/keywords.test.ts` — all pass (34 tests passed)
+- [x] `cd website && npm run build` — exit 0; `dist/cards/*/index.html` HTML stays under the 500 KiB per-page budget (`npm run budgets:check`) — 151 pages built, `budgets: 9 JS, 151 HTML, 205 images, 50 print masters (16 MiB) within limits`
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/cards/nekroz-trishula/` — each bold keyword in the rules text is followed by an italic parenthesised ruling; the flavour text has none. **Substitution (no browser/e2e harness on this host):** inspected built `dist/**/index.html` statically instead. `dist/cards/nekroz-trishula/index.html` has no bold keywords in its rules text (empty in this card's case), so verified instead on `dist/cards/ash-blossom-and-joyous-spring/index.html`, which shows `<strong>Discard</strong><span class="reminder">(Put the indicated card from your Hand into the Grave.)</span>` etc.; that card has no flavour text so absence-of-leak was confirmed structurally (flavour-text call site unchanged, code review of `cards/[id].astro` line 84) and by `grep -c reminder` on flavor-text divs across the dist tree returning 0.
+- [x] manual check: open a gallery and the home page — card names and captions are unchanged, no reminder text leaks there. **Substitution:** `grep -c reminder dist/index.html dist/sections/non-archetype/non-archetype/index.html` → 0 matches in both.
+- [x] `cd website && npm run ci` — exit 0 (confirmed via `echo $?` → 0)
+- [x] app functional — every card page renders; no `Unknown MSE tag` regression — build log shows `151 page(s) built` and `chrome: 151 pages carry the site header`, no thrown errors
 - [ ] commit msg draft: `feat(website): print keyword rulings inline in card rules text`
