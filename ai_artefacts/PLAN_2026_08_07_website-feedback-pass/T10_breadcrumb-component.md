@@ -90,4 +90,4 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 - [x] manual check at 390 px: only the current page label shows — **Substitution (no browser on this host):** verified statically — `@media (max-width: 44rem)` block in `global.css` contains `.breadcrumb li:not(:last-child) { display: none; }`, which hides every breadcrumb item except the last (current page) at viewports ≤44rem (704px, covers 390px). Not visually confirmed in a real browser.
 - [x] `cd website && npm run ci` — exit 0 — Evidence: command exited 0; log shows `Test Files 19 passed (19)`, `Tests 150 passed (150)`, build completed with `chrome: 151 pages carry the site header`.
 - [x] app functional — every route still resolves; home page shows no breadcrumb — Evidence: `npm run links:check` → `links: 151 pages clean` (all internal links resolve); `grep -c '<nav class="breadcrumb"' dist/index.html` → 0.
-- [ ] commit msg draft: `feat(website): move the breadcrumb into the site header for every page` — pending git commit step.
+- [x] commit msg draft: `feat(website): move the breadcrumb into the site header for every page` — Evidence: committed as `8b86c3f`.
