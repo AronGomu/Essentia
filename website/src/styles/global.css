@@ -1453,3 +1453,95 @@ main {
 .post-body {
   max-width: 52rem;
 }
+
+/* Decks page — the one interactive island, so its controls carry the same
+   touch-target floor as the header navigation. */
+.deck-manager {
+  max-width: 60rem;
+}
+.deck-list ul,
+.deck-editor ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-4);
+}
+.deck-list li {
+  border-bottom: 1px solid var(--ruleline);
+  padding-block: var(--space-2);
+}
+.deck-create,
+.deck-actions,
+.deck-rename {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.deck-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-1);
+}
+.deck-summary span {
+  color: var(--silver-ink);
+}
+.deck-editor {
+  border-top: 1px solid var(--ruleline);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+}
+.deck-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--ruleline);
+}
+.deck-entry a {
+  margin-right: auto;
+}
+.deck-entry span {
+  color: var(--silver-ink);
+}
+.deck-notice {
+  color: var(--accent);
+  min-height: 1.5rem;
+  margin: 0 0 var(--space-2);
+}
+.deck-transfer {
+  border-top: 1px solid var(--ruleline);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+}
+.deck-transfer textarea {
+  width: 100%;
+  min-height: 8rem;
+  font-family: monospace;
+}
+.deck-transfer label,
+.deck-editor label {
+  display: block;
+  margin-top: var(--space-2);
+}
+.deck-manager button,
+.deck-manager input,
+.deck-manager summary {
+  min-height: 2.45rem;
+  background: var(--blackfoil-raised);
+  border: 1px solid var(--ruleline);
+  border-radius: var(--radius-sm);
+  color: inherit;
+  font: inherit;
+  padding: 0.35rem 0.7rem;
+}
+.deck-manager button {
+  cursor: pointer;
+}
+.deck-manager button:hover:not(:disabled),
+.deck-manager summary:hover {
+  border-color: var(--accent);
+}
+.deck-manager button:disabled {
+  color: var(--silver-ink);
+  cursor: not-allowed;
+}

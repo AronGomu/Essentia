@@ -1,0 +1,42 @@
+---
+import DeckManager from '../../components/DeckManager.svelte';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../lib/catalog';
+
+const base = import.meta.env.BASE_URL;
+const pickerCards = catalog.cards.map(
+  ({ id, name, matchNames, route, zone, sectionLabel, manifestIndex }) => ({
+    id,
+    name,
+    matchNames,
+    route,
+    zone,
+    sectionLabel,
+    manifestIndex,
+  }),
+);
+---
+
+<BaseLayout
+  title="Decks — Essentia"
+  description="Build and keep Essentia decklists in your browser."
+  accent="relic"
+>
+  <div class="page-shell">
+    <h1>Decks</h1>
+    <p>
+      Decklists are stored only in this browser — nothing is uploaded, and
+      clearing site data deletes them.
+    </p>
+    <DeckManager client:load cards={pickerCards} {base} />
+    <noscript>
+      <p>
+        Decklists need JavaScript: the deck builder runs entirely in your
+        browser, so there is no server-rendered version of it. Enable JavaScript
+        for this site to build a deck, or read the <a
+          href={`${base}docs/rules/deck-building/`}>deck-building rules</a
+        > to plan one on paper.
+      </p>
+    </noscript>
+  </div>
+</BaseLayout>

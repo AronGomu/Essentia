@@ -64,36 +64,52 @@ Run: `cd website && npx vitest run tests/unit/deck-picker.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/deck-picker.test.ts` with the five cases above.
-- [ ] 2. Create `website/src/lib/deck-picker.ts` implementing `pickCards` on top of `cardNameScore` (score each of `matchNames`, take the minimum, drop non-finite, sort by `score` then `manifestIndex` then `id`).
-- [ ] 3. Create `website/src/components/DeckManager.svelte` with `export let cards: PickerCard[]` and `export let base: string`.
-      - Local state: `let store: DeckStore = EMPTY_STORE`, `let selectedId: string | null = null`, `let query = ''`, `let notice = ''`, `let pendingDelete: string | null = null`, `let importText = ''`.
-      - `onMount`: `store = readStored(DECKS_KEY, migrateDecks) ?? EMPTY_STORE`.
-      - `function persist(next: DeckStore)`: assign `store = next`, then switch on `writeStored(DECKS_KEY, next)` and set `notice` to the exact quota/unavailable strings from Requirements, or `''` on `'ok'`.
-      - Every mutation goes through `persist(...)`.
-      - Card lookup for rendering entries: `const byId = new Map(cards.map((card) => [card.id, card]))`.
-- [ ] 4. Markup: `<section class="deck-list">` with an `<h2>Your decklists</h2>`, a create form (`<input>` + `<button>New deck</button>`), and a `<ul>`; each `<li>` shows the name, `deckSize(deck,'main')` + `deckSize(deck,'extra')`, `updated`, an `Open` button, a `Rename` inline input, and a two-step `Delete` → `Confirm delete` button pair driven by `pendingDelete`.
-- [ ] 5. Markup: `<section class="deck-editor">` shown when `selectedId` resolves — search `<input bind:value={query}>`, results `<ul>` from `pickCards(cards, query)` with an `Add` button per row calling `setQuantity(..., card.zone, card.id, currentQty + 1, today())`, then the `main` and `extra` entry lists with `−` / quantity / `+` controls and a card link to `withBase(base, card.route)`.
-- [ ] 6. Markup: `<details class="deck-transfer"><summary>Export / import</summary>` — readonly `<textarea>` bound to `exportDeck(selectedDeck)`, a `Copy` button using `navigator.clipboard.writeText` guarded by `if (navigator.clipboard)`, an import `<textarea bind:value={importText}>` and an `Import` button that calls `importDeck(importText, crypto.randomUUID(), today())` and either prepends the deck or sets the failure notice.
-- [ ] 7. Create `website/src/pages/decks/index.astro`: build `const pickerCards = catalog.cards.map(({ id, name, matchNames, zone, sectionLabel, manifestIndex }) => ({ id, name, matchNames, zone, sectionLabel, manifestIndex }))`, render `BaseLayout title="Decks — Essentia" description="Build and keep Essentia decklists in your browser." accent="relic"`, a `.page-shell` with `<h1>Decks</h1>`, a one-line explanation that decks are stored only in this browser, `<DeckManager client:load cards={pickerCards} {base} />`, and a `<noscript>` block with the copy from Requirements linking to `${base}docs/rules/deck-building/`.
-- [ ] 8. Add styles to `website/src/styles/global.css`: `.deck-list ul`, `.deck-editor`, `.deck-entry { display: flex; align-items: center; gap: var(--space-2); border-bottom: 1px solid var(--ruleline); }`, `.deck-notice { color: var(--accent); }`, `.deck-transfer textarea { width: 100%; min-height: 8rem; font-family: monospace; }`. Every interactive control keeps `min-height: 2.45rem` to match the existing touch-target rule.
-- [ ] 9. Run `npm run build` and check `npm run budgets:check` — total JS must stay under 350 KiB.
-- [ ] 10. Run `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Create `website/tests/unit/deck-picker.test.ts` with the five cases above.
+      *Criterion:* file exists and `npx vitest run tests/unit/deck-picker.test.ts` fails with "Cannot find module .../deck-picker".
+- [x] 2. Create `website/src/lib/deck-picker.ts` implementing `pickCards` on top of `cardNameScore` (score each of `matchNames`, take the minimum, drop non-finite, sort by `score` then `manifestIndex` then `id`).
+      *Criterion:* the same vitest command reports 5 passed.
+- [x] 3. Create `website/src/components/DeckManager.svelte` with `export let cards: PickerCard[]` and `export let base: string`.
+      *Criterion:* file exists, `npm run check` reports 0 errors, file is under 250 lines.
+  - [x] 3.1 Local state: `let store: DeckStore = EMPTY_STORE`, `let selectedId: string | null = null`, `let query = ''`, `let notice = ''`, `let pendingDelete: string | null = null`, `let importText = ''`. *Criterion:* all six declarations present in the `<script>`.
+  - [x] 3.2 `onMount`: `store = readStored(DECKS_KEY, migrateDecks) ?? EMPTY_STORE`. *Criterion:* that exact read appears inside `onMount`.
+  - [x] 3.3 `function persist(next: DeckStore)`: assign `store = next`, then switch on `writeStored(DECKS_KEY, next)` and set `notice` to the exact quota/unavailable strings from Requirements, or `''` on `'ok'`. *Criterion:* both Requirement strings appear verbatim in the switch.
+  - [x] 3.4 Every mutation goes through `persist(...)`. *Criterion:* no `store =` assignment outside `persist` and `onMount`.
+  - [x] 3.5 Card lookup for rendering entries: `const byId = new Map(cards.map((card) => [card.id, card]))`. *Criterion:* that declaration is present and used by the entry rows.
+- [x] 4. Markup: `<section class="deck-list">` with an `<h2>Your decklists</h2>`, a create form (`<input>` + `<button>New deck</button>`), and a `<ul>`; each `<li>` shows the name, `deckSize(deck,'main')` + `deckSize(deck,'extra')`, `updated`, an `Open` button, a `Rename` inline input, and a two-step `Delete` → `Confirm delete` button pair driven by `pendingDelete`.
+      *Criterion:* every named element is present in the template and `npm run lint` is clean (no `window.confirm` anywhere in the file).
+- [x] 5. Markup: `<section class="deck-editor">` shown when `selectedId` resolves — search `<input bind:value={query}>`, results `<ul>` from `pickCards(cards, query)` with an `Add` button per row calling `setQuantity(..., card.zone, card.id, currentQty + 1, today())`, then the `main` and `extra` entry lists with `−` / quantity / `+` controls and a card link to `withBase(base, card.route)`.
+      *Criterion:* every named element is present and `npm run check` is clean.
+- [x] 6. Markup: `<details class="deck-transfer"><summary>Export / import</summary>` — readonly `<textarea>` bound to `exportDeck(selectedDeck)`, a `Copy` button using `navigator.clipboard.writeText` guarded by `if (navigator.clipboard)`, an import `<textarea bind:value={importText}>` and an `Import` button that calls `importDeck(importText, crypto.randomUUID(), today())` and either prepends the deck or sets the failure notice.
+      *Criterion:* the failure string `Import failed — the JSON is not a valid decklist.` appears verbatim; no `blob:`/`data:` download path exists.
+- [x] 7. Create `website/src/pages/decks/index.astro`: build `const pickerCards = catalog.cards.map(({ id, name, matchNames, zone, sectionLabel, manifestIndex }) => ({ id, name, matchNames, zone, sectionLabel, manifestIndex }))`, render `BaseLayout title="Decks — Essentia" description="Build and keep Essentia decklists in your browser." accent="relic"`, a `.page-shell` with `<h1>Decks</h1>`, a one-line explanation that decks are stored only in this browser, `<DeckManager client:load cards={pickerCards} {base} />`, and a `<noscript>` block with the copy from Requirements linking to `${base}docs/rules/deck-building/`.
+      *Criterion:* `dist/decks/index.html` exists after `npm run build` and contains the `<noscript>` block with an `href` resolving to `/docs/rules/deck-building/`.
+      *Plan defect reconciled:* step 5 needs `card.route` but the `PickerCard` interface in TDD and the mapping above both omit it. Resolved additively — `route: string` added to `PickerCard` and to this mapping. Nothing else changed.
+- [x] 8. Add styles to `website/src/styles/global.css`: `.deck-list ul`, `.deck-editor`, `.deck-entry { display: flex; align-items: center; gap: var(--space-2); border-bottom: 1px solid var(--ruleline); }`, `.deck-notice { color: var(--accent); }`, `.deck-transfer textarea { width: 100%; min-height: 8rem; font-family: monospace; }`. Every interactive control keeps `min-height: 2.45rem` to match the existing touch-target rule.
+      *Criterion:* all five selectors present in `global.css`; a `min-height: 2.45rem` rule covers the deck buttons, inputs and textareas.
+- [x] 9. Run `npm run build` and check `npm run budgets:check` — total JS must stay under 350 KiB.
+      *Criterion:* both exit 0 and the budgets line prints a JS total under 350 KiB.
+- [x] 10. Run `npm run format`, `npm run lint`, `npm run check`.
+      *Criterion:* all three exit 0.
 
 ## Outputs
 
-- Files touched: `website/src/lib/deck-picker.ts` (new), `website/src/components/DeckManager.svelte` (new), `website/src/pages/decks/index.astro` (new), `website/src/styles/global.css`, `website/tests/unit/deck-picker.test.ts` (new).
+- Files touched: `website/src/lib/deck-picker.ts` (new), `website/src/components/DeckManager.svelte` (new), `website/src/pages/decks/index.astro` (new), `website/src/styles/global.css`, `website/tests/unit/deck-picker.test.ts` (new), `website/tests/unit/deck-persistence.test.ts` (new — the deterministic stand-in for the three manual browser checks, see Validation).
 - Behaviour: `/decks/` exists and works. Nothing links to it yet.
 - Migration: writes storage key `essentia.v1.decks`.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/deck-picker.test.ts` — 5 passed
-- [ ] `cd website && npm run build && npm run budgets:check` — exit 0, JS total under 350 KiB
-- [ ] `cd website && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/decks/`, create a deck, add a card twice (third `+` does nothing), reload — the deck and its counts survive
-- [ ] manual check: export the deck, delete it, paste the JSON back into import — the deck returns
-- [ ] manual check: disable JavaScript, reload `/decks/` — the noscript explanation renders and its link resolves
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every pre-existing route unchanged
+- [x] `cd website && npx vitest run tests/unit/deck-picker.test.ts` — 6 passed (the 5 test-plan cases plus `cardHref`, the helper the TDD refactor step moved out of the component)
+- [x] `cd website && npm run build && npm run budgets:check` — exit 0; `budgets: 10 JS, 151 HTML, 250 images, 50 print masters (16 MiB) within limits` (JS total ~60 KiB after the `withBase` import was replaced by `cardHref`; importing `lib/catalog` had bundled the whole catalog and pushed JS to 378 KiB)
+- [x] `cd website && npm run links:check` — exit 0, `links: 151 pages clean`
+- [x] CSP gate — `npm run build`'s `harden-csp.mjs` step reports clean and `scan-dist.mjs` finds no `'unsafe-inline'`; `dist/decks/index.html` carries no inline `on*=` handler
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/decks/`, create a deck, add a card twice (third `+` does nothing), reload — the deck and its counts survive
+      *Substituted:* no browser/Playwright harness on this host. Equivalent: `tests/unit/deck-persistence.test.ts` drives the component's create → add ×3 → `writeStored` → `readStored` path against a fake `localStorage`.
+- [x] manual check: export the deck, delete it, paste the JSON back into import — the deck returns
+      *Substituted:* same test file — `exportDeck` → `deleteDeck` → `importDeck` round trip asserted on the restored store.
+- [x] manual check: disable JavaScript, reload `/decks/` — the noscript explanation renders and its link resolves
+      *Substituted:* static inspection of the built `dist/decks/index.html` — the `<noscript>` block is present, the editor markup is absent before hydration, and `links:check` resolves the `/docs/rules/deck-building/` href.
+- [x] `cd website && npm run ci` — exit 0 (18 test files, 141 tests passed)
+- [x] app functional — every pre-existing route unchanged
+      *Criterion:* built page count goes 150 → 151 with `/decks/` the only addition.
 - [ ] commit msg draft: `feat(website): add a browser-local decklist page`
