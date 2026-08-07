@@ -4,14 +4,14 @@
   "art": [
     {
       "key": "/art/non-archetype-hero.webp",
-      "source": "original_images/Effect Monster/Ash Blossom & Joyous Spring.jpg",
-      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "source": "original_images_hd/Effect Monster/Ash Blossom & Joyous Spring.jpg",
+      "tool": "sharp webp q90 (manual HD upscale, 1920 px)",
       "generatedOn": "2026-08-07"
     },
     {
       "key": "/art/burning-abyss-hero.webp",
-      "source": "original_images/Xyz/Dante, Traveler of the Burning Abyss.jpg",
-      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "source": "original_images_hd/Xyz/Dante, Traveler of the Burning Abyss.jpg",
+      "tool": "sharp webp q90 (manual HD upscale, 1920 px)",
       "generatedOn": "2026-08-07"
     },
     {
@@ -22,8 +22,8 @@
     },
     {
       "key": "/art/nekroz-hero.webp",
-      "source": "original_images/Ritual/Nekroz of Trishula.jpg",
-      "tool": "sharp webp q90 (native 624 px; HD upscale pending)",
+      "source": "original_images_hd/Ritual/Nekroz of Trishula.jpg",
+      "tool": "sharp webp q90 (manual HD upscale, 1920 px)",
       "generatedOn": "2026-08-07"
     },
     {

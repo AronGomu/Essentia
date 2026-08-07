@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preflight": "node scripts/check-preflight.mjs",
+    "hero:art": "node scripts/make-hero-art.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "content:check": "node scripts/build-content.mjs --check",
