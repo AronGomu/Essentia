@@ -112,4 +112,4 @@ Run: `cd website && npx vitest run tests/unit/deck-picker.test.ts`
 - [x] `cd website && npm run ci` — exit 0 (18 test files, 141 tests passed)
 - [x] app functional — every pre-existing route unchanged
       *Criterion:* built page count goes 150 → 151 with `/decks/` the only addition.
-- [ ] commit msg draft: `feat(website): add a browser-local decklist page`
+- [x] commit msg draft: `feat(website): add a browser-local decklist page` — committed as `1270412`
