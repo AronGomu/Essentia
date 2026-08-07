@@ -176,4 +176,61 @@ describe('chromeIssues', () => {
       ),
     ).toBe(false);
   });
+
+  const newCardsSection = (items: number, linkText: string) => `
+<section aria-labelledby="new-cards-heading">
+${Array.from({ length: items }, () => '<li class="new-card-item"></li>').join(
+  '\n',
+)}
+<p class="new-card-more"><a href="/updates/">${linkText}</a></p>
+</section>
+`;
+
+  it('accepts a compliant home grid', () => {
+    const html =
+      compliantHomeHtml + newCardsSection(15, 'View all 50 new cards');
+    expect(chromeIssues('index.html', html, '/')).toEqual([]);
+  });
+
+  it('flags a 12-card grid', () => {
+    const html =
+      compliantHomeHtml + newCardsSection(12, 'View all 50 new cards');
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('new-cards section must show 15 cards'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a leftover carousel class', () => {
+    const html =
+      compliantHomeHtml +
+      `
+<section aria-labelledby="new-cards-heading">
+<ul class="new-card-carousel">
+${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
+  '\n',
+)}
+</ul>
+<p class="new-card-more"><a href="/updates/">View all 50 new cards</a></p>
+</section>
+`;
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('the new-card carousel must be gone'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a generic updates link', () => {
+    const html = compliantHomeHtml + newCardsSection(15, 'View all updates');
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('new-cards section must link "View all N new cards"'),
+      ),
+    ).toBe(true);
+  });
 });

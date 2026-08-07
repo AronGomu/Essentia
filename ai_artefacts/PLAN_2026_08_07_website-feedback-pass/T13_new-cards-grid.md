@@ -69,20 +69,20 @@ Run: `cd website && npx vitest run tests/unit/latest-release.test.ts tests/unit/
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/latest-release.test.ts` with the first three cases; add the last four to `website/tests/unit/chrome.test.ts`.
-- [ ] 2. Add `latestRelease` and `isLatestRelease` to `website/src/lib/catalog.ts`, exported after `sectionsBySlug`.
-- [ ] 3. Add the three gate rules to `website/scripts/check-chrome.mjs`.
-- [ ] 4. In `website/src/pages/index.astro`, add `const newCardCount = latest.length;` and `const newCards = latest.slice(0, 15);`.
-- [ ] 5. Delete the `<a href={withBase(base, '/updates/')}>View all updates</a>` from the section heading.
-- [ ] 6. Replace `<ul class="update-list new-card-carousel">` with `<ul class="new-card-grid">`, iterate `newCards`, and give each `<li>` the class `new-card-item`. Keep the existing anchor, `data-card-preview`, `CardPicture`, `.update-meta`, and `StatusBadge` markup. Set `eager={index < 5}`.
-- [ ] 7. Add, directly after the `</ul>`, `<p class="new-card-more"><a href={withBase(base, '/updates/')}>View all {newCardCount} new cards</a></p>`.
-- [ ] 8. Add to `website/src/styles/global.css`, inside the same desktop block that holds `.update-list`:
+- [x] 1. Create `website/tests/unit/latest-release.test.ts` with the first three cases; add the last four to `website/tests/unit/chrome.test.ts`.
+- [x] 2. Add `latestRelease` and `isLatestRelease` to `website/src/lib/catalog.ts`, exported after `sectionsBySlug`.
+- [x] 3. Add the three gate rules to `website/scripts/check-chrome.mjs`.
+- [x] 4. In `website/src/pages/index.astro`, add `const newCardCount = latest.length;` and `const newCards = latest.slice(0, 15);`.
+- [x] 5. Delete the `<a href={withBase(base, '/updates/')}>View all updates</a>` from the section heading.
+- [x] 6. Replace `<ul class="update-list new-card-carousel">` with `<ul class="new-card-grid">`, iterate `newCards`, and give each `<li>` the class `new-card-item`. Keep the existing anchor, `data-card-preview`, `CardPicture`, `.update-meta`, and `StatusBadge` markup. Set `eager={index < 5}`.
+- [x] 7. Add, directly after the `</ul>`, `<p class="new-card-more"><a href={withBase(base, '/updates/')}>View all {newCardCount} new cards</a></p>`.
+- [x] 8. Add to `website/src/styles/global.css`, inside the same desktop block that holds `.update-list`:
       `.new-card-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-4); list-style: none; padding: 0; margin: 0; }`
       `.new-card-grid li a { display: grid; gap: 0.65rem; text-decoration: none; }`
       `.new-card-more { margin-top: var(--space-4); }`
       and under `@media (max-width: 70rem) { .new-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }` plus `@media (max-width: 40rem) { .new-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }`.
-- [ ] 9. Delete the now-unused `.new-card-carousel` selector if `global.css` declares one.
-- [ ] 10. Run `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 9. Delete the now-unused `.new-card-carousel` selector if `global.css` declares one.
+- [x] 10. Run `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
 
 ## Outputs
 
@@ -92,11 +92,11 @@ Run: `cd website && npx vitest run tests/unit/latest-release.test.ts tests/unit/
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/latest-release.test.ts tests/unit/chrome.test.ts` — all pass
-- [ ] `cd website && npm run build` — chrome gate reports no new-cards complaint
-- [ ] `cd website && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, open `/` at ≥ 1400 px — three rows of five card images, then the `View all 50 new cards` link; no horizontal scrolling anywhere
-- [ ] manual check at 390 px — two columns, no overflow
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — hero and section tiles unchanged, `/updates/` still resolves
-- [ ] commit msg draft: `feat(website): replace the home carousel with a fixed new-cards grid`
+- [x] `cd website && npx vitest run tests/unit/latest-release.test.ts tests/unit/chrome.test.ts` — all pass. Evidence: `Test Files 2 passed (2)` / `Tests 21 passed (21)`.
+- [x] `cd website && npm run build` — chrome gate reports no new-cards complaint. Evidence: build output ends `chrome: 151 pages carry the site header` with no thrown error.
+- [x] `cd website && npm run links:check` — exit 0. Evidence: `links: 151 pages clean`.
+- [x] manual check: `node scripts/serve-dist.mjs`, open `/` at ≥ 1400 px — three rows of five card images, then the `View all 50 new cards` link; no horizontal scrolling anywhere. **Substitution (no browser/e2e harness on this host):** inspected `dist/index.html` and `dist/_astro/*.css` statically instead — `grep -o 'class="new-card-item"' dist/index.html | wc -l` → 15; `.new-card-grid{gap:var(--space-4);grid-template-columns:repeat(5,minmax(0,1fr));...}` present in the built CSS (base/desktop rule); `View all 50 new cards` link renders directly after `</ul>`; no `new-card-carousel` string anywhere in `dist/index.html`.
+- [x] manual check at 390 px — two columns, no overflow. **Substitution:** confirmed `@media (max-width: 40rem){.new-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}` present in built CSS; grid items are `minmax(0, 1fr)` tracks (no fixed widths) and base reset applies `img, picture { max-width: 100% }`, so no overflow is introduced.
+- [x] `cd website && npm run ci` — exit 0. Evidence: `npm run ci > /tmp/ci_out.log 2>&1; echo $?` → `EXIT: 0`.
+- [x] app functional — hero and section tiles unchanged, `/updates/` still resolves. Evidence: `dist/index.html` hero markup (`<h1>The Yu-Gi-Oh! Feel....`, `.hero-actions` links) and `.section-menu`/`.section-tile` markup byte-identical to pre-change; `links:check` (151 pages clean) confirms `/updates/` resolves.
+- [x] commit msg draft: `feat(website): replace the home carousel with a fixed new-cards grid`

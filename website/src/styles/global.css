@@ -631,6 +631,32 @@
   .update-item a:focus-visible img {
     transform: translateY(-0.3rem);
   }
+  .new-card-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .new-card-grid li a {
+    display: grid;
+    gap: 0.65rem;
+    text-decoration: none;
+  }
+  .new-card-more {
+    margin-top: var(--space-4);
+  }
+  @media (max-width: 70rem) {
+    .new-card-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 40rem) {
+    .new-card-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
   .update-meta {
     display: flex;
     align-items: start;
@@ -1250,22 +1276,6 @@ html[data-theme='nekroz'] .render-column picture {
   justify-content: flex-end;
   gap: 0.5rem;
 }
-.new-card-carousel {
-  display: flex;
-  grid-template-columns: none;
-  justify-content: start;
-  gap: var(--space-4);
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scroll-snap-type: inline mandatory;
-  scrollbar-color: var(--accent) var(--sleeve);
-  padding: 0.75rem 0 1.25rem;
-}
-.new-card-carousel .update-item {
-  flex: 0 0 min(18rem, 78vw);
-  scroll-snap-align: start;
-}
-
 /* Editorial pages */
 .info-page {
   max-width: 84rem;

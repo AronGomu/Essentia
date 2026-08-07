@@ -14,6 +14,8 @@ const base = import.meta.env.BASE_URL;
 const latest = catalog.updates
   .filter((update) => update.status === 'new')
   .map((update) => ({ ...update, card: cardsById.get(update.cardId)! }));
+const newCardCount = latest.length;
+const newCards = latest.slice(0, 15);
 const heroSection =
   catalog.sections.find(
     (section) => section.slug === catalog.heroSectionSlug,
@@ -68,16 +70,15 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
               <h2 id="new-cards-heading">New cards</h2>
               <p>Latest cards from alpha/beta/release packages.</p>
             </div>
-            <a href={withBase(base, '/updates/')}>View all updates</a>
           </div>
-          <ul class="update-list new-card-carousel" aria-label="New cards">
-            {latest.map(({ card, status }, index) => (
-              <li class="update-item">
+          <ul class="new-card-grid" aria-label="New cards">
+            {newCards.map(({ card, status }, index) => (
+              <li class="new-card-item">
                 <a
                   href={withBase(base, card.route)}
                   data-card-preview={withBase(base, previewImage(card))}
                 >
-                  <CardPicture card={card} eager={index < 3} />
+                  <CardPicture card={card} eager={index < 5} />
                   <span class="update-meta">
                     <span>
                       <strong>{card.name}</strong>
@@ -89,6 +90,11 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
               </li>
             ))}
           </ul>
+          <p class="new-card-more">
+            <a href={withBase(base, '/updates/')}>
+              View all {newCardCount} new cards
+            </a>
+          </p>
         </section>
 
         <section aria-labelledby="catalog-heading">

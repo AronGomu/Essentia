@@ -207,6 +207,14 @@ export const sectionsBySlug = new Map(
   catalog.sections.map((section) => [section.slug, section]),
 );
 
+/** Newest published package, or null on a draft-only build. */
+export const latestRelease: ReleasePackage | null = catalog.releases[0] ?? null;
+
+/** True when this card's current version was published by the newest package. */
+export function isLatestRelease(card: { packageId: string }): boolean {
+  return latestRelease !== null && card.packageId === latestRelease.id;
+}
+
 export function withBase(base: string, route: string): string {
   return `${base.replace(/\/$/, '')}/${route.replace(/^\//, '')}`;
 }

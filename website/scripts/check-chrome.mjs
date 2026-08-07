@@ -81,6 +81,32 @@ export function chromeIssues(file, html, base) {
     if (!heroArtRe.test(heroArtSrc)) {
       problems.push(`${file}: hero art must use the section hero image`);
     }
+
+    const newCardsMatch = html.match(
+      /<section[^>]*aria-labelledby="new-cards-heading"[^>]*>[\s\S]*?<\/section>/,
+    );
+    const newCardsBlock = newCardsMatch ? newCardsMatch[0] : '';
+    if (newCardsBlock) {
+      const cardCount = (
+        newCardsBlock.match(/<li class="new-card-item"/g) ?? []
+      ).length;
+      if (cardCount !== 15) {
+        problems.push(`${file}: new-cards section must show 15 cards`);
+      }
+
+      const updatesLinkRe = new RegExp(
+        `<a href="${base}updates/"[^>]*>View all \\d+ new cards<`,
+      );
+      if (!updatesLinkRe.test(newCardsBlock)) {
+        problems.push(
+          `${file}: new-cards section must link "View all N new cards"`,
+        );
+      }
+    }
+
+    if (html.includes('new-card-carousel')) {
+      problems.push(`${file}: the new-card carousel must be gone`);
+    }
   }
 
   return problems;
