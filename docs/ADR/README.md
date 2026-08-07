@@ -24,6 +24,11 @@ Decision evidence lives here after rule/design review.
 ## Proposed
 
 - [0003 — Nekroz reconciliation](proposed/0003-nekroz-reconciliation.md)
+- [0015 — Keyword ruling text lives in the website registry](proposed/0015-keyword-definitions-in-registry.md)
+- [0016 — Archetype sections hold members and linked support cards only](proposed/0016-archetype-sections-hold-members-only.md)
+- [0017 — Docs, blog, and local decks ship without MDX](proposed/0017-docs-blog-decks-without-mdx.md)
+- [0018 — Section hero art is committed, never build-generated](proposed/0018-committed-hd-hero-art.md)
+- [0019 — Unknown routes redirect home; there is no welcome page](proposed/0019-unknown-routes-redirect-home.md)
 
 ## Workflow
 

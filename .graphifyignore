@@ -1,0 +1,29 @@
+# Scope the knowledge graph to project source + documentation.
+# Bulk asset and agent-scaffolding directories are excluded: they dominate the
+# corpus (848 images / 7.9M words) without describing how the project works.
+
+# Card art and rendered images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.bmp
+
+# MSE set data and scraped Konami card records (data, not architecture)
+cards_mse/
+original_cards/
+original_images/
+
+# Agent/tooling scaffolding
+.agents/
+.pi/
+.pi-subagents/
+.agentsystem/
+.claude/
+
+# Scratch and untracked working dirs
+.tmp/
+.dev/
+__pycache__/
+.pytest_cache/
