@@ -4,7 +4,7 @@ import Markdown from '../../components/Markdown.astro';
 import ChapterSummary from '../../components/ChapterSummary.astro';
 import DocsRail from '../../components/DocsRail.astro';
 import { catalog, withBase, type CatalogDoc } from '../../lib/catalog';
-import { docsRailGroups } from '../../lib/docs';
+import { docsRailGroups, docDescription } from '../../lib/docs';
 
 export function getStaticPaths() {
   return catalog.docs
@@ -25,11 +25,7 @@ const groups = docsRailGroups(catalog.docs);
 const chapters = doc.headings
   .filter((heading) => heading.level === 2)
   .map((heading) => ({ href: `#${heading.id}`, label: heading.text }));
-const description = doc.body
-  .replace(/[#*_`>|-]/g, ' ')
-  .replace(/\s+/g, ' ')
-  .trim()
-  .slice(0, 150);
+const description = docDescription(doc.body);
 ---
 
 <BaseLayout
