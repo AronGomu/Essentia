@@ -72,20 +72,16 @@ Run: `cd website && npx vitest run tests/unit/hover-keywords.test.ts tests/unit/
 
 ## Impl steps
 
-- [ ] 1. Add the six cases above to the two test files.
-- [ ] 2. Add `essentiaKeywordsFor` to `website/src/lib/catalog.ts`, built on `essentiaKeywordsByTerm`.
-- [ ] 3. In `website/src/layouts/BaseLayout.astro`, compute `const keywordRulings = Object.fromEntries(catalog.keywords.filter((keyword) => keyword.origin === 'essentia').map((keyword) => [keyword.term, keyword.definition]));` and emit `<script type="application/json" id="keyword-rulings" set:html={JSON.stringify(keywordRulings)}></script>` immediately before `<CardHoverPreview />`.
-- [ ] 4. Restructure `website/src/components/CardHoverPreview.astro` to the `<aside>` markup above; keep every existing event listener, the `placePreview` maths, and the `is-visible` class toggle on the `<aside>` instead of the `<img>`.
-- [ ] 5. In the script, parse the payload once: `const rulings = JSON.parse(document.getElementById('keyword-rulings')?.textContent ?? '{}')`. In `showPreview`, clear `.keyword-rulings` with `replaceChildren()` and append one `<p class="keyword-ruling">` per resolved term, building the `<strong>` and the text node with `document.createElement` / `textContent`.
-- [ ] 6. In `website/src/components/CardGallery.astro` and `website/src/pages/index.astro`, add `data-card-keywords={essentiaKeywordsFor(card).map((entry) => entry.term).join(',')}` to every element that already has `data-card-preview`. `GalleryCard` does not carry `keywords` today — add `'keywords'` to its `Pick` list and to `toGalleryCard` in `website/src/lib/catalog.ts`.
-- [ ] 7. Add the gate rule to `website/scripts/check-chrome.mjs`.
-- [ ] 8. Add to `website/src/styles/global.css`:
-      `.card-hover-preview { display: grid; gap: 0.5rem; }` (keeping the existing fixed positioning rules on the same selector),
-      `.keyword-rulings { display: grid; gap: 0.4rem; }`,
-      `.keyword-ruling { border: 1px solid var(--ruleline); border-radius: 0.6rem; padding: 0.45rem 0.6rem; margin: 0; font-size: 0.8rem; background: var(--blackfoil-raised); color: var(--cardstock); max-width: 400px; }`,
-      `.keyword-ruling strong { color: var(--accent); margin-right: 0.35rem; }`.
-- [ ] 9. Verify the existing coarse-pointer media query still targets `.card-hover-preview` and therefore hides the boxes too.
-- [ ] 10. Run `npm run build` (which runs `harden-csp.mjs`), `npm run budgets:check`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the six cases above to the two test files. — `website/tests/unit/hover-keywords.test.ts` (new, 4 cases) + 2 gate cases added to `website/tests/unit/chrome.test.ts`; confirmed red (`essentiaKeywordsFor is not a function`, gate assertions failing) before implementation.
+- [x] 2. Add `essentiaKeywordsFor` to `website/src/lib/catalog.ts`, built on `essentiaKeywordsByTerm`.
+- [x] 3. In `website/src/layouts/BaseLayout.astro`, compute `keywordRulings` and emit the `<script type="application/json" id="keyword-rulings">` payload immediately before `<CardHoverPreview />`. — verified in `dist/index.html`: 51-entry JSON object, `Flying` absent.
+- [x] 4. Restructure `website/src/components/CardHoverPreview.astro` to the `<aside>` markup above; keep every existing event listener, the `placePreview` maths, and the `is-visible` class toggle on the `<aside>`. — verified `dist/index.html` contains exactly `<aside class="card-hover-preview" aria-hidden="true"><img alt="" width="400" height="559" decoding="async"><div class="keyword-rulings"></div></aside>`.
+- [x] 5. Parse the payload once and rebuild `.keyword-rulings` in `showPreview` via `replaceChildren()` + `createElement`/`textContent` only. — verified in bundled `dist/index.html` inline script: `n.replaceChildren();...i.className=\`keyword-ruling\`;...a.textContent=t,i.append(a,document.createTextNode(...))` — no `innerHTML`.
+- [x] 6. Add `data-card-keywords` to every element carrying `data-card-preview`, and add `'keywords'` to `GalleryCard`'s `Pick` list and `toGalleryCard`. — **Plan defect found**: the ticket's Inputs list named only `CardGallery.astro` and `index.astro` as trigger sites, but `website/src/pages/updates/index.astro` also sets `data-card-preview` (grep: `grep -rln "data-card-preview" src/` → 4 files, not 2). Fixed all three call sites with the identical pattern; the `check-chrome.mjs` gate rule (step 7) would otherwise fail the build on `updates/index.html`.
+- [x] 7. Add the gate rule to `website/scripts/check-chrome.mjs`. — **Bug found during validation**: Astro serialises an empty-string attribute (`data-card-keywords=""`) as the bare boolean form `data-card-keywords` with no `="..."`, so the literal `data-card-keywords="` match specified undercounted real pages. Widened the regex to `/data-card-keywords(?:="[^"]*")?[\s>]/g` and added a regression test (`accepts the Astro-collapsed boolean form of an empty attribute`) to `chrome.test.ts`.
+- [x] 8. Add the four CSS rules to `website/src/styles/global.css`. — verified in `dist/_astro/*.css`: `.card-hover-preview{...gap:.5rem;display:grid;...}`, `.keyword-rulings{gap:.4rem;display:grid}`, `.keyword-ruling{border:1px solid var(--ruleline);...max-width:400px;...}`, `.keyword-ruling strong{color:var(--accent);margin-right:.35rem}` all present.
+- [x] 9. Verify the existing coarse-pointer media query still targets `.card-hover-preview`. — confirmed unchanged in `website/src/styles/global.css:1479-1483` and present in built CSS: `@media (hover:none),(pointer:coarse),(width<=58rem){.card-hover-preview{display:none}}`.
+- [x] 10. Run `npm run build`, `npm run budgets:check`, `npm run format`, `npm run lint`, `npm run check`. — all exit 0 (see Validation section).
 
 ## Outputs
 
@@ -95,12 +91,12 @@ Run: `cd website && npx vitest run tests/unit/hover-keywords.test.ts tests/unit/
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/hover-keywords.test.ts tests/unit/chrome.test.ts` — all pass
-- [ ] `cd website && npm run build` — `csp: hashed inline content in <n> HTML files`, no `unsafe-inline` error
-- [ ] `cd website && npm run budgets:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs` at ≥ 1200 px, hover a Nekroz card in a gallery — the big render appears with one rounded box per Essentia keyword; hovering a card whose only keywords are Magic evergreens shows the render alone
-- [ ] manual check: tab to a card link with the keyboard — the same overlay appears
-- [ ] manual check at 390 px — no overlay at all
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — hover positioning is unchanged near the viewport edges
-- [ ] commit msg draft: `feat(website): show Essentia keyword rulings in the card hover preview`
+- [x] `cd website && npx vitest run tests/unit/hover-keywords.test.ts tests/unit/chrome.test.ts` — pass: `Test Files 2 passed (2)`, `Tests 34 passed (34)`.
+- [x] `cd website && npm run build` — `csp: hashed inline content in 151 HTML files`, no `unsafe-inline` error, `chrome: 151 pages carry the site header`.
+- [x] `cd website && npm run budgets:check` — exit 0: `budgets: 9 JS, 151 HTML, 205 images, 50 print masters (16 MiB) within limits`.
+- [x] manual check substituted (no browser harness on this host, logged per task instructions): static inspection of `dist/index.html` and `dist/archetypes/burning-abyss/index.html` — a Nekroz/Burning Abyss gallery-card `<a>` carries `data-card-preview` plus `data-card-keywords="Abyssal Curse,Descent,On Send Grave"` etc.; the payload script and `<aside class="card-hover-preview">…<div class="keyword-rulings"></div></aside>` are present and wired; `essentiaKeywordsFor` unit tests cover "Magic evergreens dropped" (`Flying`/`Trample` → `[]`) so a card with only evergreen keywords renders the aside with an empty `.keyword-rulings`.
+- [x] manual check substituted: `focusin`/`focusout` listeners are unchanged in the bundled script (verified in `dist/index.html` inline `<script type="module">`) and use the same `[data-card-preview]` closest-match as `pointerover`/`pointerout`, so keyboard tab triggers the identical `showPreview` path — no separate behaviour to lose.
+- [x] manual check substituted: the coarse-pointer/narrow-viewport media query `@media (hover:none),(pointer:coarse),(width<=58rem){.card-hover-preview{display:none}}` is unchanged and present in the built CSS; since `.card-hover-preview` is now the `<aside>` wrapping both image and keyword boxes, `display:none` hides the whole overlay including the boxes at ≤58rem/coarse pointers (covers the 390px case).
+- [x] `cd website && npm run ci` — exit 0 (`format:check && lint && check && test && build` all passed; 219/219 unit tests, `astro check`: 0 errors).
+- [x] app functional — `placePreview` maths (`gap = 16`, `width = Math.min(400, window.innerWidth - gap*2)`, left/top formulas) copied unchanged into the restructured component; verified byte-identical logic in the bundled `dist/index.html` script.
+- [x] commit msg draft: `feat(website): show Essentia keyword rulings in the card hover preview`

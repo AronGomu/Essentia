@@ -1,15 +1,15 @@
-<img
-  class="card-hover-preview"
-  alt=""
-  aria-hidden="true"
-  width="400"
-  height="559"
-  decoding="async"
-/>
+<aside class="card-hover-preview" aria-hidden="true">
+  <img alt="" width="400" height="559" decoding="async" />
+  <div class="keyword-rulings"></div>
+</aside>
 
 <script>
-  const preview = document.querySelector<HTMLImageElement>(
-    '.card-hover-preview',
+  const preview = document.querySelector<HTMLElement>('.card-hover-preview');
+  const previewImage = preview?.querySelector<HTMLImageElement>('img') ?? null;
+  const keywordRulingsEl =
+    preview?.querySelector<HTMLElement>('.keyword-rulings') ?? null;
+  const rulings: Record<string, string> = JSON.parse(
+    document.getElementById('keyword-rulings')?.textContent ?? '{}',
   );
   let active: HTMLElement | null = null;
 
@@ -32,9 +32,27 @@
 
   const showPreview = (target: HTMLElement) => {
     const src = target.dataset.cardPreview;
-    if (!preview || !src) return;
+    if (!preview || !previewImage || !src) return;
     active = target;
-    preview.src = src;
+    previewImage.src = src;
+
+    if (keywordRulingsEl) {
+      keywordRulingsEl.replaceChildren();
+      const terms = (target.dataset.cardKeywords ?? '')
+        .split(',')
+        .filter((term) => term !== '');
+      for (const term of terms) {
+        const definition = rulings[term];
+        if (definition === undefined) continue;
+        const p = document.createElement('p');
+        p.className = 'keyword-ruling';
+        const strong = document.createElement('strong');
+        strong.textContent = term;
+        p.append(strong, document.createTextNode(` ${definition}`));
+        keywordRulingsEl.append(p);
+      }
+    }
+
     preview.classList.add('is-visible');
     placePreview(target);
   };

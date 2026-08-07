@@ -47,6 +47,11 @@ const searchCards = catalog.cards.map(
     manifestIndex,
   }),
 );
+const keywordRulings = Object.fromEntries(
+  catalog.keywords
+    .filter((keyword) => keyword.origin === 'essentia')
+    .map((keyword) => [keyword.term, keyword.definition]),
+);
 ---
 
 <!doctype html>
@@ -90,6 +95,11 @@ const searchCards = catalog.cards.map(
       <SearchPalette client:load cards={searchCards} {base} />
     </header>
     <main id="main-content"><slot /></main>
+    <script
+      type="application/json"
+      id="keyword-rulings"
+      set:html={JSON.stringify(keywordRulings)}
+    />
     <CardHoverPreview />
     <footer class="site-footer">
       <p>

@@ -1275,6 +1275,8 @@ html[data-theme='nekroz'] .render-column picture {
     inset 0 0 0.45rem oklch(0.98 0.025 210 / 0.62);
 }
 .card-hover-preview {
+  display: grid;
+  gap: 0.5rem;
   position: fixed;
   z-index: var(--z-tooltip);
   left: var(--preview-left, 1rem);
@@ -1294,6 +1296,24 @@ html[data-theme='nekroz'] .render-column picture {
 .card-hover-preview.is-visible {
   opacity: 1;
   transform: scale(1);
+}
+.keyword-rulings {
+  display: grid;
+  gap: 0.4rem;
+}
+.keyword-ruling {
+  border: 1px solid var(--ruleline);
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  margin: 0;
+  font-size: 0.8rem;
+  background: var(--blackfoil-raised);
+  color: var(--cardstock);
+  max-width: 400px;
+}
+.keyword-ruling strong {
+  color: var(--accent);
+  margin-right: 0.35rem;
 }
 
 /* Homepage carousel */

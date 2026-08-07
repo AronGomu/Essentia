@@ -114,6 +114,7 @@ export type GalleryCard = Pick<
   | 'height'
   | 'packageId'
   | 'releasedOn'
+  | 'keywords'
 >;
 
 export interface CatalogSection {
@@ -250,6 +251,7 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
     height,
     packageId,
     releasedOn,
+    keywords,
   } = card;
   return {
     id,
@@ -266,6 +268,7 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
     height,
     packageId,
     releasedOn,
+    keywords,
   };
 }
 
@@ -279,6 +282,16 @@ export const essentiaKeywordsByTerm = new Map(
     .filter((keyword) => keyword.origin === 'essentia')
     .map((keyword) => [keyword.term, keyword]),
 );
+
+/** The card's keywords that Essentia defines, in printed order, each with its ruling. */
+export function essentiaKeywordsFor(card: {
+  keywords: string[];
+}): Array<{ term: string; definition: string }> {
+  return card.keywords
+    .map((term) => essentiaKeywordsByTerm.get(term))
+    .filter((keyword): keyword is CatalogKeyword => keyword !== undefined)
+    .map((keyword) => ({ term: keyword.term, definition: keyword.definition }));
+}
 
 /** The image a hover preview or social card should point at. */
 export function previewImage(card: { images: CardImages }): string {

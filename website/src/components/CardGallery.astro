@@ -1,5 +1,6 @@
 ---
 import {
+  essentiaKeywordsFor,
   isLatestRelease,
   previewImage,
   withBase,
@@ -23,6 +24,9 @@ const sorted = [...cards].sort((a, b) => a.name.localeCompare(b.name));
         class="gallery-card"
         href={withBase(base, card.route)}
         data-card-preview={withBase(base, previewImage(card))}
+        data-card-keywords={essentiaKeywordsFor(card)
+          .map((entry) => entry.term)
+          .join(',')}
       >
         {isLatestRelease(card) && <span class="tile-badge">New</span>}
         <CardPicture card={card} eager={index < 8} />

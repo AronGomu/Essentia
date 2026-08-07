@@ -5,6 +5,7 @@ import StatusBadge from '../components/StatusBadge.astro';
 import {
   catalog,
   cardsById,
+  essentiaKeywordsFor,
   previewImage,
   withBase,
   formatDate,
@@ -78,6 +79,9 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
                 <a
                   href={withBase(base, card.route)}
                   data-card-preview={withBase(base, previewImage(card))}
+                  data-card-keywords={essentiaKeywordsFor(card)
+                    .map((entry) => entry.term)
+                    .join(',')}
                 >
                   <CardPicture card={card} eager={index < 5} />
                   <span class="update-meta">

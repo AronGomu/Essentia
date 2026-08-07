@@ -47,6 +47,16 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: the full-size card viewer must be gone`);
   }
 
+  const cardPreviewCount = (html.match(/data-card-preview="/g) ?? []).length;
+  // Astro serialises an empty-string attribute as the bare boolean form
+  // (`data-card-keywords` with no `="..."`), so match both shapes.
+  const cardKeywordsCount = (
+    html.match(/data-card-keywords(?:="[^"]*")?[\s>]/g) ?? []
+  ).length;
+  if (cardPreviewCount > 0 && cardKeywordsCount < cardPreviewCount) {
+    problems.push(`${file}: card preview triggers must carry keyword data`);
+  }
+
   if (/^(archetypes|sections)\//.test(file)) {
     if (html.includes('class="day-group"')) {
       problems.push(`${file}: gallery must not group by date`);

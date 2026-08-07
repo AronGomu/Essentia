@@ -386,3 +386,36 @@ describe('the full-size card viewer must be gone', () => {
     ).toBe(false);
   });
 });
+
+describe('card preview triggers must carry keyword data', () => {
+  it('flags a page whose triggers lack keyword data', () => {
+    const html = '<a data-card-preview="/art/x.webp">X</a>';
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('card preview triggers must carry keyword data'),
+      ),
+    ).toBe(true);
+  });
+
+  it('accepts a page with both attributes', () => {
+    const html =
+      '<a data-card-preview="/art/x.webp" data-card-keywords="Bounce">X</a>';
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('card preview triggers must carry keyword data'),
+      ),
+    ).toBe(false);
+  });
+
+  it('accepts the Astro-collapsed boolean form of an empty attribute', () => {
+    const html = '<a data-card-preview="/art/x.webp" data-card-keywords>X</a>';
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('card preview triggers must carry keyword data'),
+      ),
+    ).toBe(false);
+  });
+});
