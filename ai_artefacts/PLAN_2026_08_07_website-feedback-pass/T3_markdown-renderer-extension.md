@@ -62,16 +62,16 @@ Run: `cd website && npx vitest run tests/unit/markdown.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Add the eleven cases above to `website/tests/unit/markdown.test.ts`.
-- [ ] 2. In `website/src/lib/markdown.ts`, export `headingSlug(text)`.
-- [ ] 3. Split the fenced-code pass out of the paragraph split: before splitting on blank lines, extract ```` ``` ````-delimited regions so blank lines inside code do not break the block.
-- [ ] 4. Widen the heading regex from `/^(#{2,3})\s+(.+)$/` to `/^(#{1,4})\s+(.+)$/` and emit `id={headingSlug(text)}`.
-- [ ] 5. Add the ordered-list branch (`/^\d+\.\s+/` on every line).
-- [ ] 6. Add nested-bullet handling to the unordered-list branch.
-- [ ] 7. Add the blockquote branch.
-- [ ] 8. Add the pipe-table branch (header + separator + rows).
-- [ ] 9. Add the `---` horizontal-rule branch, placed before the paragraph fallback.
-- [ ] 10. Run `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the eleven cases above to `website/tests/unit/markdown.test.ts`. — Evidence: cases added; `npx vitest run tests/unit/markdown.test.ts` initially showed 11 failed/3 passed (RED) before implementation.
+- [x] 2. In `website/src/lib/markdown.ts`, export `headingSlug(text)`. — Evidence: `export function headingSlug(text: string): string` at markdown.ts, covered by "slugs punctuation out of ids" test (PASS).
+- [x] 3. Split the fenced-code pass out of the paragraph split: before splitting on blank lines, extract ```` ``` ````-delimited regions so blank lines inside code do not break the block. — Evidence: `splitBlocks()` tracks `inFence` state line-by-line instead of `/\n\s*\n/` split; "renders fenced code without inline processing" and "throws on an unterminated fence" tests PASS.
+- [x] 4. Widen the heading regex from `/^(#{2,3})\s+(.+)$/` to `/^(#{1,4})\s+(.+)$/` and emit `id={headingSlug(text)}`. — Evidence: `block()` uses `/^(#{1,4})\s+(.+)$/` and emits `id="${id}"`; "renders h1 through h4 with slugged ids" test PASS.
+- [x] 5. Add the ordered-list branch (`/^\d+\.\s+/` on every line). — Evidence: `renderOrderedList`; "renders ordered lists" test PASS.
+- [x] 6. Add nested-bullet handling to the unordered-list branch. — Evidence: `renderUnorderedList` handles `/^\s{2,}-\s+/`; "nests one level of bullets" test PASS.
+- [x] 7. Add the blockquote branch. — Evidence: `block()` blockquote branch; "renders blockquotes" test PASS.
+- [x] 8. Add the pipe-table branch (header + separator + rows). — Evidence: `renderTable()`; "renders pipe tables with inline cells" test PASS.
+- [x] 9. Add the `---` horizontal-rule branch, placed before the paragraph fallback. — Evidence: `if (text.trim() === '---') return '<hr>';` placed before final `<p>` fallback; "renders a horizontal rule" test PASS.
+- [x] 10. Run `npm run format`, `npm run lint`, `npm run check`. — Evidence: all three ran exit 0 (`format` reformatted only markdown.test.ts whitespace; `lint` clean; `check` exit 0 with only pre-existing unrelated warnings in eslint.config.mjs and playwright-report bundle).
 
 ## Outputs
 
@@ -81,9 +81,9 @@ Run: `cd website && npx vitest run tests/unit/markdown.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/markdown.test.ts` — all pass
-- [ ] `cd website && npm run test` — full unit suite green (card design notes still render)
-- [ ] `cd website && npm run check && npm run lint && npm run format:check` — exit 0
-- [ ] `cd website && npm run build` — exit 0
-- [ ] app functional — card "Design notes" sections still render identically
-- [ ] commit msg draft: `feat(website): extend the safe Markdown renderer for the docs corpus`
+- [x] `cd website && npx vitest run tests/unit/markdown.test.ts` — all pass — Evidence: "Test Files 1 passed (1)" / "Tests 14 passed (14)".
+- [x] `cd website && npm run test` — full unit suite green (card design notes still render) — Evidence: "Test Files 12 passed (12)" / "Tests 92 passed (92)".
+- [x] `cd website && npm run check && npm run lint && npm run format:check` — exit 0 — Evidence: all three ran with EXIT:0; format:check reported "All matched files use Prettier code style!".
+- [x] `cd website && npm run build` — exit 0 — Evidence: "[build] 110 page(s) built in 533ms" / "[build] Complete!", "dist scan: clean".
+- [x] app functional — card "Design notes" sections still render identically — Evidence: `npm run test` unit suite (which includes card/design-note rendering tests) passed 92/92; `npm run build` produced all `/cards/*/index.html` pages unchanged in count/shape.
+- [x] commit msg draft: `feat(website): extend the safe Markdown renderer for the docs corpus`
