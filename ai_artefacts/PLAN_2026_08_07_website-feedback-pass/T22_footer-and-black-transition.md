@@ -91,15 +91,15 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Add the four cases above to `website/tests/unit/chrome.test.ts`.
-- [ ] 2. Add the two gate rules to `website/scripts/check-chrome.mjs`.
-- [ ] 3. In `website/src/layouts/BaseLayout.astro`, move the licence `<p>` below the `<nav aria-label="Footer">` block and give it `class="legal-line"`. Keep the sentence text byte-for-byte identical.
-- [ ] 4. In `website/src/styles/global.css`, change `.site-footer` to `display: grid; gap: var(--space-3); justify-items: start;` so the nav and the line stack, and keep the existing border, colour, and padding.
-- [ ] 5. Replace the `.site-footer p` rule with `.site-footer .legal-line { max-width: none; margin: 0; font-size: 0.72rem; color: var(--silver-ink); }` and add `@media (min-width: 60rem) { .site-footer .legal-line { white-space: nowrap; } }`.
-- [ ] 6. Confirm `CardQualityUpgrade`'s `.quality-upgrade { align-self: center; … }` still positions sensibly under a grid footer; change `align-self` to `start` if it does not.
-- [ ] 7. Replace lines 1353–1371 of `global.css` with the CSS block above.
-- [ ] 8. Add to the existing `@media (prefers-reduced-motion: reduce)` block: `::view-transition-old(root), ::view-transition-new(root), main { animation: none !important; }`.
-- [ ] 9. Run `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the four cases above to `website/tests/unit/chrome.test.ts`.
+- [x] 2. Add the two gate rules to `website/scripts/check-chrome.mjs`.
+- [x] 3. In `website/src/layouts/BaseLayout.astro`, move the licence `<p>` below the `<nav aria-label="Footer">` block and give it `class="legal-line"`. Keep the sentence text byte-for-byte identical.
+- [x] 4. In `website/src/styles/global.css`, change `.site-footer` to `display: grid; gap: var(--space-3); justify-items: start;` so the nav and the line stack, and keep the existing border, colour, and padding.
+- [x] 5. Replace the `.site-footer p` rule with `.site-footer .legal-line { max-width: none; margin: 0; font-size: 0.72rem; color: var(--silver-ink); }` and add `@media (min-width: 60rem) { .site-footer .legal-line { white-space: nowrap; } }`.
+- [x] 6. Confirm `CardQualityUpgrade`'s `.quality-upgrade { align-self: center; … }` still positions sensibly under a grid footer; change `align-self` to `start` if it does not.
+- [x] 7. Replace lines 1353–1371 of `global.css` with the CSS block above.
+- [x] 8. Add to the existing `@media (prefers-reduced-motion: reduce)` block: `::view-transition-old(root), ::view-transition-new(root), main { animation: none !important; }`.
+- [x] 9. Run `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
 
 ## Outputs
 
@@ -109,12 +109,12 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/chrome.test.ts` — all pass
-- [ ] `cd website && npm run build` — chrome gate reports no footer complaint
-- [ ] manual check: `node scripts/serve-dist.mjs` in Chrome, navigate `/` → `/archetypes/nekroz/` → `/cards/nekroz-trishula/`; record with the DevTools performance panel or step frame by frame — no frame is white
-- [ ] manual check: the footer shows the four links on one row and the licence sentence beneath them on a single small line at 1400 px
-- [ ] manual check at 390 px: the sentence wraps and stays fully readable, nothing is clipped
-- [ ] manual check: with `prefers-reduced-motion: reduce` forced in DevTools, navigation is instant with no fade
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every footer link still resolves
-- [ ] commit msg draft: `feat(website): restyle the footer legal line and fade pages through black`
+- [x] `cd website && npx vitest run tests/unit/chrome.test.ts` — all pass (34 passed, 0 failed)
+- [x] `cd website && npm run build` — chrome gate reports no footer complaint (`chrome: 151 pages carry the site header`, no problems thrown; build exits clean)
+- [x] manual check: `node scripts/serve-dist.mjs` in Chrome, navigate `/` → `/archetypes/nekroz/` → `/cards/nekroz-trishula/`; record with the DevTools performance panel or step frame by frame — no frame is white — **SUBSTITUTED: no browser/e2e harness on this host (Playwright cannot run here); verified statically instead** by inspecting `dist/_astro/BaseLayout.BgoEFUkh.css` after `npm run build`: `html{background-color:var(--blackfoil)}`, `::view-transition-group(root){background-color:var(--blackfoil)}`, `::view-transition-old(root){animation:.13s ease-in both fade-to-black}`, `::view-transition-new(root){animation:.19s ease-out 60ms both fade-from-black}` — old page fades to black, group background is black, new page fades from black; no white is painted at any point since document background is black before/during/after the transition. Total duration 130ms + 60ms delay + 190ms = 380ms, under 400ms.
+- [x] manual check: the footer shows the four links on one row and the licence sentence beneath them on a single small line at 1400 px — **SUBSTITUTED: no browser on this host**; verified statically via compiled CSS: `.site-footer{display:grid;...}` with `.site-footer nav{display:flex;flex-wrap:wrap}` (4 links, wraps only below available width, one row at 1400px) and `.site-footer .legal-line` gets `white-space:nowrap` at `@media (min-width:60rem)` (1400px qualifies), so the sentence renders on one line beneath the nav row (grid stacks nav then legal-line, `justify-items:start`).
+- [x] manual check at 390 px: the sentence wraps and stays fully readable, nothing is clipped — **SUBSTITUTED: no browser on this host**; verified statically: 390px is below the `60rem` (960px) breakpoint, so `white-space: nowrap` does not apply; `.legal-line` has `max-width: none` and no `overflow`/`text-overflow` clipping rule, so the sentence wraps naturally within the footer's padded width.
+- [x] manual check: with `prefers-reduced-motion: reduce` forced in DevTools, navigation is instant with no fade — **SUBSTITUTED: no browser on this host**; verified statically via compiled CSS inside `@media (prefers-reduced-motion:reduce)`: `::view-transition-old(root),::view-transition-new(root),main{animation:none!important}` plus the pre-existing `*,:before,:after{transition-duration:.01ms!important;animation-duration:.01ms!important}` — all transition animations are forced off.
+- [x] `cd website && npm run ci` — exit 0 (confirmed: `EXIT:0`, ran format:check, lint, check, full unit test suite, and build all green)
+- [x] app functional — every footer link still resolves — verified via `npm run links:check` → `links: 151 pages clean` (covers all footer links: `/legal/`, `/updates/`, `/feed.xml`, GitHub external link is `rel="noopener noreferrer"` and unchanged)
+- [x] commit msg draft: `feat(website): restyle the footer legal line and fade pages through black`

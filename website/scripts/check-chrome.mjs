@@ -163,6 +163,27 @@ export function chromeIssues(file, html, base) {
     }
   }
 
+  const footerMatch = html.match(
+    /<footer class="site-footer">[\s\S]*?<\/footer>/,
+  );
+  const footerBlock = footerMatch ? footerMatch[0] : '';
+  if (footerBlock) {
+    const navIndex = footerBlock.indexOf('<nav aria-label="Footer"');
+    const licenceIndex = footerBlock.indexOf(
+      'Everything created for this project',
+    );
+    if (navIndex !== -1 && licenceIndex !== -1 && navIndex > licenceIndex) {
+      problems.push(
+        `${file}: the licence line must sit under the footer links`,
+      );
+    }
+    if (!footerBlock.includes('class="legal-line"')) {
+      problems.push(
+        `${file}: the licence line must carry the legal-line class`,
+      );
+    }
+  }
+
   return problems;
 }
 

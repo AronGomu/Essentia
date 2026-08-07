@@ -419,3 +419,59 @@ describe('card preview triggers must carry keyword data', () => {
     ).toBe(false);
   });
 });
+
+describe('the footer legal line must sit under the footer links', () => {
+  it('accepts links-then-licence order', () => {
+    const html = `
+<nav class="utility-nav" aria-label="Sections">
+  <a href="/docs/">Learn about Essentia</a>
+  <a href="/blog/">Blog</a>
+  <a href="/decks/">Decks</a>
+</nav>
+<nav class="breadcrumb">…</nav>
+<footer class="site-footer">
+  <nav aria-label="Footer">
+    <a href="/legal/">Licence & attribution</a>
+  </nav>
+  <p class="legal-line">Everything created for this project is free to use.</p>
+</footer>
+`;
+    expect(chromeIssues('legal/index.html', html, '/')).toEqual([]);
+  });
+
+  it('flags the old order', () => {
+    const html = `
+<footer class="site-footer">
+  <p class="legal-line">Everything created for this project is free to use.</p>
+  <nav aria-label="Footer">
+    <a href="/legal/">Licence & attribution</a>
+  </nav>
+</footer>
+`;
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('the licence line must sit under the footer links'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a missing class', () => {
+    const html = `
+<footer class="site-footer">
+  <nav aria-label="Footer">
+    <a href="/legal/">Licence & attribution</a>
+  </nav>
+  <p>Everything created for this project is free to use.</p>
+</footer>
+`;
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) => issue.includes('must carry the legal-line class')),
+    ).toBe(true);
+  });
+
+  it('exempts the 404 document', () => {
+    expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
+  });
+});
