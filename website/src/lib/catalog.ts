@@ -293,6 +293,42 @@ export function essentiaKeywordsFor(card: {
     .map((keyword) => ({ term: keyword.term, definition: keyword.definition }));
 }
 
+export interface RelatedInput {
+  id: string;
+  name: string;
+  archetype: string | null;
+  keywords: string[];
+}
+
+/** Cards sharing this card's archetype, or one of that archetype's keywords. Max 24, name-sorted. */
+export function relatedCards<T extends RelatedInput>(
+  card: RelatedInput,
+  cards: readonly T[],
+  keywords: ReadonlyArray<{ term: string; archetype: string | null }>,
+): T[] {
+  const archetypeByTerm = new Map(
+    keywords.map((keyword) => [keyword.term, keyword.archetype]),
+  );
+  const cardArchetypeKeywordTerms = new Set(
+    card.keywords.filter((term) => archetypeByTerm.get(term) != null),
+  );
+  return cards
+    .filter((candidate) => candidate.id !== card.id)
+    .filter((candidate) => {
+      if (card.archetype !== null) {
+        if (candidate.archetype === card.archetype) return true;
+        return candidate.keywords.some(
+          (term) => archetypeByTerm.get(term) === card.archetype,
+        );
+      }
+      return candidate.keywords.some((term) =>
+        cardArchetypeKeywordTerms.has(term),
+      );
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .slice(0, 24);
+}
+
 /** The image a hover preview or social card should point at. */
 export function previewImage(card: { images: CardImages }): string {
   return card.images.display.webp;

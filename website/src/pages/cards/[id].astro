@@ -9,6 +9,9 @@ import {
   sectionsBySlug,
   formatDate,
   withBase,
+  previewImage,
+  relatedCards,
+  essentiaKeywordsFor,
 } from '../../lib/catalog';
 
 export function getStaticPaths() {
@@ -26,10 +29,7 @@ const index = sectionCards.findIndex((candidate) => candidate.id === card.id);
 const previous =
   sectionCards[(index - 1 + sectionCards.length) % sectionCards.length]!;
 const next = sectionCards[(index + 1) % sectionCards.length]!;
-const related = sectionCards
-  .filter((candidate) => candidate.id !== card.id)
-  .sort((a, b) => a.id.localeCompare(b.id))
-  .slice(0, 3);
+const related = relatedCards(card, catalog.cards, catalog.keywords);
 const base = import.meta.env.BASE_URL;
 const explanation = catalog.explanations[card.id];
 const ruleDefinitions = new Map(
@@ -130,17 +130,28 @@ const versions = catalog.cardVersions
           href={withBase(base, next.route)}>{next.name} →</a
         >
       </nav>
-      <section>
-        <h2>Related in {section.label}</h2><ul>
-          {
-            related.map((item) => (
-              <li>
-                <a href={withBase(base, item.route)}>{item.name}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+      {
+        related.length > 0 && (
+          <section>
+            <h2>Related cards</h2>
+            <ul class="related-cards">
+              {related.map((item) => (
+                <li>
+                  <a
+                    href={withBase(base, item.route)}
+                    data-card-preview={withBase(base, previewImage(item))}
+                    data-card-keywords={essentiaKeywordsFor(item)
+                      .map((entry) => entry.term)
+                      .join(',')}
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </div>
   </article>
 </BaseLayout>
