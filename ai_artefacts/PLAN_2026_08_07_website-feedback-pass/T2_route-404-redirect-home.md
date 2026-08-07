@@ -64,16 +64,16 @@ Run: `cd website && npx vitest run tests/unit/route-404.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/route-404.test.ts` with the five cases above.
-- [ ] 2. Create `website/scripts/check-404.mjs` exporting `assert404` plus the CLI tail.
-- [ ] 3. Replace the entire body of `website/src/pages/404.astro` with a standalone document (no `BaseLayout`):
+- [x] 1. Create `website/tests/unit/route-404.test.ts` with the five cases above.
+- [x] 2. Create `website/scripts/check-404.mjs` exporting `assert404` plus the CLI tail.
+- [x] 3. Replace the entire body of `website/src/pages/404.astro` with a standalone document (no `BaseLayout`):
       frontmatter `const base = import.meta.env.BASE_URL;`, then `<!doctype html><html lang="en"><head>` containing
       `<meta charset="UTF-8" />`, `<meta name="robots" content="noindex" />`,
       `<meta http-equiv="refresh" content={`0; url=${base}`} />`,
       `<link rel="canonical" href={new URL(base, Astro.site)} />`, `<title>Redirecting — Essentia</title>`,
       and a `<body>` with `<p>This route is not part of the archive. <a href={base}>Continue to the Essentia home page</a>.</p>`.
-- [ ] 4. Append ` && node scripts/check-404.mjs` to the `build` script in `website/package.json`.
-- [ ] 5. Run `npm run format` and `npm run lint`.
+- [x] 4. Append ` && node scripts/check-404.mjs` to the `build` script in `website/package.json`.
+- [x] 5. Run `npm run format` and `npm run lint`.
 
 ## Outputs
 
@@ -83,10 +83,10 @@ Run: `cd website && npx vitest run tests/unit/route-404.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/route-404.test.ts` — 5 passed
-- [ ] `cd website && npm run build` — ends with `404: redirects to site root`
-- [ ] `cd website && npm run links:check` — exit 0
-- [ ] manual check: `npx http-server dist -p 4321` (or `node scripts/serve-dist.mjs`), open `http://localhost:4321/does-not-exist/`, land on `/`
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — every real route still resolves
-- [ ] commit msg draft: `feat(website): redirect unknown routes to the home page`
+- [x] `cd website && npx vitest run tests/unit/route-404.test.ts` — 5 passed
+- [x] `cd website && npm run build` — ends with `404: redirects to site root`
+- [x] `cd website && npm run links:check` — exit 0
+- [x] manual check: `npx http-server dist -p 4321` (or `node scripts/serve-dist.mjs`), open `http://localhost:4321/does-not-exist/`, land on `/`
+- [x] `cd website && npm run ci` — exit 0
+- [x] app functional — every real route still resolves
+- [x] commit msg draft: `feat(website): redirect unknown routes to the home page`
