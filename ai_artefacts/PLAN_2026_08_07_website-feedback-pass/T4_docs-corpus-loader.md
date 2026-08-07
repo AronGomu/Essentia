@@ -143,4 +143,4 @@ Run: `cd website && npx vitest run tests/unit/docs-corpus.test.ts`
 - [x] `cd website && npm run check && npm run lint && npm run format:check` — exit 0
 - [x] `cd website && npm run build` — exit 0
 - [x] app functional — no visible page change; the site builds and every existing route still resolves
-- [ ] commit msg draft: `feat(website): load the docs corpus into the catalog`
+- [x] commit msg draft: `feat(website): load the docs corpus into the catalog`
