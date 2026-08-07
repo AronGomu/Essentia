@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "node scripts/build-content.mjs && astro dev",
-    "build": "node scripts/build-content.mjs && astro build && node scripts/harden-csp.mjs && node scripts/scan-dist.mjs && node scripts/check-404.mjs",
+    "build": "node scripts/build-content.mjs && astro build && node scripts/harden-csp.mjs && node scripts/scan-dist.mjs && node scripts/check-404.mjs && node scripts/check-chrome.mjs",
     "preview": "astro preview",
     "check": "node scripts/build-content.mjs && astro check",
     "lint": "eslint .",

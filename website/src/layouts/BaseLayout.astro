@@ -31,11 +31,9 @@ const navSections = catalog.sections.map(
     count,
   }),
 );
-const informationPage = Astro.url.pathname.endsWith('/rules/')
-  ? 'rules'
-  : Astro.url.pathname.endsWith('/philosophy/')
-    ? 'philosophy'
-    : undefined;
+const section = ['docs/', 'blog/', 'decks/'].find((path) =>
+  Astro.url.pathname.startsWith(`${base}${path}`),
+);
 const searchCards = catalog.cards.map(
   ({ id, name, matchNames, route, sectionSlug, manifestIndex }) => ({
     id,
@@ -70,16 +68,19 @@ const searchCards = catalog.cards.map(
     />
     <header class="site-header">
       <a class="compact-brand" href={base}>Essentia</a>
-      <nav class="utility-nav" aria-label="Information">
+      <nav class="utility-nav" aria-label="Sections">
         <a
-          href={`${base}rules/`}
-          aria-current={informationPage === 'rules' ? 'page' : undefined}
-          >Rules</a
+          href={`${base}docs/`}
+          aria-current={section === 'docs/' ? 'page' : undefined}
+          >Learn about Essentia</a
         >
         <a
-          href={`${base}philosophy/`}
-          aria-current={informationPage === 'philosophy' ? 'page' : undefined}
-          >Philosophy</a
+          href={`${base}blog/`}
+          aria-current={section === 'blog/' ? 'page' : undefined}>Blog</a
+        >
+        <a
+          href={`${base}decks/`}
+          aria-current={section === 'decks/' ? 'page' : undefined}>Decks</a
         >
       </nav>
       <SearchPalette client:load cards={searchCards} {base} />

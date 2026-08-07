@@ -71,13 +71,13 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/chrome.test.ts` with the five cases above.
-- [ ] 2. Create `website/scripts/check-chrome.mjs` exporting `chromeIssues` plus the CLI tail, with the expected links declared as a module constant `export const UTILITY_LINKS = [{ label: 'Learn about Essentia', path: 'docs/' }, { label: 'Blog', path: 'blog/' }, { label: 'Decks', path: 'decks/' }]`.
-- [ ] 3. In `website/src/layouts/BaseLayout.astro`, delete the `const informationPage = …` block.
-- [ ] 4. Replace the two anchors inside `<nav class="utility-nav" aria-label="Information">` with the three links, and change the label to `aria-label="Sections"`. Compute the active state with `const section = ['docs/', 'blog/', 'decks/'].find((path) => Astro.url.pathname.startsWith(`${base}${path}`));` and set `aria-current={section === path ? 'page' : undefined}`.
-- [ ] 5. Append ` && node scripts/check-chrome.mjs` to the `build` script in `website/package.json`, after `check-404.mjs`.
-- [ ] 6. If the three labels wrap badly under 44rem, shorten only the visual presentation with CSS (`.utility-nav a { white-space: nowrap; }` plus horizontal scroll `overflow-x: auto` on `.utility-nav`) — never change the label text, the gate asserts it.
-- [ ] 7. Run `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Create `website/tests/unit/chrome.test.ts` with the five cases above. Evidence: file created; red run confirmed `Cannot find module '../../scripts/check-chrome.mjs'` before step 2.
+- [x] 2. Create `website/scripts/check-chrome.mjs` exporting `chromeIssues` plus the CLI tail, with the expected links declared as a module constant `export const UTILITY_LINKS = [{ label: 'Learn about Essentia', path: 'docs/' }, { label: 'Blog', path: 'blog/' }, { label: 'Decks', path: 'decks/' }]`. Evidence: `npx vitest run tests/unit/chrome.test.ts` → 5 passed.
+- [x] 3. In `website/src/layouts/BaseLayout.astro`, delete the `const informationPage = …` block. Evidence: replaced with `const section = [...].find(...)`; grep confirms `informationPage` no longer present in the file.
+- [x] 4. Replace the two anchors inside `<nav class="utility-nav" aria-label="Information">` with the three links, and change the label to `aria-label="Sections"`. Compute the active state with `const section = ['docs/', 'blog/', 'decks/'].find((path) => Astro.url.pathname.startsWith(`${base}${path}`));` and set `aria-current={section === path ? 'page' : undefined}`. Evidence: built `dist/docs/index.html` utility-nav block is `<nav class="utility-nav" aria-label="Sections"><a href="/docs/" aria-current="page">Learn about Essentia</a><a href="/blog/">Blog</a><a href="/decks/">Decks</a></nav>`.
+- [x] 5. Append ` && node scripts/check-chrome.mjs` to the `build` script in `website/package.json`, after `check-404.mjs`. Evidence: `npm run build` output ends with `chrome: 151 pages carry the site header`.
+- [x] 6. If the three labels wrap badly under 44rem, shorten only the visual presentation with CSS (`.utility-nav a { white-space: nowrap; }` plus horizontal scroll `overflow-x: auto` on `.utility-nav`) — never change the label text, the gate asserts it. Evidence: no change needed — existing `@media (max-width: 44rem)` rule already sets `.utility-nav a { min-height: 2.45rem; font-size: 0.85rem; padding: 0.35rem 0.5rem; }` and `.site-header { flex-wrap: wrap; }`, so the nav wraps to its own line rather than overflowing; verified by reading `website/src/styles/global.css` lines 1408-1423 (unchanged, pre-existing).
+- [x] 7. Run `npm run format`, `npm run lint`, `npm run check`. Evidence: `npm run format` exit 0 (reformatted BaseLayout.astro only); `npm run lint` exit 0, no output; `npm run check` exit 0.
 
 ## Outputs
 
@@ -87,11 +87,11 @@ Run: `cd website && npx vitest run tests/unit/chrome.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/chrome.test.ts` — 5 passed
-- [ ] `cd website && npm run build` — ends with `chrome: <n> pages carry the site header`
-- [ ] `cd website && npm run links:check` — exit 0
-- [ ] manual check: `node scripts/serve-dist.mjs`, click each of the three header buttons from `/`, `/cards/nekroz-trishula/`, and `/archetypes/nekroz/`
-- [ ] manual check at 390 px width: the three buttons remain reachable and each hit target is at least 2.45 rem tall
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — `/rules/` and `/philosophy/` still build and still resolve
-- [ ] commit msg draft: `feat(website): point the site header at docs, blog, and decks`
+- [x] `cd website && npx vitest run tests/unit/chrome.test.ts` — 5 passed. Evidence: `Test Files 1 passed (1)`, `Tests 5 passed (5)`.
+- [x] `cd website && npm run build` — ends with `chrome: <n> pages carry the site header`. Evidence: `chrome: 151 pages carry the site header`.
+- [x] `cd website && npm run links:check` — exit 0. Evidence: `links: 151 pages clean`.
+- [x] manual check: `node scripts/serve-dist.mjs`, click each of the three header buttons from `/`, `/cards/nekroz-trishula/`, and `/archetypes/nekroz/`. **Substitution logged (no browser/e2e harness on this host):** inspected built `dist/index.html`, `dist/cards/nekroz-trishula/index.html`, `dist/archetypes/nekroz/index.html` directly — each `<nav class="utility-nav" aria-label="Sections">` contains the exact three links (`/docs/`, `/blog/`, `/decks/`) with correct labels.
+- [x] manual check at 390 px width: the three buttons remain reachable and each hit target is at least 2.45 rem tall. **Substitution logged (no browser on this host):** verified via CSS, not live rendering — `website/src/styles/global.css` `@media (max-width: 44rem)` sets `.utility-nav a { min-height: 2.45rem; ... }` (pre-existing, unchanged) and `.site-header { flex-wrap: wrap; }`, so at 390px the header wraps rather than clipping the nav; hit target is exactly the required 2.45rem floor.
+- [x] `cd website && npm run ci` — exit 0. Evidence: command exited 0 (`echo "EXIT:$?"` → `EXIT:0`), build tail shows `chrome: 151 pages carry the site header`.
+- [x] app functional — `/rules/` and `/philosophy/` still build and still resolve. Evidence: `dist/rules/index.html` and `dist/philosophy/index.html` both exist post-build.
+- [x] commit msg draft: `feat(website): point the site header at docs, blog, and decks`
