@@ -1,6 +1,6 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { CONTENT, fail } from './shared.mjs';
+import { CONTENT, ROOT, fail } from './shared.mjs';
 
 const CATEGORIES = new Set([
   'action',
@@ -9,6 +9,24 @@ const CATEGORIES = new Set([
   'cost-procedure',
   'archetype',
 ]);
+
+const ORIGINS = new Set(['magic', 'essentia']);
+
+/** The owning doc must be a real file inside the repo, never an escaping path. */
+async function docExists(relative) {
+  if (
+    typeof relative !== 'string' ||
+    !relative.trim() ||
+    path.isAbsolute(relative) ||
+    relative.split('/').includes('..')
+  )
+    return false;
+  try {
+    return (await stat(path.join(ROOT, relative))).isFile();
+  } catch {
+    return false;
+  }
+}
 
 /** Curly quotes in card text must compare equal to straight quotes in the registry. */
 function normalizeQuotes(value) {
@@ -35,11 +53,13 @@ export function splitComposite(phrase) {
     .filter(Boolean);
 }
 
-export async function loadKeywordRegistry() {
-  const file = path.join(CONTENT, 'keywords.json');
+export async function loadKeywordRegistry(
+  file = path.join(CONTENT, 'keywords.json'),
+) {
   const data = JSON.parse(await readFile(file, 'utf8'));
-  if (data.schemaVersion !== 1 || !Array.isArray(data.keywords))
-    fail('invalid keyword registry');
+  if (data.schemaVersion !== 2)
+    fail('keyword registry must use schemaVersion 2');
+  if (!Array.isArray(data.keywords)) fail('invalid keyword registry');
   const byTerm = new Map();
   const ids = new Set();
   for (const entry of data.keywords) {
@@ -54,6 +74,20 @@ export async function loadKeywordRegistry() {
       fail(`invalid keyword entry ${entry.term ?? entry.id ?? 'unknown'}`);
     if (entry.term !== normalizeKeyword(entry.term))
       fail(`keyword ${entry.term} must be stored in normalized form`);
+    if (
+      typeof entry.definition !== 'string' ||
+      entry.definition.trim() !== entry.definition ||
+      entry.definition.length < 20 ||
+      entry.definition.length > 400 ||
+      /[<>]/.test(entry.definition)
+    )
+      fail(
+        `keyword ${entry.id}: definition must be 20-400 plain-text characters`,
+      );
+    if (!ORIGINS.has(entry.origin))
+      fail(`keyword ${entry.id}: origin must be magic or essentia`);
+    if (!(await docExists(entry.doc)))
+      fail(`keyword ${entry.id}: doc ${entry.doc} does not exist`);
     ids.add(entry.id);
     byTerm.set(entry.term, entry);
   }

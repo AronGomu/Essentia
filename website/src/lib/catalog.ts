@@ -32,6 +32,12 @@ export interface CatalogKeyword {
   term: string;
   category: 'action' | 'event' | 'ability' | 'cost-procedure' | 'archetype';
   archetype: string | null;
+  /** One-sentence ruling, plain text, 20-400 characters. */
+  definition: string;
+  /** `magic` for an unchanged Magic evergreen, `essentia` for a project term. */
+  origin: 'magic' | 'essentia';
+  /** Repo-relative path to the module of record for this ruling. */
+  doc: string;
 }
 
 export interface CardVersion {
@@ -169,7 +175,7 @@ export interface CatalogPost {
 }
 
 export interface Catalog {
-  schemaVersion: 6;
+  schemaVersion: 7;
   generatedAt: string;
   heroSectionSlug: string;
   sections: CatalogSection[];
@@ -265,6 +271,13 @@ export function toGalleryCard(card: CatalogCard): GalleryCard {
 
 export const keywordsByTerm = new Map(
   catalog.keywords.map((keyword) => [keyword.term, keyword]),
+);
+
+/** Only the terms this project defines — the ones worth a hover explainer. */
+export const essentiaKeywordsByTerm = new Map(
+  catalog.keywords
+    .filter((keyword) => keyword.origin === 'essentia')
+    .map((keyword) => [keyword.term, keyword]),
 );
 
 /** The image a hover preview or social card should point at. */

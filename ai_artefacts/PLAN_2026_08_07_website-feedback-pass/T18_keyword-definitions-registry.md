@@ -143,14 +143,22 @@ Run: `cd website && npx vitest run tests/unit/keywords.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Add the ten cases above to `website/tests/unit/keywords.test.ts`.
-- [ ] 2. Add the four validations to `loadKeywordRegistry()` in `website/scripts/content/keywords.mjs`, importing `ROOT` from `./shared.mjs` for the doc existence check.
-- [ ] 3. Rewrite `website/content/keywords.json`: set `schemaVersion` to `2`, replace the `source` note with `"authored registry; definitions mirror the owning docs listed per entry"`, and add `definition`, `origin`, `doc` to all 73 entries using the table above verbatim.
-- [ ] 4. Extend the `keywords` projection in `website/scripts/content/orchestrator.mjs` with `definition: entry.definition, origin: entry.origin, doc: entry.doc`.
-- [ ] 5. Add `definition: string; origin: 'magic' | 'essentia'; doc: string;` to `CatalogKeyword` in `website/src/lib/catalog.ts`.
-- [ ] 6. Add `export const essentiaKeywordsByTerm = new Map(catalog.keywords.filter((keyword) => keyword.origin === 'essentia').map((keyword) => [keyword.term, keyword]));` beside the existing `keywordsByTerm`.
-- [ ] 7. Add one sentence to `docs/KEYWORDS.md` under `## Closed taxonomy` stating that the website's per-keyword ruling text lives in `website/content/keywords.json` and must agree with the owning module named in each entry's `doc` field.
-- [ ] 8. Run `npm run content:check`, `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Add the ten cases above to `website/tests/unit/keywords.test.ts`.
+      _Criterion:_ `npx vitest run tests/unit/keywords.test.ts` reports the ten new case names and they fail (red). **Met:** `Tests  10 failed | 11 passed (21)`.
+- [x] 2. Add the four validations to `loadKeywordRegistry()` in `website/scripts/content/keywords.mjs`, importing `ROOT` from `./shared.mjs` for the doc existence check.
+      _Criterion:_ the four negative-fixture cases (`rejects schemaVersion 1`, `rejects a short definition`, `rejects HTML in a definition`, `rejects an unknown origin`, `rejects a missing doc`) pass. **Met:** all five reject-cases green in `Tests  21 passed (21)`.
+- [x] 3. Rewrite `website/content/keywords.json`: set `schemaVersion` to `2`, replace the `source` note with `"authored registry; definitions mirror the owning docs listed per entry"`, and add `definition`, `origin`, `doc` to all 73 entries using the table above verbatim.
+      _Criterion:_ `node -e` over the file reports 73 entries, `schemaVersion === 2`, 22 `magic` + 51 `essentia`, and every `definition` trimmed length inside 20–400. **Met:** `entries 73 origins { essentia: 51, magic: 22 }`, `definition length min/max 34 166`, `untrimmed or angle-bracketed 0`; a row-by-row diff against this ticket's table reported `ALL 73 ROWS MATCH THE TICKET TABLE VERBATIM`.
+- [x] 4. Extend the `keywords` projection in `website/scripts/content/orchestrator.mjs` with `definition: entry.definition, origin: entry.origin, doc: entry.doc`.
+      _Criterion:_ after `npm run content:check`, `src/generated/catalog.ts` contains `"definition"`, `"origin"` and `"doc"` inside the `keywords` array. **Met:** `grep -c '"definition":'` = 73, `grep -c '"doc":'` = 73.
+- [x] 5. Add `definition: string; origin: 'magic' | 'essentia'; doc: string;` to `CatalogKeyword` in `website/src/lib/catalog.ts`.
+      _Criterion:_ `npm run check` (astro check) exits 0.
+- [x] 6. Add `export const essentiaKeywordsByTerm = new Map(catalog.keywords.filter((keyword) => keyword.origin === 'essentia').map((keyword) => [keyword.term, keyword]));` beside the existing `keywordsByTerm`.
+      _Criterion:_ the export exists in `website/src/lib/catalog.ts` and `npm run check` exits 0. **Met:** export present; see step 8.
+- [x] 7. Add one sentence to `docs/KEYWORDS.md` under `## Closed taxonomy` stating that the website's per-keyword ruling text lives in `website/content/keywords.json` and must agree with the owning module named in each entry's `doc` field.
+      _Criterion:_ `grep -n 'website/content/keywords.json' docs/KEYWORDS.md` matches. **Met:** matches at `docs/KEYWORDS.md:13`.
+- [x] 8. Run `npm run content:check`, `npm run build`, `npm run format`, `npm run lint`, `npm run check`.
+      _Criterion:_ every one of the five commands exits 0. **Met:** `content:check` -> `73 keywords`; `build` -> `151 page(s) built`, `BUILD_EXIT=0`; `format` clean; `lint` (eslint) silent; `check` (astro) -> `0 errors / 0 warnings`.
 
 ## Outputs
 
@@ -160,10 +168,19 @@ Run: `cd website && npx vitest run tests/unit/keywords.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/keywords.test.ts` — 10 passed
-- [ ] `cd website && npm run content:check` — exit 0, `73 keywords` in the summary line
-- [ ] `cd website && npm run build` — exit 0
-- [ ] manual check: `node -e "const c=require('./src/generated/catalog.ts')"` is not valid — instead run `grep -c '"origin": "essentia"' src/generated/catalog.ts` and confirm `51`, and `grep -c '"origin": "magic"' src/generated/catalog.ts` and confirm `22`
-- [ ] `cd website && npm run ci` — exit 0
-- [ ] app functional — no visible page change; card text still renders and the closed-taxonomy build failure still triggers on an unknown bold phrase
+- [x] `cd website && npx vitest run tests/unit/keywords.test.ts` — 10 passed
+      **Met:** `Tests  21 passed (21)` = the 10 new cases plus the 11 pre-existing ones in the file.
+- [x] `cd website && npm run content:check` — exit 0, `73 keywords` in the summary line
+      **Met:** `content: 1 releases, 3 sections, 50 current cards, 50 versions, 73 keywords, 38 docs, 1 posts`.
+- [x] `cd website && npm run build` — exit 0
+      **Met:** `BUILD_EXIT=0`, `151 page(s) built`, gates: `dist scan: clean`, `404: redirects to site root`, `chrome: 151 pages carry the site header`.
+- [x] manual check: `node -e "const c=require('./src/generated/catalog.ts')"` is not valid — instead run `grep -c '"origin": "essentia"' src/generated/catalog.ts` and confirm `51`, and `grep -c '"origin": "magic"' src/generated/catalog.ts` and confirm `22`
+      **Met:** `51` and `22` exactly; also `grep -c '"definition":'` = 73 and `grep -c '"doc":'` = 73.
+- [x] `cd website && npm run ci` — exit 0
+      **Met:** `CI_EXIT=0`, `Tests  202 passed (202)`, astro `0 errors / 0 warnings`.
+- [x] catalog shape changed → `CATALOG_SCHEMA_VERSION` bumped 6 → 7 in `website/scripts/content/orchestrator.mjs`, `Catalog.schemaVersion` in `website/src/lib/catalog.ts`, and the assertion in `website/tests/unit/catalog.test.ts` (parent-directed addendum; the ticket predates the catalog reaching v6). **Met:** generated catalog carries `"schemaVersion": 7`; `npm run ci` exit 0.
+- [x] app functional — no visible page change; card text still renders and the closed-taxonomy build failure still triggers on an unknown bold phrase.
+      _Criterion (no browser/e2e harness on this host — static-equivalent substitution):_ inspect built `dist/**/index.html` for unchanged rendered card rule text, and prove the closed-taxonomy failure by temporarily pointing `extractKeywords` at an unknown bold phrase and observing the `unknown keyword` build failure.
+      **Met:** `dist/cards/ash-blossom-and-joyous-spring/index.html` still renders `<div class="rules-text"><em>(1 - Activated Flash Hard)</em> <strong>Discard</strong> Ash Blossom and <strong>Target</strong> ... <strong>Mill X</strong> ... <strong>Counter</strong> it.</div>` — bold keywords only, no ruling text injected (that is T19). `grep -rl '"definition"|"origin":' dist --include=*.html` returns 0 pages, so no registry-only field leaked into any rendered page. Closed taxonomy probe: `extractKeywords('<b>Wibble Flomp</b>', registry, 'probe-card')` -> `content: probe-card: unknown keyword "Wibble Flomp" - add it to content/keywords.json or fix the card text`, while `<b>Discard</b> and <b>Mill 3</b>` -> `[ 'Discard', 'Mill N' ]`.
 - [ ] commit msg draft: `feat(website): give every keyword a ruling, an origin and an owning doc`
+      _Criterion:_ commit created on `plan/website-feedback-pass` with that subject.

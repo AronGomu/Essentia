@@ -1,376 +1,595 @@
 {
-  "schemaVersion": 1,
-  "source": "phase-0 authored seed; Phase 1 replaces this with the docs/KEYWORDS.md parse",
+  "schemaVersion": 2,
+  "source": "authored registry; definitions mirror the owning docs listed per entry",
   "keywords": [
     {
       "id": "abyssal-curse",
       "term": "Abyssal Curse",
       "category": "archetype",
-      "archetype": "burning-abyss"
+      "archetype": "burning-abyss",
+      "origin": "essentia",
+      "doc": "docs/01_burning_abyss/KEYWORDS.md",
+      "definition": "If you control another creature without “Burning Abyss” in its name, Destroy this creature."
     },
     {
       "id": "after-attack-or-block",
       "term": "After Attack or Block",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "The first legal trigger window after combat damage involving this creature resolves. It does not occur if the creature leaves combat first."
     },
     {
       "id": "alternative-cost",
       "term": "Alternative Cost",
-      "category": "cost-procedure"
+      "category": "cost-procedure",
+      "origin": "essentia",
+      "doc": "docs/keywords/COSTS_AND_PROCEDURES.md",
+      "definition": "An unnumbered casting cost printed before the abilities that replaces the normal cost when its stated condition is met."
     },
     {
       "id": "attach",
       "term": "Attach",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Make the indicated card material under the indicated Xyz creature."
     },
     {
       "id": "bounce",
       "term": "Bounce",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Return the indicated permanent to its owner's Hand."
     },
     {
       "id": "bounded-n",
       "term": "Bounded N",
-      "category": "ability"
+      "category": "ability",
+      "origin": "essentia",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "This card is the bounder: its controller chooses up to N other creatures they control, which become bounded. The link lasts only while the bounder stays on the Field."
     },
     {
       "id": "cast",
       "term": "Cast",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Put a spell on the Stack and pay its cost. Reserved for spells; never used for a Summon."
     },
     {
       "id": "counter",
       "term": "Counter",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Cancel a spell or ability on the Stack; it resolves for no effect and goes to the Grave."
     },
     {
       "id": "descent",
       "term": "Descent",
       "category": "archetype",
-      "archetype": "burning-abyss"
+      "archetype": "burning-abyss",
+      "origin": "essentia",
+      "doc": "docs/01_burning_abyss/KEYWORDS.md",
+      "definition": "Sorcery-speed activated ability: if you have not summoned a “Burning Abyss” creature this turn, Summon this card from your Hand."
     },
     {
       "id": "destroy",
       "term": "Destroy",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Send the indicated permanent to the Grave as a destruction event, so On Destroy triggers fire."
     },
     {
       "id": "detach-n",
       "term": "Detach N",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Send N materials from an Xyz creature to the Grave. Before a colon or semicolon it is a cost; after an event and em dash it is a mandatory triggered action."
     },
     {
       "id": "discard",
       "term": "Discard",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Put the indicated card from your Hand into the Grave."
     },
     {
       "id": "double-strike",
       "term": "Double strike",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this creature deals both first-strike and regular combat damage."
     },
     {
       "id": "draw",
       "term": "Draw",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Put the top card of your Deck into your Hand."
     },
     {
       "id": "effect-indestructible",
       "term": "Effect Indestructible",
-      "category": "ability"
+      "category": "ability",
+      "origin": "essentia",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "This creature cannot be destroyed by a spell or ability. Combat damage and non-effect destruction still destroy it."
     },
     {
       "id": "exile",
       "term": "Exile",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Move the indicated card to the Exile zone."
     },
     {
       "id": "exile-from-grave",
       "term": "Exile from Grave",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Compound cost: activate this ability only from the Grave, exiling this card from the Grave as part of the cost."
     },
     {
       "id": "exile-n-plant-from-grave",
       "term": "Exile N Plant from Grave",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Cost: exile N Plant cards from your Grave."
     },
     {
       "id": "flip",
       "term": "Flip",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: a face-down creature turns face up."
     },
     {
       "id": "flying",
       "term": "Flying",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this creature can be blocked only by creatures with Flying or Reach."
     },
     {
       "id": "fusion-alternative-cost",
       "term": "Fusion Alternative Cost",
-      "category": "cost-procedure"
+      "category": "cost-procedure",
+      "origin": "essentia",
+      "doc": "docs/keywords/COSTS_AND_PROCEDURES.md",
+      "definition": "An Alternative Cost line that replaces the normal Fusion materials with the stated payment and still performs a proper Fusion Summon."
     },
     {
       "id": "fusion-summon",
       "term": "Fusion Summon",
-      "category": "cost-procedure"
+      "category": "cost-procedure",
+      "origin": "essentia",
+      "doc": "docs/keywords/COSTS_AND_PROCEDURES.md",
+      "definition": "Named procedure that puts a Fusion creature onto the Field from the Sideboard using the stated materials and zones."
     },
     {
       "id": "hand-summon",
       "term": "Hand Summon",
-      "category": "cost-procedure"
+      "category": "cost-procedure",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Summon from your Hand: put the card onto the Field without casting it or paying its mana cost. Proper-summon restrictions still apply."
     },
     {
       "id": "haste",
       "term": "Haste",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this creature can attack and use tap abilities the turn it enters."
     },
     {
       "id": "hexproof",
       "term": "Hexproof",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this card cannot be targeted by opponents' spells or abilities."
     },
     {
       "id": "indestructible",
       "term": "Indestructible",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this permanent cannot be destroyed by damage or by destruction effects."
     },
     {
       "id": "mill-n",
       "term": "Mill N",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Send the top N cards of your Deck to the Grave. The quantity is always printed."
     },
     {
       "id": "negate",
       "term": "Negate",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Target a permanent, spell, or ability: a permanent loses its abilities and its abilities on the Stack are countered; a spell or ability is countered."
     },
     {
       "id": "nekroz-recovery",
       "term": "Nekroz Recovery",
       "category": "archetype",
-      "archetype": "nekroz"
+      "archetype": "nekroz",
+      "origin": "essentia",
+      "doc": "docs/03_nekroz/KEYWORDS.md",
+      "definition": "If you control no creatures: Exile this card and 1 other “Nekroz” from the Grave; Search 1 non-Creature Ritual Summon “Nekroz”."
     },
     {
       "id": "on-block-or-blocked",
       "term": "On Block or Blocked",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this creature blocks or becomes blocked."
     },
     {
       "id": "on-blocked",
       "term": "On Blocked",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this creature becomes blocked."
     },
     {
       "id": "on-cast-spellbook",
       "term": "On Cast \"Spellbook\"",
       "category": "event",
-      "archetype": "spellbook"
+      "archetype": "spellbook",
+      "origin": "essentia",
+      "doc": "docs/04_spellbook/KEYWORDS.md",
+      "definition": "Event: you cast a “Spellbook” spell, before it resolves."
     },
     {
       "id": "on-destroy",
       "term": "On Destroy",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card is destroyed and sent to the Grave."
     },
     {
       "id": "on-end-step",
       "term": "On End Step",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: the beginning of your end step. It recurs while the card stays on the Field."
     },
     {
       "id": "on-enter",
       "term": "On Enter",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card enters the Field."
     },
     {
       "id": "on-enter-or-mv2-opponent-creature-enter",
       "term": "On Enter or MV2+ Opponent Creature Enter",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card enters the Field, or an opponent's creature of mana value 2 or greater enters."
     },
     {
       "id": "on-enter-synchro",
       "term": "On Enter Synchro",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: a Synchro creature enters under your control, including this card."
     },
     {
       "id": "on-exile",
       "term": "On Exile",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card is exiled from any zone."
     },
     {
       "id": "on-fusion-summon",
       "term": "On Fusion Summon",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: a Fusion creature enters through its own Fusion Summon. Generic movement does not trigger it."
     },
     {
       "id": "on-leave-field",
       "term": "On Leave Field",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card leaves the Field."
     },
     {
       "id": "on-link-summon",
       "term": "On Link Summon",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: a Link creature enters through its own Link Summon. Generic movement does not trigger it."
     },
     {
       "id": "on-opponent-activation-or-attack",
       "term": "On Opponent Activation or Attack",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: an opponent activates an ability or declares an attack. Activation means an ability on the Stack, not a spell cast."
     },
     {
       "id": "on-opponent-creature-enter",
       "term": "On Opponent Creature Enter",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: a creature enters under an opponent's control."
     },
     {
       "id": "on-opponent-summon",
       "term": "On Opponent Summon",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: an opponent performs a Summon action. Casting a creature normally does not count."
     },
     {
       "id": "on-sacrifice",
       "term": "On Sacrifice",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card is sacrificed, or used as Ritual creature material."
     },
     {
       "id": "on-send-grave",
       "term": "On Send Grave",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: this card enters the Grave from any zone."
     },
     {
       "id": "on-send-grave-by-effect",
       "term": "On Send Grave by Effect",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: a card effect puts this card into the Grave. Costs, rules actions, and combat do not count."
     },
     {
       "id": "on-upkeep",
       "term": "On Upkeep",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "Event: the start of your upkeep, unless the card names the opponent's."
     },
     {
       "id": "protection-from-creatures",
       "term": "Protection from Creatures",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this permanent cannot be damaged, enchanted, blocked, or targeted by creatures."
     },
     {
       "id": "protection-from-everything",
       "term": "Protection from everything",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this permanent cannot be damaged, enchanted, blocked, or targeted by anything."
     },
     {
       "id": "reanimate",
       "term": "Reanimate",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Return the target card from its Grave to the Field. Proper-summon rules still apply."
     },
     {
       "id": "reclaim",
       "term": "Reclaim",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Move the indicated card from Exile to your Hand."
     },
     {
       "id": "release",
       "term": "Release",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Move the indicated card from Exile to the Field. Proper-summon rules apply."
     },
     {
       "id": "return",
       "term": "Return",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Move the indicated card back to the stated zone."
     },
     {
       "id": "reveal",
       "term": "Reveal",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Show the indicated card to all players, then return it to where it was unless told otherwise."
     },
     {
       "id": "ritual-summon",
       "term": "Ritual Summon",
-      "category": "cost-procedure"
+      "category": "cost-procedure",
+      "origin": "essentia",
+      "doc": "docs/keywords/COSTS_AND_PROCEDURES.md",
+      "definition": "Named procedure that puts a Ritual creature onto the Field using the stated materials and conditions."
     },
     {
       "id": "sacrifice",
       "term": "Sacrifice",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Send a permanent you control to the Grave, as a cost or as an effect."
     },
     {
       "id": "salvage",
       "term": "Salvage",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Move the indicated card from your Grave to your Hand."
     },
     {
       "id": "scry-n",
       "term": "Scry N",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Magic evergreen: look at the top N cards of your Deck, then put any number of them on the bottom and the rest back on top in any order."
     },
     {
       "id": "search",
       "term": "Search",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Search your Deck for the named object, reveal it when required, put it into your Hand, then shuffle."
     },
     {
       "id": "send",
       "term": "Send",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Move the indicated card to the Grave from the stated zone without destroying it."
     },
     {
       "id": "set",
       "term": "Set",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Put a card face down on the Field under Trap or explicit rules. Setting does not use the Stack, cast the card, pay its cost, or trigger On Cast."
     },
     {
       "id": "shaddoll-recovery",
       "term": "Shaddoll Recovery",
       "category": "archetype",
-      "archetype": "shaddoll"
+      "archetype": "shaddoll",
+      "origin": "essentia",
+      "doc": "docs/02_shaddoll/KEYWORDS.md",
+      "definition": "On Send Grave — Salvage 1 non-Creature “Shaddoll”."
     },
     {
       "id": "shuffle",
       "term": "Shuffle",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Put the indicated objects into their owner's Deck, then shuffle that Deck."
     },
     {
       "id": "slow-blink-n-any-creature",
       "term": "Slow Blink N Any Creature",
-      "category": "ability"
+      "category": "ability",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Target 0 to N creatures; Exile them until the next end step, then Return them to the Field under their owner's control."
     },
     {
       "id": "spell-affinity",
       "term": "Spell Affinity",
-      "category": "ability"
+      "category": "ability",
+      "origin": "essentia",
+      "doc": "docs/04_spellbook/KEYWORDS.md",
+      "definition": "If you control 1 “Spellbook” creature you may Cast this spell for free. Usable once each turn, and only on a “Spellbook” Sorcery."
     },
     {
       "id": "summon",
       "term": "Summon",
-      "category": "action"
+      "category": "action",
+      "origin": "essentia",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Put the indicated card onto the Field from the stated zone without casting it or paying its mana cost. Proper-summon restrictions still apply."
     },
     {
       "id": "target",
       "term": "Target",
-      "category": "action"
+      "category": "action",
+      "origin": "magic",
+      "doc": "docs/keywords/ACTIONS.md",
+      "definition": "Choose the legal object an effect will apply to, when the effect is announced. Targeting is never a cost."
     },
     {
       "id": "this-turn-on-end-step",
       "term": "This turn On End Step",
-      "category": "event"
+      "category": "event",
+      "origin": "essentia",
+      "doc": "docs/keywords/EVENTS.md",
+      "definition": "A one-shot delayed instruction created during resolution that happens at your end step this turn, then expires."
     },
     {
       "id": "trample",
       "term": "Trample",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: excess combat damage is assigned to the defending player."
     },
     {
       "id": "vigilance",
       "term": "Vigilance",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: this creature does not tap when attacking."
     },
     {
       "id": "ward-n",
       "term": "Ward N",
-      "category": "ability"
+      "category": "ability",
+      "origin": "magic",
+      "doc": "docs/keywords/ABILITIES.md",
+      "definition": "Magic evergreen: when this permanent becomes the target of an opponent's spell or ability, counter it unless they pay N."
     },
     {
       "id": "xyz-alternative-cost",
       "term": "Xyz Alternative Cost",
-      "category": "cost-procedure"
+      "category": "cost-procedure",
+      "origin": "essentia",
+      "doc": "docs/keywords/COSTS_AND_PROCEDURES.md",
+      "definition": "Line that replaces the normal Xyz materials: it uses the indicated creature as material, performs a proper Xyz Summon, and states any material transfer."
     }
   ]
 }

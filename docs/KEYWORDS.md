@@ -9,6 +9,8 @@ A keyword is an atomic term whose meaning comes from Magic rules, global cube ru
 3. [Ability keywords](keywords/ABILITIES.md) — Magic evergreen or custom abilities.
 4. [Cost and procedure keywords](keywords/COSTS_AND_PROCEDURES.md) — named costs, summon procedures, or activation shortcuts.
 
+The website's per-keyword ruling text lives in `website/content/keywords.json` and must agree with the owning module named in each entry's `doc` field; these modules stay the source of record.
+
 Render complete keyword invocations in bold with canonical capitalization. Unknown bold phrases are invalid until documented in one owning module. Ability metadata such as `Static`, `Triggered`, `Activated`, `Resolution`, `Flash`, `Sorcery`, `Ritual`, `Soft`, `Hard`, and `Hard Linked` belongs inside the ability prefix and is not keyword text.
 
 Archetype-specific dictionaries live in each archetype's `KEYWORDS.md`.

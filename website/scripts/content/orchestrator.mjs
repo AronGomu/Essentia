@@ -27,7 +27,7 @@ import { loadPosts } from './blog.mjs';
 import { loadKeywordRegistry } from './keywords.mjs';
 import { discover } from './packages.mjs';
 
-export const CATALOG_SCHEMA_VERSION = 6;
+export const CATALOG_SCHEMA_VERSION = 7;
 
 async function introFromDoc(relative, label) {
   const text = await readFile(path.join(ROOT, relative), 'utf8');
@@ -195,6 +195,9 @@ export async function build({ checkOnly }) {
     term: entry.term,
     category: entry.category,
     archetype: entry.archetype ?? null,
+    definition: entry.definition,
+    origin: entry.origin,
+    doc: entry.doc,
   }));
   const generatedAt = packages.length
     ? `${packages[0].releasedOn}T12:00:00.000Z`
