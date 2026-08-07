@@ -14,6 +14,7 @@ import {
   ROOT,
   fail,
   sectionRoute,
+  stageDateIssues,
 } from './shared.mjs';
 import {
   compareLifecycleVersion,
@@ -158,6 +159,9 @@ export async function build({ checkOnly }) {
       cardIds: sectionCards.map((card) => card.id),
     });
   }
+
+  const stageDateProblems = stageDateIssues(packages);
+  if (stageDateProblems.length) fail(stageDateProblems.join('; '));
 
   packages.sort(
     (a, b) =>

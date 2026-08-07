@@ -57,6 +57,46 @@ export function fail(message) {
   throw new Error(`content: ${message}`);
 }
 
+/**
+ * The catalog orders packages by stage rank, and `latestRelease` is the first
+ * of them — so the NEW badge follows the most advanced stage. That is only the
+ * newest release if stage order and release date agree, which is how the
+ * lifecycle is defined: a stage has one date, and every package inside it
+ * carries that date. This asserts the definition instead of trusting it, so a
+ * future package that violates it fails the build rather than silently
+ * mislabelling cards.
+ *
+ * @param {Array<{ id: string, stage: string, stageRank: number, releasedOn: string }>} packages
+ * @returns {string[]} one line per violation, empty when the invariant holds
+ */
+export function stageDateIssues(packages) {
+  const issues = [];
+  const dateByStage = new Map();
+
+  for (const item of packages) {
+    const seen = dateByStage.get(item.stage);
+    if (seen && seen.releasedOn !== item.releasedOn)
+      issues.push(
+        `stage ${item.stage} has two release dates: ${seen.id} on ${seen.releasedOn}, ${item.id} on ${item.releasedOn}`,
+      );
+    else if (!seen) dateByStage.set(item.stage, item);
+  }
+
+  const stages = [...dateByStage.values()].sort(
+    (a, b) => a.stageRank - b.stageRank,
+  );
+  for (let index = 1; index < stages.length; index += 1) {
+    const previous = stages[index - 1];
+    const current = stages[index];
+    if (current.releasedOn < previous.releasedOn)
+      issues.push(
+        `stage ${current.stage} (${current.releasedOn}) is dated before the earlier stage ${previous.stage} (${previous.releasedOn})`,
+      );
+  }
+
+  return issues;
+}
+
 export function sha(bytes) {
   return createHash('sha256').update(bytes).digest('hex');
 }

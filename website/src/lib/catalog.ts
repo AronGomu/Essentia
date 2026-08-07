@@ -215,7 +215,12 @@ export const sectionsBySlug = new Map(
   catalog.sections.map((section) => [section.slug, section]),
 );
 
-/** Newest published package, or null on a draft-only build. */
+/**
+ * Newest published package, or null on a draft-only build. `catalog.releases`
+ * is sorted by stage rank, and the content build asserts that stage order and
+ * release date agree (`stageDateIssues` — a stage has one date, shared by every
+ * package in it), so the most advanced stage is also the most recent release.
+ */
 export const latestRelease: ReleasePackage | null = catalog.releases[0] ?? null;
 
 /** True when this card's current version was published by the newest package. */
