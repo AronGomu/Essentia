@@ -52,6 +52,15 @@ const keywordRulings = Object.fromEntries(
     .filter((keyword) => keyword.origin === 'essentia')
     .map((keyword) => [keyword.term, keyword.definition]),
 );
+// `set:html` writes this verbatim, so a stray `</script>` in a term or ruling
+// would close the JSON block and turn the rest into live markup. `<` only ever
+// occurs inside JSON string literals, where the `\u003c` escape means exactly
+// the same character — the payload still parses to an identical object. The
+// registry loader rejects `<` upstream; this is the second belt.
+const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
+  '<',
+  '\\u003c',
+);
 ---
 
 <!doctype html>
@@ -98,7 +107,7 @@ const keywordRulings = Object.fromEntries(
     <script
       type="application/json"
       id="keyword-rulings"
-      set:html={JSON.stringify(keywordRulings)}
+      set:html={keywordRulingsJson}
     />
     <CardHoverPreview />
     <footer class="site-footer">

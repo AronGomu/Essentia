@@ -1,8 +1,31 @@
+import { execFile } from 'node:child_process';
+import path from 'node:path';
+import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
 import {
   HERO_SOURCES,
   preflightIssues,
 } from '../../scripts/check-preflight.mjs';
+
+const run = promisify(execFile);
+
+describe('R9 importing the module does not run the gate', () => {
+  it('produces no output and does not throw when merely imported', async () => {
+    const module = path.resolve(
+      import.meta.dirname,
+      '../../scripts/check-preflight.mjs',
+    );
+    const { stdout } = await run('node', [
+      '--input-type=module',
+      '-e',
+      `await import(${JSON.stringify(module)});`,
+    ]);
+    // Without the main-module guard this prints the `preflight:` banner — or,
+    // on a host missing `original_images/` or `node_modules/astro`, throws at
+    // import time and takes every test in this file down with it.
+    expect(stdout).toBe('');
+  });
+});
 
 describe('preflightIssues', () => {
   it('reports nothing when every prerequisite is met', () => {

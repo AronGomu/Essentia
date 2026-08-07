@@ -1,5 +1,15 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { normalizeKeyword, splitComposite } from '../shared/keywords.mjs';
+
+function unescapeHtml(value) {
+  return value
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+    .replaceAll('&amp;', '&');
+}
 
 export const UTILITY_LINKS = [
   { label: 'Learn about Essentia', path: 'docs/' },
@@ -117,7 +127,11 @@ export function chromeIssues(file, html, base) {
       /<section[^>]*aria-labelledby="new-cards-heading"[^>]*>[\s\S]*?<\/section>/,
     );
     const newCardsBlock = newCardsMatch ? newCardsMatch[0] : '';
-    if (newCardsBlock) {
+    // Fail closed: a missing container used to silence every rule below it,
+    // so deleting the section outright passed the gate.
+    if (!newCardsBlock) {
+      problems.push(`${file}: home page is missing the new-cards section`);
+    } else {
       const cardCount = (
         newCardsBlock.match(/<li class="new-card-item"/g) ?? []
       ).length;
@@ -153,6 +167,12 @@ export function chromeIssues(file, html, base) {
     const tileArtRe = new RegExp(`^${base}art/[a-z0-9-]+-hero\\.webp$`);
     const tileBlocks =
       html.match(/<a class="section-tile"[\s\S]*?<\/a>/g) ?? [];
+    // Fail closed: zero tiles is the regression, not a vacuous pass.
+    if (!tileBlocks.length) {
+      problems.push(
+        `${file}: home page is missing the archetype section tiles`,
+      );
+    }
     for (const tile of tileBlocks) {
       const tileSrcMatch = tile.match(/<img[^>]*src="([^"]*)"/);
       const tileSrc = tileSrcMatch ? tileSrcMatch[1] : '';
@@ -167,7 +187,12 @@ export function chromeIssues(file, html, base) {
     /<footer class="site-footer">[\s\S]*?<\/footer>/,
   );
   const footerBlock = footerMatch ? footerMatch[0] : '';
-  if (footerBlock) {
+  // Fail closed: every page but the 404 stub carries the footer, so a miss
+  // means the footer was removed or its class changed — not that the rule is
+  // inapplicable.
+  if (!footerBlock) {
+    problems.push(`${file}: page is missing the site footer`);
+  } else {
     const navIndex = footerBlock.indexOf('<nav aria-label="Footer"');
     const licenceIndex = footerBlock.indexOf(
       'Everything created for this project',
@@ -184,6 +209,61 @@ export function chromeIssues(file, html, base) {
     }
   }
 
+  problems.push(...reminderIssues(file, html));
+
+  return problems;
+}
+
+/**
+ * Card pages resolve each bold keyword phrase in their rules text against the
+ * page's own `#keyword-rulings` map and append a `(ruling)` reminder span.
+ * That wiring is one optional `definitions` prop away from silently becoming a
+ * no-op, and nothing else in the build would notice — so assert the output
+ * directly: a bold phrase that resolves to a term in the map must be followed
+ * by a reminder.
+ */
+function reminderIssues(file, html) {
+  if (!/^cards\//.test(file)) return [];
+
+  const rulesMatch = html.match(/<div class="rules-text"[^>]*>[\s\S]*?<\/div>/);
+  if (!rulesMatch) return [`${file}: card page is missing its rules text`];
+
+  const rulingsMatch = html.match(
+    /<script type="application\/json" id="keyword-rulings">([\s\S]*?)<\/script>/,
+  );
+  if (!rulingsMatch)
+    return [`${file}: card page is missing the keyword ruling map`];
+
+  let terms;
+  try {
+    terms = new Set(Object.keys(JSON.parse(rulingsMatch[1])));
+  } catch {
+    return [`${file}: keyword ruling map is not valid JSON`];
+  }
+  // Fail closed: an empty map would make every assertion below vacuous, which
+  // is exactly the shape of the regression this rule exists to catch.
+  if (!terms.size) return [`${file}: keyword ruling map is empty`];
+
+  const problems = [];
+  for (const match of rulesMatch[0].matchAll(
+    /<strong>([\s\S]*?)<\/strong>((?:<span class="reminder">)?)/g,
+  )) {
+    const phrase = unescapeHtml(
+      match[1]
+        .replace(/<[^>]*>/g, '')
+        .replace(/\s+/g, ' ')
+        .trim(),
+    );
+    if (!phrase) continue;
+    const resolves = splitComposite(phrase)
+      .map(normalizeKeyword)
+      .some((term) => terms.has(term));
+    if (resolves && !match[2]) {
+      problems.push(
+        `${file}: keyword "${phrase}" must carry an inline reminder`,
+      );
+    }
+  }
   return problems;
 }
 

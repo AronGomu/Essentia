@@ -174,6 +174,20 @@ describe('keyword registry rulings', () => {
     ).rejects.toThrow(/definition must be 20-400 plain-text characters/);
   });
 
+  it('R5 rejects a term carrying a script-closing tag', async () => {
+    await expect(
+      loadKeywordRegistry(
+        fixture({ id: 'demo', term: '</script><script>alert(1)</script>' }),
+      ),
+    ).rejects.toThrow(/<\/script><script>alert\(1\)<\/script>/);
+  });
+
+  it('R5 rejects angle brackets in a term', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ term: 'Demo <b>' })),
+    ).rejects.toThrow(/term must be plain text without < or >/);
+  });
+
   it('rejects an unknown origin', async () => {
     await expect(
       loadKeywordRegistry(fixture({ origin: 'konami' })),

@@ -88,6 +88,64 @@ describe('authored Markdown renderer', () => {
     expect(renderSafeMarkdown('---')).toBe('<hr>');
   });
 
+  it('R1 keeps underscores literal inside a code span', () => {
+    const html = renderSafeMarkdown('Use `cards_mse/00_drafts/` here', '/');
+    expect(html).toContain('<code>cards_mse/00_drafts/</code>');
+    expect(html).not.toContain('<em>');
+  });
+
+  it('R1 keeps underscores literal inside a link href and label', () => {
+    // The corpus form: `rewriteDocLinks` has already turned the authored
+    // `[`cards_mse/`](../cards_mse/)` into an absolute repository URL by the
+    // time the renderer sees it. The relative form never reaches emphasis —
+    // the URL allowlist rejects `../` first (asserted separately below).
+    const html = renderSafeMarkdown(
+      '[`cards_mse/`](https://github.com/AronGomu/YGO-x-MTG/blob/main/cards_mse/)',
+      '/',
+    );
+    expect(html).toContain(
+      'href="https://github.com/AronGomu/YGO-x-MTG/blob/main/cards_mse/"',
+    );
+    expect(html).toContain('<code>cards_mse/</code>');
+    expect(html).not.toContain('<em>');
+  });
+
+  it('R1 keeps underscores literal in an internal link target', () => {
+    const html = renderSafeMarkdown('[`a_b`](/docs/a_b/)', '/');
+    expect(html).toContain('href="/docs/a_b/"');
+    expect(html).not.toContain('<em>');
+  });
+
+  it('R1 rejects the pre-rewrite relative form outright', () => {
+    expect(() =>
+      renderSafeMarkdown('[`cards_mse/`](../cards_mse/)', '/'),
+    ).toThrow('Unsafe Markdown URL: ../cards_mse/');
+  });
+
+  it('R1 keeps a snake_case identifier literal in prose', () => {
+    const html = renderSafeMarkdown('a snake_case_name b', '/');
+    expect(html).toContain('snake_case_name');
+    expect(html).not.toContain('<em>');
+  });
+
+  it('R1 still renders genuine word-boundary emphasis', () => {
+    expect(renderSafeMarkdown('an _emphasised_ word', '/')).toBe(
+      '<p>an <em>emphasised</em> word</p>',
+    );
+  });
+
+  it('R1 leaves strong markers inside a code span literal', () => {
+    const html = renderSafeMarkdown('code `a**b**c` span', '/');
+    expect(html).toContain('<code>a**b**c</code>');
+    expect(html).not.toContain('<strong>');
+  });
+
+  it('R2 does not double-escape an ampersand in a link URL', () => {
+    const html = renderSafeMarkdown('[S](https://example.com/?a=1&b=2)', '/');
+    expect(html).toContain('href="https://example.com/?a=1&amp;b=2"');
+    expect(html).not.toContain('&amp;amp;');
+  });
+
   it('still rejects unsafe URLs', () => {
     // Link-URL parsing itself is out of scope for this ticket (Requirements:
     // "Existing behaviour for ... links is unchanged"); the existing regex

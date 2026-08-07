@@ -7,8 +7,28 @@ function escapeHtml(value: string): string {
     .replaceAll("'", '&#39;');
 }
 
+/**
+ * Emphasis must never run over markup this function has already produced, or
+ * it corrupts identifiers: `cards_mse/` inside a code span or an `href` used
+ * to come back as `cards<em>mse/`, which mangled prose and broke links.
+ *
+ * So generated fragments — link tags and code spans — are parked as
+ * placeholder tokens, `**`/`_` run over what is left (real prose only), and
+ * the fragments are spliced back at the end. The sentinel is a private-use
+ * codepoint, which carries no meaning in an authored document; any that slips
+ * in is dropped up front so it can never be mistaken for a token.
+ */
+const PARK = '\uE000';
+
 function inline(value: string, base: string): string {
-  let html = escapeHtml(value);
+  const parked: string[] = [];
+  const park = (fragment: string): string => {
+    parked.push(fragment);
+    return `${PARK}${parked.length - 1}${PARK}`;
+  };
+
+  let html = escapeHtml(value).replaceAll(PARK, '');
+
   html = html.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,
     (_match, label: string, rawUrl: string) => {
@@ -21,14 +41,29 @@ function inline(value: string, base: string): string {
       const external = url.startsWith('https://')
         ? ' rel="noopener noreferrer"'
         : '';
-      return `<a href="${escapeHtml(href)}"${external}>${label}</a>`;
+      // `href` is already escaped — `escapeHtml` ran over the whole string
+      // before the URL was captured. Escaping it again turned `&` into
+      // `&amp;amp;` and resolved to the wrong URL.
+      return `${park(`<a href="${href}"${external}>`)}${label}${park('</a>')}`;
     },
   );
+
+  html = html.replace(/`([^`]+)`/g, (_match, code: string) =>
+    park(`<code>${code}</code>`),
+  );
+
   html = html
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/_([^_]+)_/g, '<em>$1</em>');
-  return html;
+    // Intra-word underscores are identifiers, not emphasis: `_` only opens and
+    // closes on a word boundary. The corpus carries no intentional `_x_`.
+    .replace(/(^|[^\w])_([^\s_][^_]*)_(?!\w)/g, '$1<em>$2</em>');
+
+  // Parked fragments never contain a sentinel, so one pass restores them all.
+  const parkedRe = new RegExp(`${PARK}(\\d+)${PARK}`, 'g');
+  return html.replace(
+    parkedRe,
+    (_match, index: string) => parked[Number(index)] ?? '',
+  );
 }
 
 export function headingSlug(text: string): string {

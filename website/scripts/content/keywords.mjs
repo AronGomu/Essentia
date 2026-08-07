@@ -54,6 +54,12 @@ export async function loadKeywordRegistry(
       byTerm.has(entry.term)
     )
       fail(`invalid keyword entry ${entry.term ?? entry.id ?? 'unknown'}`);
+    // The term reaches a raw-HTML sink: `BaseLayout.astro` serialises the
+    // ruling map into a `<script type="application/json">` block with
+    // `set:html`, so a term containing `</script>` would close that block and
+    // become live markup on every page. Guard it exactly like `definition`.
+    if (/[<>]/.test(entry.term))
+      fail(`keyword ${entry.term}: term must be plain text without < or >`);
     if (entry.term !== normalizeKeyword(entry.term))
       fail(`keyword ${entry.term} must be stored in normalized form`);
     if (

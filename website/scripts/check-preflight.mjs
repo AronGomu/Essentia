@@ -28,18 +28,25 @@ export function preflightIssues(env) {
   return issues;
 }
 
-const repoRoot = new URL('../../', import.meta.url);
-const missingSources = Object.values(HERO_SOURCES).filter(
-  (rel) => !existsSync(new URL(rel, repoRoot)),
-);
-const issues = preflightIssues({
-  nodeVersion: process.version,
-  hasAstro: existsSync(
-    new URL('../node_modules/astro/package.json', import.meta.url),
-  ),
-  missingSources,
-});
-if (issues.length) throw new Error(`preflight failed:\n${issues.join('\n')}`);
-process.stdout.write(
-  'preflight: node 24, deps, 5 source illustrations ready\n',
-);
+// Main-module guard, matching `check-404.mjs` and `check-chrome.mjs`. Without
+// it the gate ran on plain import — so the unit tests that import
+// `preflightIssues` executed the real environment checks, and on a host
+// without `original_images/` or `node_modules/astro` the whole test file
+// aborted at import and none of its cases ever ran.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const repoRoot = new URL('../../', import.meta.url);
+  const missingSources = Object.values(HERO_SOURCES).filter(
+    (rel) => !existsSync(new URL(rel, repoRoot)),
+  );
+  const issues = preflightIssues({
+    nodeVersion: process.version,
+    hasAstro: existsSync(
+      new URL('../node_modules/astro/package.json', import.meta.url),
+    ),
+    missingSources,
+  });
+  if (issues.length) throw new Error(`preflight failed:\n${issues.join('\n')}`);
+  process.stdout.write(
+    'preflight: node 24, deps, 5 source illustrations ready\n',
+  );
+}

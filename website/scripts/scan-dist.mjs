@@ -59,6 +59,14 @@ async function walk(directory) {
         const text = await readFile(file, 'utf8');
         for (const [label, pattern] of forbidden)
           if (pattern.test(text)) issues.push(`${file}: ${label}`);
+        // Absence of a policy used to pass: the `'unsafe-inline'` rule above
+        // only fires when a CSP is present, so a page that shipped none at all
+        // was the least-protected surface and the only one nothing checked.
+        if (
+          extension === '.html' &&
+          !/http-equiv="Content-Security-Policy"/i.test(text)
+        )
+          issues.push(`${file}: missing Content-Security-Policy`);
       }
     }
   }

@@ -234,3 +234,95 @@ describe('deck store migration', () => {
     ]);
   });
 });
+
+/**
+ * R8 — `localStorage` content and pasted import JSON are untrusted input, and
+ * every guard below survived the suite as a mutant. One test per mutant.
+ */
+describe('R8 untrusted deck input', () => {
+  const storedDeck = (overrides: Record<string, unknown> = {}) => ({
+    id: 'id-1',
+    name: 'BA build',
+    created: DAY,
+    updated: DAY,
+    main: [{ cardId: 'nekroz-trishula', quantity: 2 }],
+    extra: [],
+    ...overrides,
+  });
+
+  it('R8.1 rejects an import repeating one cardId in a zone', () => {
+    const json = JSON.stringify({
+      name: 'Doubled',
+      main: [
+        { cardId: 'nekroz-trishula', quantity: 2 },
+        { cardId: 'nekroz-trishula', quantity: 2 },
+      ],
+      extra: [],
+    });
+    expect(importDeck(json, 'id-1', DAY)).toBeNull();
+  });
+
+  it('R8.2 rejects the whole store when one stored deck is malformed', () => {
+    const migrated = migrateDecks({
+      schemaVersion: 1,
+      decks: [storedDeck(), storedDeck({ id: 'id-2', created: 42 })],
+    });
+    expect(migrated).toBeNull();
+  });
+
+  it('R8.3 drops a zero-quantity entry instead of keeping a zero-copy row', () => {
+    const deck = importDeck(
+      JSON.stringify({
+        name: 'Zeroed',
+        main: [
+          { cardId: 'nekroz-trishula', quantity: 0 },
+          { cardId: 'nekroz-brionac', quantity: 1 },
+        ],
+        extra: [],
+      }),
+      'id-1',
+      DAY,
+    );
+    expect(deck?.main).toEqual([{ cardId: 'nekroz-brionac', quantity: 1 }]);
+    expect(deckSize(deck!, 'main')).toBe(1);
+  });
+
+  it('R8.4 rejects a string quantity rather than concatenating deck size', () => {
+    const json = JSON.stringify({
+      name: 'Stringy',
+      main: [{ cardId: 'nekroz-trishula', quantity: '2' }],
+      extra: [],
+    });
+    expect(importDeck(json, 'id-1', DAY)).toBeNull();
+  });
+
+  it('R8.5 rejects a bare JSON array where an object is required', () => {
+    expect(importDeck('[]', 'id-1', DAY)).toBeNull();
+    expect(
+      importDeck('[{"name":"A","main":[],"extra":[]}]', 'id-1', DAY),
+    ).toBeNull();
+    expect(migrateDecks([])).toBeNull();
+    expect(migrateDecks([{ schemaVersion: 1, decks: [] }])).toBeNull();
+    // The `decks` list must be an array too — without that guard a non-iterable
+    // value throws out of a function documented to return `null`, never throw.
+    expect(migrateDecks({ schemaVersion: 1, decks: 5 })).toBeNull();
+    expect(migrateDecks({ schemaVersion: 1, decks: 'nope' })).toBeNull();
+    // Same guard one level down, on an entry list.
+    expect(
+      migrateDecks({ schemaVersion: 1, decks: [storedDeck({ main: 5 })] }),
+    ).toBeNull();
+  });
+
+  it('R8.6 exports exactly name, main and extra', () => {
+    const store = setQuantity(
+      oneDeck(),
+      'id-1',
+      'main',
+      'nekroz-trishula',
+      2,
+      DAY,
+    );
+    const exported: unknown = JSON.parse(exportDeck(deckOf(store, 'id-1')));
+    expect(Object.keys(exported as object)).toEqual(['name', 'main', 'extra']);
+  });
+});
