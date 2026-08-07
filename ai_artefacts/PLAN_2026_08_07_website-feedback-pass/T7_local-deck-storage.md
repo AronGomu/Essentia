@@ -100,13 +100,20 @@ Run: `cd website && npx vitest run tests/unit/decks.test.ts`
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/decks.test.ts` with the seventeen cases above.
-- [ ] 2. Create `website/src/lib/decks.ts` with the types, constants, and `migrateDecks`.
-- [ ] 3. Implement `createDeck`, `renameDeck`, `deleteDeck`.
-- [ ] 4. Implement `setQuantity` and `deckSize`.
-- [ ] 5. Implement `exportDeck` and `importDeck`.
-- [ ] 6. Add a private `normalizeName(value: string): string` used by create and rename.
-- [ ] 7. Run `npm run format`, `npm run lint`, `npm run check`.
+- [x] 1. Create `website/tests/unit/decks.test.ts` with the seventeen cases above.
+      _Criterion:_ file exists and `npx vitest run tests/unit/decks.test.ts` fails **red** with the module missing.
+- [x] 2. Create `website/src/lib/decks.ts` with the types, constants, and `migrateDecks`.
+      _Criterion:_ the three `migrate*` cases (`migrates a valid store`, `rejects a foreign schema`, `re-clamps on read`) pass.
+- [x] 3. Implement `createDeck`, `renameDeck`, `deleteDeck`.
+      _Criterion:_ the six create/rename/delete cases pass.
+- [x] 4. Implement `setQuantity` and `deckSize`.
+      _Criterion:_ the five quantity/zone/size cases pass.
+- [x] 5. Implement `exportDeck` and `importDeck`.
+      _Criterion:_ the three export/import cases pass.
+- [x] 6. Add a private `normalizeName(value: string): string` used by create and rename.
+      _Criterion:_ symbol present in `src/lib/decks.ts`, not exported, called by `createDeck` and `renameDeck`; `falls back to a default name` and `truncates a long name` pass.
+- [x] 7. Run `npm run format`, `npm run lint`, `npm run check`.
+      _Criterion:_ each command exits 0.
 
 ## Outputs
 
@@ -116,9 +123,13 @@ Run: `cd website && npx vitest run tests/unit/decks.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/decks.test.ts` — 17 passed
-- [ ] `cd website && npm run test` — full suite green
-- [ ] `cd website && npm run check && npm run lint && npm run format:check` — exit 0
-- [ ] `cd website && npm run build` — exit 0, bundle size unchanged (no page imports the module yet)
-- [ ] app functional — no visible change
+- [x] `cd website && npx vitest run tests/unit/decks.test.ts` — 17 passed
+- [x] `cd website && npm run test` — full suite green
+- [x] `cd website && npm run check && npm run lint && npm run format:check` — exit 0
+- [x] `cd website && npm run build` — exit 0, bundle size unchanged (no page imports the module yet)
+- [x] app functional — no visible change
+      _Criterion:_ no source file outside `tests/` imports `lib/decks`, proven by grep, and `npm run build` exits 0.
+      _Substitution:_ no browser/Playwright harness on this host, so the "no visible change" claim is discharged by the grep + build pair and by the pure-function unit suite (storage I/O is exercised through `migrateDecks`, not a live `localStorage`).
+- [x] `cd website && npm run ci` — exit 0 (parent-required gate)
 - [ ] commit msg draft: `feat(website): add a browser-local decklist model`
+      _Criterion:_ commit exists on `plan/website-feedback-pass` with that subject.
