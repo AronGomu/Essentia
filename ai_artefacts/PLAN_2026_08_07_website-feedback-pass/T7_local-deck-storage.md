@@ -131,5 +131,5 @@ Run: `cd website && npx vitest run tests/unit/decks.test.ts`
       _Criterion:_ no source file outside `tests/` imports `lib/decks`, proven by grep, and `npm run build` exits 0.
       _Substitution:_ no browser/Playwright harness on this host, so the "no visible change" claim is discharged by the grep + build pair and by the pure-function unit suite (storage I/O is exercised through `migrateDecks`, not a live `localStorage`).
 - [x] `cd website && npm run ci` — exit 0 (parent-required gate)
-- [ ] commit msg draft: `feat(website): add a browser-local decklist model`
+- [x] commit msg draft: `feat(website): add a browser-local decklist model`
       _Criterion:_ commit exists on `plan/website-feedback-pass` with that subject.
