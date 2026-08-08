@@ -1,9 +1,17 @@
 <aside class="card-hover-preview" aria-hidden="true">
-  <img alt="" width="400" height="559" decoding="async" />
+  <img
+    class="preview-render"
+    alt=""
+    width="320"
+    height="448"
+    decoding="async"
+  />
   <div class="keyword-rulings"></div>
 </aside>
 
 <script>
+  import { placeHoverPreview } from '../lib/hover-placement';
+
   const preview = document.querySelector<HTMLElement>('.card-hover-preview');
   const previewImage = preview?.querySelector<HTMLImageElement>('img') ?? null;
   const keywordRulingsEl =
@@ -16,18 +24,21 @@
   const placePreview = (target: HTMLElement) => {
     if (!preview) return;
     const rect = target.getBoundingClientRect();
-    const gap = 16;
-    const width = Math.min(400, window.innerWidth - gap * 2);
-    const left =
-      rect.right + gap + width <= window.innerWidth
-        ? rect.right + gap
-        : Math.max(gap, rect.left - width - gap);
-    const top = Math.min(
-      Math.max(gap, rect.top + rect.height / 2 - width * 0.7),
-      window.innerHeight - width * 1.4 - gap,
+    const hasRulings = preview.dataset.hasRulings === 'true';
+    const placement = placeHoverPreview(
+      {
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        height: rect.height,
+      },
+      { width: window.innerWidth, height: window.innerHeight },
+      hasRulings,
     );
-    preview.style.setProperty('--preview-left', `${left}px`);
-    preview.style.setProperty('--preview-top', `${Math.max(gap, top)}px`);
+    preview.style.setProperty('--preview-left', `${placement.left}px`);
+    preview.style.setProperty('--preview-top', `${placement.top}px`);
+    preview.classList.toggle('is-rulings-left', placement.rulingsLeft);
+    preview.classList.toggle('has-rulings', placement.showRulings);
   };
 
   const showPreview = (target: HTMLElement) => {
@@ -53,6 +64,9 @@
       }
     }
 
+    preview.dataset.hasRulings = String(
+      (keywordRulingsEl?.childElementCount ?? 0) > 0,
+    );
     preview.classList.add('is-visible');
     placePreview(target);
   };
