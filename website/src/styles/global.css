@@ -219,7 +219,10 @@
     transition: margin-left 220ms var(--ease-out);
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    /* The wordmark is the first child and holds the left edge on every page.
+       This used to be `flex-end` with the auto margin on `.breadcrumb`, which
+       left the brand flush *right* on `/` — the one page with no breadcrumb. */
+    justify-content: flex-start;
     gap: var(--space-3);
     border-bottom: 1px solid var(--ruleline);
     background: oklch(0.08 0 0 / 0.94);
@@ -240,10 +243,14 @@
     width: 160px;
     height: auto;
   }
+  /* The auto margin lives here, not on `.breadcrumb`: the utility nav ships on
+     every page, so the split between the left group (brand, breadcrumb) and
+     the right group (nav, Find) no longer depends on a breadcrumb existing. */
   .utility-nav {
     display: flex;
     align-items: center;
     gap: 0.35rem;
+    margin-left: auto;
   }
   .utility-nav a {
     min-height: 2.75rem;
@@ -258,9 +265,6 @@
   .utility-nav a[aria-current='page'] {
     border-color: var(--accent);
     background: var(--sleeve);
-  }
-  .breadcrumb {
-    margin-right: auto;
   }
   .breadcrumb ol {
     display: flex;
@@ -427,7 +431,7 @@
     text-decoration: none;
   }
   .reading-switch a:hover,
-  .reading-switch a[aria-current='page'] {
+  .reading-switch a[aria-current='true'] {
     border-color: var(--accent);
     background: var(--sleeve);
     color: var(--cardstock);
@@ -1070,8 +1074,9 @@
   .site-footer {
     margin-left: 0;
   }
+  /* No `justify-content` override here: it used to be `space-between`, which
+     masked the flush-right wordmark below 64rem and hid the bug on phones. */
   .site-header {
-    justify-content: space-between;
     padding-left: 8.8rem;
   }
   .catalog-hero {

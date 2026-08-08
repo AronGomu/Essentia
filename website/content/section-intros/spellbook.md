@@ -1,1 +1,1 @@
-Spellbook is an Aether Wizard and spell-chain archetype. It accumulates named Spellbook resources, converts casts into incremental advantage, and rewards sequencing several spells in one turn.
+Spellbook is a Wizard/spell-chain archetype. It accumulates named Spellbook resources, converts casts into incremental advantage, and rewards sequencing multiple spells in one turn.

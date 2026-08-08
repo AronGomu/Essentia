@@ -18,12 +18,32 @@ export const UTILITY_LINKS = [
 ];
 
 /**
+ * True when `html` carries `token` as a whole class token, wherever it sits in
+ * the attribute. `class="nav-block reading-switch"` and `class="reading-switch
+ * reading-switch--wide"` both count; `class="reading-switcheroo"` does not.
+ *
+ * The earlier regexes only tolerated a *trailing* modifier, so a leading one
+ * silently retired the gate they guarded.
+ */
+function hasClassToken(html, token) {
+  return new RegExp(`class="(?:[^"]*\\s)?${token}(?:\\s[^"]*)?"`).test(html);
+}
+
+/** Every `href="…"` value inside a markup block, in document order. */
+function hrefsIn(block) {
+  return [...block.matchAll(/href="([^"]*)"/g)].map((match) => match[1]);
+}
+
+/**
  * @param {string} file dist-relative path, e.g. 'index.html'
  * @param {string} html
  * @param {string} base
+ * @param {{preview: Iterable<string>, reminder: Iterable<string>} | null} keywords
+ *   the published keyword registry, split by flag. Required for any page that
+ *   carries the `#keyword-rulings` island — which is every real page.
  * @returns {string[]} problems for this page
  */
-export function chromeIssues(file, html, base) {
+export function chromeIssues(file, html, base, keywords = null) {
   // Browser-local decks are read at runtime, in the visitor's own browser.
   // Seeing one in a built file means the index was assembled at build time,
   // which would publish a visitor's private decklist. Fail the build.
@@ -76,7 +96,7 @@ export function chromeIssues(file, html, base) {
   if (!/<html[^>]*\sdata-catalog="(?:expanded|collapsed)"/.test(html)) {
     problems.push(`${file}: page is missing the catalog rail state`);
   }
-  if (!/class="rail-toggle(?:"|\s)/.test(html)) {
+  if (!hasClassToken(html, 'rail-toggle')) {
     problems.push(`${file}: page is missing the catalog rail toggle`);
   }
   if (!html.includes('class="back-to-top"')) {
@@ -94,13 +114,14 @@ export function chromeIssues(file, html, base) {
   ) {
     // The docs/blog navigation lives in the catalog rail now, and the switcher
     // is its entry point. Match the class *token*, not the whole attribute, so
-    // a later modifier class cannot silently retire this gate.
-    if (!/class="reading-switch(?:"|\s)/.test(html)) {
+    // a modifier class in *either* position cannot silently retire this gate.
+    if (!hasClassToken(html, 'reading-switch')) {
       problems.push(`${file}: reading page is missing the docs/blog switcher`);
     }
     if (!html.includes('class="reading-shell')) {
       problems.push(`${file}: reading page is missing the reading shell`);
     }
+    problems.push(...mobileReadingNavIssues(file, html));
   }
 
   const cardPreviewCount = (html.match(/data-card-preview="/g) ?? []).length;
@@ -255,42 +276,125 @@ export function chromeIssues(file, html, base) {
     }
   }
 
-  problems.push(...reminderIssues(file, html));
+  problems.push(...keywordRulingIssues(file, html, keywords));
+  problems.push(...reminderIssues(file, html, keywords));
 
   return problems;
 }
 
 /**
- * Card pages resolve each bold keyword phrase in their rules text against the
- * page's own `#keyword-rulings` map and append a `(ruling)` reminder span.
- * That wiring is one optional `definitions` prop away from silently becoming a
- * no-op, and nothing else in the build would notice — so assert the output
- * directly: a bold phrase that resolves to a term in the map must be followed
- * by a reminder.
+ * The desktop rail is `display: none` below 64rem, so on a phone the drawer is
+ * the *only* reading navigation there is. It once shipped catalog-only, which
+ * left a visitor on `/docs/rules/zones/` with no route to any other doc.
+ * Assert the drawer offers every destination the rail does, on every reading
+ * page.
  */
-function reminderIssues(file, html) {
+function mobileReadingNavIssues(file, html) {
+  const railMatch = html.match(/<nav id="desktop-catalog"[\s\S]*?<\/nav>/);
+  if (!railMatch)
+    return [`${file}: reading page is missing the desktop catalog rail`];
+  const drawerMatch = html.match(
+    /<dialog class="mobile-drawer"[\s\S]*?<\/dialog>/,
+  );
+  if (!drawerMatch)
+    return [`${file}: reading page is missing the mobile catalog drawer`];
+
+  const drawer = drawerMatch[0];
+  const problems = [];
+  if (!hasClassToken(drawer, 'reading-switch')) {
+    problems.push(
+      `${file}: the mobile drawer is missing the docs/blog switcher`,
+    );
+  }
+
+  const offered = new Set(hrefsIn(drawer));
+  const missing = hrefsIn(railMatch[0]).filter((href) => !offered.has(href));
+  if (missing.length) {
+    problems.push(
+      `${file}: the mobile drawer is missing ${missing.length} reading destination(s) the rail offers, starting with ${missing[0]}`,
+    );
+  }
+  return problems;
+}
+
+/** Parse the page's `#keyword-rulings` island, or say why it cannot be read. */
+function readRulingMap(file, html) {
+  const match = html.match(
+    /<script type="application\/json" id="keyword-rulings">([\s\S]*?)<\/script>/,
+  );
+  if (!match)
+    return { problems: [`${file}: page is missing the keyword ruling map`] };
+  try {
+    return { terms: new Set(Object.keys(JSON.parse(match[1]))) };
+  } catch {
+    return { problems: [`${file}: keyword ruling map is not valid JSON`] };
+  }
+}
+
+/**
+ * The island the gallery hover box reads must hold exactly the `preview` terms.
+ * Widening the filter ships rulings nobody previews; narrowing it leaves
+ * gallery links advertising `data-card-keywords` the hover box renders empty —
+ * and neither shape failed anything before this rule existed.
+ */
+function keywordRulingIssues(file, html, keywords) {
+  if (!html.includes('id="keyword-rulings"')) return [];
+  if (!keywords)
+    return [`${file}: the chrome gate ran without the keyword registry`];
+
+  const { terms, problems } = readRulingMap(file, html);
+  if (!terms) return problems;
+
+  const expected = new Set(keywords.preview);
+  const missing = [...expected].filter((term) => !terms.has(term)).sort();
+  const extra = [...terms].filter((term) => !expected.has(term)).sort();
+  const issues = [];
+  if (missing.length)
+    issues.push(
+      `${file}: the keyword ruling map is missing ${missing.length} previewed term(s), starting with "${missing[0]}"`,
+    );
+  if (extra.length)
+    issues.push(
+      `${file}: the keyword ruling map publishes ${extra.length} non-previewed term(s), starting with "${extra[0]}"`,
+    );
+  return issues;
+}
+
+/**
+ * Card pages resolve each bold keyword phrase in their rules text against
+ * `reminderDefinitions()` and append a `(ruling)` reminder span. That wiring is
+ * one optional `definitions` prop away from silently becoming a no-op, and
+ * nothing else in the build would notice — so assert the output directly.
+ *
+ * Both directions, and against the `reminder` set rather than the page's own
+ * `preview` island: judging by the island made the gate fail *open*, because
+ * the 20 terms that are `reminder: true, preview: false` were then checked by
+ * nothing at all. The negative direction is what catches a route that renders
+ * reminders for terms the card face never prints one for — the card and version
+ * routes of the same card must agree.
+ */
+function reminderIssues(file, html, keywords) {
   if (!/^cards\//.test(file)) return [];
 
   const rulesMatch = html.match(/<div class="rules-text"[^>]*>[\s\S]*?<\/div>/);
   if (!rulesMatch) return [`${file}: card page is missing its rules text`];
 
-  const rulingsMatch = html.match(
-    /<script type="application\/json" id="keyword-rulings">([\s\S]*?)<\/script>/,
-  );
-  if (!rulingsMatch)
-    return [`${file}: card page is missing the keyword ruling map`];
+  if (!keywords)
+    return [`${file}: the chrome gate ran without the keyword registry`];
 
-  let terms;
-  try {
-    terms = new Set(Object.keys(JSON.parse(rulingsMatch[1])));
-  } catch {
-    return [`${file}: keyword ruling map is not valid JSON`];
-  }
-  // Fail closed: an empty map would make every assertion below vacuous, which
-  // is exactly the shape of the regression this rule exists to catch.
-  if (!terms.size) return [`${file}: keyword ruling map is empty`];
+  const { terms: published, problems } = readRulingMap(file, html);
+  if (!published) return problems;
+  // Fail closed: an empty island would mean the layout stopped publishing the
+  // hover map, which is exactly the shape of the regression this rule exists
+  // to catch. `keywordRulingIssues` compares its contents; this only insists
+  // it is not vacuous.
+  if (!published.size) return [`${file}: keyword ruling map is empty`];
 
-  const problems = [];
+  const reminders = new Set(keywords.reminder);
+  if (!reminders.size)
+    return [`${file}: the keyword registry declares no reminder terms`];
+
+  const issues = [];
   for (const match of rulesMatch[0].matchAll(
     /<strong>([\s\S]*?)<\/strong>((?:<span class="reminder">)?)/g,
   )) {
@@ -301,16 +405,17 @@ function reminderIssues(file, html) {
         .trim(),
     );
     if (!phrase) continue;
-    const resolves = splitComposite(phrase)
-      .map(normalizeKeyword)
-      .some((term) => terms.has(term));
+    const parts = splitComposite(phrase).map(normalizeKeyword);
+    const resolves = parts.some((term) => reminders.has(term));
     if (resolves && !match[2]) {
-      problems.push(
-        `${file}: keyword "${phrase}" must carry an inline reminder`,
+      issues.push(`${file}: keyword "${phrase}" must carry an inline reminder`);
+    } else if (!resolves && match[2]) {
+      issues.push(
+        `${file}: keyword "${phrase}" prints no reminder and must not carry one`,
       );
     }
   }
-  return problems;
+  return issues;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -328,12 +433,19 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     return files;
   };
 
+  const { loadKeywordRegistry } = await import('./content/keywords.mjs');
+  const registry = [...(await loadKeywordRegistry()).values()];
+  const keywords = {
+    preview: registry.filter((k) => k.preview).map((k) => k.term),
+    reminder: registry.filter((k) => k.reminder).map((k) => k.term),
+  };
+
   const files = await walk(dist);
   const problems = [];
   for (const file of files) {
     const html = await readFile(file, 'utf8');
     const relative = path.relative(dist, file);
-    problems.push(...chromeIssues(relative, html, base));
+    problems.push(...chromeIssues(relative, html, base, keywords));
   }
 
   if (problems.length) throw new Error(problems.join('\n'));

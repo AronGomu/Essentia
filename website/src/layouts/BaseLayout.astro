@@ -6,7 +6,7 @@ import CardQualityUpgrade from '../components/CardQualityUpgrade.astro';
 import FindPalette from '../components/FindPalette.svelte';
 import Navigation from '../components/Navigation.svelte';
 import Seo from '../components/Seo.astro';
-import { catalog } from '../lib/catalog';
+import { catalog, previewDefinitions } from '../lib/catalog';
 import { buildFindEntries } from '../lib/find';
 import { readingKindFor, readingNavGroups } from '../lib/reading-nav';
 import '../styles/global.css';
@@ -77,11 +77,7 @@ const findEntries = buildFindEntries({
     decks,
   })),
 });
-const keywordRulings = Object.fromEntries(
-  catalog.keywords
-    .filter((keyword) => keyword.preview)
-    .map((keyword) => [keyword.term, keyword.definition]),
-);
+const keywordRulings = Object.fromEntries(previewDefinitions());
 // `set:html` writes this verbatim, so a stray `</script>` in a term or ruling
 // would close the JSON block and turn the rest into live markup. `<` only ever
 // occurs inside JSON string literals, where the `\u003c` escape means exactly

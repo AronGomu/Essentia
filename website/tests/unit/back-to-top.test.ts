@@ -23,6 +23,11 @@ describe('shouldShowBackToTop', () => {
   it('ignores nonsense scroll positions', () => {
     expect(shouldShowBackToTop(-10)).toBe(false);
     expect(shouldShowBackToTop(Number.NaN)).toBe(false);
+    // The only input that distinguishes the `Number.isFinite` guard: `-10` and
+    // `NaN` are both already below the threshold, so without this line the
+    // guard could be deleted with the suite still green.
+    expect(shouldShowBackToTop(Number.POSITIVE_INFINITY)).toBe(false);
+    expect(shouldShowBackToTop(Number.NEGATIVE_INFINITY)).toBe(false);
   });
 
   it('anchors the control bottom-right', () => {
@@ -44,10 +49,15 @@ describe('shouldShowBackToTop', () => {
       path.resolve(__dirname, '../../src/layouts/BaseLayout.astro'),
       'utf8',
     );
-    const controlIndex = source.indexOf('<BackToTop');
+    // Anchored, not a prefix match: `<BackToTop` also matches
+    // `<BackToTopButton />`, so renaming the component kept this green.
+    const control = /<BackToTop\s*\/>/.exec(source);
     const footerIndex = source.indexOf('<footer class="site-footer"');
-    expect(controlIndex).toBeGreaterThan(-1);
+    expect(control).not.toBeNull();
     expect(footerIndex).toBeGreaterThan(-1);
-    expect(controlIndex).toBeLessThan(footerIndex);
+    expect(control!.index).toBeLessThan(footerIndex);
+    expect(source).toContain(
+      "import BackToTop from '../components/BackToTop.astro'",
+    );
   });
 });

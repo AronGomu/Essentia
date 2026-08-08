@@ -149,9 +149,11 @@ test('docs pages navigate from the catalog rail', async ({ page }) => {
   await page.goto(urlFor('/docs/'));
 
   const rail = page.getByRole('navigation', { name: 'Documentation and blog' });
+  // `true`, not `page`: the switcher marks the active section, and the group
+  // list below it marks the active page.
   await expect(
     rail.getByRole('link', { name: 'Docs', exact: true }),
-  ).toHaveAttribute('aria-current', 'page');
+  ).toHaveAttribute('aria-current', 'true');
   await expect(
     rail.getByRole('link', { name: 'Blog', exact: true }),
   ).toBeVisible();
@@ -175,7 +177,7 @@ test('blog pages swap the catalog for the blog list', async ({ page }) => {
   const rail = page.getByRole('navigation', { name: 'Documentation and blog' });
   await expect(
     rail.getByRole('link', { name: 'Blog', exact: true }),
-  ).toHaveAttribute('aria-current', 'page');
+  ).toHaveAttribute('aria-current', 'true');
   // The card catalog is not rendered here — its group toggle is gone.
   await expect(rail.getByRole('button', { name: /Non-Archetype/ })).toHaveCount(
     0,
@@ -196,11 +198,16 @@ test('catalog rail collapses to a strip that keeps both toggles', async ({
   await expect(collapseButtons.first()).toBeVisible();
   await expect(collapseButtons.last()).toBeVisible();
 
-  await collapseButtons.first().click();
-  await expect(page.locator('html')).toHaveAttribute(
-    'data-catalog',
-    'collapsed',
-  );
+  // Same `client:load` race `openFindWithHotkey` guards against: `goto`
+  // resolves on `load`, the rail toggle server-renders, and a click that lands
+  // before hydration is dropped with no actionability retry to save it. Poll
+  // stops at the first click the island answers, so this never double-toggles.
+  await expect
+    .poll(async () => {
+      await collapseButtons.first().click();
+      return page.locator('html').getAttribute('data-catalog');
+    })
+    .toBe('collapsed');
 
   const expandButtons = page.getByRole('button', { name: 'Expand catalog' });
   await expect(expandButtons).toHaveCount(2);
@@ -218,8 +225,18 @@ test('back to top returns the visitor to the top', async ({ page }) => {
   await page.goto(urlFor('/docs/'));
   const control = page.getByRole('button', { name: 'Back to top' });
   await expect(control).toBeHidden();
-  await page.mouse.wheel(0, 2000);
-  await expect(control).toBeVisible();
+  // Not `mouse.wheel`: at the default pointer position (0,0) the cursor sits
+  // over `.desktop-catalog`, a `position: fixed`, `overflow-y: auto` rail that
+  // is itself scrollable at 1280×720 — Chromium latches the wheel to that
+  // innermost scroller and `window.scrollY` never leaves 0. Scroll the
+  // document itself, and poll because `<BackToTop>` is a `client:load` island
+  // that may not have hydrated when `goto` resolved.
+  await expect
+    .poll(async () => {
+      await page.evaluate(() => window.scrollTo(0, 2000));
+      return control.isVisible();
+    })
+    .toBe(true);
   await control.click();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   const results = await new AxeBuilder({ page }).analyze();

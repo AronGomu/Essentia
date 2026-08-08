@@ -39,6 +39,8 @@
   }
 
   $: navLabel = mode === 'reading' ? 'Documentation and blog' : 'Catalog';
+  $: drawerLabel = mode === 'reading' ? 'Docs & blog' : 'Catalog';
+  $: closeLabel = `Close ${drawerLabel.toLowerCase()}`;
 
   const href = (route: string) =>
     `${base.replace(/\/$/, '')}/${route.replace(/^\//, '')}`;
@@ -94,7 +96,8 @@
   on:click={openDrawer}
   aria-haspopup="dialog"
 >
-  <span aria-hidden="true">☰</span> Catalog
+  <span aria-hidden="true">☰</span>
+  {drawerLabel}
 </button>
 
 <nav id="desktop-catalog" class="desktop-catalog" aria-label={navLabel}>
@@ -142,14 +145,17 @@
       {/each}
     </ul>
   {:else}
+    <!-- `true`, not `page`: on `/docs/rules/zones/` the switcher marks the
+         active *section* while the group list marks the active page, and two
+         `aria-current="page"` links in one nav announce two current pages. -->
     <div class="reading-switch">
       <a
         href={href('/docs/')}
-        aria-current={readingKind === 'docs' ? 'page' : undefined}>Docs</a
+        aria-current={readingKind === 'docs' ? 'true' : undefined}>Docs</a
       >
       <a
         href={href('/blog/')}
-        aria-current={readingKind === 'blog' ? 'page' : undefined}>Blog</a
+        aria-current={readingKind === 'blog' ? 'true' : undefined}>Blog</a
       >
     </div>
     {#each readingGroups as group (group.key)}
@@ -189,14 +195,29 @@
 >
   <div class="drawer-panel">
     <header>
-      <h2 id="catalog-title">Catalog</h2>
-      <button on:click={closeDrawer} aria-label="Close catalog">×</button>
+      <h2 id="catalog-title">{drawerLabel}</h2>
+      <button on:click={closeDrawer} aria-label={closeLabel}>×</button>
     </header>
-    <nav aria-label="Mobile catalog">
-      <details open>
-        <summary>Non-Archetype</summary>
+    <!-- Below 64rem `.desktop-catalog` is `display: none`, so on a phone this
+         drawer is the only navigation there is. It has to carry whichever mode
+         the rail is in, or a reading page strands the visitor. -->
+    <nav aria-label={`Mobile ${navLabel.toLowerCase()}`}>
+      {#if mode === 'catalog'}
+        <details open>
+          <summary>Non-Archetype</summary>
+          <ul>
+            {#each nonArchetype as section (section.slug)}<li>
+                <a
+                  href={href(section.route)}
+                  aria-current={current(section.route)}
+                  >{section.label} <small>{section.count}</small></a
+                >
+              </li>{/each}
+          </ul>
+        </details>
+        <p class="nav-label">Archetypes</p>
         <ul>
-          {#each nonArchetype as section (section.slug)}<li>
+          {#each archetypes as section (section.slug)}<li>
               <a
                 href={href(section.route)}
                 aria-current={current(section.route)}
@@ -204,15 +225,28 @@
               >
             </li>{/each}
         </ul>
-      </details>
-      <p class="nav-label">Archetypes</p>
-      <ul>
-        {#each archetypes as section (section.slug)}<li>
-            <a href={href(section.route)} aria-current={current(section.route)}
-              >{section.label} <small>{section.count}</small></a
-            >
-          </li>{/each}
-      </ul>
+      {:else}
+        <div class="reading-switch">
+          <a
+            href={href('/docs/')}
+            aria-current={readingKind === 'docs' ? 'true' : undefined}>Docs</a
+          >
+          <a
+            href={href('/blog/')}
+            aria-current={readingKind === 'blog' ? 'true' : undefined}>Blog</a
+          >
+        </div>
+        {#each readingGroups as group (group.key)}
+          <p class="nav-label">{group.label}</p>
+          <ul>
+            {#each group.items as item (item.route)}<li>
+                <a href={href(item.route)} aria-current={current(item.route)}
+                  >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
+                >
+              </li>{/each}
+          </ul>
+        {/each}
+      {/if}
     </nav>
   </div>
 </dialog>

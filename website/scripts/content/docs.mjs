@@ -3,7 +3,6 @@ import path from 'node:path';
 import { headingSlug } from '../../src/lib/markdown.ts';
 import { ROOT, fail, slugify } from './shared.mjs';
 
-const DOCS_ROOT = path.join(ROOT, 'docs');
 const MAX_DOC_BYTES = 262_144;
 
 /** `docs/rules/ZONES.md` → `/docs/rules/zones/`; `docs/PRESENTATION.md` → `/docs/`. */
@@ -47,12 +46,12 @@ export function rewriteDocLinks(body, relativePath, knownPaths) {
   });
 }
 
-async function discoverDocPaths() {
+async function discoverDocPaths(root) {
   const output = [];
   async function walk(current) {
     for (const entry of await readdir(current, { withFileTypes: true })) {
       const absolute = path.join(current, entry.name);
-      const relative = path.relative(ROOT, absolute).split(path.sep).join('/');
+      const relative = path.relative(root, absolute).split(path.sep).join('/');
       if (relative === 'docs/ADR' || relative.startsWith('docs/ADR/')) continue;
       // Per-keyword ruling files are registry data, not doc pages.
       if (/^docs\/keywords\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(relative))
@@ -68,7 +67,7 @@ async function discoverDocPaths() {
       }
     }
   }
-  await walk(DOCS_ROOT);
+  await walk(path.join(root, 'docs'));
   return output;
 }
 
@@ -87,9 +86,17 @@ function groupFor(relativePath, archetypeOrder, groups) {
   return null;
 }
 
-/** @returns {Promise<DocEntry[]>} sorted by group order then title */
-export async function loadDocs(groups) {
-  const discovered = await discoverDocPaths();
+/**
+ * @param {object[]} groups the reading-order doc groups
+ * @param {string} [root] repository root to read `docs/` from. Defaults to this
+ *   repository; tests point it at a temp tree, exactly as `loadPosts(blogRoot)`
+ *   and `loadSectionIntros(directory)` already allow — a fixture written into
+ *   the tracked tree survives a SIGKILL or a vitest timeout and then breaks
+ *   `npm run content` for everyone until a human deletes it.
+ * @returns {Promise<DocEntry[]>} sorted by group order, authored order, title
+ */
+export async function loadDocs(groups, root = ROOT) {
+  const discovered = await discoverDocPaths(root);
   const knownPaths = new Set(discovered);
 
   const archetypeOrder = discovered
@@ -113,7 +120,7 @@ export async function loadDocs(groups) {
     const placement = groupFor(relative, archetypeOrder, groups);
     if (!placement) fail(`doc ${relative} is not listed in the reading order`);
 
-    const raw = await readFile(path.join(ROOT, relative), 'utf8');
+    const raw = await readFile(path.join(root, relative), 'utf8');
     const lines = raw.split('\n');
     const titleMatch = /^#\s+(.+)$/.exec(lines[0] ?? '');
     if (!titleMatch) fail(`doc ${relative} has no # first heading`);

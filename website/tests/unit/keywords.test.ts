@@ -1,7 +1,7 @@
-import { existsSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import {
   extractKeywords,
   loadKeywordRegistry,
@@ -126,12 +126,25 @@ function writeKeywordFile(
   );
 }
 
+/**
+ * Every temp directory `fixture()` hands out, so `afterEach` can remove them.
+ * Without this the suite leaked +17 `/tmp/essentia-keyword-registry-*` dirs per
+ * run; 1252 had accumulated on one machine before anyone noticed.
+ */
+const fixtureDirs: string[] = [];
+
+afterEach(() => {
+  for (const dir of fixtureDirs.splice(0))
+    rmSync(dir, { recursive: true, force: true });
+});
+
 /** Write a one-entry keyword directory so the loader can accept or reject it. */
 function fixture(
   overrides: Record<string, string | undefined>,
   body: string = VALID_BODY,
 ): string {
   const dir = mkdtempSync(path.join(tmpdir(), 'essentia-keyword-registry-'));
+  fixtureDirs.push(dir);
   const merged: Record<string, string> = { ...VALID_FRONT_MATTER };
   for (const [key, value] of Object.entries(overrides)) {
     if (value === undefined) delete merged[key];
@@ -296,6 +309,7 @@ describe('keyword registry rulings', () => {
 
   it('rejects a duplicate term', async () => {
     const dir = mkdtempSync(path.join(tmpdir(), 'essentia-keyword-registry-'));
+    fixtureDirs.push(dir);
     writeKeywordFile(dir, 'demo-a.md', { ...VALID_FRONT_MATTER, term: 'Demo' });
     writeKeywordFile(dir, 'demo-b.md', { ...VALID_FRONT_MATTER, term: 'Demo' });
     await expect(loadKeywordRegistry(dir)).rejects.toThrow(

@@ -319,6 +319,20 @@ export function reminderDefinitions(): Map<string, string> {
   );
 }
 
+/**
+ * Terms the gallery hover box previews. Published into every page's
+ * `#keyword-rulings` island, so the set must match the `preview` flag exactly:
+ * a wider filter ships rulings nobody asked for, a narrower one leaves gallery
+ * links advertising `data-card-keywords` the hover box cannot resolve.
+ */
+export function previewDefinitions(): Map<string, string> {
+  return new Map(
+    catalog.keywords
+      .filter((keyword) => keyword.preview)
+      .map((keyword) => [keyword.term, keyword.definition]),
+  );
+}
+
 export interface RelatedInput {
   id: string;
   name: string;

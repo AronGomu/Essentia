@@ -7,18 +7,21 @@ import {
   postGroups,
 } from '../../scripts/content/reading-order.mjs';
 
-let dir: string | undefined;
+// Every fixture directory, not just the most recent one: a test that calls
+// `fixture()` more than once used to leak all but the last into /tmp.
+const dirs: string[] = [];
 
 function fixture(data: unknown): string {
-  dir = mkdtempSync(path.join(tmpdir(), 'reading-order-'));
+  const dir = mkdtempSync(path.join(tmpdir(), 'reading-order-'));
+  dirs.push(dir);
   const file = path.join(dir, 'reading-order.json');
   writeFileSync(file, JSON.stringify(data), 'utf8');
   return file;
 }
 
 afterEach(() => {
-  if (dir) rmSync(dir, { recursive: true, force: true });
-  dir = undefined;
+  for (const dir of dirs.splice(0))
+    rmSync(dir, { recursive: true, force: true });
 });
 
 const validDocsGroup = {
@@ -34,6 +37,52 @@ const catchAllDocsGroup = {
 const catchAllBlogGroup = { key: 'all', label: 'All posts', slugs: null };
 
 describe('loadReadingOrder', () => {
+  it('rejects a doc path that walks out of docs/', async () => {
+    // `/^docs\/.*\.md$/` accepted `docs/../../../../etc/passwd.md`. There was
+    // no exploit path — `loadDocs` only reads what its own walk found — but the
+    // error it produced pointed at the reading order rather than the traversal.
+    for (const bad of [
+      'docs/../../../../etc/passwd.md',
+      'docs/../secrets.md',
+      'docs/rules/../../../x.md',
+    ]) {
+      await expect(
+        loadReadingOrder(
+          fixture({
+            schemaVersion: 1,
+            docs: [
+              { key: 'overview', label: 'Overview', files: [bad] },
+              catchAllDocsGroup,
+            ],
+            blog: [catchAllBlogGroup],
+          }),
+        ),
+      ).rejects.toThrow(`reading group overview: invalid doc ${bad}`);
+    }
+  });
+
+  it('still accepts an ordinary nested doc path', async () => {
+    // …and the rejection above stays meaningful only while this passes.
+    const { docs } = await loadReadingOrder(
+      fixture({
+        schemaVersion: 1,
+        docs: [
+          {
+            key: 'overview',
+            label: 'Overview',
+            files: ['docs/rules/ZONES.md', 'docs/01_burning_abyss/RULES.md'],
+          },
+          catchAllDocsGroup,
+        ],
+        blog: [catchAllBlogGroup],
+      }),
+    );
+    expect(docs[0]?.files).toEqual([
+      'docs/rules/ZONES.md',
+      'docs/01_burning_abyss/RULES.md',
+    ]);
+  });
+
   it('loads the shipped config', async () => {
     const { docs, blog } = await loadReadingOrder();
     expect(docs.length).toBe(6);

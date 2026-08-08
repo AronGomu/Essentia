@@ -6,6 +6,7 @@ import {
   catalog,
   cardsById,
   formatDate,
+  reminderDefinitions,
   withBase,
 } from '../../../../lib/catalog';
 
@@ -18,9 +19,10 @@ export function getStaticPaths() {
 const { card } = Astro.props;
 const current = cardsById.get(card.id)!;
 const base = import.meta.env.BASE_URL;
-const ruleDefinitions = new Map(
-  catalog.keywords.map((keyword) => [keyword.term, keyword.definition]),
-);
+// Same map as `cards/[id].astro`: only terms whose ruling is *printed* as
+// reminder text. Building it from the whole keyword list here made the very
+// same card render differently on its version route than on its card route.
+const ruleDefinitions = reminderDefinitions();
 ---
 
 <BaseLayout

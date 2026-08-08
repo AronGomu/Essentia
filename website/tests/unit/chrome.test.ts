@@ -1,6 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { chromeIssues } from '../../scripts/check-chrome.mjs';
 
+/**
+ * The published keyword registry, split by flag, as `check-chrome.mjs` hands it
+ * to the gate. `Counter` is the real shape that broke: `reminder: false`, so no
+ * card face prints a reminder for it — and `preview: false`, so it never
+ * reaches the hover map either. `Detach N` is the shape the old gate missed
+ * entirely: a reminder term that is not previewed.
+ */
+const keywordRegistry = {
+  preview: ['Mill N'],
+  reminder: ['Mill N', 'Detach N'],
+};
+
 const siteFooter = `
 <footer class="site-footer">
   <nav aria-label="Footer">
@@ -504,11 +516,18 @@ ${siteFooter}
 `;
 
   it('accepts a card page whose keyword carries its reminder', () => {
-    expect(chromeIssues('cards/x/index.html', cardPage(true), '/')).toEqual([]);
+    expect(
+      chromeIssues('cards/x/index.html', cardPage(true), '/', keywordRegistry),
+    ).toEqual([]);
   });
 
   it('flags a card page whose keyword lost its reminder', () => {
-    const issues = chromeIssues('cards/x/index.html', cardPage(false), '/');
+    const issues = chromeIssues(
+      'cards/x/index.html',
+      cardPage(false),
+      '/',
+      keywordRegistry,
+    );
     expect(
       issues.some((issue) =>
         issue.includes('keyword "Mill 3" must carry an inline reminder'),
@@ -521,7 +540,12 @@ ${siteFooter}
       /<div class="rules-text">[\s\S]*?<\/div>/,
       '',
     );
-    const issues = chromeIssues('cards/x/index.html', html, '/');
+    const issues = chromeIssues(
+      'cards/x/index.html',
+      html,
+      '/',
+      keywordRegistry,
+    );
     expect(
       issues.some((issue) =>
         issue.includes('card page is missing its rules text'),
@@ -534,7 +558,12 @@ ${siteFooter}
       /<script type="application\/json" id="keyword-rulings">[\s\S]*?<\/script>/,
       '',
     );
-    const issues = chromeIssues('cards/x/index.html', html, '/');
+    const issues = chromeIssues(
+      'cards/x/index.html',
+      html,
+      '/',
+      keywordRegistry,
+    );
     expect(issues.some((issue) => issue.includes('keyword ruling map'))).toBe(
       true,
     );
@@ -545,7 +574,12 @@ ${siteFooter}
       /(<script type="application\/json" id="keyword-rulings">)[\s\S]*?(<\/script>)/,
       '$1{}$2',
     );
-    const issues = chromeIssues('cards/x/index.html', html, '/');
+    const issues = chromeIssues(
+      'cards/x/index.html',
+      html,
+      '/',
+      keywordRegistry,
+    );
     expect(
       issues.some((issue) => issue.includes('keyword ruling map is empty')),
     ).toBe(true);
@@ -559,7 +593,130 @@ ${siteFooter}
       '<strong>Mill 3</strong>',
       '<strong>Cost:</strong>',
     );
-    expect(chromeIssues('cards/x/index.html', html, '/')).toEqual([]);
+    expect(
+      chromeIssues('cards/x/index.html', html, '/', keywordRegistry),
+    ).toEqual([]);
+  });
+
+  it('covers a reminder term the hover map never publishes', () => {
+    // `Detach N` is `reminder: true, preview: false`. Judging by the page's own
+    // `#keyword-rulings` island — which holds only the *preview* set — left 20
+    // such terms asserted by nothing: the gate failed open.
+    const html = cardPage(false).replace(
+      '<strong>Mill 3</strong>',
+      '<strong>Detach 2</strong>',
+    );
+    expect(
+      chromeIssues('cards/x/index.html', html, '/', keywordRegistry),
+    ).toContain(
+      'cards/x/index.html: keyword "Detach 2" must carry an inline reminder',
+    );
+  });
+
+  it('flags a route that reminds a term the card face never prints', () => {
+    // The version route used to build its definitions from *every* catalog
+    // keyword, so the same card rendered a `Counter` reminder there and none on
+    // its card route.
+    const html = cardPage(false).replace(
+      '<strong>Mill 3</strong>',
+      '<strong>Counter</strong><span class="reminder">(Cancel a spell.)</span>',
+    );
+    expect(
+      chromeIssues('cards/x/index.html', html, '/', keywordRegistry),
+    ).toContain(
+      'cards/x/index.html: keyword "Counter" prints no reminder and must not carry one',
+    );
+  });
+
+  it('refuses to judge a card page without the keyword registry', () => {
+    // Fail closed: a caller that forgets the registry must not be told the page
+    // is fine.
+    expect(chromeIssues('cards/x/index.html', cardPage(true), '/')).toContain(
+      'cards/x/index.html: the chrome gate ran without the keyword registry',
+    );
+  });
+
+  it('flags a registry that declares no reminder terms at all', () => {
+    expect(
+      chromeIssues('cards/x/index.html', cardPage(true), '/', {
+        preview: ['Mill N'],
+        reminder: [],
+      }),
+    ).toContain(
+      'cards/x/index.html: the keyword registry declares no reminder terms',
+    );
+  });
+});
+
+describe('the published keyword ruling map must hold exactly the preview set', () => {
+  const page = (json: string) => `
+${railChrome}
+<nav class="utility-nav" aria-label="Sections">
+  <a href="/docs/">Learn about Essentia</a>
+  <a href="/blog/">Blog</a>
+  <a href="/decks/">Decks</a>
+</nav>
+${findTrigger}
+<nav class="breadcrumb">…</nav>
+<script type="application/json" id="keyword-rulings">${json}</script>
+${siteFooter}
+`;
+
+  it('accepts a map that matches the preview set', () => {
+    const issues = chromeIssues(
+      'updates/index.html',
+      page('{"Mill N":"Send N cards from the top of your Deck to the Grave."}'),
+      '/',
+      keywordRegistry,
+    );
+    expect(issues.filter((issue) => issue.includes('ruling map'))).toEqual([]);
+  });
+
+  it('flags a map that lost a previewed term', () => {
+    // Reverting the filter to `origin === 'essentia'` drops `Mill N` while 19
+    // gallery links keep advertising it in `data-card-keywords` — the hover box
+    // then renders empty, and nothing failed before this rule existed.
+    const issues = chromeIssues(
+      'updates/index.html',
+      page('{}'),
+      '/',
+      keywordRegistry,
+    );
+    expect(issues).toContain(
+      'updates/index.html: the keyword ruling map is missing 1 previewed term(s), starting with "Mill N"',
+    );
+  });
+
+  it('flags a map that publishes a term nobody previews', () => {
+    const issues = chromeIssues(
+      'updates/index.html',
+      page(
+        '{"Mill N":"Send N cards.","Counter":"Cancel a spell or ability on the Stack."}',
+      ),
+      '/',
+      keywordRegistry,
+    );
+    expect(issues).toContain(
+      'updates/index.html: the keyword ruling map publishes 1 non-previewed term(s), starting with "Counter"',
+    );
+  });
+
+  it('refuses to judge the map without the keyword registry', () => {
+    expect(chromeIssues('updates/index.html', page('{}'), '/')).toContain(
+      'updates/index.html: the chrome gate ran without the keyword registry',
+    );
+  });
+
+  it('flags a map that is not valid JSON', () => {
+    const issues = chromeIssues(
+      'updates/index.html',
+      page('{oops}'),
+      '/',
+      keywordRegistry,
+    );
+    expect(issues).toContain(
+      'updates/index.html: keyword ruling map is not valid JSON',
+    );
   });
 });
 
@@ -718,12 +875,42 @@ describe('every reading page ships the docs/blog switcher', () => {
 </nav>
 `;
 
+  /** The reading destinations the rail offers, which the drawer must match. */
+  const readingLinks = `
+  <div class="reading-switch"><a href="/docs/">Docs</a><a href="/blog/">Blog</a></div>
+  <ul>
+    <li><a href="/docs/rules/zones/">Zones</a></li>
+    <li><a href="/docs/glossary/">Glossary</a></li>
+  </ul>
+`;
+
+  const readingRail = `
+<nav id="desktop-catalog" class="desktop-catalog" aria-label="Documentation and blog">
+${readingLinks}
+</nav>
+`;
+
+  const readingDrawer = (body = readingLinks) => `
+<dialog class="mobile-drawer" aria-labelledby="catalog-title">
+  <div class="drawer-panel">
+    <nav aria-label="Mobile documentation and blog">
+${body}
+    </nav>
+  </div>
+</dialog>
+`;
+
+  /** What the drawer shipped before P1.2: the card catalog, on a docs page. */
+  const catalogOnlyDrawerBody = `
+  <p class="nav-label">Archetypes</p>
+  <ul><li><a href="/archetypes/nekroz/">Nekroz</a></li></ul>
+`;
+
   const withReadingSwitch = `
 ${utilityNav}
 <nav class="breadcrumb"></nav>
-<nav id="desktop-catalog" class="desktop-catalog" aria-label="Documentation and blog">
-  <div class="reading-switch"><a href="/docs/">Docs</a><a href="/blog/">Blog</a></div>
-</nav>
+${readingRail}
+${readingDrawer()}
 <div class="reading-shell reading-shell--no-toc">
   <article class="reading-body"><h1>Blog</h1></article>
 </div>
@@ -771,7 +958,7 @@ ${siteFooter}
     // being recognised the way an exact-string check would.
     const issues = chromeIssues(
       'docs/index.html',
-      withReadingSwitch.replace(
+      withReadingSwitch.replaceAll(
         'class="reading-switch"',
         'class="reading-switch reading-switch--wide"',
       ),
@@ -783,7 +970,7 @@ ${siteFooter}
   it('rejects a lookalike class that only starts the same', () => {
     const issues = chromeIssues(
       'docs/index.html',
-      withReadingSwitch.replace(
+      withReadingSwitch.replaceAll(
         'class="reading-switch"',
         'class="reading-switcheroo"',
       ),
@@ -791,6 +978,95 @@ ${siteFooter}
     );
     expect(issues).toContain(
       'docs/index.html: reading page is missing the docs/blog switcher',
+    );
+  });
+
+  it('still accepts the switcher when the modifier class comes first', () => {
+    // The mirror of the case above. The old regex only tolerated a *trailing*
+    // modifier, so `class="nav-block reading-switch"` retired the gate.
+    const issues = chromeIssues(
+      'docs/index.html',
+      withReadingSwitch.replaceAll(
+        'class="reading-switch"',
+        'class="nav-block reading-switch"',
+      ),
+      '/',
+    );
+    expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
+  });
+
+  it('flags a reading page whose drawer is still catalog-only', () => {
+    // The T10 regression: below 64rem the rail is `display: none`, so a
+    // catalog-only drawer leaves a phone visitor on a docs page with no route
+    // to any other doc.
+    const issues = chromeIssues(
+      'docs/rules/zones/index.html',
+      `${utilityNav}
+<nav class="breadcrumb"></nav>
+${readingRail}
+${readingDrawer(catalogOnlyDrawerBody)}
+<div class="reading-shell"><article class="reading-body"><h1>Zones</h1></article></div>
+${siteFooter}
+`,
+      '/',
+    );
+    expect(issues).toContain(
+      'docs/rules/zones/index.html: the mobile drawer is missing the docs/blog switcher',
+    );
+    expect(
+      issues.some((issue) =>
+        issue.includes(
+          'the mobile drawer is missing 4 reading destination(s) the rail offers, starting with /docs/',
+        ),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a reading page whose drawer drops a single doc', () => {
+    const partialDrawer = readingDrawer(
+      readingLinks.replace(
+        '<li><a href="/docs/glossary/">Glossary</a></li>',
+        '',
+      ),
+    );
+    const issues = chromeIssues(
+      'docs/index.html',
+      `${utilityNav}
+<nav class="breadcrumb"></nav>
+${readingRail}
+${partialDrawer}
+<div class="reading-shell"><article class="reading-body"><h1>Docs</h1></article></div>
+${siteFooter}
+`,
+      '/',
+    );
+    expect(issues).toContain(
+      'docs/index.html: the mobile drawer is missing 1 reading destination(s) the rail offers, starting with /docs/glossary/',
+    );
+  });
+
+  it('flags a reading page with no mobile drawer at all', () => {
+    const issues = chromeIssues(
+      'docs/index.html',
+      withReadingSwitch.replace(
+        /<dialog class="mobile-drawer"[\s\S]*?<\/dialog>/,
+        '',
+      ),
+      '/',
+    );
+    expect(issues).toContain(
+      'docs/index.html: reading page is missing the mobile catalog drawer',
+    );
+  });
+
+  it('flags a reading page with no desktop rail at all', () => {
+    const issues = chromeIssues(
+      'docs/index.html',
+      withReadingSwitch.replace(/<nav id="desktop-catalog"[\s\S]*?<\/nav>/, ''),
+      '/',
+    );
+    expect(issues).toContain(
+      'docs/index.html: reading page is missing the desktop catalog rail',
     );
   });
 });
@@ -810,6 +1086,43 @@ describe('every page ships the catalog rail state and toggle', () => {
     expect(
       issues.some((issue) =>
         issue.includes('page is missing the catalog rail state'),
+      ),
+    ).toBe(true);
+  });
+
+  it('accepts a rail toggle whose modifier class comes first', () => {
+    // `class="chrome-btn rail-toggle"` was flagged as missing the toggle: the
+    // old regex only tolerated a modifier *after* the token.
+    const html = compliantHomeHtml.replace(
+      'class="rail-toggle"',
+      'class="chrome-btn rail-toggle"',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(issues.some((issue) => issue.includes('catalog rail toggle'))).toBe(
+      false,
+    );
+  });
+
+  it('accepts a rail toggle whose modifier class comes last', () => {
+    const html = compliantHomeHtml.replace(
+      'class="rail-toggle"',
+      'class="rail-toggle rail-toggle--top"',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(issues.some((issue) => issue.includes('catalog rail toggle'))).toBe(
+      false,
+    );
+  });
+
+  it('rejects a lookalike toggle class that only starts the same', () => {
+    const html = compliantHomeHtml.replace(
+      'class="rail-toggle"',
+      'class="rail-toggler"',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('page is missing the catalog rail toggle'),
       ),
     ).toBe(true);
   });

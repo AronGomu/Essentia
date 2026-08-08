@@ -1,1 +1,1 @@
-Shaddoll is a black Control / Value / Fusion archetype. It plays face-down creatures, flips them for value, harvests effects from cards sent to the Grave, and converts that material into Fusion Summons.
+Shaddoll is black Control / Value / Fusion.

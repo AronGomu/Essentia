@@ -43,7 +43,11 @@ function validateGroups(groups, { itemsField, itemRe, itemLabel }) {
     );
 }
 
-const DOC_FILE_RE = /^docs\/.*\.md$/;
+// `.*` also accepted `docs/../../../../etc/passwd.md`. There is no exploit —
+// `loadDocs` only reads paths that came out of its own `docs/` walk — but the
+// error a traversing path produces ("not listed in the reading order") points
+// at the wrong thing entirely. Reject the segment outright, like `SLUG_RE`.
+const DOC_FILE_RE = /^(?!.*(?:^|\/)\.\.(?:\/|$))docs\/[^\\]*\.md$/;
 
 /**
  * Parses and validates `website/content/reading-order.json`, failing the

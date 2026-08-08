@@ -1,4 +1,4 @@
-import { lstat, readdir, readFile, stat } from 'node:fs/promises';
+import { lstat, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ROOT, fail } from './shared.mjs';
 import { parseKeywordFile } from './keyword-file.mjs';
@@ -42,7 +42,11 @@ async function docExists(relative) {
   )
     return false;
   try {
-    return (await stat(path.join(ROOT, relative))).isFile();
+    // `lstat`, not `stat`: every other loader this pipeline runs refuses a
+    // symlinked input, and a `doc:` pointing at one would claim a file outside
+    // the repository as its owner. Nothing reads the path, so this is a
+    // consistency fix rather than a leak.
+    return (await lstat(path.join(ROOT, relative))).isFile();
   } catch {
     return false;
   }

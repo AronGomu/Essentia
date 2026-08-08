@@ -1,10 +1,18 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   catalog,
   previewKeywordsFor,
   keywordsByTerm,
+  previewDefinitions,
   reminderDefinitions,
 } from '../../src/lib/catalog';
+
+/** Every route that renders card rule text through `<RichText definitions=…>`. */
+const CARD_ROUTES = [
+  '../../src/pages/cards/[id].astro',
+  '../../src/pages/cards/[id]/versions/[package].astro',
+] as const;
 
 const EXPECTED: Record<string, string> = {
   'Mill N':
@@ -67,5 +75,77 @@ describe('reminderDefinitions', () => {
 
   it('Mill N still prints a card-text reminder', () => {
     expect(reminderDefinitions().has('Mill N')).toBe(true);
+  });
+
+  it('holds exactly the terms flagged reminder', () => {
+    expect([...reminderDefinitions().keys()].sort()).toEqual(
+      catalog.keywords
+        .filter((keyword) => keyword.reminder)
+        .map((keyword) => keyword.term)
+        .sort(),
+    );
+  });
+});
+
+describe('every card route resolves reminders the same way', () => {
+  // The card route and the version route render the *same* card. Building the
+  // version route's definitions from the whole keyword list made
+  // `/cards/effect-veiler/` print `Counter` bare while
+  // `/cards/effect-veiler/versions/…/` appended a reminder to it.
+  it.each(CARD_ROUTES)('%s uses reminderDefinitions()', (route) => {
+    const source = readFileSync(new URL(route, import.meta.url), 'utf-8');
+    expect(source).toContain('const ruleDefinitions = reminderDefinitions();');
+  });
+
+  it.each(CARD_ROUTES)('%s builds no map of its own', (route) => {
+    const source = readFileSync(new URL(route, import.meta.url), 'utf-8');
+    // The exact shape that regressed: `new Map(catalog.keywords.map(…))`.
+    expect(source).not.toMatch(/new Map\(\s*catalog\.keywords/);
+    expect(source).not.toMatch(/catalog\.keywords[\s\S]{0,80}definition/);
+  });
+
+  it.each(CARD_ROUTES)('%s passes that map to RichText', (route) => {
+    const source = readFileSync(new URL(route, import.meta.url), 'utf-8');
+    expect(source).toMatch(/definitions=\{ruleDefinitions\}/);
+  });
+});
+
+describe('previewDefinitions', () => {
+  it('holds exactly the terms flagged preview', () => {
+    expect([...previewDefinitions().keys()].sort()).toEqual(
+      catalog.keywords
+        .filter((keyword) => keyword.preview)
+        .map((keyword) => keyword.term)
+        .sort(),
+    );
+  });
+
+  it('is not the same set as origin === essentia', () => {
+    // The mutation the published map used to survive: reverting the filter to
+    // `origin === 'essentia'` left 522/522 green and `npm run build` at exit 0,
+    // while 19 gallery links advertised `Mill N` the hover box could not find.
+    const byOrigin = catalog.keywords
+      .filter((keyword) => keyword.origin === 'essentia')
+      .map((keyword) => keyword.term)
+      .sort();
+    expect([...previewDefinitions().keys()].sort()).not.toEqual(byOrigin);
+    expect(previewDefinitions().has('Mill N')).toBe(true);
+  });
+
+  it('is the map the layout publishes', () => {
+    const source = readFileSync(
+      new URL('../../src/layouts/BaseLayout.astro', import.meta.url),
+      'utf-8',
+    );
+    expect(source).toContain(
+      'const keywordRulings = Object.fromEntries(previewDefinitions());',
+    );
+  });
+
+  it('never previews a term that prints no reminder', () => {
+    // `loadKeywordRegistry` enforces this upstream; the hover box and the
+    // published-HTML gate both depend on it holding here too.
+    for (const term of previewDefinitions().keys())
+      expect(reminderDefinitions().has(term), term).toBe(true);
   });
 });
