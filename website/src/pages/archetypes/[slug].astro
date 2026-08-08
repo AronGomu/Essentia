@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CardGallery from '../../components/CardGallery.astro';
+import Markdown from '../../components/Markdown.astro';
 import {
   catalog,
   cardsById,
@@ -36,9 +37,9 @@ const base = import.meta.env.BASE_URL;
   <div class="page-shell">
     <section class="catalog-hero">
       <div>
-        <h1>{section.label}</h1><p>
-          {section.intro}
-        </p><div class="catalog-stats">
+        <h1>{section.label}</h1>
+        <Markdown value={section.introMarkdown} class="catalog-hero-intro" />
+        <div class="catalog-stats">
           <span><strong>{section.count}</strong> published cards</span>{
             section.latestModified && (
               <span>

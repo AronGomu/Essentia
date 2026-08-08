@@ -5,7 +5,7 @@ import {
   assertMembership,
   resolveSection,
 } from '../../scripts/content/identity.mjs';
-import { catalog } from '../../src/lib/catalog';
+import { catalog, sectionsBySlug } from '../../src/lib/catalog';
 
 const content = (name: string) =>
   JSON.parse(
@@ -258,5 +258,34 @@ describe('colour overrides registry', () => {
   it('records the colour source for every published card', () => {
     for (const version of catalog.cardVersions)
       expect(['cost', 'override']).toContain(version.colorSource);
+  });
+});
+
+describe('section hero intros', () => {
+  it('nekroz copy', () => {
+    const introMarkdown = sectionsBySlug.get('nekroz')!.introMarkdown;
+    expect(introMarkdown).toContain(
+      'Nekroz is a Blue archetype built on Ritual creatures and Ritual Summon.',
+    );
+    expect(introMarkdown).toContain('- Ritual creatures');
+  });
+
+  it('burning abyss copy', () => {
+    expect(sectionsBySlug.get('burning-abyss')!.introMarkdown).toContain(
+      'Burning Abyss is a black aristocrats-based archetype.',
+    );
+  });
+
+  it('hero renders markdown', () => {
+    const source = readFileSync(
+      new URL('../../src/pages/archetypes/[slug].astro', import.meta.url),
+      'utf8',
+    );
+    expect(source).toContain('class="catalog-hero-intro"');
+    expect(source).toContain('section.introMarkdown');
+    // The old hero paragraph is gone; `description={section.intro}` on
+    // BaseLayout is untouched — Requirements keep `intro` feeding the meta
+    // description, so this checks the removed render, not every occurrence.
+    expect(source).not.toMatch(/<p>\s*\{section\.intro\}\s*<\/p>/);
   });
 });

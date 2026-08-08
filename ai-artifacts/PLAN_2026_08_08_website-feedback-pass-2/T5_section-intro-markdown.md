@@ -97,16 +97,16 @@ Run with `cd website && npm run test`.
 
 ## Impl steps
 
-- [ ] 1. Create `website/scripts/content/section-intros.mjs` exporting
+- [x] 1. Create `website/scripts/content/section-intros.mjs` exporting
       `SECTION_INTROS_DIR` (`path.join(CONTENT, 'section-intros')`),
       `sectionIntroSummary(body)` and `loadSectionIntros(knownSlugs)`.
-- [ ] 2. `sectionIntroSummary(body)`: take `body.split(/\n\s*\n/)[0]`, strip
+- [x] 2. `sectionIntroSummary(body)`: take `body.split(/\n\s*\n/)[0]`, strip
       markdown the same way `docDescription()` does (fenced code, comments, images,
       links, headings, blockquote markers, list markers, table pipes, backticks,
       emphasis), collapse whitespace, trim, then truncate at a word boundary to
       **360** characters. Import `truncateAtWordBoundary` from `../../src/lib/text.ts`
       (the docs loader already imports from `src/lib` this way).
-- [ ] 3. `loadSectionIntros(knownSlugs)`: `readdir(SECTION_INTROS_DIR, { withFileTypes: true })`,
+- [x] 3. `loadSectionIntros(knownSlugs)`: `readdir(SECTION_INTROS_DIR, { withFileTypes: true })`,
       skip `.gitkeep`; for each entry `lstat` → symlink, non-file, non-`.md`, or
       `size > 262_144` → `fail(\`unsafe section intro ${entry.name}\`)`; slug =
       filename without `.md`; slug not in `knownSlugs` →
@@ -117,7 +117,7 @@ Run with `cd website && npm run test`.
       After the loop, every slug in `knownSlugs` missing from the map →
       `fail(\`section ${slug}: missing intro file website/content/section-intros/${slug}.md\`)`.
       Return `Map<slug, body.trim()>`.
-- [ ] 4. In `website/scripts/content/orchestrator.mjs`: import `loadSectionIntros`
+- [x] 4. In `website/scripts/content/orchestrator.mjs`: import `loadSectionIntros`
       and `sectionIntroSummary`; call
       ```js
       const sectionIntros = await loadSectionIntros(
@@ -125,23 +125,23 @@ Run with `cd website && npm run test`.
       );
       ```
       next to the other loaders (after `loadKeywordRegistry()`).
-- [ ] 5. In the section loop, replace
+- [x] 5. In the section loop, replace
       `intro: await introFromDoc(section.doc, section.label),` with
       ```js
       introMarkdown: sectionIntros.get(section.slug),
       intro: sectionIntroSummary(sectionIntros.get(section.slug)),
       ```
-- [ ] 6. Delete `async function introFromDoc(...)` (lines 33–47) and its now-unused
+- [x] 6. Delete `async function introFromDoc(...)` (lines 33–47) and its now-unused
       `readFile` import if nothing else in the file uses it (`loadExplanations` does —
       keep it).
-- [ ] 7. Bump `CATALOG_SCHEMA_VERSION` by one.
-- [ ] 8. In `website/src/lib/catalog.ts`, add to `CatalogSection`:
+- [x] 7. Bump `CATALOG_SCHEMA_VERSION` by one.
+- [x] 8. In `website/src/lib/catalog.ts`, add to `CatalogSection`:
       `/** Authored hero prose, markdown, from website/content/section-intros/{slug}.md. */ introMarkdown: string;`
-- [ ] 9. Write `website/content/section-intros/non-archetype.md`:
+- [x] 9. Write `website/content/section-intros/non-archetype.md`:
       ```markdown
       All cards not part of any defined archetype. Collection of classic Yu-Gi-Oh! Staples
       ```
-- [ ] 10. Write `website/content/section-intros/nekroz.md`:
+- [x] 10. Write `website/content/section-intros/nekroz.md`:
       ```markdown
       Nekroz is a Blue archetype built on Ritual creatures and Ritual Summon. Nekroz concentrates an extreme amount of Search effects, making it extremely consistent in games. You have 3 categories of cards:
 
@@ -151,25 +151,25 @@ Run with `cd website && npm run test`.
 
       This archetype is aimed at midrange grindy games, using the power of Trishula to exile the opponent's resources and Valkyrus to prevent lethal damage.
       ```
-- [ ] 11. Write `website/content/section-intros/burning-abyss.md`:
+- [x] 11. Write `website/content/section-intros/burning-abyss.md`:
       ```markdown
       Burning Abyss is a black aristocrats-based archetype. Send Burning Abyss creatures to the Grave by any means and get rewarded with free effects. Once per turn, you can play 1 Burning Abyss creature from your hand for free. Quickly swarm your opponent with cheap and dispensable creatures.
       ```
-- [ ] 12. Write `website/content/section-intros/shaddoll.md`:
+- [x] 12. Write `website/content/section-intros/shaddoll.md`:
       ```markdown
       Shaddoll is a black Control / Value / Fusion archetype. It plays face-down creatures, flips them for value, harvests effects from cards sent to the Grave, and converts that material into Fusion Summons.
       ```
-- [ ] 13. Write `website/content/section-intros/spellbook.md`:
+- [x] 13. Write `website/content/section-intros/spellbook.md`:
       ```markdown
       Spellbook is an Aether Wizard and spell-chain archetype. It accumulates named Spellbook resources, converts casts into incremental advantage, and rewards sequencing several spells in one turn.
       ```
-- [ ] 14. In `website/src/pages/archetypes/[slug].astro`, import `Markdown` from
+- [x] 14. In `website/src/pages/archetypes/[slug].astro`, import `Markdown` from
       `../../components/Markdown.astro` and replace the `<p>{section.intro}</p>`
       block with
       `<Markdown value={section.introMarkdown} class="catalog-hero-intro" />`.
-- [ ] 15. Do the same in `website/src/pages/sections/non-archetype/[slug].astro`
+- [x] 15. Do the same in `website/src/pages/sections/non-archetype/[slug].astro`
       (import path `../../../components/Markdown.astro`).
-- [ ] 16. In `website/src/styles/global.css`, immediately after the `.catalog-hero p`
+- [x] 16. In `website/src/styles/global.css`, immediately after the `.catalog-hero p`
       rule, add:
       ```css
       .catalog-hero-intro {
@@ -184,12 +184,12 @@ Run with `cd website && npm run test`.
         padding-left: 1.15rem;
       }
       ```
-- [ ] 17. Add `website/tests/unit/section-intro.test.ts` with every loader row from
+- [x] 17. Add `website/tests/unit/section-intro.test.ts` with every loader row from
       the test plan, and the copy rows to `website/tests/unit/catalog.test.ts` /
       `website/tests/unit/archetype.test.ts`.
-- [ ] 18. `cd website && npm run content` → exit 0.
-- [ ] 19. `cd website && npm run test` → exit 0.
-- [ ] 20. `cd website && npm run build` → exit 0.
+- [x] 18. `cd website && npm run content` → exit 0.
+- [x] 19. `cd website && npm run test` → exit 0.
+- [x] 20. `cd website && npm run build` → exit 0.
 
 ## Outputs
 
@@ -207,9 +207,9 @@ Run with `cd website && npm run test`.
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run test`; `cd website && npm run ci`
-- [ ] manual check: `/sections/non-archetype/non-archetype/` shows the staples copy
-- [ ] manual check: `/archetypes/nekroz/` shows the three paragraphs and the bullet list
-- [ ] manual check: `/archetypes/burning-abyss/` shows the aristocrats copy
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `feat(website): author section hero intros as markdown`
+- [x] tests pass: `cd website && npm run test`; `cd website && npm run ci`
+- [x] manual check: `/sections/non-archetype/non-archetype/` shows the staples copy
+- [x] manual check: `/archetypes/nekroz/` shows the three paragraphs and the bullet list
+- [x] manual check: `/archetypes/burning-abyss/` shows the aristocrats copy
+- [x] app functional — `cd website && npm run build` exits 0
+- [x] commit msg draft: `feat(website): author section hero intros as markdown`

@@ -11,7 +11,6 @@ import {
   CONTENT,
   GENERATED_PUBLIC,
   GENERATED_SOURCE,
-  ROOT,
   fail,
   sectionRoute,
   stageDateIssues,
@@ -26,25 +25,10 @@ import { assertOverridesResolved, loadColorOverrides } from './fields.mjs';
 import { loadDocs } from './docs.mjs';
 import { loadPosts } from './blog.mjs';
 import { loadKeywordRegistry } from './keywords.mjs';
+import { loadSectionIntros, sectionIntroSummary } from './section-intros.mjs';
 import { discover } from './packages.mjs';
 
-export const CATALOG_SCHEMA_VERSION = 8;
-
-async function introFromDoc(relative, label) {
-  const text = await readFile(path.join(ROOT, relative), 'utf8');
-  const paragraph = text
-    .split(/\n\s*\n/)
-    .map((part) =>
-      part
-        .replace(/^#+\s+.*$/gm, '')
-        .replace(/[*_`#>]/g, '')
-        .replace(/\[[^\]]+\]\([^)]*\)/g, '')
-        .replace(/\s+/g, ' ')
-        .trim(),
-    )
-    .find((part) => part.length > 40 && !part.startsWith('|'));
-  return paragraph?.slice(0, 360) ?? `${label} cards adapted for Magic rules.`;
-}
+export const CATALOG_SCHEMA_VERSION = 9;
 
 async function loadExplanations(knownIds) {
   const output = {};
@@ -79,6 +63,9 @@ export async function build({ checkOnly }) {
   const registry = await loadRegistries();
   const colorOverrides = await loadColorOverrides();
   const keywordRegistry = await loadKeywordRegistry();
+  const sectionIntros = await loadSectionIntros(
+    new Set([...registry.sections.values()].map((section) => section.slug)),
+  );
   const docs = await loadDocs();
   const posts = await loadPosts();
 
@@ -146,7 +133,8 @@ export async function build({ checkOnly }) {
       kind: section.kind,
       accent: section.accent,
       namePattern: section.namePattern ?? null,
-      intro: await introFromDoc(section.doc, section.label),
+      introMarkdown: sectionIntros.get(section.slug),
+      intro: sectionIntroSummary(sectionIntros.get(section.slug)),
       diagnostics: [],
       iconicId: iconic.id,
       route: sectionRoute(section),

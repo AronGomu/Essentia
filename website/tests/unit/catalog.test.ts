@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { catalog, cardsById } from '../../src/lib/catalog';
+import { catalog, cardsById, sectionsBySlug } from '../../src/lib/catalog';
 
 const content = (name: string) =>
   JSON.parse(
@@ -40,7 +40,7 @@ describe('immutable publication graph', () => {
   });
 
   it('publishes open/locked packages, never drafts', () => {
-    expect(catalog.schemaVersion).toBe(8);
+    expect(catalog.schemaVersion).toBe(9);
     expect(catalog.releases.length).toBeGreaterThan(0);
     expect(catalog.cards.length).toBeGreaterThan(0);
     expect(catalog.cardVersions.length).toBeGreaterThan(0);
@@ -88,6 +88,12 @@ describe('immutable publication graph', () => {
   it('still exposes thumb, display and print tiers', () => {
     expect(Object.keys(catalog.cards[0]!.images)).toEqual(
       expect.arrayContaining(['thumb', 'display', 'print', 'width', 'height']),
+    );
+  });
+
+  it('non-archetype copy', () => {
+    expect(sectionsBySlug.get('non-archetype')!.intro).toBe(
+      'All cards not part of any defined archetype. Collection of classic Yu-Gi-Oh! Staples',
     );
   });
 });

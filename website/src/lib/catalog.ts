@@ -127,6 +127,8 @@ export interface CatalogSection {
   kind: 'non-archetype' | 'archetype';
   accent: string;
   namePattern: string | null;
+  /** Authored hero prose, markdown, from website/content/section-intros/{slug}.md. */
+  introMarkdown: string;
   intro: string;
   diagnostics: Array<{ sourceFile: string; reason: string }>;
   iconicId: string;
@@ -180,7 +182,7 @@ export interface CatalogPost {
 }
 
 export interface Catalog {
-  schemaVersion: 8;
+  schemaVersion: 9;
   generatedAt: string;
   heroSectionSlug: string;
   sections: CatalogSection[];

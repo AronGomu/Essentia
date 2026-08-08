@@ -783,6 +783,17 @@
     max-width: 65ch;
     color: var(--silver-ink);
   }
+  .catalog-hero-intro {
+    max-width: 65ch;
+    color: var(--silver-ink);
+  }
+  .catalog-hero-intro > :first-child {
+    margin-top: 0;
+  }
+  .catalog-hero-intro ul {
+    margin: 0.6rem 0;
+    padding-left: 1.15rem;
+  }
   .catalog-hero-art {
     width: 100%;
     aspect-ratio: 3 / 2;

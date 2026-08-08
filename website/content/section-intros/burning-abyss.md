@@ -1,0 +1,1 @@
+Burning Abyss is a black aristocrats-based archetype. Send Burning Abyss creatures to the Grave by any means and get rewarded with free effects. Once per turn, you can play 1 Burning Abyss creature from your hand for free. Quickly swarm your opponent with cheap and dispensable creatures.
