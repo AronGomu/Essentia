@@ -64,6 +64,10 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: page is missing a breadcrumb`);
   }
 
+  if (!/<meta\s+name="color-scheme"\s+content="dark"\s*\/?>/.test(html)) {
+    problems.push(`${file}: page is missing the dark colour-scheme hint`);
+  }
+
   if (!/<html[^>]*\sdata-catalog="(?:expanded|collapsed)"/.test(html)) {
     problems.push(`${file}: page is missing the catalog rail state`);
   }

@@ -46,6 +46,7 @@ ${Array.from({ length: items }, () => '<li class="new-card-item"></li>').join(
  * `<html>` and the persistent toggle button. */
 const railChrome = `
 <html data-catalog="expanded">
+<meta name="color-scheme" content="dark" />
 <button class="rail-toggle" aria-expanded="true"></button>
 `;
 
@@ -643,6 +644,30 @@ describe('every page ships the Find palette', () => {
         issue.includes('header is missing the Find palette'),
       ),
     ).toBe(true);
+  });
+});
+
+describe('every page ships the dark colour-scheme hint', () => {
+  it('flags a page without the colour-scheme hint', () => {
+    const html = compliantHomeHtml.replace(
+      '<meta name="color-scheme" content="dark" />',
+      '',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('page is missing the dark colour-scheme hint'),
+      ),
+    ).toBe(true);
+  });
+
+  it('accepts a page with the hint', () => {
+    const issues = chromeIssues('index.html', compliantHomeHtml, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('page is missing the dark colour-scheme hint'),
+      ),
+    ).toBe(false);
   });
 });
 

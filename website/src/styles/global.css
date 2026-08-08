@@ -976,8 +976,7 @@
       transition: none;
     }
     ::view-transition-old(root),
-    ::view-transition-new(root),
-    main {
+    ::view-transition-new(root) {
       animation: none !important;
     }
   }
@@ -1605,27 +1604,35 @@ html {
 @view-transition {
   navigation: auto;
 }
+/* A true cross-fade: both halves run the same duration from t=0, and the
+   pair is un-isolated so their opacities sum to full coverage. The old
+   two-stage fade left ~120ms where neither snapshot was opaque and the
+   page canvas showed through — the reported white flash. */
 ::view-transition-group(root) {
   background-color: var(--blackfoil);
 }
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
 ::view-transition-old(root) {
-  animation: fade-to-black 130ms ease-in both;
+  animation: page-fade-out 200ms linear both;
 }
 ::view-transition-new(root) {
-  animation: fade-from-black 190ms ease-out 60ms both;
+  animation: page-fade-in 200ms linear both;
 }
-@keyframes fade-to-black {
+@keyframes page-fade-out {
   to {
     opacity: 0;
   }
 }
-@keyframes fade-from-black {
+@keyframes page-fade-in {
   from {
     opacity: 0;
   }
-}
-main {
-  animation: fade-from-black 220ms ease-out both;
 }
 
 @media (hover: none), (pointer: coarse), (max-width: 58rem) {
