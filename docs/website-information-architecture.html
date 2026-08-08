@@ -40,11 +40,12 @@
       .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
       .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
       .card p { margin: .3rem 0; color: var(--muted); font-size: .88rem; }
-      .card.gate { border-left: 3px solid var(--ok); }
-      .card.rule { border-left: 3px solid var(--accent); }
+      .card.gate h4::before { content: "✓ "; color: var(--ok); }
+      .card.rule h4::before { content: "◆ "; color: var(--accent); }
       ul { margin: .5rem 0; padding-left: 1.15rem; }
       li { margin: .25rem 0; }
-      .note { border-left: 3px solid var(--warn); background: #131318; padding: .7rem 1rem; margin: 1.2rem 0; font-size: .92rem; }
+      .note { border: 1px solid var(--line); background: #131318; padding: .7rem 1rem; margin: 1.2rem 0; font-size: .92rem; }
+      .note::before { content: "!"; color: var(--warn); font-weight: 700; margin-right: .5rem; }
       footer { margin-top: 3rem; color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 1rem; }
     </style>
   </head>
@@ -148,6 +149,74 @@
         <div class="card rule"><h4>Fail loudly</h4><p>Every build step validates its inputs and calls <code>fail()</code> on anything unknown. No silent fallback, no unclassified bucket.</p></div>
       </div>
 
+      <h2>Feedback pass 2 — accepted changes</h2>
+      <p>
+        Decided in <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code>, not yet built.
+        Each row is a contract the implementation must land; the rest of this document still
+        describes the site as it stands today.
+      </p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Area</th><th>Today</th><th>After the pass</th><th>Ticket</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Card rule text</td>
+              <td>26 of 50 cards parse to an empty <code>ruleText</code>: a <code>&lt;error-spelling:…&gt;</code> colon inside a continuation line is read as a new field key</td>
+              <td>Continuation lines are unconditional; <code>legacyVisualFields</code> keeps feeding <code>visualSourceHash</code> so no attestation goes stale</td>
+              <td>T2 · ADR 0021</td>
+            </tr>
+            <tr>
+              <td>Keyword rulings</td>
+              <td>Registry wording predates the author's current phrasing for twelve terms</td>
+              <td>Registry and the owning docs restate all twelve; <code>Nekroz Recovery</code> stays archetype-scoped</td>
+              <td>T3</td>
+            </tr>
+            <tr>
+              <td>Hover preview</td>
+              <td>Single-column overlay: rulings stack under the render</td>
+              <td>Two-column overlay; a pure <code>placeHoverPreview()</code> picks the side with room and drops the rulings when neither side fits</td>
+              <td>T4</td>
+            </tr>
+            <tr>
+              <td>Catalog rail</td>
+              <td>Fixed <code>17rem</code> panel, always present above 64rem</td>
+              <td>Retractable; state on <code>&lt;html data-catalog&gt;</code>, persisted at <code>essentia.v1.catalog-rail</code>, gated by check-chrome</td>
+              <td>T5</td>
+            </tr>
+            <tr>
+              <td>Page transition</td>
+              <td>Fade-to-black then a delayed fade-in — ~120 ms where neither snapshot is opaque</td>
+              <td>One 200 ms cross-fade, un-isolated image pair, plus a document <code>color-scheme: dark</code> hint on every page</td>
+              <td>T6</td>
+            </tr>
+            <tr>
+              <td>Section hero art</td>
+              <td>Square source in a 3:2 frame with <code>object-fit: cover</code> — permanently cropped</td>
+              <td><code>contain</code> on hover and focus-within: the whole illustration, letterboxed</td>
+              <td>T7</td>
+            </tr>
+            <tr>
+              <td>Blog source</td>
+              <td><code>website/content/blog/&lt;date&gt;-&lt;slug&gt;/index.md</code></td>
+              <td><code>blog/&lt;date&gt;-&lt;slug&gt;.md</code> at the repo root; <code>npm run content</code> is the named regeneration command</td>
+              <td>T8</td>
+            </tr>
+            <tr>
+              <td>Reading surfaces</td>
+              <td><code>.docs-shell</code> has no page inset and no panel; the blog has no rail at all</td>
+              <td>One <code>.reading-shell</code> / <code>.reading-rail</code> / <code>.reading-body</code> layout for docs and blog, on eight dedicated tokens</td>
+              <td>T1, T9 · ADR 0020</td>
+            </tr>
+            <tr>
+              <td>Search</td>
+              <td><code>SearchPalette.svelte</code>, cards only, labelled “Find a card”</td>
+              <td><code>FindPalette.svelte</code> labelled “Find”: cards, docs, blog posts, published decks and the visitor's own saved decks, grouped and filterable. Local decks are merged after mount, never built in — a check-chrome gate fails on <code>deck:local:</code> in any page. Both deck kinds gain <code>#deck-&lt;id&gt;</code> anchors</td>
+              <td>T10</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="note">
         <b>Not built, still planned.</b> <code>WEBSITE_V2_SPEC.md</code> continues to describe a keyword index
         (<code>/keywords/</code>), a search page, published decklists, a release hub (<code>/releases/</code>),
@@ -157,8 +226,9 @@
 
       <footer>
         Sources: <code>WEBSITE_V2_SPEC.md</code> · <code>docs/CONTEXT.md</code> ·
-        <code>docs/ADR/proposed/0015</code>–<code>0019</code> ·
-        <code>ai_artefacts/PLAN_2026_08_07_website-feedback-pass.md</code>
+        <code>docs/ADR/proposed/0015</code>–<code>0021</code> ·
+        <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md</code> ·
+        <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code>
       </footer>
     </div>
   </body>

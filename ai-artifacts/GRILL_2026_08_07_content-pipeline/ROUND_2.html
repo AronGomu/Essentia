@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Engine, timing and the three acts</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 2 · Engine, timing, acts</span>
+    <h1>Engine, timing and the three acts</h1>
+    <p class="lede">Round 1 settled the contract and the creative shape: one card per command, Python in <code>.script/</code>, render-only with captions burned in, audio-driven three-act montage, zoom into the card's own textbox, palette from art, print-master input. Seventeen decisions are now unblocked. Two surveyed facts change what is possible — read the geometry and resolution panels before answering questions 6, 7 and 11.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress"><span class="node"><b>Settled R1</b></span><span class="node">contract</span><span class="node">3-act</span><span class="node">textbox zoom</span><span class="node">burned captions</span><span class="arrow">→</span><span class="node active">Engine</span><span class="node active">Timing</span><span class="node active">Acts</span><span class="node active">Tier</span><span class="node active">Brand files</span><span class="node active">Conventions</span><span class="arrow">→</span><span class="node">Filtergraph design</span><span class="node">Copy drafting</span><span class="node">CI wiring</span></nav>
+
+  <section class="visuals" aria-label="Technical context">
+    <figure>
+      <figcaption><b>Fact: exact card geometry</b>Read from the <code>sevenhalf</code> MSE stylesheet. Every crop and zoom in the montage can be a constant. Feeds questions 9 and 11.</figcaption>
+      <svg viewBox="0 0 400 230" role="img" aria-labelledby="geo-title geo-desc">
+        <title id="geo-title">Card layout rectangles from the sevenhalf stylesheet</title>
+        <desc id="geo-desc">On a 375 by 523 pixel card, the artwork window sits at x 32, y 62, width 311, height 228, which is 82.9 percent of card width and 43.6 percent of height. The rules textbox sits at x 31, y 328, width 311, height 142, which is 82.9 percent of width and 27.2 percent of height. Name, type line and power-toughness boxes are also mapped.</desc>
+        <rect class="svg-node" x="20" y="8" width="144" height="200" rx="6"/>
+        <rect class="svg-node" x="32" y="19" width="119" height="9" rx="2"/><text class="svg-note" x="91" y="26" text-anchor="middle" font-size="7">name</text>
+        <rect class="svg-node active" x="32" y="32" width="119" height="87" rx="2"/><text class="svg-label" x="91" y="72" text-anchor="middle" font-size="10">ART</text><text class="svg-note" x="91" y="85" text-anchor="middle" font-size="7">311×228</text>
+        <rect class="svg-node" x="33" y="122" width="112" height="8" rx="2"/><text class="svg-note" x="89" y="128" text-anchor="middle" font-size="7">type</text>
+        <rect class="svg-node active" x="32" y="133" width="119" height="54" rx="2"/><text class="svg-label" x="91" y="157" text-anchor="middle" font-size="10">RULES</text><text class="svg-note" x="91" y="170" text-anchor="middle" font-size="7">311×142</text>
+        <rect class="svg-node" x="129" y="186" width="23" height="11" rx="2"/><text class="svg-note" x="140" y="194" text-anchor="middle" font-size="6">P/T</text>
+        <text class="svg-note" x="20" y="222">card 375×523 @150dpi</text>
+        <text class="svg-accent" x="186" y="20" font-size="10" font-weight="700">ART WINDOW</text>
+        <text class="svg-note" x="186" y="35">x 32  y 62  w 311  h 228</text>
+        <text class="svg-note" x="186" y="48">= 8.5% / 11.9% / 82.9% / 43.6%</text>
+        <text class="svg-note" x="186" y="61">extended-art toggle: h 408 (78%)</text>
+        <text class="svg-accent" x="186" y="84" font-size="10" font-weight="700">RULES TEXTBOX</text>
+        <text class="svg-note" x="186" y="99">x 31  y 328  w 311  h 142</text>
+        <text class="svg-note" x="186" y="112">= 8.3% / 62.7% / 82.9% / 27.2%</text>
+        <text class="svg-note" x="186" y="125">pad 6L / 4R / 2 top-bottom</text>
+        <text class="svg-note" x="186" y="148">All checked-in cards use one</text>
+        <text class="svg-note" x="186" y="161">stylesheet, has_styling:false —</text>
+        <text class="svg-note" x="186" y="174">so these rects are universal.</text>
+        <text class="svg-note" x="186" y="196">At 1500×2092 print master the</text>
+        <text class="svg-note" x="186" y="209">textbox is 1244×568 real pixels.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Fact: the artwork supply gap</b>Act 1 wants a big vertical artwork plate. Almost none exists at usable size. Feeds questions 6 and 7.</figcaption>
+      <svg viewBox="0 0 400 230" role="img" aria-labelledby="art-title art-desc">
+        <title id="art-title">Available artwork sources versus the required frame</title>
+        <desc id="art-desc">original_images holds 223 files at 624 by 624 pixels. original_images_hd holds only 3 files at 1920 by 1920. The artwork window inside a 1500 by 2092 print master is 1244 by 912. The target frame is 1080 by 1920, taller than any square or landscape source.</desc>
+        <rect class="svg-node" x="12" y="60" width="52" height="52" rx="3"/>
+        <text class="svg-note" x="38" y="90" text-anchor="middle">624²</text>
+        <text class="svg-note" x="38" y="126" text-anchor="middle">original_images</text>
+        <text class="svg-accent" x="38" y="139" text-anchor="middle" font-size="10" font-weight="700">223 files</text>
+        <rect class="svg-node" x="80" y="34" width="78" height="78" rx="3"/>
+        <text class="svg-note" x="119" y="77" text-anchor="middle">1920²</text>
+        <text class="svg-note" x="119" y="126" text-anchor="middle">original_images_hd</text>
+        <text class="svg-accent" x="119" y="139" text-anchor="middle" font-size="10" font-weight="700">only 3 files</text>
+        <rect class="svg-node" x="174" y="60" width="72" height="52" rx="3"/>
+        <text class="svg-note" x="210" y="90" text-anchor="middle">1244×912</text>
+        <text class="svg-note" x="210" y="126" text-anchor="middle">art window in</text>
+        <text class="svg-note" x="210" y="138" text-anchor="middle">print master</text>
+        <rect class="svg-node active" x="272" y="18" width="52" height="94" rx="3"/>
+        <text class="svg-label" x="298" y="62" text-anchor="middle" font-size="10">TARGET</text>
+        <text class="svg-note" x="298" y="76" text-anchor="middle">1080×1920</text>
+        <text class="svg-note" x="298" y="126" text-anchor="middle">the frame</text>
+        <text class="svg-accent" x="298" y="139" text-anchor="middle" font-size="10" font-weight="700">9:16</text>
+        <path class="svg-line" d="M12 158H388"/>
+        <text class="svg-note" x="12" y="176">No source is vertical. Filling 9:16 from square or landscape art means</text>
+        <text class="svg-note" x="12" y="190">crop hard, letterbox on a colour field, or sit on a blurred zoomed bed.</text>
+        <text class="svg-note" x="12" y="210">Also fact: renders_print/ does not exist yet in ANY package — the print</text>
+        <text class="svg-note" x="12" y="224">export template is coded but has never been run. 50 cards, one package.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Timing sources for the three acts</b>Audio drives length; something must decide where act 1 ends. Feeds questions 3 and 5.</figcaption>
+      <svg viewBox="0 0 400 230" role="img" aria-labelledby="beat-title beat-desc">
+        <title id="beat-title">Candidate sources for act boundary timings</title>
+        <desc id="beat-desc">The audio timeline carries three acts. Boundaries can come from fixed fractions of duration, from explicit markers typed into the transcript, from silence detection, or from word-level alignment timings.</desc>
+        <rect class="svg-node active" x="14" y="26" width="118" height="26" rx="5"/><text class="svg-note" x="73" y="43" text-anchor="middle">act 1 · art push-in</text>
+        <rect class="svg-node active" x="134" y="26" width="130" height="26" rx="5"/><text class="svg-note" x="199" y="43" text-anchor="middle">act 2 · card settles</text>
+        <rect class="svg-node active" x="266" y="26" width="120" height="26" rx="5"/><text class="svg-note" x="326" y="43" text-anchor="middle">act 3 · textbox + CTA</text>
+        <path class="svg-line" d="M132 52V70M264 52V70"/>
+        <circle class="svg-accent" cx="132" cy="52" r="4"/><circle class="svg-accent" cx="264" cy="52" r="4"/>
+        <text class="svg-accent" x="198" y="86" text-anchor="middle" font-size="11" font-weight="700">these two instants must come from somewhere</text>
+        <rect class="svg-node" x="14" y="100" width="86" height="40" rx="7"/><text class="svg-note" x="57" y="118" text-anchor="middle">fixed</text><text class="svg-note" x="57" y="131" text-anchor="middle">fractions</text>
+        <rect class="svg-node" x="110" y="100" width="86" height="40" rx="7"/><text class="svg-note" x="153" y="118" text-anchor="middle">markers in</text><text class="svg-note" x="153" y="131" text-anchor="middle">transcript</text>
+        <rect class="svg-node" x="206" y="100" width="86" height="40" rx="7"/><text class="svg-note" x="249" y="118" text-anchor="middle">silence</text><text class="svg-note" x="249" y="131" text-anchor="middle">detection</text>
+        <rect class="svg-node" x="302" y="100" width="84" height="40" rx="7"/><text class="svg-note" x="344" y="118" text-anchor="middle">word-align</text><text class="svg-note" x="344" y="131" text-anchor="middle">timings</text>
+        <path class="svg-line" d="M14 158H386"/>
+        <text class="svg-note" x="14" y="176">Word-level alignment is needed anyway for karaoke captions — so once it</text>
+        <text class="svg-note" x="14" y="190">exists, act boundaries can key off specific spoken words for free.</text>
+        <text class="svg-note" x="14" y="212">You supply the transcript, so alignment can be FORCED (match known text)</text>
+        <text class="svg-note" x="14" y="226">rather than guessed. Forced alignment is materially more accurate.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Word-timing options, compared</b>Surveyed. Cost is mostly dependency weight, not accuracy. Feeds questions 2 and 3.</figcaption>
+      <svg viewBox="0 0 400 230" role="img" aria-labelledby="asr-title asr-desc">
+        <title id="asr-title">Comparison of word timing approaches</title>
+        <desc id="asr-desc">The ffmpeg whisper filter is already built in but gives segment-level timing only. faster-whisper is packaged in nixpkgs and gives word timestamps but does not truly align to a supplied transcript. Torchaudio wav2vec2 does true forced alignment with word-level output but requires PyTorch. WhisperX does true forced alignment but is not packaged and needs pip.</desc>
+        <text class="svg-note" x="10" y="18">option</text>
+        <text class="svg-note" x="176" y="18">forced?</text>
+        <text class="svg-note" x="238" y="18">word-level?</text>
+        <text class="svg-note" x="316" y="18">new deps</text>
+        <path class="svg-line" d="M10 24H390"/>
+        <rect class="svg-node active" x="8" y="32" width="384" height="38" rx="6"/>
+        <text class="svg-label" x="16" y="48" font-size="11">ffmpeg whisper filter</text><text class="svg-note" x="16" y="62">already compiled in — --enable-whisper</text>
+        <text class="svg-note" x="176" y="54">no</text><text class="svg-note" x="238" y="54">segment only</text><text class="svg-accent" x="316" y="54" font-size="10">none · ggml model</text>
+        <rect class="svg-node" x="8" y="76" width="384" height="38" rx="6"/>
+        <text class="svg-label" x="16" y="92" font-size="11">faster-whisper</text><text class="svg-note" x="16" y="106">nixpkgs: python3Packages.faster-whisper</text>
+        <text class="svg-note" x="176" y="98">no</text><text class="svg-note" x="238" y="98">yes</text><text class="svg-note" x="316" y="98">moderate</text>
+        <rect class="svg-node" x="8" y="120" width="384" height="38" rx="6"/>
+        <text class="svg-label" x="16" y="136" font-size="11">torchaudio wav2vec2 aligner</text><text class="svg-note" x="16" y="150">nixpkgs: python3Packages.torchaudio + torch</text>
+        <text class="svg-accent" x="176" y="142" font-size="10">TRUE</text><text class="svg-note" x="238" y="142">yes</text><text class="svg-note" x="316" y="142">heavy — PyTorch</text>
+        <rect class="svg-node" x="8" y="164" width="384" height="38" rx="6"/>
+        <text class="svg-label" x="16" y="180" font-size="11">WhisperX</text><text class="svg-note" x="16" y="194">not in nixpkgs — pip only</text>
+        <text class="svg-accent" x="176" y="186" font-size="10">TRUE</text><text class="svg-note" x="238" y="186">yes</text><text class="svg-note" x="316" y="186">heavy + unpackaged</text>
+        <text class="svg-note" x="10" y="220">Repo installs Python deps with pip --require-hashes -r requirements-dev.lock (today: Pillow only).</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Render engine trade space</b>All three are viable here; they differ in what typography and motion they can express. Feeds question 1.</figcaption>
+      <svg viewBox="0 0 400 230" role="img" aria-labelledby="eng-title eng-desc">
+        <title id="eng-title">Render engine comparison</title>
+        <desc id="eng-desc">A pure ffmpeg filtergraph is fastest and dependency-free but has weak typography. Pillow frame compositing gives full control in Python at the cost of speed. Headless Chrome via Playwright gives the strongest typography and effects, reusing the site's own CSS, but adds a browser render loop.</desc>
+        <rect class="svg-node active" x="8" y="14" width="122" height="150" rx="9"/>
+        <text class="svg-label" x="69" y="34" text-anchor="middle" font-size="11">ffmpeg only</text>
+        <text class="svg-note" x="69" y="50" text-anchor="middle">one filter_complex</text>
+        <text class="svg-note" x="16" y="70">speed ██████████</text>
+        <text class="svg-note" x="16" y="86">type  ███</text>
+        <text class="svg-note" x="16" y="102">deps  none</text>
+        <text class="svg-note" x="16" y="122">zoompan · xfade</text>
+        <text class="svg-note" x="16" y="136">drawtext · libass</text>
+        <text class="svg-note" x="16" y="152">gblur · nvenc</text>
+        <rect class="svg-node" x="139" y="14" width="122" height="150" rx="9"/>
+        <text class="svg-label" x="200" y="34" text-anchor="middle" font-size="11">Pillow frames</text>
+        <text class="svg-note" x="200" y="50" text-anchor="middle">PNG per frame → ffmpeg</text>
+        <text class="svg-note" x="147" y="70">speed ████</text>
+        <text class="svg-note" x="147" y="86">type  ██████</text>
+        <text class="svg-note" x="147" y="102">deps  Pillow (pinned)</text>
+        <text class="svg-note" x="147" y="122">full pixel control</text>
+        <text class="svg-note" x="147" y="136">easy to unit test</text>
+        <text class="svg-note" x="147" y="152">~1800 frames/short</text>
+        <rect class="svg-node" x="270" y="14" width="122" height="150" rx="9"/>
+        <text class="svg-label" x="331" y="34" text-anchor="middle" font-size="11">headless Chrome</text>
+        <text class="svg-note" x="331" y="50" text-anchor="middle">Playwright, already here</text>
+        <text class="svg-note" x="278" y="70">speed ███</text>
+        <text class="svg-note" x="278" y="86">type  ██████████</text>
+        <text class="svg-note" x="278" y="102">deps  Node bridge</text>
+        <text class="svg-note" x="278" y="122">reuse site CSS +</text>
+        <text class="svg-note" x="278" y="136">OKLCH tokens</text>
+        <text class="svg-note" x="278" y="152">crosses Py/Node line</text>
+        <text class="svg-note" x="10" y="186">Round 1 settled Python in .script/. Options 2 and 3 both stay Python-driven; option 3 shells out to Node.</text>
+        <text class="svg-note" x="10" y="202">16 threads and nvenc are available, so encode time is not the bottleneck — frame generation is.</text>
+        <text class="svg-note" x="10" y="218">Note: no text overlay was chosen for rules text, but captions, CTA and the brand strip still need type.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Brand asset legality</b>Surveyed licences. One of the two fonts in DESIGN.md cannot be shipped. Feeds questions 12 and 13.</figcaption>
+      <svg viewBox="0 0 400 230" role="img" aria-labelledby="brand-title brand-desc">
+        <title id="brand-title">Font availability and licensing status</title>
+        <desc id="brand-desc">DESIGN.md specifies Charter for display and Aptos for body. Neither is installed on this machine. Bitstream Charter is permissively licensed and may be vendored. Aptos is Microsoft proprietary and may not be redistributed. The repo already vendors Magic Set Editor fonts.</desc>
+        <text class="svg-accent" x="10" y="18" font-size="11" font-weight="700">DESIGN.md specifies</text>
+        <rect class="svg-node" x="8" y="26" width="186" height="46" rx="7"/>
+        <text class="svg-label" x="18" y="44" font-size="11">display: Charter</text>
+        <text class="svg-note" x="18" y="60">not installed · Bitstream Charter licence</text>
+        <text class="svg-accent" x="200" y="52" font-size="11" font-weight="700">VENDORABLE</text>
+        <rect class="svg-node" x="8" y="80" width="186" height="46" rx="7"/>
+        <text class="svg-label" x="18" y="98" font-size="11">body: Aptos</text>
+        <text class="svg-note" x="18" y="114">not installed · Microsoft proprietary</text>
+        <text class="svg-accent" x="200" y="106" font-size="11" font-weight="700">CANNOT SHIP</text>
+        <path class="svg-line" d="M10 140H390"/>
+        <text class="svg-note" x="10" y="158">On disk now: DejaVu Serif/Sans, Liberation Sans, Noto Serif — all usable, none is the brand.</text>
+        <text class="svg-note" x="10" y="174">Repo already vendors fonts at MSE/fonts/ (Beleren, MPlantin, Matrix) for card rendering.</text>
+        <text class="svg-note" x="10" y="196">ffmpeg drawtext and libass both need a concrete FILE PATH — a CSS font stack is not enough.</text>
+        <text class="svg-note" x="10" y="212">No logo file exists anywhere in the repo. Site publishes to a github.io URL, no custom domain.</text>
+      </svg>
+    </figure>
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="Which render engine composes the frames?">
+      <legend>1. Which render engine composes the frames?</legend>
+      <p class="why">The single decision the rest of the build hangs off. Round 1 fixed Python in <code>.script/</code>; that still leaves three real ways to make pixels.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Python builds one ffmpeg filter_complex; ffmpeg does all compositing and encoding"><span><b>Python emits one ffmpeg <code>filter_complex</code>; ffmpeg does everything</b><span class="rank">Recommended</span><span class="detail">Zero new dependencies, seconds per render, hardware encode available. <code>zoompan</code>, <code>xfade</code>, <code>gblur</code> and libass cover the whole three-act plan. The filtergraph gets gnarly to read, but it is generated code, not hand-written.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Python/Pillow composites each frame as a PNG; ffmpeg only encodes the sequence"><span><b>Pillow composites every frame; ffmpeg only encodes</b><span class="rank">Second</span><span class="detail">Total pixel control, trivially unit-testable, and easy to reason about. Costs roughly 1,800 PNGs per short and far more wall-clock, though 16 threads absorb a lot of that.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Python drives headless Chrome via Playwright to render HTML/CSS frames; ffmpeg encodes"><span><b>Headless Chrome renders HTML/CSS frames; ffmpeg encodes</b><span class="rank">Third</span><span class="detail">Best typography and effects by a wide margin, and it can import the site's own OKLCH tokens and type scale so video and site are literally the same design system. Playwright is already installed — but it puts a Node process in a Python pipeline.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Hybrid: Pillow/Chrome renders static layer plates once, ffmpeg animates and composites them"><span><b>Hybrid: render static plates once, let ffmpeg animate them</b><span class="rank">Fourth</span><span class="detail">Rich typography where it matters, cheap motion everywhere else — genuinely the best of both, at the price of two rendering concepts in one codebase.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Acceptable render time per card, willingness to have Node in the loop, how much you want video and site to share a design system…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What may be added to the Python dependency set?">
+      <legend>2. What may be added to the Python dependency set?</legend>
+      <p class="why">Surveyed fact: the repo installs with <code>pip install --require-hashes -r requirements-dev.lock</code> and currently pins <b>only Pillow</b>. There is no venv and no nix shell. Word-level alignment (question 3) is the expensive one — true forced alignment means PyTorch.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Keep the hashed lock lean: ffmpeg + Pillow only, no ML dependency in the main install"><span><b>Keep the lock lean — ffmpeg + Pillow only</b><span class="rank">Recommended</span><span class="detail">Everyone who clones the repo can still run the test suite in seconds. Forces question 3 toward the ffmpeg-native path.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Separate optional venv/extras file for media deps; core lock stays lean"><span><b>Separate optional media requirements file; core lock stays lean</b><span class="rank">Second</span><span class="detail">You get heavyweight alignment on your machine without inflicting a multi-gigabyte install on CI or a fresh clone. One more install path to document.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Allow heavyweight ML deps (torch/torchaudio) directly in the main hashed lock"><span><b>Allow PyTorch directly in the main hashed lock</b><span class="rank">Third</span><span class="detail">Simplest mental model, one install command — and roughly a 2–3 GB download plus hash-pinning pain for every consumer of the repo.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Add a nix shell/flake for the media pipeline instead of touching pip at all"><span><b>Add a nix shell or flake for the media pipeline</b><span class="rank">Fourth</span><span class="detail">Native to this machine, fully reproducible, and everything needed is already in nixpkgs. Introduces a second dependency system to a repo that has deliberately avoided one.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Do you care about CI install time? Would other people ever run this? Disk budget…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How are word-level caption timings derived, given you supply the transcript?">
+      <legend>3. How are word timings derived, given you supply the transcript?</legend>
+      <p class="why">You added the transcript as a fourth mandatory input, which is a gift: the text is known, so this is an <b>alignment</b> problem, not a recognition problem. Surveyed fact: ffmpeg's built-in whisper filter gives segment-level timing only; true forced alignment needs PyTorch or an unpackaged pip tool.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="ffmpeg whisper filter for segment timings, then distribute your exact transcript words across each segment proportionally"><span><b>ffmpeg whisper filter segments + proportional word spread from your transcript</b><span class="rank">Recommended</span><span class="detail">No new dependency at all, and the on-screen words are always your exact text because they come from your file, not from the recogniser. Word timing is approximate within a segment — usually invisible at caption speed.</span></span></label>
+        <label class="choice"><input type="checkbox" value="torchaudio wav2vec2 forced alignment against the supplied transcript (true alignment, word-level)"><span><b>torchaudio wav2vec2 true forced alignment</b><span class="rank">Second</span><span class="detail">Genuinely correct per-word timing, packaged in nixpkgs, runs on CPU. The right answer if karaoke-tight captions matter to you — at the cost of pulling PyTorch in.</span></span></label>
+        <label class="choice"><input type="checkbox" value="faster-whisper with word_timestamps, then reconcile output against your transcript"><span><b>faster-whisper word timestamps, reconciled against your transcript</b><span class="rank">Third</span><span class="detail">Good word timings and a moderate dependency, but it is recognition plus fuzzy matching, so the reconciliation step is where the bugs will live.</span></span></label>
+        <label class="choice"><input type="checkbox" value="No automatic timing: line-level captions paced evenly, or a hand-authored timing file"><span><b>No automatic timing — even pacing or a hand-authored timing file</b><span class="rank">Fourth</span><span class="detail">Zero machinery and fully deterministic; puts the work back on you for every card, which is what this pipeline exists to avoid.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="How tight the captions must feel, whether a half-second drift would bother you, transcript format you'd write…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What do the burned-in captions look like?">
+      <legend>4. What do the burned-in captions look like?</legend>
+      <p class="why">Round 1 put them in the safe band. Style decides whether you need per-word timing precision at all — and libass can do all of these natively.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One to three words at a time, large, centred, hard pop on each change"><span><b>One to three words at a time, large, centred, hard pop</b><span class="rank">Recommended</span><span class="detail">The dominant style in the format because it works: maximum legibility at thumb distance, and it forgives loose word timing since only the change instant is visible.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Full line visible, current word highlighted karaoke-style in the accent colour"><span><b>Full line, current word highlighted karaoke-style</b><span class="rank">Second</span><span class="detail">Readable and easy to follow, and it makes the accent colour do brand work. Demands genuinely accurate per-word timing or the highlight visibly lags.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Full line, plain, replaced line by line — no per-word treatment"><span><b>Full line, plain, replaced line by line</b><span class="rank">Third</span><span class="detail">Calmest and most editorial, closest to the site's tone, and it needs only segment-level timing. Also the least attention-grabbing.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Caps or sentence case, stroke/shadow/box, accent colour usage, max words per screen…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What decides where act 1 ends and act 2 begins?">
+      <legend>5. What decides where the act boundaries fall?</legend>
+      <p class="why">Round 1 said beats are fractions of audio length. Now that a transcript exists, better options open up — and act boundaries landing on the wrong word is the fastest way for the montage to feel machine-made.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Explicit markers typed in the transcript, e.g. [[reveal]] and [[rules]], with fraction fallback if absent"><span><b>Explicit markers in the transcript, with fraction fallback</b><span class="rank">Recommended</span><span class="detail">You already write the transcript, so marking two cut points costs seconds and buys exact directorial control. Falls back to fractions when you cannot be bothered.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Derived from word timings — the card reveal lands on the first utterance of the card name"><span><b>Derived from word timings — reveal lands on the card name</b><span class="rank">Second</span><span class="detail">Fully automatic and genuinely clever: the card appears exactly as you say its name. Fragile when you say the name in the first three words, or never.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Fixed fractions of total duration, e.g. 30% / 45% / 25%"><span><b>Fixed fractions of total duration</b><span class="rank">Third</span><span class="detail">Dead simple, always works, never surprises you — and never matches what you actually said.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Silence detection: cuts land on your natural pauses"><span><b>Silence detection — cuts land on your natural pauses</b><span class="rank">Fourth</span><span class="detail">Reads deliberate when it works; output depends on breathing patterns and room noise, which makes it the hardest to debug.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Would you write markers? Rough act proportions you imagine? How you normally open a card presentation…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where does act 1's artwork plate come from?">
+      <legend>6. Where does act 1's artwork plate come from?</legend>
+      <p class="why">Surveyed fact, and it is a wall: <code>original_images/</code> has <b>223 files at 624×624</b>; <code>original_images_hd/</code> has <b>only 3 files at 1920×1920</b>. The art window cropped out of a 1500×2092 print master is 1244×912. Act 1 is a push-in on artwork, so this decides whether act 1 can be sharp.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Backfill original_images_hd for every card first, then use it as the act 1 plate"><span><b>Backfill <code>original_images_hd/</code> for every card, then use it</b><span class="rank">Recommended</span><span class="detail">1920×1920 is exactly the right size for a vertical frame with room to push in, the download tooling already exists in <code>.script/</code>, and the assets are useful beyond video. It is a prerequisite task, not a pipeline feature.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Crop the art window out of the 1500x2092 print master using the stylesheet rect"><span><b>Crop the art window out of the print master</b><span class="rank">Second</span><span class="detail">Needs no new assets and the rect is a known constant — but 1244×912 is landscape, so a vertical push-in is fighting the source, and you inherit any frame bleed at the crop edge.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Use 624x624 original_images and accept upscaling for act 1 only"><span><b>Use the 624×624 originals and accept the upscale</b><span class="rank">Third</span><span class="detail">Works today for all 223 cards with no prep. Roughly 3× upscale on the hero shot of the video, which is precisely where softness is most visible.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Skip the artwork plate; open on the card itself instead, collapsing to a two-act structure"><span><b>Skip the plate — open on the card, collapse to two acts</b><span class="rank">Fourth</span><span class="detail">Sidesteps the whole problem and ships sooner; loses the artwork hook that Round 1 identified as the thing that stops a scroll.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Is a bulk HD art backfill acceptable? Source you'd pull from? Any rights concern with the original art…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How does square or landscape artwork fill a 9:16 vertical frame?">
+      <legend>7. How does square or landscape art fill a 9:16 frame?</legend>
+      <p class="why">No artwork source is vertical. Something has to give when a 1:1 or 4:3 image meets a 9:16 frame, and the answer sets the visual signature of every video you make.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Art centred at full width over a blurred, darkened, zoomed copy of itself filling the frame"><span><b>Art at full width over a blurred, darkened, zoomed copy of itself</b><span class="rank">Recommended</span><span class="detail">Never crops away composition, always fills the frame, and the bed colour is automatically the artwork's own palette — which is exactly what Round 1 asked for. One <code>gblur</code> away in ffmpeg.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Hard crop to 9:16 and push in — accept losing the sides of the illustration"><span><b>Hard crop to 9:16 and push in</b><span class="rank">Second</span><span class="detail">Fully immersive, no bars, most cinematic motion. Cuts roughly 45% off a square illustration, and no automatic crop knows where the subject is.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Art on a flat colour field derived from the extracted palette, with generous margin"><span><b>Art on a flat palette-derived colour field</b><span class="rank">Third</span><span class="detail">Cleanest, most gallery-like, closest to the site's Blackfoil Archive tone — and visually quieter than the format usually rewards.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Art slowly drifts vertically within the frame (parallax scroll) revealing top then bottom"><span><b>Art drifts vertically, revealing top then bottom</b><span class="rank">Fourth</span><span class="detail">Shows the whole illustration at full width over time and adds motion for free; the constant drift can read as restless under a talking voice.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Blur strength and darkening you like, whether bars are acceptable, references you've seen…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the card reveal motion in act 2?">
+      <legend>8. What is the card reveal motion in act 2?</legend>
+      <p class="why">The payoff shot. Round 1 called it "the card settles into frame" — this pins down what that actually means, and how hard the engine has to work.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Card scales up from ~85% with a slight overshoot and settles, artwork bed dimming behind it"><span><b>Scale up from ~85% with a slight overshoot, bed dims behind</b><span class="rank">Recommended</span><span class="detail">Reads as physical and deliberate, needs only scale plus opacity over time, and the dimming bed does the focus work for free. Easing is what sells it.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Card slides up from the lower edge and locks into position"><span><b>Slides up from the lower edge and locks</b><span class="rank">Second</span><span class="detail">Native to vertical video and very cheap to build; it does compete with the viewer's own scroll direction.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Whip-pan or light flash transition, card already in place when the frame resolves"><span><b>Whip-pan or light flash, card already in place on resolve</b><span class="rank">Third</span><span class="detail">Highest energy, lands hard on a beat, and hides any resolution mismatch inside the blur. Easy to overdo across a whole set.</span></span></label>
+        <label class="choice"><input type="checkbox" value="3D-ish tilt/flip, card rotating into a flat facing position"><span><b>3D-ish tilt or flip into a flat facing</b><span class="rank">Fourth</span><span class="detail">The most impressive if it lands, and the one option that genuinely argues for the headless-Chrome engine. Real perspective transforms are painful in a filtergraph.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Shadow/glow under the card, foil shimmer, whether the card ever rotates, easing feel…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How is the textbox zoom located and how is long rules text handled?">
+      <legend>9. How is the textbox zoom located, and what about long rules text?</legend>
+      <p class="why">Surveyed fact makes the location free: the rules box is always at <b>x 31, y 328, w 311, h 142</b> on a 375×523 card — 8.3% / 62.7% / 82.9% / 27.2% — and every checked-in card uses that one stylesheet with <code>has_styling: false</code>. The open problem is text that does not stay readable when the box is filled with six lines.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Zoom to the constant rect; if the rules string exceeds a length threshold, slow-pan down the box instead of holding"><span><b>Constant rect; pan down the box when the text is long</b><span class="rank">Recommended</span><span class="detail">One rule covers both cases, the threshold is measurable from the rules string you already pass in, and the pan adds motion exactly where the video would otherwise sit still.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Zoom to the constant rect always; hold static; accept that long text is smaller"><span><b>Constant rect, always static hold</b><span class="rank">Second</span><span class="detail">Utterly predictable and the simplest thing that works. Wordy cards end up with text that is legible but not comfortable.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Scale the zoom level per card so the rendered text height is constant regardless of line count"><span><b>Scale the zoom per card so text height is constant</b><span class="rank">Third</span><span class="detail">Every card's rules read at exactly the same size, which is the best possible legibility outcome; short-text cards then zoom in very tight and show a lot of empty box.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Split long rules into two successive zooms, one per half of the box"><span><b>Split long rules into two successive zooms</b><span class="rank">Fourth</span><span class="detail">Keeps type large throughout and gives the act structure; the mid-text cut is jarring and it eats runtime you may not have.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Longest rules text you expect, whether reminder text is included, minimum comfortable type size…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the transition grammar between acts?">
+      <legend>10. What is the transition grammar between the acts?</legend>
+      <p class="why">You asked for light and dark fades specifically. Two cuts in the video, and consistency across a set is what makes them read as a series rather than as three unrelated clips.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Dip to light: brief bloom/white flash on each act change, matching the accent colour"><span><b>Dip to light — a brief accent-tinted bloom on each act change</b><span class="rank">Recommended</span><span class="detail">Energetic, hides any resolution or aspect change underneath it, and tinting the flash with the card's extracted palette makes the transition itself carry brand.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Cross-dissolve between acts, no luminance spike"><span><b>Cross-dissolve, no luminance spike</b><span class="rank">Second</span><span class="detail">Calm, premium and closest to the site's tone; a plain <code>xfade</code>. Less punchy in a feed built on punch.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Dip to black between acts"><span><b>Dip to black</b><span class="rank">Third</span><span class="detail">Strong separation and dramatic weight, and it sits naturally on the Blackfoil palette — but black frames in short-form read as the video having ended.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Hard cut on the beat, no transition effect at all"><span><b>Hard cut on the beat</b><span class="rank">Fourth</span><span class="detail">Most confident choice and completely free to implement; entirely dependent on the act boundary landing on exactly the right instant.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Transition duration you like, whether the flash should be white or palette-tinted, any effect you hate…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Which MSE render tier does the pipeline consume, given renders_print/ does not exist yet?">
+      <legend>11. Which MSE render tier does the pipeline consume?</legend>
+      <p class="why">Surveyed fact you should know before committing to Round 1's answer: <b><code>renders_print/</code> currently exists in zero packages.</b> The 1500×2092 print export template is coded but has never been run. MSE re-renders natively at whatever size the export template asks for — it is not upscaling — and the template is the only lever, since the CLI takes no resolution flag.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Run the existing 1500x2092 print export to populate renders_print/, and consume that"><span><b>Run the existing print export to populate <code>renders_print/</code>, consume that</b><span class="rank">Recommended</span><span class="detail">Uses tooling that already exists, needs no new template, and 1500×2092 is comfortably sharp for a 1080-wide frame — the textbox alone lands at 1244×568 real pixels. One export run unblocks everything.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Add a dedicated social export template at a size chosen for the frame (e.g. 2160x3012)"><span><b>Add a dedicated social export template sized for the frame</b><span class="rank">Second</span><span class="detail">Exact pixels, headroom for a deep textbox zoom, and a chance to drop bleed or corner rounding that fights compositing. Costs a new MSE export template to author and maintain.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Consume renders_print/ if present, else fall back to renders/ with a loud warning"><span><b>Prefer <code>renders_print/</code>, fall back to <code>renders/</code> with a loud warning</b><span class="rank">Third</span><span class="detail">Never blocks you on a missing export and degrades honestly. Also means a card can silently ship soft if you ignore the warning once.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Is running the print export for all 50 cards acceptable now? Should renders_print/ be committed or generated on demand…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Which font files does the pipeline vendor, given Aptos cannot be redistributed?">
+      <legend>12. Which font files does the pipeline vendor?</legend>
+      <p class="why">Surveyed fact: <code>DESIGN.md</code> asks for Charter and Aptos. Neither is installed here, and <b>Aptos is Microsoft proprietary — the font file cannot legally be redistributed</b>. Bitstream Charter is permissively licensed and can be vendored. ffmpeg and libass need a file path, not a CSS stack, so "reuse DESIGN.md" needs a concrete resolution.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Vendor XCharter/Bitstream Charter for display + an OFL-licensed sans (e.g. Inter or Source Sans) as the Aptos stand-in; update DESIGN.md to name the shippable pair"><span><b>Vendor Charter + an OFL sans as the Aptos stand-in, and update DESIGN.md</b><span class="rank">Recommended</span><span class="detail">Legal, reproducible, and it fixes a latent problem the website already has — the site is currently asking for a font almost no visitor has installed. Video and site finally render identically.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Vendor Charter only; use it for everything in video, no sans at all"><span><b>Vendor Charter only, use it for everything in video</b><span class="rank">Second</span><span class="detail">One file, unmistakably on-brand, and serif captions are unusual enough to be distinctive. Serif at caption size and speed is harder to read than sans.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Use fonts already available on this machine (DejaVu/Liberation/Noto) by absolute path; vendor nothing"><span><b>Use fonts already on this machine, vendor nothing</b><span class="rank">Third</span><span class="detail">Zero licensing questions and zero repo weight; the output is then tied to this one machine's nix store paths and is not the brand.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Reuse the fonts already vendored at MSE/fonts/ (Beleren, MPlantin) so video matches the card frames"><span><b>Reuse the vendored <code>MSE/fonts/</code> set so video matches the cards</b><span class="rank">Fourth</span><span class="detail">Perfect continuity with the card frames themselves and nothing new to add. Those are Magic's trade-dress typefaces, which is a heavier thing to put on a channel watermark than on a card face.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Sans families you like, whether DESIGN.md may be amended, appetite for adding font files to the repo…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Does the logo block the build, or does the pipeline read a placeholder path?">
+      <legend>13. Does the logo block the build?</legend>
+      <p class="why">Round 1 chose a commissioned logo mark consumed as an asset. No logo exists today, and the watermark plus end card both want one.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Pipeline reads a known asset path; ship a type-only placeholder wordmark now, swap the file in later with no code change"><span><b>Read a known asset path; ship a type-only placeholder now</b><span class="rank">Recommended</span><span class="detail">Nothing blocks, and the day the real mark exists you drop one file in and every future render picks it up. The placeholder is a wordmark in the brand serif, which is already a defensible look.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Design the mark first; the pipeline is not built until the asset exists"><span><b>Design the mark first; do not build until it exists</b><span class="rank">Second</span><span class="detail">Guarantees you never publish anything off-brand, and guarantees the pipeline waits on a design task with no deadline.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Generate several candidate marks as part of this work and pick one"><span><b>Generate candidate marks as part of this work and pick one</b><span class="rank">Third</span><span class="detail">Resolves it inside this project rather than deferring, and gives you something concrete to react to. It is a real detour from building the pipeline.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Project/channel name as it should read, existing sketches, YouTube handle and website URL to show…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where do the four inputs live and how are they named?">
+      <legend>14. Where do the four inputs live, and how are they named?</legend>
+      <p class="why">You now have four inputs, but the rules text and the card image are <b>already machine-readable</b> — the catalog at <code>website/src/generated/catalog.ts</code> carries name, ruleText, colors, archetype and image paths per card id. So some of your "inputs" may not need to be inputs at all.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="You supply only voice + transcript in a per-card folder keyed by card id; image and rules text are resolved automatically from the card data"><span><b>You supply only voice + transcript; image and rules resolve automatically</b><span class="rank">Recommended</span><span class="detail">Cuts your manual inputs from four to two, and removes the possibility of the video showing rules text that no longer matches the card. The card data is already the single source of truth — this keeps it that way.</span></span></label>
+        <label class="choice"><input type="checkbox" value="All four inputs are explicit files in a per-card folder; nothing is resolved from card data"><span><b>All four inputs explicit in a per-card folder</b><span class="rank">Second</span><span class="detail">Completely self-contained and easy to reason about, and it lets you tweak text for a video without touching the card. It also lets card and video drift apart silently.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Voice + transcript supplied; rules text and image resolved automatically but overridable by an optional file"><span><b>Voice + transcript supplied; card data resolved but overridable</b><span class="rank">Third</span><span class="detail">Automatic by default with an escape hatch for the one card that needs it. One more code path, and the escape hatch is where drift will hide.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Folder path you'd like, filename convention, transcript format (txt? md? with markers?)…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where do outputs land, and are they committed to git?">
+      <legend>15. Where do outputs land, and do they go into git?</legend>
+      <p class="why">A short is tens of megabytes. The repo already enforces hard size limits on renders (2 MiB per set, 512 KiB per card), so it clearly cares about weight. Round 1 also needs the caption and description text emitted somewhere you can paste from.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Gitignored output/ directory, per-card folder holding short.mp4, post images, caption.txt and description.txt"><span><b>Gitignored <code>output/</code>, one folder per card with media plus caption and description text</b><span class="rank">Recommended</span><span class="detail">Keeps the repo light, and everything for one upload sits in one folder you can open and drag from. Regenerating is one command, so nothing is lost by not committing.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Gitignored media, but commit the generated text (caption, description, hashtags) as a record of what was published"><span><b>Gitignore the media, commit the generated text</b><span class="rank">Second</span><span class="detail">Gives you a diffable history of what you actually said about each card, at almost no repo weight. Slight risk the committed copy drifts from what you finally pasted.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Output outside the repo entirely, in a sibling directory or media drive"><span><b>Output outside the repo entirely</b><span class="rank">Third</span><span class="detail">Zero chance of ever bloating the repo, and it fits a large media library. Adds a configured path and breaks the "everything lives in the project" simplicity.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Do you want per-platform copy variants as separate files? X's 280-char limit vs Instagram's 2200 — one caption or several…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How is the pipeline verified, given the repo has a strict test and lint culture?">
+      <legend>16. How is the pipeline verified?</legend>
+      <p class="why">This repo runs unittest, a style linter and a package validator on every change. A media pipeline resists normal testing — pixel output is huge and encoders are not bit-reproducible across versions.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Unit-test the pure logic (timing plan, geometry, palette, caption chunking, copy templates); assert output metadata with ffprobe; no pixel comparison"><span><b>Unit-test the plan, assert output metadata with ffprobe, no pixel comparison</b><span class="rank">Recommended</span><span class="detail">Everything that can actually be wrong — timings, crops, chunking, text — is pure data and tests in milliseconds. ffprobe then confirms duration, resolution, codec and audio loudness. Fast, deterministic, no flakes.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Same, plus golden-frame image comparison at a few key timestamps with a perceptual tolerance"><span><b>Same, plus golden frames at key timestamps with a tolerance</b><span class="rank">Second</span><span class="detail">Catches real visual regressions that metadata cannot see. Golden images need updating on every intentional design change, and encoder upgrades will eventually make them lie.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Generate a contact sheet per render for human review; no automated visual assertion"><span><b>Contact sheet per render for human review</b><span class="rank">Third</span><span class="detail">Matches the <code>--preview</code> loop from Round 1 and catches everything a human would notice. Not a test — nothing fails in CI.</span></span></label>
+        <label class="choice"><input type="checkbox" value="No automated tests; this is a personal content tool, verified by watching the output"><span><b>No automated tests — verified by watching the output</b><span class="rank">Fourth</span><span class="detail">Fastest to build and honest about what this is. Out of step with every other tool in this repo, and silent breakage will eventually ship a bad video.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Should this run in CI at all, given ffmpeg and model downloads? Acceptable test-suite runtime…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the music policy, and is there sound design on act changes?">
+      <legend>17. What is the music policy, and is there sound design?</legend>
+      <p class="why">Round 1 chose a ducked music bed and you will source a copyright-free track. That leaves how many tracks exist, and whether the two act transitions get a sound.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One track for the whole project, ducked under voice; becomes an audio signature"><span><b>One track for the whole project</b><span class="rank">Recommended</span><span class="detail">The cheapest possible brand asset — a recognisable audio signature across a set — and one file to license, store and get right. Risks fatigue for anyone who watches many in a row.</span></span></label>
+        <label class="choice"><input type="checkbox" value="A small pool, one track per set or per archetype, selected deterministically"><span><b>A small pool, one per set or archetype, selected deterministically</b><span class="rank">Second</span><span class="detail">Variety that means something and still reproducible run to run; several tracks to source and keep tonally consistent.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One track plus SFX on the two act transitions (whoosh in, chime on card reveal)"><span><b>One track plus SFX on the two act transitions</b><span class="rank">Third</span><span class="detail">Sound design on the reveal is what makes a cut feel intentional, and it is only two small files. It is also the fastest way to sound cheap if the samples are generic.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Music bed is optional per card via the override file; default is voice only"><span><b>Music optional per card; default voice only</b><span class="rank">Fourth</span><span class="detail">Maximum flexibility and zero licensing risk by default; inconsistent output across a set, which fights the fixed-template decision from Round 1.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Ducking depth you like, whether music fades out under the CTA, sources you're considering…"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 2 · Engine, timing, acts — Engine, timing and the three acts\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

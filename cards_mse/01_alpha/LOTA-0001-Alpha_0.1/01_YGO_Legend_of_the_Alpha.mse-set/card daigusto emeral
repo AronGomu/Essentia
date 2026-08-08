@@ -14,13 +14,13 @@ card:
 	mainframe_image_2: 
 	super_type: <word-list-type-en>Xyz Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Rock</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
-	rarity: rare
+	rarity: common
 	rule_text:
 		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
 		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 3 Creatures in Grave; <b>Shuffle</b> them, then <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
 	power: 4
 	toughness: 2
-	card_code_text: 018/050 R
-	card_code_text_2: 018/050 R
-	card_code_text_3: 018/050 R
+	card_code_text: 018/050 C
+	card_code_text_2: 018/050 C
+	card_code_text_3: 018/050 C

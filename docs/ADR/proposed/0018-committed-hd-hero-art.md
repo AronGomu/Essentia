@@ -1,7 +1,7 @@
 # ADR 0018 — Section hero art is committed, never build-generated
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai_artefacts/PLAN_2026_08_07_website-feedback-pass.md` (T11)
+- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md` (T11)
 - Scope: website assets, image pipeline, asset provenance
 
 ## Context

@@ -725,6 +725,14 @@
     gap: 0.65rem;
     text-decoration: none;
   }
+  .new-card-grid picture {
+    width: 100%;
+  }
+  /* height:auto lets the intrinsic width/height attributes keep the MSE card ratio. */
+  .new-card-grid img {
+    width: 100%;
+    height: auto;
+  }
   .new-card-more {
     margin-top: var(--space-4);
   }

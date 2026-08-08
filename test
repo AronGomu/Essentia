@@ -1,0 +1,78 @@
+# Feedback to correct
+
+## General
+
+1. There are still Transition with white flash. Replace with fade animation.
+
+2. In Card hover preview. Also show text rule of essentia project specific keyword (e.g. Reanimate, Bounce, etc...). Also Nekroz cards are missing text rule box for on their hover.
+
+3. Instead of putting text rule under card preview when hovering, put it next right or left (where enough space left to show).
+
+4. Nekroz Recovery is Nekroz specific archetype keyword. Update it.
+
+5. Make left side panel retractable.
+
+## Docs
+
+1. Blog Section side panel is lacking. Missing margin left. Missing style. Revamp it.
+
+2. Define style for docs section. This is too much dark black. Use impeccable skill and interactively help me to define design for docs and blog, building on top of already existing DESIGN.md
+
+3. Is there script / command that I can run to update docs after editing the docs markdown file themselves ?
+
+
+## Archetypes page
+
+update catalog-hero-art :
+- if hovering, zoom out to full image size (we must see the full art)
+
+### Nekroz
+
+None of the Nekroz cards have a their card effect in their card page.
+
+### Non-archetype
+
+Most cards dont have text rule on hover or text effect in their card page description.
+
+
+
+Overview
+
+## Keyword new text rule update
+
+Verify and update current text rule if does not match.
+
+Mill X : "Send X card from the top of Deck to Grave."
+
+Detach X : "Send X material from this card to the Grave."
+
+Salvage 1 : "Return X cards from Grave to Hand."
+
+Bounce X : "Return X permaments to Hand."
+
+Slow Blink X : "Exile X permanent. At the next end step, return them onto the Field under their owner's control." 
+
+Abyssal Curse : "If you control another creature not named "Burning Abyss", this destroy itself."
+
+Descent : Alternative Cast -- "At any time you could play a soprcery, if you have not cast or summoned a “Burning Abyss” creature this turn, you may cast this card from your Hand without paying its mana cost."
+
+Ritual Summon X : Put into play a Ritual Creature paying the ritual cost indicated by the Ritual Summon Effect.
+
+Nekroz Recovery : (Activated Sorcery) If you control no creature : exile this & 1 other "Nekroz" from Grave ; Search 1 "Nekroz" non-creature Ritual Summon.
+
+After Attack or Block : Event: the next time you gain priority after resolving the damage combat.
+
+Attach : Move the indicated card to become a material of mentionned Xyz from the stated zone without destroying it.
+
+Release X : Summon X from Exile.
+
+## Card text effect to update
+
+Burning Abyss - Draghig
+
+New : 
+```
+(1 - Static) Abyssal Curse(If you control another creature without “Burning Abyss” in its name, Destroy this creature.)
+(2 - Activated Hard Linked) Descent(Sorcery-speed activated ability: if you have not summoned a “Burning Abyss” creature this turn, Summon this card from your Hand.)
+(3 - Triggered Hard Linked) On Send Grave — Discard 1 then Draw 1.
+```

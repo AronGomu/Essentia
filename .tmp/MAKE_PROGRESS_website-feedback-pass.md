@@ -1,8 +1,8 @@
 # Progress: website-feedback-pass
 
 - Goal: ship every item in `.dev/feedback.md` on the Astro site under `website/`
-- Plan index: `ai_artefacts/PLAN_2026_08_07_website-feedback-pass.md`
-- Tickets dir: `ai_artefacts/PLAN_2026_08_07_website-feedback-pass/`
+- Plan index: `ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md`
+- Tickets dir: `ai-artifacts/PLAN_2026_08_07_website-feedback-pass/`
 - Workspace: branch `plan/website-feedback-pass`
 - Started: 2026-08-07
 - Updated: 2026-08-07

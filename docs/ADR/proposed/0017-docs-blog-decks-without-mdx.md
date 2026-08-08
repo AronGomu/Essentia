@@ -1,7 +1,7 @@
 # ADR 0017 — Docs, blog, and local decks ship without MDX or new runtime dependencies
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai_artefacts/PLAN_2026_08_07_website-feedback-pass.md` (T3–T8)
+- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md` (T3–T8)
 - Scope: website dependencies, content pipeline, CSP, zero-JS baseline
 
 ## Context

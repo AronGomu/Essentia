@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Last five: conventions that already exist</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    .inputs { margin:0 0 32px; padding:20px; border:1px solid var(--accent-2); border-radius:14px; background:#1c1209; }
+    .inputs h2 { font-size:1.05rem; margin-bottom:6px; color:var(--accent); }
+    .inputs ul { margin:10px 0 0; padding-left:20px; color:var(--muted); font-size:.9rem; }
+    .inputs li { margin-bottom:6px; } .inputs b { color:var(--text); }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me &#183; Round 5 &#183; Final leaves</span>
+    <h1>Last five: conventions that already exist</h1>
+    <p class="lede">Sixty-nine decisions are settled. Writing the input layout up, I found that <code>content/</code> <b>already exists at the repo root</b>, is tracked, has a documented naming convention in <code>content/context.md</code>, and holds your 373-line project introduction script. What Round 3 settled contradicts it. That plus four small leaves is the whole remaining frontier. After this the tree is complete.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress">
+    <span class="node">Scope <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Engine <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Runtime <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Resolution <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Shots <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Copy <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Layout</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Identity</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Model pin</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Type</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Music key</span>
+  </nav>
+
+  <section class="visuals" aria-label="Technical context">
+
+    <figure>
+      <figcaption><b>The convention that already exists</b>Documented, tracked, and in use. Round 3's answer did not know about it.</figcaption>
+      <svg viewBox="0 0 480 300" role="img" aria-labelledby="f1-title f1-desc">
+        <title id="f1-title">The existing content directory convention compared with what was decided in round three</title>
+        <desc id="f1-desc">The content directory at the repository root documents one folder per piece of content prefixed with an ISO date. It currently holds the project introduction script. Round three settled on a set and card id nesting that does not follow this rule.</desc>
+
+        <text class="svg-label" x="8" y="18" font-weight="700">What is on disk and committed</text>
+        <rect class="svg-node" x="8" y="26" width="464" height="94" rx="8"/>
+        <text class="svg-note" x="20" y="45" fill="#fff7ed">content/</text>
+        <text class="svg-note" x="34" y="61">context.md</text>
+        <text class="svg-note" x="150" y="61" fill="#fbbf24">"1 folder per piece of content"</text>
+        <text class="svg-note" x="34" y="77" fill="#fff7ed">2026-08-01-legend-of-alpha-project-introduction/</text>
+        <text class="svg-note" x="48" y="93">script.md</text>
+        <text class="svg-note" x="150" y="93">373 lines, H2 sections, long form</text>
+        <text class="svg-note" x="48" y="109">script.html</text>
+        <text class="svg-note" x="150" y="109">rendered copy</text>
+
+        <rect class="svg-node" x="8" y="130" width="464" height="46" rx="8"/>
+        <text class="svg-note" x="20" y="149" fill="#fff7ed">Documented rule:</text>
+        <text class="svg-note" x="130" y="149" fill="#fbbf24">YYYY-MM-DD-content-title/</text>
+        <text class="svg-note" x="20" y="166">Filenames inside the folder carry no date prefix. Example given: script.md, thumbnail.png, graph.svg.</text>
+
+        <text class="svg-label" x="8" y="200" font-weight="700">What Round 3 settled, in ignorance of the above</text>
+        <rect x="8" y="208" width="464" height="34" rx="8" fill="#3a0f0f" stroke="#f87171" stroke-width="2"/>
+        <text class="svg-note" x="20" y="228" fill="#fca5a5">content/&lt;setId&gt;/&lt;card-id&gt;/  &#8212; no date prefix, two levels deep, different shape entirely</text>
+
+        <rect class="svg-node" x="8" y="252" width="464" height="42" rx="8"/>
+        <text class="svg-note" x="20" y="270">Fifty card folders sitting beside one long-form video folder is also a volume question, not just a</text>
+        <text class="svg-note" x="20" y="286">naming one. Whichever way this goes, context.md needs updating to say so.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Card identity has one definition, in the wrong language</b>The pipeline reads MSE, but ids are minted by JavaScript.</figcaption>
+      <svg viewBox="0 0 480 300" role="img" aria-labelledby="f2-title f2-desc">
+        <title id="f2-title">How a card name becomes the identifier used across the project</title>
+        <desc id="f2-desc">A card name in the MSE source is lowercased and non alphanumeric runs replaced with hyphens by a slugify function in the website scripts. The pipeline reads MSE directly in Python, so it needs the same function.</desc>
+
+        <rect class="svg-node" x="8" y="14" width="464" height="40" rx="8"/>
+        <text class="svg-note" x="20" y="32" font-weight="700" fill="#fff7ed">cards_mse/.../card burning abyss - graff</text>
+        <text class="svg-note" x="20" y="47">name: Burning Abyss - Graff</text>
+
+        <path class="svg-line" d="M240 54 L240 70"/><path class="svg-arrow" d="M236 70 L244 70 L240 78 Z"/>
+
+        <rect class="svg-node active" x="8" y="78" width="464" height="62" rx="8"/>
+        <text class="svg-note" x="20" y="96" font-weight="700" fill="#fbbf24">website/scripts/content/shared.mjs:111 &#183; slugify()</text>
+        <text class="svg-note" x="20" y="114">.toLowerCase()</text>
+        <text class="svg-note" x="20" y="128">.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')</text>
+
+        <path class="svg-line" d="M240 140 L240 156"/><path class="svg-arrow" d="M236 156 L244 156 L240 164 Z"/>
+
+        <rect class="svg-node" x="8" y="164" width="464" height="40" rx="8"/>
+        <text class="svg-note" x="20" y="182" font-weight="700" fill="#fff7ed">burning-abyss-graff</text>
+        <text class="svg-note" x="20" y="197">the id used by the catalog, every image filename, and every website URL</text>
+
+        <rect x="8" y="216" width="464" height="78" rx="8" fill="#3a1a0c" stroke="#fb923c" stroke-width="2"/>
+        <text class="svg-note" x="20" y="235" fill="#fdba74" font-weight="700">The problem</text>
+        <text class="svg-note" x="20" y="252" fill="#fdba74">You settled that the pipeline reads cards_mse directly, in Python. But the identifier that names</text>
+        <text class="svg-note" x="20" y="267" fill="#fdba74">every input folder and every output file is defined in JavaScript, in the website package.</text>
+        <text class="svg-note" x="20" y="286">If the two ever disagree by one character, the pipeline silently writes to the wrong path.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Alignment: licence and fallback</b>The permissive option exists, but torchaudio marks it deprecated.</figcaption>
+      <svg viewBox="0 0 480 250" role="img" aria-labelledby="f3-title f3-desc">
+        <title id="f3-title">Forced alignment model options with licences and sizes</title>
+        <desc id="f3-desc">MMS FA is Creative Commons NonCommercial and about one gigabyte. Wav2vec2 base 960h is MIT licensed, English only, about 360 megabytes, but deprecated as a torchaudio bundle. A proportional spread needs no model at all.</desc>
+
+        <text class="svg-note" x="8" y="18" font-weight="700" fill="#fff7ed">option</text>
+        <text class="svg-note" x="150" y="18" font-weight="700" fill="#fff7ed">licence</text>
+        <text class="svg-note" x="260" y="18" font-weight="700" fill="#fff7ed">size</text>
+        <text class="svg-note" x="330" y="18" font-weight="700" fill="#fff7ed">catch</text>
+        <path class="svg-line" d="M8 26 L472 26"/>
+
+        <text class="svg-note" x="8" y="46">MMS_FA</text>
+        <text class="svg-note" x="150" y="46" fill="#fca5a5">CC-BY-NC 4.0</text>
+        <text class="svg-note" x="260" y="46">~1 GB</text>
+        <text class="svg-note" x="330" y="46" fill="#fca5a5">non-commercial. Ruled out.</text>
+
+        <text class="svg-note" x="8" y="70">wav2vec2 base 960h</text>
+        <text class="svg-note" x="150" y="70" fill="#86efac">MIT</text>
+        <text class="svg-note" x="260" y="70">~360 MB</text>
+        <text class="svg-note" x="330" y="70" fill="#fdba74">bundle deprecated from 2.8</text>
+
+        <text class="svg-note" x="8" y="94">proportional spread</text>
+        <text class="svg-note" x="150" y="94" fill="#86efac">none</text>
+        <text class="svg-note" x="260" y="94">0</text>
+        <text class="svg-note" x="330" y="94">drifts on long sentences</text>
+
+        <path class="svg-line" d="M8 106 L472 106"/>
+
+        <rect class="svg-node" x="8" y="118" width="464" height="60" rx="8"/>
+        <text class="svg-note" x="20" y="137" font-weight="700" fill="#fff7ed">Worth knowing</text>
+        <text class="svg-note" x="20" y="154">torchaudio.functional.forced_align is a plain operator with no licence restriction of its own.</text>
+        <text class="svg-note" x="20" y="170">Only the model weights carry a licence. Any permissive English CTC model can drive it.</text>
+
+        <rect class="svg-node" x="8" y="188" width="464" height="54" rx="8"/>
+        <text class="svg-note" x="20" y="207" font-weight="700" fill="#fbbf24">Because timing.json is committed</text>
+        <text class="svg-note" x="20" y="224">alignment runs once per card, on your machine only. A rebuild never needs the model. So the</text>
+        <text class="svg-note" x="20" y="238">527 MB torch dependency is an authoring tool, not a build dependency. That shapes the fallback.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Aptos and Open Sans share a designer</b>Steve Matteson drew both. That is the strongest available basis for a stand-in.</figcaption>
+      <svg viewBox="0 0 480 250" role="img" aria-labelledby="f4-title f4-desc">
+        <title id="f4-title">Comparison of open font licence sans serif candidates as Aptos substitutes</title>
+        <desc id="f4-desc">Open Sans and Aptos were both designed by Steve Matteson. Lato is a humanist sans by Lukasz Dziedzic. Carlito is metric compatible with Calibri rather than Aptos.</desc>
+
+        <text class="svg-note" x="8" y="18" font-weight="700" fill="#fff7ed">candidate</text>
+        <text class="svg-note" x="130" y="18" font-weight="700" fill="#fff7ed">designer</text>
+        <text class="svg-note" x="250" y="18" font-weight="700" fill="#fff7ed">relation to Aptos</text>
+        <path class="svg-line" d="M8 26 L472 26"/>
+
+        <text class="svg-note" x="8" y="48" fill="#fff7ed">Aptos</text>
+        <text class="svg-note" x="130" y="48">Steve Matteson</text>
+        <text class="svg-note" x="250" y="48" fill="#fca5a5">proprietary, cannot ship</text>
+
+        <text class="svg-note" x="8" y="72" fill="#fbbf24">Open Sans</text>
+        <text class="svg-note" x="130" y="72" fill="#fbbf24">Steve Matteson</text>
+        <text class="svg-note" x="250" y="72" fill="#86efac">same hand, same humanist idiom</text>
+
+        <text class="svg-note" x="8" y="96" fill="#fff7ed">Lato</text>
+        <text class="svg-note" x="130" y="96">&#321;ukasz Dziedzic</text>
+        <text class="svg-note" x="250" y="96">humanist, warmer, different hand</text>
+
+        <text class="svg-note" x="8" y="120" fill="#fff7ed">Carlito</text>
+        <text class="svg-note" x="130" y="120">&#321;ukasz Dziedzic</text>
+        <text class="svg-note" x="250" y="120">metric-matched to Calibri, not Aptos</text>
+
+        <path class="svg-line" d="M8 132 L472 132"/>
+
+        <rect class="svg-node" x="8" y="144" width="464" height="46" rx="8"/>
+        <text class="svg-note" x="20" y="163">All three are SIL Open Font Licence, so all three are shippable. This is a taste decision with</text>
+        <text class="svg-note" x="20" y="179">one objective tiebreaker: authorship.</text>
+
+        <rect class="svg-node" x="8" y="200" width="464" height="42" rx="8"/>
+        <text class="svg-note" x="20" y="219">Caption legibility needs a heavy weight. Open Sans ships to 800, Lato to 900. Either is enough</text>
+        <text class="svg-note" x="20" y="235">for one-to-three word pops at the size the format uses.</text>
+      </svg>
+    </figure>
+
+  </section>
+
+  <section class="inputs" aria-label="Inputs required from you">
+    <h2>Not decisions &#8212; things only you can supply</h2>
+    <p style="color:var(--muted);font-size:.9rem;">None of these are questions. They are inputs the pipeline needs and I cannot find or invent. Listing them so nothing is silently assumed.</p>
+    <ul>
+      <li><b>YouTube channel handle and URL.</b> Nothing in the repo mentions a channel. The CTA, end card and description template all need it.</li>
+      <li><b>The website URL.</b> <code>astro.config</code> declares no <code>site</code>, so the deployed domain is not recorded anywhere in the repo.</li>
+      <li><b>The music track or tracks</b>, plus the licence document for each. You said you would source copyright-free music.</li>
+      <li><b>The logo SVG.</b> You decided in Round 2 that the pipeline is not built until this asset exists. It is the one hard blocker on starting.</li>
+      <li><b>HD upscales for the 50 cards</b> in LOTA-0001-Alpha_0.1, committed to <code>original_images_hd/</code>.</li>
+      <li><b>A voice recording and transcript</b> for whichever card you want to build first.</li>
+    </ul>
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="How do card input folders fit the existing content/ convention?">
+      <legend>1. How do card inputs fit the existing <code>content/</code> convention?</legend>
+      <p class="why">Round 3 settled <code>content/&lt;setId&gt;/&lt;card-id&gt;/</code>. That answer was given without knowing <code>content/context.md</code> exists and documents a different rule: one dated folder per piece of content, <code>YYYY-MM-DD-content-title/</code>, filenames inside carrying no date. Fifty card folders is also a volume the existing flat convention was not designed for.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Nest card content one level down as content/cards/&lt;setId&gt;/&lt;card-id&gt;/, and amend content/context.md to document that cards are a generated-volume namespace exempt from the dated-folder rule"><span><b><code>content/cards/&lt;setId&gt;/&lt;card-id&gt;/</code>, and amend <code>context.md</code></b><span class="rank">Recommended</span><span class="detail">Keeps the dated-folder rule intact for the one-off long-form pieces it was written for, while giving repeating per-card content a namespace where the card id is the natural key. The pipeline can then resolve a folder from a card id with no globbing and no date lookup, which matters because the command takes a card id as its only positional argument. Amending context.md is the part that stops this being a silent violation.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Follow the existing convention exactly: content/YYYY-MM-DD-card-&lt;card-id&gt;/ with voice, transcript, timing and overrides inside"><span><b>Follow the rule exactly, dated per card</b><span class="detail">Zero deviation from a documented convention, and the creation date is genuinely useful metadata on content. Costs deterministic lookup: the command would have to glob for a folder ending in the card id, and fifty dated folders would bury the long-form pieces.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One dated folder per set holding all its cards: content/YYYY-MM-DD-&lt;setId&gt;-cards/&lt;card-id&gt;/"><span><b>One dated folder per set, cards inside</b><span class="detail">Honours the dated rule at the level where it makes sense, since a set release genuinely is one piece of content. Costs a slightly awkward lookup and a date that becomes wrong as cards get added over weeks.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. content/cards/&lt;setId&gt;/&lt;card-id&gt;/ and add a short section to context.md explaining the exemption"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where does the canonical card id slug function live now that Python needs it too?">
+      <legend>2. Where does the canonical slug function live?</legend>
+      <p class="why">Every input folder, output file and website URL is keyed by a slug produced by <code>slugify()</code> in <code>website/scripts/content/shared.mjs</code>. You settled that the pipeline reads <code>cards_mse/</code> directly in Python. So the identifier is now minted in one language and consumed in two, and a one-character divergence writes files to a path the website will never look at.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Port slugify to Python in a shared module and add a test asserting a fixed corpus of real card names produces exactly the ids the generated catalog uses, so any divergence fails the suite"><span><b>Port it to Python, with a cross-checking test over real card names</b><span class="rank">Recommended</span><span class="detail">The function is four lines and will not change, so duplication is cheap; what is not cheap is silent divergence, and a test over the real card corpus turns that from a possible bug into a failing build. It also keeps the pipeline free of any Node call just to compute a string. The test is the actual deliverable here, not the port.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Call the existing JavaScript implementation from Python via a small node subprocess so there is exactly one definition"><span><b>Shell out to the existing JavaScript</b><span class="detail">One definition, structurally impossible to diverge. Costs a Node process for every id resolution and a hard dependency on the website package being installed just to name a folder.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Avoid slugs entirely: key everything by the MSE card file name, which is already unique within a set"><span><b>Key everything by the MSE file name instead</b><span class="detail">Uses an identifier that already exists in the source of truth, with no derivation at all. Costs alignment with every image filename and URL the website already publishes, so video outputs would not match card assets by name.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. port it, and put the shared corpus fixture where both suites can read it"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Which alignment model is pinned, and what happens when it cannot load?">
+      <legend>3. Which model is pinned, and what happens when it fails?</legend>
+      <p class="why">Round 4 settled "a permissive English CTC model with <code>torchaudio.functional.forced_align</code>" rather than MMS_FA. Pinning which one, and deciding the failure behaviour, is the leaf. Since <code>timing.json</code> is committed, alignment runs once per card on your machine and never during a rebuild, so the failure path matters less than it would otherwise.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Pin wav2vec2 base 960h (MIT) driving torchaudio.functional.forced_align; if torch or the weights are unavailable, fail loudly and print the exact command to install them, with an explicit --spread flag as the only way to get proportional timings instead"><span><b>Pin wav2vec2 base 960h; fail loudly, with an explicit opt-in fallback flag</b><span class="rank">Recommended</span><span class="detail">MIT, English-only which is all you need, and a third the size of MMS. Failing loudly rather than silently degrading matters because bad timings are invisible until you watch the whole video, and a silent fallback would produce exactly the quietly-substandard output your failure policy exists to prevent. The flag keeps the escape hatch, but makes using it a decision rather than an accident.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Same model, but fall back to proportional spread automatically with a warning whenever torch is unavailable"><span><b>Automatic fallback with a warning</b><span class="detail">The pipeline always produces something and never blocks on a missing multi-hundred-megabyte dependency. Costs the risk that a warning scrolls past and you ship drifting captions.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Skip the model entirely; proportional spread is the only implementation, and timing.json is corrected by hand where it matters"><span><b>Proportional spread only, corrected by hand</b><span class="detail">Removes 527 MB, an entire licence question and a whole dependency class from the project, and since captions show one to three words the error is often invisible. Costs hand-correction on every card with long sentences, which is most of them.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. pin the MIT model, and have --spread also stamp a flag into timing.json so it is visible later"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Which OFL sans is vendored as the Aptos stand-in?">
+      <legend>4. Which OFL sans gets vendored?</legend>
+      <p class="why">Round 3 settled "Open Sans or Lato" without choosing. All three candidates are SIL OFL and equally shippable, so this is taste with one objective tiebreaker: Aptos and Open Sans were drawn by the same designer, Steve Matteson.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Open Sans, on the basis that Steve Matteson designed both it and Aptos, so it is the closest thing to the intended voice that can legally ship"><span><b>Open Sans</b><span class="rank">Recommended</span><span class="detail">Same designer as Aptos, same humanist idiom, so replacing one with the other is the smallest possible departure from what DESIGN.md intended. Ships weights to 800, which is enough for caption pops. Variable font available, so one file covers every weight the site and the video need.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Lato, for its warmer humanist forms and its 900 weight"><span><b>Lato</b><span class="detail">Warmer and slightly more characterful than Open Sans, with a genuine Black at 900 that hits harder in captions. Costs the authorship link, and it reads as a different voice from what the design doc specified.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Carlito, metric-compatible with Calibri"><span><b>Carlito</b><span class="detail">Metric compatibility is valuable if you ever need drop-in substitution in documents. Irrelevant here, since it is metric-matched to Calibri rather than to Aptos, and nothing in this project needs metric compatibility at all.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. Open Sans variable, and update DESIGN.md to name Charter plus Open Sans"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How is the music track selected deterministically?">
+      <legend>5. How is a music track selected?</legend>
+      <p class="why">Round 3 settled a small pool, one track per set or archetype, selected deterministically, with a committed manifest naming track, source and licence. What keys the selection is the leaf. Note that three archetypes are live in the current catalog and two more exist only as drafts.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="The manifest maps archetype slug to track with an explicit default for cards with no archetype; overrides.toml can pin a different track for a single card"><span><b>Manifest maps archetype to track, with a default and a per-card override</b><span class="rank">Recommended</span><span class="detail">Explicit rather than computed, so you can see at a glance which archetype sounds like what and change it by editing one line. It gives each archetype a recognisable sonic identity across a run of posts, which is the point of tying music to archetype at all. The per-card override handles the card that just does not suit its archetype's track.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Deterministic hash of the card id modulo the pool size, so tracks vary card to card but reproducibly"><span><b>Hash of the card id into the pool</b><span class="detail">No manifest maintenance and the pool stays evenly used as it grows. Costs the archetype identity, and adding one track reshuffles every card's music, which breaks reproducibility of anything already published.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One track for the whole set, named in the set's release metadata"><span><b>One track per set</b><span class="detail">Maximum consistency across a release and the least to source, which matters when you are hunting for licence-clean music. Costs variety across fifty videos posted over weeks.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. archetype mapping, and fail if the manifest names a file that is not present"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 5 · Final leaves — Last five: conventions that already exist\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

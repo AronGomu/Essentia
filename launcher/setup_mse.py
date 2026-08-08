@@ -32,7 +32,13 @@ MSE_PACKAGES_DIR = REPO_ROOT / "mse_packages"
 # MSE only loads packages from its own data directories, so repo-owned packages
 # must be copied in. Print masters depend on this template being present and
 # current; a stale copy silently exports at the wrong resolution.
-REPO_PACKAGES = ("essentia-print.mse-export-template",)
+#
+# `magic.mse-game` is different in kind: it overwrites files the manifest also
+# pins, because the set-symbol variations Essentia needs (a common symbol drawn
+# in black on a transparent plate) can only be declared in the game package --
+# the same block in a stylesheet is ignored. Files listed here are exempted from
+# the manifest check in `main`; everything else in the package stays upstream.
+REPO_PACKAGES = ("essentia-print.mse-export-template", "magic.mse-game")
 EXECUTABLE_CANDIDATES = ("bin/magicseteditor", "bin/mse")
 CLI_CANDIDATES = ("bin/magicseteditor", "bin/mse")
 FONT_DIR_CANDIDATES = ("fonts",)
@@ -107,6 +113,18 @@ def repo_package_status(data_dir: Path, packages_dir: Path = MSE_PACKAGES_DIR) -
             if not target.is_file() or not filecmp.cmp(path, target, shallow=False):
                 problems.append(f"stale in MSE data directory: {name}/{relative}")
     return problems
+
+
+def repo_package_overrides(packages_dir: Path = MSE_PACKAGES_DIR) -> set[str]:
+    """Manifest-relative paths a repo-owned package deliberately overwrites."""
+    overrides: set[str] = set()
+    for name in REPO_PACKAGES:
+        source = packages_dir / name
+        if not source.is_dir():
+            continue
+        for path in _package_files(source):
+            overrides.add(f"data/{name}/{path.relative_to(source).as_posix()}")
+    return overrides
 
 
 def install_repo_packages(data_dir: Path, packages_dir: Path = MSE_PACKAGES_DIR) -> list[str]:
@@ -263,6 +281,15 @@ def main() -> int:
         problems = verify_tree(manifest=manifest)
     except VendorError as exc:
         parser.error(str(exc))
+
+    # A repo-owned package that overwrites a pinned file will always read as
+    # "modified"; that is the point of the override, so drop those reports.
+    overrides = repo_package_overrides()
+    problems = [
+        problem
+        for problem in problems
+        if not (problem.startswith("modified: ") and problem[len("modified: ") :] in overrides)
+    ]
 
     if problems:
         detail = "\n  - ".join(problems[:20])

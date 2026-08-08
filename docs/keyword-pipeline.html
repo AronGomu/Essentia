@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia — keyword ruling pipeline</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; max-width: 66ch; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      pre { font-family: var(--mono); font-size: .82rem; background: #0f0f13;
+            border: 1px solid var(--line); padding: .9rem 1rem; overflow-x: auto; margin: .8rem 0; }
+      pre code { background: none; border: 0; padding: 0; }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.k { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+      td.m { font-family: var(--mono); color: var(--muted); }
+      .pipe { display: grid; gap: .5rem; margin: 1rem 0; }
+      .stage { display: grid; grid-template-columns: 13rem 1fr; gap: .8rem; align-items: start;
+               border: 1px solid var(--line); background: var(--panel); padding: .7rem .9rem; }
+      .stage b { color: var(--accent-2); font-size: .82rem; text-transform: uppercase; letter-spacing: .07em; }
+      .stage p { margin: 0; font-size: .88rem; color: var(--muted); }
+      .stage p code { color: var(--ink); }
+      .flowline { text-align: center; color: var(--line); font-size: 1.1rem; margin: -.2rem 0; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p { margin: .3rem 0; color: var(--muted); font-size: .88rem; }
+      .card.gate h4::before { content: "✓ "; color: var(--ok); }
+      .card.rule h4::before { content: "◆ "; color: var(--accent); }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .25rem 0; }
+      .note { border: 1px solid var(--line); background: #131318; padding: .7rem 1rem;
+              margin: 1.2rem 0; font-size: .92rem; }
+      .note::before { content: "!"; color: var(--warn); font-weight: 700; margin-right: .5rem; }
+      .note b { color: var(--warn); }
+      footer { margin-top: 3rem; color: var(--muted); font-size: .82rem;
+               border-top: 1px solid var(--line); padding-top: 1rem; }
+      a { color: var(--accent-2); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Keyword ruling pipeline</h1>
+      <p class="sub">
+        Where a keyword's published ruling text comes from, what decides whether it
+        shows in a hover box or as card reminder text, and which gates refuse a broken
+        combination. Companion to
+        <code>docs/KEYWORDS.md</code> (taxonomy) and
+        <code>docs/ADR/proposed/0023-keyword-rulings-in-per-keyword-docs.md</code> (decision).
+      </p>
+
+      <h2>Source of record</h2>
+      <p>
+        One file per keyword, at <code>docs/keywords/{id}.md</code>. Case decides what a
+        file in that directory is:
+      </p>
+      <div class="grid">
+        <div class="card rule">
+          <h4>lower-case kebab — keyword data</h4>
+          <p>
+            <code>mill-n.md</code>, <code>on-enter.md</code>, <code>abyssal-curse.md</code>.
+            Read by the content build. Never published as a doc page.
+          </p>
+        </div>
+        <div class="card rule">
+          <h4>UPPER_CASE — module doc</h4>
+          <p>
+            <code>ACTIONS.md</code>, <code>EVENTS.md</code>, <code>ABILITIES.md</code>,
+            <code>COSTS_AND_PROCEDURES.md</code>. Narrates the taxonomy. Published under
+            <code>/docs/keywords/…</code>.
+          </p>
+        </div>
+      </div>
+
+      <h3>File shape</h3>
+      <pre><code>---
+term: Mill N
+category: action
+origin: magic
+doc: docs/keywords/ACTIONS.md
+preview: true
+reminder: true
+---
+
+Send N cards from the top of your Deck to the Grave. The quantity is always printed.</code></pre>
+
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Key</th><th>Required</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td class="k">id</td><td class="m">filename</td><td>Derived from the filename stem. Kebab-case.</td></tr>
+            <tr><td class="k">term</td><td class="m">yes</td><td>Printed invocation, in normalized form (<code>Detach N</code>, not <code>Detach 1</code>). No <code>&lt;</code> or <code>&gt;</code>.</td></tr>
+            <tr><td class="k">category</td><td class="m">yes</td><td><code>action</code> · <code>event</code> · <code>ability</code> · <code>cost-procedure</code> · <code>archetype</code></td></tr>
+            <tr><td class="k">archetype</td><td class="m">iff archetype</td><td>Owning archetype slug. Present only when <code>category: archetype</code>.</td></tr>
+            <tr><td class="k">origin</td><td class="m">yes</td><td><code>magic</code> (evergreen, unchanged meaning) or <code>essentia</code> (defined here). Provenance only — it decides nothing on screen.</td></tr>
+            <tr><td class="k">doc</td><td class="m">yes</td><td>Repo-relative path to the module that narrates the keyword. Must exist.</td></tr>
+            <tr><td class="k">preview</td><td class="m">yes</td><td>Show the ruling in the gallery hover box.</td></tr>
+            <tr><td class="k">reminder</td><td class="m">yes</td><td>Append the ruling as <code>(reminder)</code> text after the bold phrase in card rule text.</td></tr>
+            <tr><td class="k">body</td><td class="m">yes</td><td>The ruling. One paragraph, plain text, 20–400 characters, no <code>&lt;</code> or <code>&gt;</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Build pipeline</h2>
+      <div class="pipe">
+        <div class="stage">
+          <b>read</b>
+          <p><code>scripts/content/keywords.mjs</code> → <code>loadKeywordRegistry(dir)</code> walks <code>docs/keywords/</code>, keeps lower-case kebab files, parses front matter via <code>keyword-file.mjs</code>, validates every field, returns <code>Map&lt;term, entry&gt;</code>.</p>
+        </div>
+        <div class="flowline">↓</div>
+        <div class="stage">
+          <b>extract</b>
+          <p><code>extractKeywords(ruleText, registry, source)</code> pulls every <code>&lt;b&gt;…&lt;/b&gt;</code> run out of MSE card text, splits composites on <code>and</code> / <code>&amp;</code>, folds numeric parameters to <code>N</code>, and fails the build on an unknown phrase. The taxonomy is closed.</p>
+        </div>
+        <div class="flowline">↓</div>
+        <div class="stage">
+          <b>catalog</b>
+          <p><code>scripts/content/orchestrator.mjs</code> writes <code>catalog.keywords[]</code> (<code>id, term, category, archetype, definition, origin, doc, preview, reminder</code>) and each card's sorted <code>keywords[]</code> into <code>src/generated/catalog.ts</code>.</p>
+        </div>
+        <div class="flowline">↓</div>
+        <div class="stage">
+          <b>render — hover</b>
+          <p><code>BaseLayout.astro</code> serialises the <code>preview</code> subset into <code>&lt;script id="keyword-rulings"&gt;</code>. <code>CardGallery.astro</code> and the related-cards list fill <code>data-card-keywords</code> from <code>previewKeywordsFor(card)</code>. <code>CardHoverPreview.astro</code> joins the two at pointer time.</p>
+        </div>
+        <div class="flowline">↓</div>
+        <div class="stage">
+          <b>render — card text</b>
+          <p><code>cards/[id].astro</code> passes <code>reminderDefinitions()</code> to <code>RichText</code>; <code>mse-markup.ts → appendReminders()</code> writes <code>&lt;span class="reminder"&gt;(…)&lt;/span&gt;</code> after each resolved bold phrase.</p>
+        </div>
+      </div>
+
+      <h2>Gates</h2>
+      <div class="grid">
+        <div class="card gate">
+          <h4>Closed taxonomy</h4>
+          <p>
+            <code>extractKeywords()</code> fails the build on any bold phrase with no
+            keyword file. Bold is not decoration; it is an invocation.
+          </p>
+        </div>
+        <div class="card gate">
+          <h4>preview ⇒ reminder</h4>
+          <p>
+            The loader rejects <code>preview: true</code> with
+            <code>reminder: false</code>. See the note below.
+          </p>
+        </div>
+        <div class="card gate">
+          <h4>Published HTML</h4>
+          <p>
+            <code>scripts/check-chrome.mjs → reminderIssues()</code> re-reads the built
+            card pages: a bold phrase resolving against that page's ruling map must be
+            followed by a reminder span.
+          </p>
+        </div>
+        <div class="card gate">
+          <h4>MSE style lint</h4>
+          <p>
+            <code>.script/lint_mse_card_style.py</code> owns the other half: which words
+            must be bold (<code>MSE006</code>, <code>MSE014</code>), which must not
+            (<code>MSE009</code>), and which bold phrases are unknown
+            (<code>MSE004</code>).
+          </p>
+        </div>
+        <div class="card gate">
+          <h4>Docs corpus</h4>
+          <p>
+            <code>scripts/content/docs.mjs</code> skips lower-case files in
+            <code>docs/keywords/</code>; every other <code>.md</code> under
+            <code>docs/</code> must appear in <code>reading-order.json</code> or the build
+            fails.
+          </p>
+        </div>
+        <div class="card gate">
+          <h4>Injection</h4>
+          <p>
+            <code>term</code> and the ruling reject <code>&lt;</code> and
+            <code>&gt;</code>; <code>BaseLayout</code> additionally escapes <code>&lt;</code>
+            to <code>&#92;u003c</code> before writing the JSON block with
+            <code>set:html</code>.
+          </p>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>Why preview implies reminder.</b> The page ruling map that
+        <code>CardHoverPreview</code> reads is the <em>preview</em> subset. The published-HTML
+        gate asserts that any bold phrase resolving against that same map carries an
+        inline reminder. A keyword that previews but does not remind would therefore be
+        in the map with nothing to satisfy the gate, and the build would fail on the
+        card page rather than on the bad data. The loader rejects the combination at its
+        source instead.
+      </div>
+
+      <h2>Presentation matrix</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>preview</th><th>reminder</th><th>Effect</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="m">true</td><td class="m">true</td><td>Hover box <em>and</em> card-text reminder.</td><td class="k">Mill N, Search, Bounce</td></tr>
+            <tr><td class="m">false</td><td class="m">true</td><td>Card-text reminder only.</td><td class="k">Draw</td></tr>
+            <tr><td class="m">false</td><td class="m">false</td><td>Bold and legal, explained nowhere. Native Magic vocabulary.</td><td class="k">Counter</td></tr>
+            <tr><td class="m">true</td><td class="m">false</td><td>Rejected at load.</td><td class="k">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Authoring</h2>
+      <ul>
+        <li>Reword a ruling → edit the body of <code>docs/keywords/{id}.md</code> → <code>cd website &amp;&amp; npm run content</code>.</li>
+        <li>Add a keyword → create <code>docs/keywords/{new-id}.md</code> with all six front-matter keys → <code>npm run content</code>. No code change.</li>
+        <li>Retire a keyword → delete its file. The build then fails on any card still printing it in bold, which is the point.</li>
+        <li>Change where it shows → flip <code>preview</code> / <code>reminder</code>, respecting the matrix above.</li>
+      </ul>
+
+      <footer>
+        Sources: <code>docs/keywords/</code> ·
+        <code>website/scripts/content/keywords.mjs</code> ·
+        <code>website/shared/keywords.mjs</code> ·
+        <code>website/src/lib/catalog.ts</code> ·
+        <code>website/src/lib/mse-markup.ts</code> ·
+        <code>website/scripts/check-chrome.mjs</code> ·
+        <code>.script/lint_mse_card_style.py</code>.
+        Decision: ADR 0023 (supersedes 0015).
+      </footer>
+    </div>
+  </body>
+</html>

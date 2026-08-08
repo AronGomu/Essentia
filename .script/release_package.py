@@ -66,6 +66,7 @@ RELEASE_METADATA_KEYS = {
     "contentPosts",
 }
 SCHEMA_VERSION = 2
+IDENTITY_SCHEMA_VERSIONS = frozenset({2, 3})
 
 
 @dataclass(frozen=True)
@@ -289,8 +290,12 @@ def release_metadata(package: Path, expected_stage: Stage | None = None) -> dict
 
 def load_identity_registry(path: Path = IDENTITIES_PATH) -> dict[str, str]:
     data = json_read(path)
-    if data.get("schemaVersion") != 2 or not isinstance(data.get("cards"), list):
-        raise LifecycleError(f"identity registry must use schemaVersion 2: {path}")
+    # v3 adds archetype/role/routeAliases/retired/withdrawn; the fields read below are unchanged.
+    if data.get("schemaVersion") not in IDENTITY_SCHEMA_VERSIONS or not isinstance(
+        data.get("cards"), list
+    ):
+        expected = " or ".join(str(value) for value in sorted(IDENTITY_SCHEMA_VERSIONS))
+        raise LifecycleError(f"identity registry must use schemaVersion {expected}: {path}")
     by_source: dict[str, str] = {}
     ids: set[str] = set()
     for item in data["cards"]:
@@ -373,12 +378,32 @@ def _rewrite_local_files(
     return updated, hashes
 
 
-def _aggregate_set_text(base_text: str, title: str, marker: str, includes: Iterable[str]) -> str:
+def _copy_set_files(text: str, component: Path, aggregate: Path) -> str:
+    """Copy set-level local files (the set symbol) into the aggregate package."""
+    fields = field_values(text)
+    for field in FILE_FIELDS:
+        raw = one_field(fields, field)
+        if not raw:
+            continue
+        source = contained_path(component, raw)
+        shutil.copyfile(source, aggregate / source.name)
+    return text
+
+
+def _aggregate_set_text(
+    base_text: str,
+    title: str,
+    marker: str,
+    includes: Iterable[str],
+    component: Path,
+    aggregate: Path,
+) -> str:
     lines = [line for line in base_text.splitlines() if not line.startswith("include_file:")]
     text = "\n".join(lines).rstrip() + "\n"
     text = _replace_field(text, "title", title)
     text = _replace_field(text, "artist", marker)
     text = _replace_field(text, "stylesheet", "sevenhalf")
+    text = _copy_set_files(text, component, aggregate)
     return text + "\n".join(f"include_file: {value}" for value in includes) + "\n"
 
 
@@ -400,11 +425,13 @@ def generate_aggregate(
     seen_ids: set[str] = set()
     seen_names: set[str] = set()
     base_set_text: str | None = None
+    base_component: Path | None = None
     for component_entry in metadata["components"]:
         component = _safe_child(package, component_entry["project"], directory=True)
         validate_project(component, marker)
         set_text = (component / "set").read_text(encoding="utf-8-sig")
         base_set_text = base_set_text or set_text
+        base_component = base_component or component
         for card in load_manifest(component):
             ref = source_ref(component, card.source_name)
             stable_id = identities.get(ref)
@@ -434,7 +461,7 @@ def generate_aggregate(
                     "text": output_text,
                 }
             )
-    if not cards or base_set_text is None:
+    if not cards or base_set_text is None or base_component is None:
         raise LifecycleError(f"package has no component cards: {package}")
     cards.sort(key=lambda item: (item["name"].casefold(), item["stableId"]))
     for card in cards:
@@ -444,6 +471,8 @@ def generate_aggregate(
         f"Essentia -- {metadata['setName']} {stage.public_name}",
         marker,
         (card["output"] for card in cards),
+        base_component,
+        aggregate,
     )
     (aggregate / "set").write_text(set_text, encoding="utf-8")
     manifest = {

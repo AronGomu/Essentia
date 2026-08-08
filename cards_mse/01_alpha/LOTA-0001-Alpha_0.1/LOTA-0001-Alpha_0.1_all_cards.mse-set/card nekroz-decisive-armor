@@ -14,13 +14,13 @@ card:
 	mainframe_image_2: 
 	super_type: <word-list-type-en>Ritual Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
-	rarity: rare
+	rarity: common
 	rule_text:
 		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> Decisive Armor and <b>Target</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature; it gains +2/+2 to end turn.
 		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Target</b> 1 Creature; it gains -2/-0 to end turn.
 	flavor_text: <i-flavor></i-flavor>
 	power: 8
 	toughness: 5
-	card_code_text: 035/050 R
-	card_code_text_2: 035/050 R
-	card_code_text_3: 035/050 R
+	card_code_text: 035/050 C
+	card_code_text_2: 035/050 C
+	card_code_text_3: 035/050 C

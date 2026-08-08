@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plan — website feedback pass 2</title>
+    <style>
+      :root {
+        --bg: #0a0a0c; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a; --hot: #d96a6a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--bg); color: var(--ink);
+        font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background-image:
+          radial-gradient(circle at 88% -12%, rgba(201,162,39,.10), transparent 40rem),
+          radial-gradient(circle at 4% 8%, rgba(111,179,210,.07), transparent 34rem);
+        background-attachment: fixed;
+      }
+      .wrap { width: min(100% - 2rem, 82rem); margin-inline: auto; padding-block: 3.2rem 5rem; }
+      h1 { font-size: clamp(1.8rem, 4.4vw, 2.8rem); margin: 0 0 .35rem; letter-spacing: -.025em; }
+      .sub { color: var(--muted); margin: 0 0 .4rem; max-width: 68ch; }
+      .kicker { color: var(--accent); font: 600 .75rem/1 var(--mono); letter-spacing: .18em;
+                text-transform: uppercase; margin: 0 0 .7rem; }
+      h2 { margin: 3rem 0 .9rem; font-size: 1.22rem; letter-spacing: -.01em; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      p { margin: .6rem 0; }
+      code { font-family: var(--mono); font-size: .85em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 46rem; }
+      th, td { text-align: left; padding: .55rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; position: sticky; top: 0; }
+      td.id { font-family: var(--mono); color: var(--accent); white-space: nowrap; font-weight: 700; }
+      td.dep { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+      td.file { font-family: var(--mono); color: var(--accent-2); font-size: .78rem; }
+      .stats { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); margin: 1.6rem 0 .4rem; }
+      .stat { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: .85rem 1rem; }
+      .stat b { display: block; font: 700 1.7rem/1.1 system-ui; color: var(--accent); }
+      .stat span { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+      .card { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .4rem; font-size: .95rem; }
+      .card p { margin: .3rem 0; color: var(--muted); font-size: .87rem; }
+      .card.hot { border-left: 3px solid var(--hot); }
+      .card.rule { border-left: 3px solid var(--accent); }
+      .card.gate { border-left: 3px solid var(--ok); }
+      .lanes { display: grid; gap: .55rem; margin: 1.2rem 0; }
+      .lane { display: grid; grid-template-columns: 4.5rem 1fr; gap: .8rem; align-items: center;
+              border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: .55rem .8rem; }
+      .lane b { font: 700 .95rem/1 var(--mono); color: var(--accent); }
+      .lane .track { display: flex; flex-wrap: wrap; gap: .4rem; }
+      .chip { border: 1px solid var(--line); border-radius: 999px; background: var(--panel-2);
+              color: var(--muted); font-size: .74rem; padding: .18rem .6rem; white-space: nowrap; }
+      .chip.on { border-color: var(--accent-2); color: var(--ink); }
+      .note { border-left: 3px solid var(--warn); background: #131318; border-radius: 0 6px 6px 0;
+              padding: .8rem 1.1rem; margin: 1.3rem 0; font-size: .92rem; }
+      .note b { color: var(--warn); }
+      pre { background: #0f0f13; border: 1px solid var(--line); border-radius: 6px;
+            padding: .8rem 1rem; overflow-x: auto; font: .8rem/1.55 var(--mono); color: #cfd6e4; margin: .8rem 0; }
+      .bad { color: var(--hot); }
+      .good { color: var(--ok); }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .28rem 0; }
+      footer { margin-top: 3.4rem; color: var(--muted); font-size: .82rem;
+               border-top: 1px solid var(--line); padding-top: 1rem; }
+      svg { width: 100%; height: auto; display: block; }
+      .dagbox { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 1rem; margin: 1.1rem 0; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="kicker">Plan · 2026-08-07 · deep tier</p>
+      <h1>Website feedback pass 2</h1>
+      <p class="sub">
+        Ten commit-sized tickets. Fix card rule text at the root, restate twelve keyword
+        rulings, rebuild the docs + blog reading surface, retract the catalog rail, widen
+        search to every content kind, kill the transition flash.
+      </p>
+      <p class="sub">
+        Index: <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code> ·
+        Tickets: <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2/</code>
+      </p>
+
+      <div class="stats">
+        <div class="stat"><b>10</b><span>tickets</span></div>
+        <div class="stat"><b>26/50</b><span>cards with no rule text</span></div>
+        <div class="stat"><b>12</b><span>rulings restated</span></div>
+        <div class="stat"><b>4</b><span>search kinds</span></div>
+        <div class="stat"><b>2</b><span>new ADRs</span></div>
+        <div class="stat"><b>1</b><span>user-interactive step</span></div>
+      </div>
+
+      <h2>Headline finding</h2>
+      <div class="card hot">
+        <h4>One parser line blanks half the catalog</h4>
+        <p>
+          <code>packages.mjs::parseFields</code> tests the field-start pattern before the
+          continuation pattern. MSE writes <code>&lt;error-spelling:en_US:/…&gt;</code> back into
+          card text on save. Those colons make an indented continuation line look like a new
+          field key — so <code>rule_text</code> flushes empty and the rest of the card is
+          swallowed. Every Nekroz card, Dante, and most staples: 26 of 50.
+        </p>
+      </div>
+      <pre>	rule_text:
+		&lt;i-auto&gt;(1 - Activated Sorcery Hard)&lt;/i-auto&gt; &lt;b&gt;Discard&lt;/b&gt; &lt;error-spelling<span class="bad">:</span>en_US<span class="bad">:</span>/magic.mse-game/…&gt;Brionac&lt;/…&gt;; …
+                                                              <span class="bad">^ read as a new field key → rule_text = ''</span></pre>
+      <div class="note">
+        <b>The trap.</b> The naive fix does not build. <code>visualSourceHash</code> is derived
+        from the parsed fields and every <code>render-provenance.json</code> attestation is pinned
+        to it, so correcting the parser yields
+        <code class="bad">content: LOTA-0001-Alpha_0.1: stale render/provenance for bagooska</code>.
+        Decision (ADR 0021): keep the old parser verbatim as <code>legacyVisualFields</code> and feed
+        <em>only</em> the hash from it. <span class="good">Verified during planning: build green,
+        50/50 cards with text, zero unknown keywords.</span>
+      </div>
+
+      <h2>Dependency graph</h2>
+      <div class="dagbox">
+        <svg viewBox="0 0 900 300" role="img" aria-label="Ticket dependency graph">
+          <defs>
+            <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" fill="#2a2a33" />
+            </marker>
+            <style>
+              .n { fill: #121216; stroke: #2a2a33; }
+              .n.root { stroke: #c9a227; }
+              .t { fill: #e8e6e3; font: 600 13px ui-monospace, monospace; }
+              .d { fill: #9a97a3; font: 11px system-ui; }
+              .e { stroke: #2a2a33; stroke-width: 1.5; fill: none; marker-end: url(#a); }
+            </style>
+          </defs>
+
+          <rect class="n root" x="10" y="20" width="150" height="46" rx="6" />
+          <text class="t" x="26" y="42">T1</text><text class="d" x="58" y="42">design tokens</text>
+          <text class="d" x="26" y="58">interactive</text>
+
+          <rect class="n root" x="10" y="90" width="150" height="46" rx="6" />
+          <text class="t" x="26" y="112">T2</text><text class="d" x="58" y="112">parser fix</text>
+          <text class="d" x="26" y="128">26 cards unblocked</text>
+
+          <rect class="n root" x="10" y="160" width="150" height="46" rx="6" />
+          <text class="t" x="26" y="182">T8</text><text class="d" x="58" y="182">blog → repo root</text>
+          <text class="d" x="26" y="198">npm run content</text>
+
+          <rect class="n root" x="10" y="230" width="150" height="46" rx="6" />
+          <text class="t" x="26" y="252">T5 T6 T7</text>
+          <text class="d" x="26" y="268">rail · fade · hero art</text>
+
+          <rect class="n" x="330" y="90" width="150" height="46" rx="6" />
+          <text class="t" x="346" y="112">T3</text><text class="d" x="378" y="112">rulings ×12</text>
+          <text class="d" x="346" y="128">registry + docs</text>
+
+          <rect class="n" x="330" y="20" width="150" height="46" rx="6" />
+          <text class="t" x="346" y="42">T4</text><text class="d" x="378" y="42">hover side panel</text>
+          <text class="d" x="346" y="58">left / right, never under</text>
+
+          <rect class="n" x="330" y="160" width="150" height="46" rx="6" />
+          <text class="t" x="346" y="182">T9</text><text class="d" x="378" y="182">reading surface</text>
+          <text class="d" x="346" y="198">docs + blog rails</text>
+
+          <rect class="n" x="330" y="230" width="150" height="46" rx="6" />
+          <text class="t" x="346" y="252">T10</text><text class="d" x="384" y="252">Find palette</text>
+          <text class="d" x="346" y="268">cards · docs · blog · decks (+ private)</text>
+
+          <path class="e" d="M160 110 H 330" />
+          <path class="e" d="M160 105 C 250 105, 250 45, 330 45" />
+          <path class="e" d="M160 45 C 240 45, 250 175, 330 178" />
+          <path class="e" d="M160 183 H 330" />
+          <path class="e" d="M160 190 C 250 200, 250 250, 330 252" />
+
+          <text class="d" x="560" y="46">T1 freezes tokens → T9 consumes them</text>
+          <text class="d" x="560" y="70">T2 unblocks rule text → T3 and T4 become visible</text>
+          <text class="d" x="560" y="94">T8 fixes post source → T9 rail, T10 index</text>
+          <text class="d" x="560" y="118">T5 / T6 / T7 are independent — ship any order</text>
+        </svg>
+      </div>
+
+      <h2>Ticket order</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>ID</th><th>Title</th><th>Dep</th><th>Commit outcome</th><th>File</th></tr></thead>
+          <tbody>
+            <tr><td class="id">T1</td><td>Reading-surface design tokens</td><td class="dep">—</td><td>8 tokens in CSS + <code>DESIGN.md</code>; zero visual change</td><td class="file">T1_reading-surface-tokens.md</td></tr>
+            <tr><td class="id">T2</td><td>MSE multi-line field parse fix</td><td class="dep">—</td><td>All 50 cards carry rule text on page and hover</td><td class="file">T2_mse-field-parse-fix.md</td></tr>
+            <tr><td class="id">T3</td><td>Keyword ruling wording</td><td class="dep">T2</td><td>12 rulings restated in registry, docs, hover</td><td class="file">T3_keyword-ruling-wording.md</td></tr>
+            <tr><td class="id">T4</td><td>Hover rulings beside the card</td><td class="dep">T2</td><td>Rulings left or right of the render, never underneath</td><td class="file">T4_hover-rulings-side-panel.md</td></tr>
+            <tr><td class="id">T5</td><td>Retractable catalog rail</td><td class="dep">—</td><td>Rail collapses, page reflows, choice persists</td><td class="file">T5_retractable-catalog-rail.md</td></tr>
+            <tr><td class="id">T6</td><td>Flash-free fade transition</td><td class="dep">—</td><td>One 200 ms cross-fade, no white frame</td><td class="file">T6_fade-page-transition.md</td></tr>
+            <tr><td class="id">T7</td><td>Hero art reveals full art</td><td class="dep">—</td><td>Hover zooms <em>out</em> to the whole illustration</td><td class="file">T7_catalog-hero-full-art.md</td></tr>
+            <tr><td class="id">T8</td><td>Blog sources at repo-root <code>blog/</code></td><td class="dep">—</td><td><code>blog/&lt;date&gt;-&lt;slug&gt;.md</code> + <code>npm run content</code></td><td class="file">T8_blog-source-at-repo-root.md</td></tr>
+            <tr><td class="id">T9</td><td>Docs + Blog reading surface</td><td class="dep">T1 T8</td><td>One inset, styled layout with rails on both</td><td class="file">T9_docs-blog-reading-surface.md</td></tr>
+            <tr><td class="id">T10</td><td>Global Find palette</td><td class="dep">T8</td><td>Cards · docs · posts · decks, grouped and filterable</td><td class="file">T10_global-find-palette.md</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Suggested lanes</h2>
+      <div class="lanes">
+        <div class="lane"><b>Lane A</b><div class="track">
+          <span class="chip on">T2 parser</span><span class="chip">T3 rulings</span><span class="chip">T4 hover</span>
+        </div></div>
+        <div class="lane"><b>Lane B</b><div class="track">
+          <span class="chip on">T1 tokens</span><span class="chip on">T8 blog source</span><span class="chip">T9 reading surface</span><span class="chip">T10 Find</span>
+        </div></div>
+        <div class="lane"><b>Lane C</b><div class="track">
+          <span class="chip on">T5 rail</span><span class="chip on">T6 fade</span><span class="chip on">T7 hero art</span>
+        </div></div>
+      </div>
+      <p class="sub">Filled chips have no in-plan dependency and can start immediately.</p>
+
+      <h2>Decisions frozen here</h2>
+      <div class="grid">
+        <div class="card rule"><h4>ADR 0021 — freeze the hash input</h4><p>Two parsers side by side. <code>legacyVisualFields</code> feeds <code>visualSourceHash</code> only. No re-render, no provenance rewrite, no <code>cards_mse/</code> edit, Python untouched.</p></div>
+        <div class="card rule"><h4>ADR 0020 — reading surfaces</h4><p>One <code>.reading-shell</code> for docs and blog. Eight named tokens carrying a small chroma — a narrow, written exception to the Neutral Night Rule, scoped to <code>.reading-*</code>.</p></div>
+        <div class="card rule"><h4>Decks means both kinds</h4><p>Published decks are indexed at build time from <code>catalog.releases[].decks</code>. The visitor's own decks are read from <code>localStorage</code> <em>after mount, in their own browser</em>, and sort above the published ones. Local decks never touch a built file — a check-chrome gate fails the build on <code>deck:local:</code> in any page. Both gain anchors: <code>/releases/…/#deck-&lt;id&gt;</code> and <code>/decks/#deck-&lt;id&gt;</code>.</p></div>
+        <div class="card rule"><h4>Article vs script</h4><p>The polished article moves to <code>blog/&lt;date&gt;-&lt;slug&gt;.md</code>. The raw video script and teleprompter stay in <code>content/</code>, which is what <code>content/context.md</code> is for.</p></div>
+        <div class="card rule"><h4>Nekroz Recovery</h4><p>Already <code>category: archetype</code>, <code>archetype: nekroz</code>. Only wording changes.</p></div>
+        <div class="card rule"><h4>Hover rulings already include archetypes</h4><p><code>BaseLayout</code> serialises every <code>origin: essentia</code> ruling. They were invisible only because those cards had no text. T4 is placement, not plumbing.</p></div>
+      </div>
+
+      <h2>Gates every ticket must clear</h2>
+      <div class="grid">
+        <div class="card gate"><h4>vitest</h4><p><code>cd website &amp;&amp; npm run test</code> — each ticket adds its own red-first suite.</p></div>
+        <div class="card gate"><h4>full CI</h4><p><code>npm run ci</code> = format:check · lint · astro check · test · build (CSP hash, dist scan, 404, chrome).</p></div>
+        <div class="card gate"><h4>python</h4><p><code>python -m unittest discover -s tests</code> and <code>python .script/lint_mse_card_style.py</code> for T2 and T3.</p></div>
+        <div class="card gate"><h4>e2e</h4><p><code>npm run test:e2e</code> for T4, T5, T6, T7, T10.</p></div>
+        <div class="card gate"><h4>budgets</h4><p><code>npm run budgets:check</code> for T9 and T10 — the Find index and the reading panels both add payload.</p></div>
+        <div class="card gate"><h4>content</h4><p><code>npm run content:check</code> must stay exit 0 — the provenance freeze is what keeps it there.</p></div>
+      </div>
+
+      <h2>Feedback coverage</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Feedback line</th><th>Ticket</th></tr></thead>
+          <tbody>
+            <tr><td>General 1 — transition white flash → fade</td><td class="dep">T6</td></tr>
+            <tr><td>General 2 — hover shows Essentia keyword rules; Nekroz missing box</td><td class="dep">T2 · T4</td></tr>
+            <tr><td>General 3 — rules beside the preview, not under it</td><td class="dep">T4</td></tr>
+            <tr><td>General 4 — Nekroz Recovery is an archetype keyword</td><td class="dep">T3</td></tr>
+            <tr><td>General 5 — retractable left side panel</td><td class="dep">T5</td></tr>
+            <tr><td>General 6 — “Find a card” → “Find”, over docs / blog / decks</td><td class="dep">T10</td></tr>
+            <tr><td>Docs 1 — blog side panel lacking, missing margin and style</td><td class="dep">T9</td></tr>
+            <tr><td>Docs 2 — define docs style, interactively, on top of DESIGN.md</td><td class="dep">T1 · T9</td></tr>
+            <tr><td>Docs 3 — command to update docs after editing markdown</td><td class="dep">T8 (<code>npm run content</code>)</td></tr>
+            <tr><td>Blog 1 — move the first script into <code>blog/&lt;date&gt;-&lt;title&gt;.md</code></td><td class="dep">T8</td></tr>
+            <tr><td>Blog 2 — link the site's blog section to the blog folder</td><td class="dep">T8</td></tr>
+            <tr><td>Archetypes — hero art zooms out to full image on hover</td><td class="dep">T7</td></tr>
+            <tr><td>Nekroz — no card effect on card pages</td><td class="dep">T2</td></tr>
+            <tr><td>Non-archetype — most cards have no rule text anywhere</td><td class="dep">T2</td></tr>
+            <tr><td>Keyword text updates ×12</td><td class="dep">T3</td></tr>
+            <tr><td>Card text — Burning Abyss - Draghig</td><td class="dep">T3 (already correct; pinned by a test)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer>
+        Sources: <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code> ·
+        <code>docs/ADR/proposed/0020</code>, <code>0021</code> ·
+        <code>docs/website-information-architecture.html</code> ·
+        <code>website/DESIGN.md</code>
+      </footer>
+    </div>
+  </body>
+</html>

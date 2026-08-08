@@ -1,6 +1,51 @@
 # Glossary
 
+[x] Activated
+[x] Project scanned
+
 Project terms. Prefer these words in docs, scripts, and review notes.
+
+## Word index
+
+One word, one part of the project. Say the word, the agent knows the file.
+
+### Frontend — `website/`
+
+| word      | short description                             | ref in code                                                     |
+| --------- | --------------------------------------------- | --------------------------------------------------------------- |
+| catalog   | generated card/set data the site reads        | `website/src/generated/catalog.ts`, `website/src/lib/catalog.ts` |
+| shell     | base page frame wrapping every route          | `website/src/layouts/BaseLayout.astro`                           |
+| gallery   | card grid with hover preview                  | `website/src/components/CardGallery.astro`, `CardPicture.astro`  |
+| palette   | keyboard search overlay                       | `website/src/components/SearchPalette.svelte`, `src/lib/search.ts` |
+| rail      | docs sidebar navigation                       | `website/src/components/DocsRail.astro`                          |
+| picker    | deck building UI and its state                | `website/src/components/DeckManager.svelte`, `src/lib/deck-picker.ts` |
+| seo       | title/meta/OG tags per route                  | `website/src/components/Seo.astro`                               |
+| build     | content generation pipeline before astro      | `website/scripts/content/orchestrator.mjs`, `build-content.mjs`  |
+| preflight | pre-build environment and input checks        | `website/scripts/check-preflight.mjs`                            |
+
+### Backend — `.script/`, `launcher/`
+
+| word      | short description                              | ref in code                             |
+| --------- | ---------------------------------------------- | --------------------------------------- |
+| lifecycle | stage/version/lock/advance CLI for packages    | `.script/release_package.py`            |
+| linter    | MSE card style and templating checks           | `.script/lint_mse_card_style.py`        |
+| renders   | PNG export of cards out of MSE                 | `.script/export_mse_renders.py`         |
+| guard     | blocks edits to locked stage packages          | `.script/check_immutable_stages.py`     |
+| print     | one-off PDF sheets, never tracked              | `.script/generate_print_pdfs.py`        |
+| menu      | browse MSE projects by lifecycle/group/set     | `launcher/mse_project_menu.pyw`         |
+| vendor    | MSE payload setup and sha256 verification      | `launcher/setup_mse.py`, `mse_vendor.py` |
+
+### Other — card data and docs
+
+| word      | short description                              | ref in code                                        |
+| --------- | ---------------------------------------------- | -------------------------------------------------- |
+| package   | one set folder at one stage                    | `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/`          |
+| aggregate | combined all-cards MSE set of a package        | `*_all_cards.mse-set`, `generate_aggregate()`      |
+| hashes    | sha256 pin of package contents                 | `package-sha256.json`, `write_package_hashes()`    |
+| marker    | stage/set stamp written inside MSE files       | `expected_marker()`, `write_marker()`              |
+| identity  | archetype/card identity registry               | `load_identity_registry()`                         |
+| adr       | architecture decision record                   | `docs/ADR/accepted/`, `docs/ADR/proposed/`         |
+| plan      | ticketed implementation plan for a work pass   | `ai-artifacts/PLAN_<date>_<slug>/`                 |
 
 ## Active development
 

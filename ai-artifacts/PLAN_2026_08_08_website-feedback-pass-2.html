@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plan — website feedback pass 2 (2026-08-08)</title>
+    <style>
+      :root {
+        --bg: #0b0b0d;
+        --panel: #121216;
+        --panel-2: #17171d;
+        --line: #2a2a33;
+        --ink: #e8e6e3;
+        --muted: #9a97a3;
+        --accent: #c9a227;
+        --accent-2: #6fb3d2;
+        --ok: #7bc47f;
+        --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      header.hero {
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, var(--panel-2), var(--panel));
+        padding: 2rem 2rem 1.6rem;
+      }
+      header.hero h1 { margin: 0 0 .3rem; font-size: clamp(1.7rem, 4vw, 2.6rem); letter-spacing: -.02em; }
+      header.hero h1::after {
+        content: ""; display: block; width: 2.5rem; height: 2px;
+        background: var(--accent); margin-top: .55rem;
+      }
+      header.hero .sub { color: var(--muted); margin: 0; max-width: 62ch; }
+      .meta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+      .chip {
+        border: 1px solid var(--line); border-radius: 999px; padding: .2rem .7rem;
+        font-size: .78rem; color: var(--muted); background: #0f0f13;
+      }
+      .chip b { color: var(--ink); font-weight: 600; }
+      h2 { margin: 2.8rem 0 .9rem; font-size: 1.3rem; letter-spacing: -.01em; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .5rem; font-size: 1rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .25rem 0; }
+      .grid { display: grid; gap: 1rem; }
+      .cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+      .cols-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .4rem; font-size: .95rem; }
+      .card p { margin: .3rem 0; color: var(--muted); font-size: .9rem; }
+      .card.in h4::before { content: "+ "; color: var(--ok); }
+      .card.out h4::before { content: "− "; color: var(--warn); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.id { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+      td.dep { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+      td.file { font-family: var(--mono); color: var(--accent-2); font-size: .8rem; }
+      .flow { display: grid; gap: .55rem; margin: 1rem 0; }
+      .lane { display: grid; grid-template-columns: 5.5rem 1fr; gap: .8rem; align-items: start;
+              border: 1px solid var(--line); background: var(--panel); padding: .65rem .9rem; }
+      .lane b { color: var(--accent-2); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; }
+      .lane p { margin: 0; font-size: .88rem; color: var(--muted); }
+      .lane p code { color: var(--ink); }
+      .rail { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .8rem 0 0; }
+      .node { border: 1px solid var(--line); background: #0f0f13; border-radius: 4px;
+              padding: .3rem .6rem; font-family: var(--mono); font-size: .78rem; }
+      .node.done { border-color: var(--ok); color: var(--ok); }
+      .arrow { color: var(--line); }
+      .note { border: 1px solid var(--line); background: #131318; padding: .7rem 1rem;
+              margin: 1.2rem 0; font-size: .92rem; }
+      .note::before { content: "!"; color: var(--warn); font-weight: 700; margin-right: .5rem; }
+      .note b { color: var(--warn); }
+      footer { margin-top: 3rem; color: var(--muted); font-size: .82rem;
+               border-top: 1px solid var(--line); padding-top: 1rem; }
+      a { color: var(--accent-2); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <h1>Website feedback pass 2</h1>
+        <p class="sub">
+          Keyword rulings become editable <code>docs/keywords/{id}.md</code> files.
+          Ash Blossom text fixed. Section intros authored as markdown. Hero art square
+          and slow. Brand into the header. Rail toggles inside the rail. Docs and blog
+          navigation moves into the rail behind an editable order config. Back-to-top
+          everywhere.
+        </p>
+        <div class="meta">
+          <span class="chip"><b>12</b> tickets</span>
+          <span class="chip"><b>date</b> 2026-08-08</span>
+          <span class="chip"><b>branch</b> plan/website-feedback-pass-2</span>
+          <span class="chip"><b>index</b> PLAN_2026_08_08_website-feedback-pass-2.md</span>
+          <span class="chip"><b>ADR</b> 0023–0026</span>
+        </div>
+      </header>
+
+      <h2>Goal</h2>
+      <p>
+        One editable file per keyword. One editable file per section intro. One
+        editable config for reading order. Everything the user asked to reword, resize
+        or relocate lands. Suite green: <code>npm run ci</code>,
+        <code>npm run test:e2e</code>, <code>python -m unittest discover -s tests</code>,
+        <code>lint_mse_card_style.py</code>, <code>release_package.py validate</code>.
+      </p>
+
+      <h2>Scope</h2>
+      <div class="grid cols-2">
+        <div class="card in">
+          <h4>In</h4>
+          <p>
+            <code>website/</code> loaders, catalog schema, layout, nav, styles, tests ·
+            <code>docs/keywords/</code> · <code>docs/KEYWORDS.md</code> ·
+            <code>website/content/</code> · Ash Blossom rule text in
+            <code>cards_mse/01_alpha/</code> · one MSE009 exemption in
+            <code>.script/lint_mse_card_style.py</code> · ADR 0023–0026.
+          </p>
+        </div>
+        <div class="card out">
+          <h4>Out</h4>
+          <p>
+            Art regeneration beyond the one <code>rebuild</code> run · MSE styles · new
+            archetypes · deck manager · Find palette · print tooling ·
+            <code>blog/</code> post bodies · every card except Ash Blossom.
+          </p>
+        </div>
+      </div>
+
+      <h2>Decisions taken here</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <h4>Keyword file naming</h4>
+          <p>
+            <code>docs/keywords/{id}.md</code>. Lower-case kebab = keyword data, never a
+            doc page. UPPER_CASE = module doc, published. One rule, no new directory.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Two explicit flags</h4>
+          <p>
+            <code>preview</code> replaces <code>origin === 'essentia'</code>.
+            <code>reminder</code> replaces "always". Build rejects
+            <code>preview && !reminder</code> — the published-HTML gate demands it.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Intros in content, not docs</h4>
+          <p>
+            <code>website/content/section-intros/{slug}.md</code>. A file under
+            <code>docs/</code> would auto-publish as a doc page.
+            <code>introFromDoc()</code> dies.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Hero ratio = 1 / 1</h4>
+          <p>
+            Every <code>*-hero.webp</code> is square. Ratio matches the source, the
+            un-zoom slows to 900 ms, hero padding shrinks to absorb the taller art.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Collapsed rail is a strip</h4>
+          <p>
+            <code>--sidebar: 3.25rem</code> instead of <code>0rem</code>. No
+            <code>translateX(-100%)</code>. Both toggles stay on screen, top and bottom.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Rail is context-sensitive</h4>
+          <p>
+            Catalog everywhere; <code>Docs | Blog</code> switcher plus article list on
+            reading routes. <code>DocsRail</code>, <code>BlogRail</code> and
+            <code>.reading-rail</code> deleted.
+          </p>
+        </div>
+      </div>
+
+      <h2>Assumptions</h2>
+      <ul>
+        <li><code>graphify</code> CLI is absent on this machine; no ticket calls it.</li>
+        <li>Plan artefacts live in <code>ai-artifacts/</code>, the repo convention.</li>
+        <li>Only two flag values change behaviour: <code>mill-n.preview = true</code>, <code>counter.reminder = false</code>. <code>Draw</code> keeps its reminder.</li>
+        <li>Nekroz copy drops the user's truncated fragment "Every Ritual creature ." and takes minimal grammar fixes.</li>
+        <li><code>.catalog-hero</code> height parity is not pixel-asserted — art grows, padding shrinks.</li>
+        <li>Back-to-top ships in <code>BaseLayout</code>, so every page gets it, not only docs/blog.</li>
+        <li><code>MSE/bin/magicseteditor</code> is a native Linux binary; <code>release_package.py rebuild</code> re-renders Ash Blossom without Wine.</li>
+      </ul>
+
+      <h2>Dependency flow</h2>
+      <div class="flow">
+        <div class="lane">
+          <b>Wave 0</b>
+          <p><code>T1</code> preflight — baseline recorded, MSE binary proven.</p>
+        </div>
+        <div class="lane">
+          <b>Keyword</b>
+          <p><code>T2</code> files in docs → <code>T3</code> preview/reminder flags → <code>T4</code> Ash Blossom text + MSE009 exemption + package rebuild.</p>
+        </div>
+        <div class="lane">
+          <b>Content</b>
+          <p><code>T5</code> section intro markdown — independent of the keyword chain.</p>
+        </div>
+        <div class="lane">
+          <b>Chrome</b>
+          <p><code>T6</code> hero art · <code>T7</code> brand → <code>T8</code> rail toggles · <code>T11</code> back-to-top.</p>
+        </div>
+        <div class="lane">
+          <b>Reading</b>
+          <p><code>T9</code> reading-order config, then <code>T10</code> reading nav in the rail (also needs <code>T8</code>).</p>
+        </div>
+        <div class="lane">
+          <b>Close</b>
+          <p><code>T12</code> full suite, acceptance walk, docs and ADR index truthful.</p>
+        </div>
+      </div>
+      <div class="rail">
+        <span class="node">T1</span><span class="arrow">→</span>
+        <span class="node">T2</span><span class="arrow">→</span>
+        <span class="node">T3</span><span class="arrow">→</span>
+        <span class="node">T4</span><span class="arrow">→</span>
+        <span class="node done">T12</span>
+      </div>
+      <div class="rail">
+        <span class="node">T1</span><span class="arrow">→</span>
+        <span class="node">T7</span><span class="arrow">→</span>
+        <span class="node">T8</span><span class="arrow">→</span>
+        <span class="node">T10</span><span class="arrow">←</span>
+        <span class="node">T9</span><span class="arrow">→</span>
+        <span class="node done">T12</span>
+      </div>
+
+      <h2>Ticket order</h2>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Title</th><th>Depends</th><th>Commit outcome</th><th>File</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="id">T1</td><td>Preflight and env</td><td class="dep">—</td><td>Baseline green; MSE render toolchain proven runnable.</td><td class="file">T1_preflight-and-env.md</td></tr>
+            <tr><td class="id">T2</td><td>Keyword files in docs</td><td class="dep">T1</td><td>Rulings load from <code>docs/keywords/{id}.md</code>; <code>content/keywords.json</code> deleted.</td><td class="file">T2_keyword-files-in-docs.md</td></tr>
+            <tr><td class="id">T3</td><td>Preview and reminder flags</td><td class="dep">T2</td><td>Mill N in the hover box; Counter loses its card-text reminder.</td><td class="file">T3_preview-and-reminder-flags.md</td></tr>
+            <tr><td class="id">T4</td><td>Ash Blossom text and lint</td><td class="dep">T3</td><td><code>(Draw, Mill X, Search, etc.)</code> bold; MSE009 exemption; package rebuilt.</td><td class="file">T4_ash-blossom-text-and-lint.md</td></tr>
+            <tr><td class="id">T5</td><td>Section intro markdown</td><td class="dep">T1</td><td>Non-archetype, Nekroz, Burning Abyss intros authored as markdown.</td><td class="file">T5_section-intro-markdown.md</td></tr>
+            <tr><td class="id">T6</td><td>Hero art ratio and easing</td><td class="dep">T1</td><td>Hero art square, bigger, 900 ms un-zoom, on every section page.</td><td class="file">T6_hero-art-ratio-and-easing.md</td></tr>
+            <tr><td class="id">T7</td><td>Brand moves to header</td><td class="dep">T1</td><td>Wordmark in the header at every width; nav has no text brand.</td><td class="file">T7_brand-moves-to-header.md</td></tr>
+            <tr><td class="id">T8</td><td>Rail toggles inside nav</td><td class="dep">T7</td><td>Two toggles inside the rail; collapsed rail is a strip that keeps both.</td><td class="file">T8_rail-toggles-inside-nav.md</td></tr>
+            <tr><td class="id">T9</td><td>Reading order config</td><td class="dep">T1</td><td><code>reading-order.json</code> drives docs groups and blog sections.</td><td class="file">T9_reading-order-config.md</td></tr>
+            <tr><td class="id">T10</td><td>Reading nav in the rail</td><td class="dep">T8, T9</td><td>Docs/blog navigation in the rail; <code>.reading-rail</code> gone; body widens.</td><td class="file">T10_reading-nav-in-the-rail.md</td></tr>
+            <tr><td class="id">T11</td><td>Back to top button</td><td class="dep">T1</td><td>Bottom-right back-to-top on every page but the 404 stub.</td><td class="file">T11_back-to-top-button.md</td></tr>
+            <tr><td class="id">T12</td><td>Review and repairs</td><td class="dep">T4, T5, T6, T10, T11</td><td>Whole suite green; docs, glossary and ADR index truthful.</td><td class="file">T12_review-repairs.md</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Feedback coverage</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Feedback line</th><th>Ticket</th></tr></thead>
+          <tbody>
+            <tr><td>Global 1 — keyword files as source of truth</td><td class="id">T2, T3</td></tr>
+            <tr><td>Non-archetype 1 — hero art ratio, size, slow un-zoom, all archetype pages</td><td class="id">T6</td></tr>
+            <tr><td>Non-archetype 2 — Ash Blossom missing Mill N hover ruling, all Mill X cards</td><td class="id">T3</td></tr>
+            <tr><td>Non-archetype 3 — Draw / Mill X / Search capitalised and bold, Search in the hover box</td><td class="id">T4</td></tr>
+            <tr><td>Non-archetype 4 — staples intro copy</td><td class="id">T5</td></tr>
+            <tr><td>Nekroz 1 — new archetype description</td><td class="id">T5</td></tr>
+            <tr><td>Burning Abyss 1 — new archetype description</td><td class="id">T5</td></tr>
+            <tr><td>Cards 1 — Counter needs no explanation text</td><td class="id">T3</td></tr>
+            <tr><td>Nav 1 — wordmark instead of brand text</td><td class="id">T7</td></tr>
+            <tr><td>Nav 2 — toggle inside the nav, duplicated bottom, visible when collapsed</td><td class="id">T8</td></tr>
+            <tr><td>Nav 3 — brand visible while collapsed, brand belongs to the header</td><td class="id">T7</td></tr>
+            <tr><td>Docs &amp; Blog 1 — reading rail into the nav, docs/blog menu, body widens</td><td class="id">T10</td></tr>
+            <tr><td>Docs &amp; Blog 2 — back-to-top, bottom right</td><td class="id">T11</td></tr>
+            <tr><td>Docs &amp; Blog 3 — editable order and sections config</td><td class="id">T9</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>Gate to respect.</b> <code>website/scripts/check-chrome.mjs</code> asserts that any
+        bold phrase resolving against a page's <code>#keyword-rulings</code> map carries an
+        inline reminder. That map is the <em>preview</em> map. So a keyword with
+        <code>preview: true</code> and <code>reminder: false</code> would break the build —
+        T3 rejects that combination in the loader instead of letting it reach the gate.
+      </div>
+
+      <footer>
+        Plan index: <code>ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2.md</code> ·
+        tickets: <code>ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2/T{n}_{slug}.md</code> ·
+        records: <code>docs/ADR/proposed/0023–0026</code>,
+        <code>docs/keyword-pipeline.html</code>,
+        <code>docs/website-information-architecture.html</code>.
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime, resolution, brand and conventions</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 3 · Runtime, resolution, brand, conventions</span>
+    <h1>Runtime, resolution, brand and conventions</h1>
+    <p class="lede">Your Round 2 answers picked a headless-Chromium renderer, torchaudio forced alignment and a logo-gated build. Scouting those three choices against this machine turned up two hard facts that change what is buildable: <b>the card artwork inside every MSE card is stored at 311 x 228 pixels</b>, and <b>this machine has no pip</b>, so the dependency route the repo documents does not currently work at all. Nineteen questions below. The first two figures are the ones to read before answering anything.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress">
+    <span class="node">Scope <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Structure <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Engine <b>settled</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Runtime</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Frames</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Resolution</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Brand</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Copy</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node active">Conventions</span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Shot list <b>blocked</b></span>
+    <span class="arrow">-&gt;</span>
+    <span class="node">Easing curves <b>blocked</b></span>
+  </nav>
+
+  <section class="visuals" aria-label="Technical context">
+
+    <figure>
+      <figcaption><b>Fact: your card art is 311 x 228 pixels</b>The print master does not fix this. Nothing downstream can.</figcaption>
+      <svg viewBox="0 0 480 356" role="img" aria-labelledby="f1-title f1-desc">
+        <title id="f1-title">Resolution chain from source artwork to video frame</title>
+        <desc id="f1-desc">Source art is 624 by 624 pixels. It is committed inside each MSE project already downsampled to 311 by 228 pixels. The 1500 by 2092 print render therefore blows that 311 by 228 image up four times to fill a 1244 by 912 art window, and the video zoom needs 1080 pixels of width from it.</desc>
+
+        <rect class="svg-node" x="8" y="8" width="464" height="42" rx="8"/>
+        <text class="svg-label" x="20" y="27">original_images/ &#183; 624 x 624 JPEG &#183; 223 files</text>
+        <text class="svg-note" x="20" y="42">fetched from YGOProDeck image_url. Highest tier that script pulls.</text>
+
+        <path class="svg-line" d="M240 50 L240 68"/>
+        <path class="svg-arrow" d="M236 68 L244 68 L240 76 Z"/>
+        <text class="svg-note" x="250" y="66">cropped + downsampled at import</text>
+
+        <rect class="svg-node active" x="8" y="76" width="464" height="46" rx="8"/>
+        <text class="svg-label" x="20" y="95">mse_images/&lt;slug&gt;-image.png &#183; <tspan class="svg-accent">311 x 228</tspan> &#183; committed</text>
+        <text class="svg-note" x="20" y="110">This is the only artwork MSE ever sees. It is baked into the .mse-set folder.</text>
+
+        <path class="svg-line" d="M240 122 L240 140"/>
+        <path class="svg-arrow" d="M236 140 L244 140 L240 148 Z"/>
+        <text class="svg-note" x="250" y="138">MSE stretches it to fill the art window</text>
+
+        <rect class="svg-node" x="8" y="148" width="464" height="46" rx="8"/>
+        <text class="svg-label" x="20" y="167">print render 1500 x 2092 &#183; art window 1244 x 912</text>
+        <text class="svg-note" x="20" y="182">1244 / 311 = 4.0. The art is a 4x upscale of a thumbnail.</text>
+
+        <rect x="8" y="204" width="464" height="34" rx="6" fill="#3a1a0c" stroke="#fb923c" stroke-width="2"/>
+        <text class="svg-label" x="20" y="220" fill="#fdba74" font-weight="700">Raising the export template alone changes nothing.</text>
+        <text class="svg-note" x="20" y="233" fill="#fdba74">6x or 8x just upscales the same 311 x 228 source further.</text>
+
+        <path class="svg-line" d="M240 238 L240 256"/>
+        <path class="svg-arrow" d="M236 256 L244 256 L240 264 Z"/>
+
+        <rect class="svg-node" x="8" y="264" width="464" height="46" rx="8"/>
+        <text class="svg-label" x="20" y="283">video: card fills 1080 px wide &#183; textbox zoom wants 1080 from 82.9%</text>
+        <text class="svg-note" x="20" y="298">Effective source for the zoom today: about 258 px of real detail.</text>
+
+        <rect x="8" y="318" width="464" height="30" rx="6" fill="#0f2417" stroke="#4ade80" stroke-width="2"/>
+        <text class="svg-note" x="20" y="337" fill="#86efac">Fix is upstream: rebuild mse_images from HD sources, then re-render. See Q8, Q9, Q10.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Fact: there is no pip on this machine</b>The documented install path does not work, today, for anything.</figcaption>
+      <svg viewBox="0 0 480 356" role="img" aria-labelledby="f2-title f2-desc">
+        <title id="f2-title">Python dependency situation on this NixOS machine</title>
+        <desc id="f2-desc">The repository documents installing dependencies with pip and hash pinning, but pip is not available. Even Pillow, the single pinned dependency, fails to import. Available alternatives are uv, nix and docker. Hardware is a Ryzen 7 7700, 30 gigabytes of RAM and an RTX 5060 Ti with 16 gigabytes of video memory.</desc>
+
+        <text class="svg-label" x="8" y="18" font-weight="700">What the repo says</text>
+        <rect class="svg-node" x="8" y="26" width="464" height="38" rx="8"/>
+        <text class="svg-note" x="20" y="43">requirements-dev.lock, line 1:</text>
+        <text class="svg-note" x="20" y="57" fill="#fbbf24">python -m pip install --require-hashes -r requirements-dev.lock</text>
+
+        <path class="svg-line" d="M240 64 L240 80"/>
+        <path class="svg-arrow" d="M236 80 L244 80 L240 88 Z"/>
+
+        <rect x="8" y="88" width="228" height="52" rx="8" fill="#3a0f0f" stroke="#f87171" stroke-width="2"/>
+        <text class="svg-note" x="20" y="106" fill="#fca5a5" font-weight="700">python -m pip</text>
+        <text class="svg-note" x="20" y="120" fill="#fca5a5">No module named pip</text>
+        <text class="svg-note" x="20" y="133" fill="#fca5a5">NixOS 26.05, home-manager python</text>
+
+        <rect x="244" y="88" width="228" height="52" rx="8" fill="#3a0f0f" stroke="#f87171" stroke-width="2"/>
+        <text class="svg-note" x="256" y="106" fill="#fca5a5" font-weight="700">import PIL</text>
+        <text class="svg-note" x="256" y="120" fill="#fca5a5">ModuleNotFoundError</text>
+        <text class="svg-note" x="256" y="133" fill="#fca5a5">the one pinned dep does not import</text>
+
+        <text class="svg-label" x="8" y="164" font-weight="700">What is actually available</text>
+
+        <rect class="svg-node active" x="8" y="172" width="150" height="40" rx="8"/>
+        <text class="svg-note" x="18" y="189" fill="#fbbf24" font-weight="700">uv 0.11.21</text>
+        <text class="svg-note" x="18" y="203">brings its own CPython</text>
+
+        <rect class="svg-node" x="165" y="172" width="150" height="40" rx="8"/>
+        <text class="svg-note" x="175" y="189" font-weight="700" fill="#fff7ed">nix / nix-shell</text>
+        <text class="svg-note" x="175" y="203">no flake in repo yet</text>
+
+        <rect class="svg-node" x="322" y="172" width="150" height="40" rx="8"/>
+        <text class="svg-note" x="332" y="189" font-weight="700" fill="#fff7ed">docker</text>
+        <text class="svg-note" x="332" y="203">heaviest, most portable</text>
+
+        <text class="svg-label" x="8" y="238" font-weight="700">Hardware, for sizing</text>
+        <rect class="svg-node" x="8" y="246" width="464" height="98" rx="8"/>
+        <text class="svg-note" x="20" y="266">CPU &#183; Ryzen 7 7700 &#183; 8 cores / 16 threads</text>
+        <text class="svg-note" x="20" y="284">RAM &#183; 30 GiB total, 21 GiB free &#183; Disk &#183; 885 GB free</text>
+        <text class="svg-note" x="20" y="302" fill="#86efac">GPU &#183; RTX 5060 Ti &#183; 16 GB VRAM &#183; CUDA 13.2 &#183; torch would be fast here</text>
+        <text class="svg-note" x="20" y="320">ffmpeg 8.1.2 &#183; libx264, libx265, nvenc, vaapi, libass, libfreetype all present</text>
+        <text class="svg-note" x="20" y="338">No torch, no whisper cache, no sox, no realesrgan. ImageMagick 7.1.2 present.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Fact: Playwright is already installed</b>Your engine choice costs zero new downloads. It does sit on the wrong side of a language boundary.</figcaption>
+      <svg viewBox="0 0 480 250" role="img" aria-labelledby="f3-title f3-desc">
+        <title id="f3-title">Existing Node and Python stacks and the boundary between them</title>
+        <desc id="f3-desc">The website directory already has Playwright 1.61.1 with Chromium build 1228 cached at 266 megabytes, running on Node 24.18. The script directory is Python 3.13 with no working packages. The pipeline must cross that boundary.</desc>
+
+        <rect class="svg-node active" x="8" y="8" width="216" height="112" rx="10"/>
+        <text class="svg-label" x="20" y="30" fill="#fbbf24" font-weight="700">website/ &#183; Node 24.18.0</text>
+        <text class="svg-note" x="20" y="50">@playwright/test 1.61.1</text>
+        <text class="svg-note" x="20" y="67">chromium-1228 cached, 266 MB</text>
+        <text class="svg-note" x="20" y="84">sharp 0.35.3 for image work</text>
+        <text class="svg-note" x="20" y="101" fill="#86efac">ready to screenshot today</text>
+
+        <rect class="svg-node" x="256" y="8" width="216" height="112" rx="10"/>
+        <text class="svg-label" x="268" y="30" font-weight="700">.script/ &#183; Python 3.13.14</text>
+        <text class="svg-note" x="268" y="50">all lifecycle + render tooling</text>
+        <text class="svg-note" x="268" y="67">7 modules import PIL</text>
+        <text class="svg-note" x="268" y="84" fill="#fca5a5">PIL does not import</text>
+        <text class="svg-note" x="268" y="101">wants torchaudio next</text>
+
+        <path d="M240 8 L240 120" stroke="#fb923c" stroke-width="2" stroke-dasharray="5 5" fill="none"/>
+        <text class="svg-note" x="196" y="138" fill="#fdba74">language boundary &#8212; Q2</text>
+
+        <rect class="svg-node" x="8" y="152" width="464" height="88" rx="10"/>
+        <text class="svg-label" x="20" y="173" font-weight="700">Everything else the pipeline needs, per card</text>
+        <text class="svg-note" x="20" y="192">card name, ruleText, colors, archetype, rarity, collectionNumber, image tiers</text>
+        <text class="svg-note" x="20" y="208" fill="#fbbf24">already generated at website/src/generated/catalog.ts</text>
+        <text class="svg-note" x="20" y="228">Also there: OKLCH design tokens per archetype. Free palette source for Q16.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Safe areas across the three video platforms</b>Worst case is roughly 900 x 1400 centred. Sources are aggregators, not official docs.</figcaption>
+      <svg viewBox="0 0 480 250" role="img" aria-labelledby="f4-title f4-desc">
+        <title id="f4-title">Safe area insets on a 1080 by 1920 vertical frame</title>
+        <desc id="f4-desc">TikTok reserves about 108 pixels at top and 320 at bottom with 60 left and 120 right. Instagram Reels reserves about 220 top and 420 bottom. YouTube Shorts reserves about 250 bottom. The intersection is roughly 900 by 1400 pixels centred.</desc>
+
+        <rect x="150" y="8" width="108" height="192" rx="4" fill="#12100b" stroke="#4a3b25" stroke-width="2"/>
+        <rect x="156" y="30" width="96" height="140" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <rect x="150" y="30" width="108" height="12" fill="#fb923c" opacity="0.18"/>
+        <rect x="150" y="168" width="108" height="32" fill="#fb923c" opacity="0.18"/>
+        <rect x="168" y="48" width="72" height="112" fill="#fbbf24" opacity="0.14" stroke="#fbbf24" stroke-width="1.5"/>
+        <text class="svg-note" x="176" y="106" fill="#fbbf24" font-weight="700">SAFE</text>
+        <text class="svg-note" x="171" y="118" fill="#fbbf24">900x1400</text>
+        <text class="svg-note" x="150" y="215">1080 x 1920 master</text>
+
+        <text class="svg-label" x="286" y="24" font-weight="700">Reserved chrome, px</text>
+        <text class="svg-note" x="286" y="46">TikTok</text>
+        <text class="svg-note" x="360" y="46">108 t &#183; 320 b &#183; 60 l &#183; 120 r</text>
+        <text class="svg-note" x="286" y="66">Reels</text>
+        <text class="svg-note" x="360" y="66">220 t &#183; 420 b</text>
+        <text class="svg-note" x="286" y="86">Shorts</text>
+        <text class="svg-note" x="360" y="86">250 b &#183; 60 l/r</text>
+
+        <text class="svg-note" x="286" y="114" fill="#fdba74">Bottom is the killer: 420 px gone on Reels.</text>
+        <text class="svg-note" x="286" y="130" fill="#fdba74">That is 22% of frame height.</text>
+        <text class="svg-note" x="286" y="152">The card at full width is 1080 x 1506,</text>
+        <text class="svg-note" x="286" y="168">which does not fit 900 x 1400.</text>
+        <text class="svg-note" x="286" y="184" fill="#fbbf24">So the card sits at about 82% width,</text>
+        <text class="svg-note" x="286" y="200" fill="#fbbf24">biased above centre. Confirm in Q16.</text>
+
+        <text class="svg-note" x="8" y="236">Left column: outer box is the 1080x1920 frame, orange bands are reserved chrome, amber box is the intersection.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>HD artwork backfill volume</b>Three done. The scope you pick decides whether this is an afternoon or a month.</figcaption>
+      <svg viewBox="0 0 480 220" role="img" aria-labelledby="f5-title f5-desc">
+        <title id="f5-title">Number of card artworks needing HD backfill under three scopes</title>
+        <desc id="f5-desc">Three HD artworks exist today. The current alpha set has 50 cards. The whole repository has 231 card files and 223 source images. There is no automated route to higher resolution source art.</desc>
+
+        <text class="svg-label" x="8" y="20" font-weight="700">Cards needing an HD source image</text>
+
+        <text class="svg-note" x="8" y="48">done today</text>
+        <rect x="120" y="38" width="5" height="14" rx="2" fill="#4ade80"/>
+        <text class="svg-note" x="134" y="49" fill="#86efac">3 &#183; hero art only, manually upscaled to 1920 x 1920</text>
+
+        <text class="svg-note" x="8" y="82">current set</text>
+        <rect x="120" y="72" width="76" height="14" rx="2" fill="#fbbf24"/>
+        <text class="svg-note" x="205" y="83" fill="#fbbf24">50 &#183; LOTA-0001-Alpha_0.1</text>
+
+        <text class="svg-note" x="8" y="116">whole repo</text>
+        <rect x="120" y="106" width="340" height="14" rx="2" fill="#fb923c"/>
+        <text class="svg-note" x="120" y="134" fill="#fdba74">223 source images across 231 card files, including 00_drafts</text>
+
+        <rect class="svg-node" x="8" y="148" width="464" height="64" rx="8"/>
+        <text class="svg-note" x="20" y="168">No automated HD route exists. download_ygo_images.py pulls YGOProDeck image_url,</text>
+        <text class="svg-note" x="20" y="184">which is the 624 px tier. original_cards records store a Konami Database CID but no image URL.</text>
+        <text class="svg-note" x="20" y="202" fill="#fdba74">ADR 0018 (proposed) rejects generative image APIs: must be deterministic, offline, no API keys.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Platform envelope</b>What the single master has to satisfy. Shorts is now three minutes, not sixty seconds.</figcaption>
+      <svg viewBox="0 0 480 220" role="img" aria-labelledby="f6-title f6-desc">
+        <title id="f6-title">Duration, caption and loudness limits per platform</title>
+        <desc id="f6-desc">YouTube Shorts allows up to three minutes. Reels and TikTok allow far longer. Caption limits are 2200 characters except X, which is 280 characters on a free account. Loudness normalisation targets range from minus 14 to minus 16 LUFS.</desc>
+
+        <text class="svg-note" x="8" y="18" font-weight="700" fill="#fff7ed">platform</text>
+        <text class="svg-note" x="140" y="18" font-weight="700" fill="#fff7ed">max length</text>
+        <text class="svg-note" x="250" y="18" font-weight="700" fill="#fff7ed">caption</text>
+        <text class="svg-note" x="350" y="18" font-weight="700" fill="#fff7ed">loudness</text>
+        <path class="svg-line" d="M8 26 L472 26"/>
+
+        <text class="svg-note" x="8" y="46">YouTube Shorts</text>
+        <text class="svg-note" x="140" y="46" fill="#fbbf24">180 s</text>
+        <text class="svg-note" x="250" y="46">description, long</text>
+        <text class="svg-note" x="350" y="46" fill="#86efac">-14 LUFS</text>
+
+        <text class="svg-note" x="8" y="68">Instagram Reels</text>
+        <text class="svg-note" x="140" y="68">20 min upload</text>
+        <text class="svg-note" x="250" y="68">2200 chars, 30 tags</text>
+        <text class="svg-note" x="350" y="68">-16 to -12 LUFS</text>
+
+        <text class="svg-note" x="8" y="90">TikTok</text>
+        <text class="svg-note" x="140" y="90">60 min web</text>
+        <text class="svg-note" x="250" y="90">2200 chars</text>
+        <text class="svg-note" x="350" y="90">-16 to -12 LUFS</text>
+
+        <text class="svg-note" x="8" y="112">Instagram feed</text>
+        <text class="svg-note" x="140" y="112">still image</text>
+        <text class="svg-note" x="250" y="112">2200, 20 slides</text>
+        <text class="svg-note" x="350" y="112">n/a</text>
+
+        <text class="svg-note" x="8" y="134">X / Twitter</text>
+        <text class="svg-note" x="140" y="134">still image</text>
+        <text class="svg-note" x="250" y="134" fill="#fca5a5">280 chars free</text>
+        <text class="svg-note" x="350" y="134">n/a</text>
+
+        <path class="svg-line" d="M8 146 L472 146"/>
+        <text class="svg-note" x="8" y="166" fill="#fdba74">Only X differs meaningfully. 280 chars forces a second, short caption variant. See Q14.</text>
+        <text class="svg-note" x="8" y="184">Aspect: 1080 x 1920 for all three video platforms. 1080 x 1350 (4:5) is the tallest uncropped feed post.</text>
+        <text class="svg-note" x="8" y="202">True peak target -1 dBTP everywhere. Confidence on the LUFS figures is medium: no official Meta or TikTok doc found.</text>
+      </svg>
+    </figure>
+
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="How do Python and the ML dependencies actually get installed, given this machine has no pip?">
+      <legend>1. How do Python and the ML dependencies actually get installed?</legend>
+      <p class="why">You asked for heavyweight ML deps in the main hashed lock and for the thing to be system agnostic. Neither is currently true: <code>python -m pip</code> does not exist here, and even Pillow, the single pinned dependency, fails to import. So the repo's documented install command works nowhere on this box. Adding torch on top of a broken route makes it worse. Whatever you pick here also fixes the seven existing <code>.script/</code> modules that import PIL.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="uv-managed project environment with a committed uv.lock; pipeline entry point is uv run"><span><b>uv-managed environment, committed <code>uv.lock</code></b><span class="rank">Recommended</span><span class="detail">uv 0.11.21 is already installed here. It downloads its own CPython and wheels, so it sidesteps NixOS entirely, is fully hash-locked, works identically on Windows and macOS, and installs torch with CUDA without a system toolchain. Replaces requirements-dev.lock. Entry point becomes <code>uv run .script/...</code>.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Repo flake.nix devshell providing python3.withPackages including torchaudio"><span><b>Repo <code>flake.nix</code> devshell</b><span class="detail">Most reproducible on this machine and the most native fit for NixOS. But it is Nix-only, so it is the opposite of system agnostic, and nixpkgs torch/CUDA builds are large and can lag. No flake exists in the repo today.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Docker image containing python, torch and ffmpeg; pipeline runs inside the container"><span><b>Docker image</b><span class="detail">Maximum portability and the only option that also pins ffmpeg and system libraries. Docker is installed here. Costs a multi-gigabyte image, GPU passthrough setup for CUDA, and awkward file paths in and out of the container.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep the pip-based requirements lock and document manual installation per machine"><span><b>Keep the pip lock, document manual setup</b><span class="detail">Zero change to repo conventions. But it is the status quo, and the status quo does not run. You would still need a working pip before the pipeline could execute once.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. uv, and migrate the existing Pillow dep to it in the same change"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where does the Playwright renderer live and how does the pipeline cross the Node/Python boundary?">
+      <legend>2. Where does the Playwright renderer live, and who calls whom?</legend>
+      <p class="why">Playwright is a Node package in <code>website/</code>, with Chromium already cached. The alignment step is Python. The pipeline has to cross that line somewhere, and where you cross it decides how much of the codebase the pipeline can reuse and how many browser downloads you carry.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Python orchestrates; a Node renderer script is invoked via subprocess and reuses the existing website Playwright install"><span><b>Python orchestrates, Node renders</b><span class="rank">Recommended</span><span class="detail">Keeps the pipeline in <code>.script/</code> alongside every other repo tool, and reuses the Chromium already on disk. The Node side becomes a small, dumb frame renderer that takes a JSON scene description on stdin. Cost: one subprocess contract to keep honest.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Python playwright bindings inside the managed venv, with their own browser download"><span><b>Python Playwright bindings</b><span class="detail">Single language, no IPC, easiest to unit test. Costs a second Chromium download of roughly 300-500 MB that duplicates the one already cached, and the Python bindings are version-coupled to their own browser build.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Whole pipeline in Node/TypeScript, with alignment shelled out to a Python script"><span><b>Node-first, Python only for alignment</b><span class="detail">Puts the pipeline next to the code that already knows the catalog, tokens and card assets, and makes the HTML template a first-class part of the site build. Costs a new language for pipeline logic and breaks the <code>.script/</code> convention.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Standalone Node package outside both website/ and .script/, e.g. a new top-level content/ workspace"><span><b>New top-level <code>content/</code> package</b><span class="detail">Cleanest separation: the pipeline is neither website nor card tooling. Costs a third dependency tree to maintain and duplicates the Playwright install unless it shares the workspace.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. Python drives, renderer lives at website/scripts/render-frames.mjs"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How are frames captured from the browser deterministically?">
+      <legend>3. How are frames captured from the browser?</legend>
+      <p class="why">The naive approach is to run CSS animations and screenshot as fast as possible, which produces dropped and duplicated frames and is not reproducible. Since your verification plan is unit tests plus ffprobe assertions, the render needs to be deterministic enough that the same inputs give the same video.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Page exposes renderFrame(t); the driver loops frame indices, calls it, and screenshots each resolved state"><span><b>Time-driven <code>renderFrame(t)</code>, one screenshot per frame</b><span class="rank">Recommended</span><span class="detail">The page has no animations at all: it is a pure function from timestamp to DOM state. The driver walks t = 0, 1/fps, 2/fps and screenshots. Perfectly deterministic, resumable after a crash, trivially parallelisable across browser contexts, and you can render a single frame to debug a shot. Costs writing the interpolation yourself instead of getting easing free from CSS.</span></span></label>
+        <label class="choice"><input type="checkbox" value="CSS and Web Animations API drive the motion; Playwright page.clock fast-forwards the virtual clock between screenshots"><span><b>CSS/WAAPI animations plus <code>page.clock</code></b><span class="detail">You get real easing curves, compositing and text layout animation for free, and the virtual clock keeps it deterministic. Costs subtlety: some effects are driven by the compositor and do not always settle synchronously before the screenshot, which shows up as occasional off-by-one-frame artefacts.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Chrome DevTools screencast capture at real time, then conform the stream to a constant frame rate"><span><b>CDP screencast in real time</b><span class="detail">Fastest to write and closest to what you see in the browser. Not deterministic, drops frames under load, and the frame timing has to be conformed afterwards. Poor fit for a test suite.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. renderFrame(t), and easing implemented as a small shared curve library so tests can assert it"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What frame rate and encode profile does the master use?">
+      <legend>4. What frame rate and encode profile?</legend>
+      <p class="why">Frame rate sets both the render cost and how the push-ins read. Every frame is a browser screenshot, so 60 fps literally doubles the wall clock. The encoder choice trades speed against reproducibility: nvenc output varies with driver version, which would make byte-level assertions impossible.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="30 fps, PNG frame sequence to a temp dir, encoded with libx264 CRF 18 preset slow, yuv420p, faststart"><span><b>30 fps, PNG sequence, libx264 CRF 18</b><span class="rank">Recommended</span><span class="detail">30 fps is the platform norm and reads fine for slow push-ins. PNG frames on disk are inspectable, resumable and cheap here with 885 GB free (roughly 1350 frames for a 45 s short). libx264 is bit-exact across runs, which your ffprobe assertions depend on. Encode of a 45 s short takes well under a minute on 16 threads.</span></span></label>
+        <label class="choice"><input type="checkbox" value="60 fps, PNG sequence, libx264 CRF 18"><span><b>60 fps, otherwise identical</b><span class="detail">Noticeably smoother on continuous zooms and whip-pans, and all three platforms accept it. Costs double the screenshots, which is the dominant cost of the whole pipeline, for a difference most viewers will not name.</span></span></label>
+        <label class="choice"><input type="checkbox" value="30 fps, frames piped as raw video to ffmpeg stdin with no intermediate files"><span><b>30 fps, piped straight into ffmpeg</b><span class="detail">No temp files, less disk churn, single pass. Costs debuggability: when a frame is wrong you cannot open it, and a crash means restarting the whole render.</span></span></label>
+        <label class="choice"><input type="checkbox" value="30 fps encoded with h264_nvenc on the RTX 5060 Ti"><span><b>30 fps with h264_nvenc</b><span class="detail">Encodes in seconds on the 5060 Ti. Costs determinism, since output bytes depend on the driver and generation, and nvenc at low bitrates is visibly worse than x264 on flat gradients, which is most of this design.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. 30 fps, but keep the frame dir under --preview only"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the length policy: padding, end card duration, and limits?">
+      <legend>5. What is the length policy?</legend>
+      <p class="why">Audio duration drives the timeline, but a video is not just the narration: there is lead-in before the first word, and the end card runs past the last one. Shorts now allows 180 seconds, so the practical ceiling is far looser than it was, but a 3-minute card reveal is not the format.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="total = 0.4s lead-in + narration + 2.5s end card; hard fail above 180s; warn below 12s"><span><b>Fixed lead-in and end card, hard ceiling at 180 s</b><span class="rank">Recommended</span><span class="detail">A short lead-in stops the first word being clipped by platform playback start, and 2.5 s is enough for the CTA to be read without being a dead zone people swipe past. 180 s is the Shorts limit, so exceeding it silently demotes the video to a regular upload. The 12 s warning catches recordings that are too thin to carry three acts.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Same padding but hard ceiling at 60s to stay in the classic Shorts envelope"><span><b>Same, but 60 s ceiling</b><span class="detail">Forces the tight, high-retention format that performs best, and gives you a concrete constraint when recording. Costs flexibility on complex cards where the rules text genuinely needs longer.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Narration duration exactly, no padding, no end card overrun, no limits"><span><b>Narration duration exactly, no limits</b><span class="detail">Simplest rule, nothing to configure. Costs a clipped first syllable on some platforms and a CTA that vanishes the instant the audio stops.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. target 30-45s, warn outside that band, hard fail over 180s"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Which alignment model, and is the resulting timing stored as a committed artifact?">
+      <legend>6. Which alignment model, and is the timing stored?</legend>
+      <p class="why">Forced alignment is the only step needing PyTorch. If its output is stored, everyone else can rebuild the video without torch at all, the timings become reviewable and hand-correctable, and the render becomes reproducible even if the model changes. If it is not stored, torch is a permanent hard dependency of every build.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="torchaudio MMS_FA or WAV2VEC2_ASR_BASE bundle; alignment written to timing.json beside the inputs and committed; torch only needed to regenerate it"><span><b>Write <code>timing.json</code> beside the inputs and commit it</b><span class="rank">Recommended</span><span class="detail">Turns torch into a one-off authoring tool rather than a build dependency, so the video can be rebuilt on any machine. The JSON is small, diffable, and you can nudge a mistimed word by hand instead of re-recording. It also makes caption timing unit-testable without any model.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Same model, alignment cached to disk but gitignored and regenerated on demand"><span><b>Cache it, but do not commit</b><span class="detail">Keeps the repo free of generated artefacts, consistent with how renders are treated. Costs reproducibility: a rebuild on a clean checkout needs torch and may produce different timings.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Recompute alignment on every run, never store it"><span><b>Recompute every run</b><span class="detail">Nothing to invalidate, nothing to go stale. Costs a model load and a GPU pass on every single build, and makes hand-correcting a bad alignment impossible.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. commit timing.json, and add a --realign flag to regenerate"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the audio chain and loudness target?">
+      <legend>7. What is the audio chain and loudness target?</legend>
+      <p class="why">You will mix narration against a music bed. Platforms normalise loudness on upload, so mastering too hot just gets turned down, and the music has to sit far enough under the voice that captions are not the only way to follow it.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Two-pass loudnorm on the final mix to -14 LUFS integrated and -1 dBTP; music sidechain-ducked roughly 18 dB under narration"><span><b>Two-pass loudnorm to -14 LUFS, sidechain-ducked music</b><span class="rank">Recommended</span><span class="detail">Two-pass loudnorm actually hits the target, unlike the single-pass estimate. -14 LUFS matches YouTube and is close enough to the others that no platform will boost or crush it. Sidechain ducking keeps the bed present between phrases and out of the way during them, which is what makes narration sound produced rather than layered.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Two-pass loudnorm to -16 LUFS, -1 dBTP, sidechain-ducked music"><span><b>Same but -16 LUFS</b><span class="detail">The commonly cited social media standard and safer against platform compression artefacts. Costs a slightly quieter video than neighbours in the feed, which matters more than it should.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Normalise narration only, mix music at a fixed static gain with no ducking"><span><b>Fixed music gain, no ducking</b><span class="detail">Far simpler filtergraph and fully predictable. Costs intelligibility on louder passages of the bed, and it will sound different for every track you add to the pool.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. -14 LUFS, and add a high-pass at 80 Hz on the voice"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the scope of the HD artwork backfill?">
+      <legend>8. What is the scope of the HD artwork backfill?</legend>
+      <p class="why">You committed to backfilling HD art. The scope decides whether this blocks the first video or the whole project. There are 3 HD images today, 50 cards in the current alpha set, and 223 source images in total including drafts that may never ship.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Backfill only the cards in the set being published, currently 50 for LOTA-0001-Alpha_0.1"><span><b>Only the set being published (50 cards)</b><span class="rank">Recommended</span><span class="detail">Ties the work to what actually ships and keeps drafts out of it. 50 is a weekend, not a month. The pipeline gates per card, so a missing HD source fails only that card's build rather than blocking everything.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Backfill on demand, one card at a time, as each card is recorded"><span><b>On demand, one card at a time</b><span class="detail">Zero up-front cost and perfectly matched to the posting cadence. Costs context-switching every recording session and makes it easy to lose track of which cards are ready.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Backfill all 223 source images up front, including drafts"><span><b>All 223 up front</b><span class="detail">Done once, never thought about again, and it also fixes the website's print tier and hero art across the board. Costs a large block of work before the first video exists, much of it on cards that may never ship.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. the 50 in the alpha set, tracked by a checklist script that reports which are missing"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="By what method is the HD artwork produced?">
+      <legend>9. By what method is the HD artwork produced?</legend>
+      <p class="why">There is no automated route to higher-resolution source art. The YGOProDeck endpoint the repo uses returns the 624 px tier and exposes nothing larger. ADR 0018 (proposed) already ruled out generative image APIs on the grounds that the pipeline must be deterministic, offline and key-free. No upscaler is installed on this machine, though there is a 16 GB GPU sitting idle.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Manual external upscale then commit the result, recorded in art-provenance.json, matching the precedent already set for the 3 hero images"><span><b>Manual upscale, committed, provenance recorded</b><span class="rank">Recommended</span><span class="detail">Exactly what you already did for the three hero images, so it needs no new tooling, no new ADR and no new dependency. You keep visual judgement over each result, which matters because upscalers mangle some art badly. Costs your time per card and makes the result unreproducible from source, which the existing provenance file already accepts.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Vendor an offline upscaler (realesrgan-ncnn-vulkan) via nix and run it from a repo script over the whole set"><span><b>Vendored offline upscaler, run by a repo script</b><span class="detail">Deterministic, offline, key-free, so it satisfies ADR 0018 outright, and the 5060 Ti will chew through 50 images in minutes. Anyone can regenerate the art from source. Costs a new vendored binary, a nix dependency, and accepting whatever the model does to art you would have hand-picked.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Attempt to source genuinely higher-resolution official art using the Konami Database CID already recorded in original_cards"><span><b>Re-source from Konami using the stored CID</b><span class="detail">Real pixels beat invented ones, and every original_cards record already carries a CID and source URL. Costs unknown feasibility: nobody has checked whether that database exposes anything above the tier you already have, and it is a scraping dependency on a third party.</span></span></label>
+        <label class="choice"><input type="checkbox" value="ImageMagick Lanczos upscale, no machine learning"><span><b>ImageMagick Lanczos</b><span class="detail">Already installed, deterministic, trivial to script, and honest about the fact that it adds no information. Costs the result: a soft 4x Lanczos blow-up will look soft on a full-screen push-in, which is the shot this whole exercise exists to enable.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. manual for now, and a script that reports which cards are still missing HD sources"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How does the HD artwork get into the card render, and at what template size?">
+      <legend>10. How does the HD art reach the card render, and at what size?</legend>
+      <p class="why">This is the question figure one exists for. The art MSE renders is <b>not</b> read from <code>original_images/</code>. Each <code>.mse-set</code> folder contains its own <code>mse_images/</code> copy, and those copies are 311 x 228 pixels, exactly the art window at 1x. So the 1500 x 2092 print master is a 4x upscale of a thumbnail, and raising the export template further only magnifies the same thumbnail. The embedded images have to be rebuilt from HD sources first. 1500 x 2092 already gives the textbox zoom more pixels than it needs; the only reason to go higher is if you want to push in tighter than the textbox.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Rebuild mse_images/ art at 4x (1244x912) from the HD sources, keep the existing 1500x2092 print template unchanged"><span><b>Rebuild <code>mse_images/</code> at 4x, keep the 1500 x 2092 template</b><span class="rank">Recommended</span><span class="detail">Makes the print master genuinely native: 1244 x 912 of art rendered into a 1244 x 912 window, one to one. No template change, no new render-size risk, and it fixes the website's print tier at the same time. The textbox zoom then has 1244 px of real detail for a 1080 px target, which is a slight downscale, exactly what you want.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Rebuild mse_images/ at 6x (1866x1368) and raise the print template to 2250x3138"><span><b>Rebuild at 6x and raise the template to 2250 x 3138</b><span class="detail">Gives headroom to push in tighter than the full textbox, for example onto a single keyword line, and future-proofs against 4K delivery. Costs larger committed images in every set folder, slower MSE exports, and it changes an output the website and print PDFs already consume.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Leave MSE untouched; composite the HD artwork separately in the browser for act 1 only, and accept the soft card in acts 2 and 3"><span><b>HD art in act 1 only, card stays soft</b><span class="detail">Avoids touching card data entirely, and act 1 is the shot where softness would be most obvious. Costs the whole point of act 3: the textbox zoom would still be pulling from a 4x-upscaled render, and the rules text is the thing viewers are meant to read.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep the 311x228 embedded art and simply raise the export template resolution"><span><b>Just raise the template</b><span class="detail">Listed for completeness because it was the plan before this was measured. It produces a larger file with no additional detail. The art window would be an 8x upscale of 311 x 228 instead of a 4x one.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. 4x rebuild, and add a lint check that fails if any mse_images file is under 1244 px wide"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What form does the brand mark take?">
+      <legend>11. What form does the brand mark take?</legend>
+      <p class="why">You decided the pipeline is not built until the mark exists, so this is now on the critical path. The site currently has no logo at all: <code>.brand</code> is a type treatment in the nav and there is no favicon or logo asset in <code>website/public/</code>. The mark has to work at two very different sizes: a persistent corner watermark of maybe 80 px, and an end card at several hundred.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Wordmark lockup ESSENTIA set in Charter with a rule, plus a compact monogram derived from it for the corner watermark"><span><b>Charter wordmark plus a derived monogram</b><span class="rank">Recommended</span><span class="detail">Uses type you already own the licence to, ships as a single SVG, and reads at every size. The monogram solves the watermark case without inventing a second visual language. It is also the only option with no trademark exposure, and it can be made in an afternoon rather than commissioned.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Custom monogram glyph, an E fused with a card silhouette, paired with the wordmark"><span><b>Custom monogram glyph plus wordmark</b><span class="detail">Gives you something recognisable at watermark size that is not just letters, and a card silhouette says what the project is instantly. Costs actual design work and iteration, which is time the pipeline is blocked on.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Symbol referencing both source games, for example a Yu-Gi-Oh card back motif combined with a Magic mana pip"><span><b>Hybrid symbol referencing both games</b><span class="detail">Communicates the crossover immediately to the exact audience you are targeting. Serious trademark exposure: Yu-Gi-Oh card back designs and Magic mana symbols are both registered marks, and a logo is the one place fan-project tolerance runs out fastest. Flagging this rather than recommending it.</span></span></label>
+        <label class="choice"><input type="checkbox" value="No new mark; reuse the existing website .brand type treatment as-is"><span><b>Reuse the existing nav type treatment</b><span class="detail">Unblocks the pipeline today at zero cost and stays consistent with the site. Costs distinctiveness: plain type in a system serif will not be recognised as a brand in a feed.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. wordmark first so the pipeline can start, custom glyph later without changing the asset path"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="In what format is the mark stored, where does it live, and which fonts get vendored alongside it?">
+      <legend>12. Where does the mark live, and which fonts ship with it?</legend>
+      <p class="why">Round 2 settled that Charter plus an OFL sans get vendored. Confirmed: Charter was donated to the X Consortium with unrestricted redistribution, Aptos is Microsoft proprietary. There are currently <b>no font files anywhere in the repo</b> outside <code>MSE/fonts/</code>, and the website declares no <code>@font-face</code> at all, so the site is rendering in fallbacks for most visitors right now. Whatever the pipeline vendors can fix that too.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Mark as hand-authored SVG committed under website/public/brand/, shared by site and pipeline; fonts vendored as woff2 plus ttf in the same tree, with Open Sans or Lato as the Aptos stand-in"><span><b>Shared <code>website/public/brand/</code>, fonts vendored beside it</b><span class="rank">Recommended</span><span class="detail">One source of truth for site and video, so they cannot drift. SVG rasterises perfectly at any size, and since the renderer is a browser, it consumes the SVG and the woff2 directly with no conversion step. Shipping the fonts also fixes the site's missing <code>@font-face</code>, and the ttf copies serve any future ffmpeg drawtext or Pillow use. Open Sans and Lato are both OFL and close to Aptos in warmth; Carlito is the closest metric match if you care about that.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Mark and fonts in a pipeline-local assets directory; the website keeps its own copies and its own stack"><span><b>Pipeline-local assets, website untouched</b><span class="detail">Keeps this change entirely inside the new pipeline with no risk to the site build. Costs duplication and eventual drift between the video brand and the web brand.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Mark exported as PNG at three fixed sizes rather than SVG"><span><b>PNG at fixed sizes</b><span class="detail">No font or renderer dependency at all, and guaranteed identical everywhere. Costs scalability and makes every tweak a re-export.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. website/public/brand/, and update DESIGN.md to name Charter + Lato as the shippable pair"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How are the YouTube and website destinations represented visually in the CTA?">
+      <legend>13. How is the CTA shown on screen?</legend>
+      <p class="why">You said the CTA is spoken, with a YouTube icon and the website URL shown, and viewers sent to the description for links. Using the actual YouTube logo means accepting YouTube's brand guidelines: unmodified, correct colour, minimum clear space, and no implication of endorsement or partnership.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Official YouTube icon used unmodified per YouTube brand guidelines, plus the site URL set in the vendored display face"><span><b>Official YouTube icon, unmodified, plus URL text</b><span class="rank">Recommended</span><span class="detail">Instantly legible, which is the entire job of an end card, and permitted provided it is unmodified and does not imply endorsement. Costs a small compliance obligation: fixed colour, no recolouring to match your palette, and clear space around it.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Generic play-triangle glyph in your own palette, no platform trademarks anywhere"><span><b>Generic play glyph, no platform marks</b><span class="detail">Zero legal surface, and it can be tinted to the card's palette so the end card stays visually coherent. Costs recognition: a generic triangle reads as video, not as YouTube specifically.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Text only, both destinations spelled out with no icons"><span><b>Text only</b><span class="detail">Simplest to build and unambiguous. Costs the scan-ability that makes an end card work in two and a half seconds.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. official icon, and keep the handle and URL on separate lines"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Which copy artifacts does the pipeline emit, and are they per-platform?">
+      <legend>14. Which copy artifacts get written?</legend>
+      <p class="why">Caption limits are 2200 characters almost everywhere, so one caption covers TikTok, Reels and the Instagram feed post. X is the outlier at 280 characters on a free account, which no amount of templating can squeeze a long caption into. YouTube wants a description with actual clickable links, since that is where you are sending viewers.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="caption.txt (long, platform-neutral, under 2200 chars), caption.short.txt (under 280 for X), description.txt (YouTube, with links), alt.txt (image alt text)"><span><b>Long caption, short caption, description, alt text</b><span class="rank">Recommended</span><span class="detail">Four small files that map exactly to where the real differences are, rather than one per platform when three of them are identical. The alt text costs nothing to generate from the card data and makes the posts accessible, which also matches the site's existing accessibility testing.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One file per platform: caption.tiktok.txt, caption.instagram.txt, caption.x.txt, description.youtube.txt"><span><b>One file per platform</b><span class="detail">Nothing to think about at posting time, and it leaves room for genuinely divergent copy later. Costs three near-identical files per card and the temptation to let them drift.</span></span></label>
+        <label class="choice"><input type="checkbox" value="A single combined markdown file with a section per destination"><span><b>Single combined markdown file</b><span class="detail">One thing to open, easy to read end to end. Costs copy-paste precision: selecting the right block from a longer document is exactly where posting mistakes happen.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. also emit a pinned-comment.txt with the links for TikTok and Instagram"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the hashtag policy?">
+      <legend>15. What is the hashtag policy?</legend>
+      <p class="why">Every field the templates could draw on is already in the generated catalog: archetype, colours, rarity, card type, set. So hashtags can be derived deterministically rather than typed, which is also what makes them unit-testable. Instagram caps at 30; current guidance is that far fewer performs better.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Fixed core set plus archetype- and colour-derived tags, deduplicated and capped at 8, generated deterministically from card data"><span><b>Fixed core plus derived, capped at 8</b><span class="rank">Recommended</span><span class="detail">The core set builds the project's own tag over time; the derived ones catch archetype searches, which is where a Burning Abyss or Nekroz player will actually find you. Capping at 8 matches current platform guidance and keeps the caption readable. Fully deterministic, so it is one unit test.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Fixed core set only, identical on every post"><span><b>Fixed core set only</b><span class="detail">Perfectly consistent branding and nothing to maintain. Costs discoverability on everything except your own tag.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Maximise: fill to the 30-tag limit with every relevant term"><span><b>Fill to 30 tags</b><span class="detail">Maximum surface area on platforms that still weight tags. Reads as spam, and current guidance is that it actively hurts on TikTok.</span></span></label>
+        <label class="choice"><input type="checkbox" value="No hashtags; rely on caption keywords alone"><span><b>No hashtags</b><span class="detail">Cleanest-looking captions, and TikTok now weights caption keywords comparably. Costs Instagram, where tags still do work.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. cap at 8, and keep the core set in one editable constant"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What goes on the composed static post, and what aspect ratio goes to X?">
+      <legend>16. What is on the static post, and what ratio goes to X?</legend>
+      <p class="why">Round 1 settled on a composed 4:5 graphic plus a bare card PNG as a second slide. 4:5 (1080 x 1350) is the tallest ratio Instagram shows uncropped. On X, a 4:5 image also displays taller in the mobile timeline than 16:9, so the same file may serve both.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One 1080x1350 composed graphic (card on a palette-derived field, card name, collector number, watermark) plus the bare card PNG as slide two; the same 4:5 file goes to X"><span><b>One 4:5 composed graphic, reused on X</b><span class="rank">Recommended</span><span class="detail">One image to design, one to generate, and it occupies maximum vertical space on both platforms. Card name and collector number come free from the catalog, and the palette comes from the archetype's OKLCH token, so it is coherent with the site without manual colour picking.</span></span></label>
+        <label class="choice"><input type="checkbox" value="4:5 composed graphic for Instagram plus a separate 16:9 1200x675 variant for X"><span><b>4:5 for Instagram, 16:9 for X</b><span class="detail">16:9 is the ratio X's own guidance recommends and fills the desktop timeline edge to edge. Costs a second layout to design and keep in sync, for a platform where vertical arguably performs better anyway.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Bare card PNG only, no composed graphic anywhere"><span><b>Bare card PNG only</b><span class="detail">Zero design work, and the card art is the product. Costs branding entirely: no watermark, no name, and it will not be traceable back to the project when reshared.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. also emit a 1080x1080 square variant for cross-posting"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What is the command surface: name, location, flags?">
+      <legend>17. What is the command surface?</legend>
+      <p class="why">Your original constraint was one terminal command. Existing repo tools are verb-named scripts under <code>.script/</code> invoked as <code>python .script/&lt;name&gt;.py &lt;subcommand&gt;</code>. Whatever runtime you picked in Q1 changes the prefix, but not the shape.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One script .script/make_card_content.py taking a card id, with flags --set, --preview, --only short|post, --force"><span><b><code>.script/make_card_content.py &lt;card-id&gt;</code></b><span class="rank">Recommended</span><span class="detail">Matches the existing naming convention exactly, so it needs no explanation to anyone who has used the other tools. A card id as the sole positional argument makes the common case one short command, and <code>--only</code> lets you re-render just the post after a copy tweak without paying for a video render.</span></span></label>
+        <label class="choice"><input type="checkbox" value="A subcommand-style script, e.g. .script/content.py build &lt;card-id&gt;, leaving room for future verbs like check and list"><span><b><code>.script/content.py build &lt;card-id&gt;</code></b><span class="detail">Room to grow verbs such as <code>check</code> for readiness and <code>list</code> for what is missing HD art, which you will want given Q8. Costs one extra word on every invocation.</span></span></label>
+        <label class="choice"><input type="checkbox" value="A subcommand added to an existing script such as release_package.py"><span><b>Subcommand on an existing script</b><span class="detail">No new entry point to discover. Costs coherence: content production is not part of the release lifecycle and would muddy a script that currently has one clear job.</span></span></label>
+        <label class="choice"><input type="checkbox" value="An npm script in website/, e.g. npm run content -- &lt;card-id&gt;"><span><b>npm script in <code>website/</code></b><span class="detail">Natural if the pipeline ends up Node-first, and it sits next to the catalog it reads. Costs the <code>.script/</code> convention and puts card tooling inside the website package.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. make_card_content.py, plus a --check mode that reports readiness without rendering"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where do inputs, overrides, music and outputs live on disk, and what is committed to git?">
+      <legend>18. What lives where on disk, and what is committed?</legend>
+      <p class="why">Round 2 settled that outputs go to a gitignored <code>output/</code> and inputs are a per-card folder keyed by card id. What is still open is the rest: your voice recordings, the override file format, and the music pool. Audio adds up fast, and this repo already carries images, renders and MSE binaries.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="content/&lt;setId&gt;/&lt;card-id&gt;/ holding transcript.md, timing.json and overrides.toml committed; voice.wav gitignored; music in content/_music/ gitignored with a committed manifest naming track, source and licence; output/ gitignored"><span><b>Commit the text and timing, gitignore the audio, manifest the music</b><span class="rank">Recommended</span><span class="detail">Everything reviewable and diffable is in git; everything large and binary is not. The music manifest is the important part: it records which track, from where, under what licence, so a future copyright claim is answerable from the repo. TOML matches the shape of small hand-edited config and is readable at a glance.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Commit everything including voice recordings and music files, so a card's content is fully reproducible from a clean checkout"><span><b>Commit everything, audio included</b><span class="detail">Total reproducibility: clone and rebuild every video. Costs repository size permanently, since audio never compresses in git and every re-record adds another copy of the blob.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep all media outside the repository entirely; only the transcript and copy templates are committed"><span><b>All media outside the repo</b><span class="detail">Keeps the repository lean and avoids any large-file policy question. Costs a second location to back up and remember, and makes the inputs invisible to anyone reading the project.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. content/ at repo root, TOML overrides, and a LICENCES.md for the music pool"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What fails the build hard, and what only warns?">
+      <legend>19. What fails hard, and what only warns?</legend>
+      <p class="why">You already said the missing print master should fail loudly. Now there is a longer list of things that can be missing or wrong: HD source art, transcript markers, alignment confidence, rules text too long for the textbox pan, missing music, no logo asset. A build that silently produces a soft or broken video is worse than one that refuses.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Hard fail on missing HD source art, missing print render, missing transcript or audio, and alignment that does not cover the transcript; warn on low alignment confidence and over-long rules text; --preview downgrades every fatal to a warning"><span><b>Hard fail on missing inputs, warn on quality, <code>--preview</code> downgrades everything</b><span class="rank">Recommended</span><span class="detail">Missing inputs are unambiguous and always a mistake, so they should stop the build. Quality signals are judgement calls and should inform, not block. The <code>--preview</code> escape hatch is what makes the strictness tolerable: you can always see something, you just cannot ship it by accident.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Hard fail on everything questionable, with no preview downgrade"><span><b>Fail on everything, no downgrade</b><span class="detail">Guarantees no substandard output ever exists on disk. Costs iteration speed badly: you cannot look at a rough cut of a card whose HD art is not done yet.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Warn on everything and always produce output, with a summary report at the end"><span><b>Warn on everything, always produce output</b><span class="detail">Never blocks you, and the report tells you what to fix. Costs the exact failure mode you flagged in Round 1: quietly publishing a soft card because the warning scrolled past.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. also fail if the rendered duration disagrees with the audio duration by more than one frame"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 3 · Runtime, resolution, brand, conventions — Runtime, resolution, brand and conventions\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

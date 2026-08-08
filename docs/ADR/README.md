@@ -29,6 +29,13 @@ Decision evidence lives here after rule/design review.
 - [0017 — Docs, blog, and local decks ship without MDX](proposed/0017-docs-blog-decks-without-mdx.md)
 - [0018 — Section hero art is committed, never build-generated](proposed/0018-committed-hd-hero-art.md)
 - [0019 — Unknown routes redirect home; there is no welcome page](proposed/0019-unknown-routes-redirect-home.md)
+- [0020 — Docs and blog share one reading surface, lifted off the blackfoil](proposed/0020-reading-surfaces-for-docs-and-blog.md)
+- [0021 — Correct the MSE field parser, freeze the render-provenance hash input](proposed/0021-frozen-visual-source-hash.md)
+- [0022 — Essentia logo and icon set](proposed/0022-essentia-logo-and-icon-set.md)
+- [0023 — Keyword rulings live in one doc file per keyword](proposed/0023-keyword-rulings-in-per-keyword-docs.md)
+- [0024 — Section intro prose is authored, not scraped](proposed/0024-section-intro-prose-in-content.md)
+- [0025 — The catalog rail owns reading navigation; the brand belongs to the header](proposed/0025-catalog-rail-owns-reading-navigation.md)
+- [0026 — Docs and blog ordering is configuration, not code](proposed/0026-reading-order-config.md)
 
 ## Workflow
 

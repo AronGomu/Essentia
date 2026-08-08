@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "project": "LOTA-0001-Alpha_0.1_all_cards.mse-set",
-  "exportedAt": "2026-08-05T08:40:27.712367Z",
+  "exportedAt": "2026-08-08T14:36:03.572492Z",
   "mse": {
     "version": "2.0.2",
     "game": "magic",
@@ -17,501 +17,501 @@
       "id": "card ash-blossom-and-joyous-spring",
       "name": "Ash Blossom & Joyous Spring",
       "manifestIndex": 0,
-      "sourceHash": "0bb588681bd269c769fdc3c62fc279aa84150764fcb9e48c82b5e4efcac8646f",
+      "sourceHash": "55b39958074838e7afb4370931a28ea86b5321147862894096e5511966f54ec6",
       "artworkHash": "a4939540888accb70b8f97995971f3b94d6887218439a5879daed7dd7501c21e",
       "render": "Ash Blossom & Joyous Spring.png",
-      "renderHash": "9d7c3cb3649dd090eb7c2a88b78cc539df84f8b6e3d447b3d4e17db6f3e9d5f5",
-      "renderPixelHash": "86fd030282c9aab880fcb2cc8051f019c01b15f81eadbdf22a9dd07655f14dfe"
+      "renderHash": "6a4a3577562fa2af05c6e9db49149ebc5408b620ec8a643178154ad2e4fa98fb",
+      "renderPixelHash": "1ce75d44ad7493b2e6c7108e7e8b02a1a82bef8be844a10a29d5d1aae68c7e64"
     },
     {
       "id": "card bagooska",
       "name": "Bagooska",
       "manifestIndex": 1,
-      "sourceHash": "b19ce9dd233d0defc71e866935cd72abb742f0bc0ecaff9d03b6142a9ad85dee",
+      "sourceHash": "5e997683d08eae2c59af6e8547b4f599a31519426a705f0f4445f37235cbe33a",
       "artworkHash": "828346b362f381ad54cd852b3980a4437481d736a84d2b61a43c9be91a0a1c9a",
       "render": "Bagooska.png",
-      "renderHash": "2122edf9431489d854f2826ba1a9cb89129bd2b47ca0ef9a8f2abcfcc738a043",
-      "renderPixelHash": "a29b07174d5b92773ebffc727aa5fb953541a1290a32ea19f08691255ecc714f"
+      "renderHash": "fb0455e6f0596ec872a115c50bcd2e400eca175c27c40e5f660ba328615438bd",
+      "renderPixelHash": "ba7298be36e13b4d4f3509c56601f8e96d091c52adc8931fab445b641a6183d8"
     },
     {
       "id": "card book-of-moon",
       "name": "Book of Moon",
       "manifestIndex": 2,
-      "sourceHash": "cc445867560b2ea74134a1d13f7e5d781ca816321f58c6a55c56c44cd7a83b42",
+      "sourceHash": "6a5e2d346df27fb20f7b29b8100cd631185a7c67250c3b99da8d3e29f219d22c",
       "artworkHash": "925be06dbf32aa9e3409fe4d34ee213388713f6a3f5d536ceb3d800ed172306e",
       "render": "Book of Moon.png",
-      "renderHash": "ff539c2183cb75bec49602f8811324b8ebb95592675f2f682a59fb7f70b486ef",
-      "renderPixelHash": "950b35f8514bcb78424d140207c66dab084a5242527711b0ed460f824603feee"
+      "renderHash": "2eebf85d22e3d3fe0d5cfb5b51b3e8e34bedf7679f855f601f5d58b30dbafb78",
+      "renderPixelHash": "840a4bc1a3b9c9ac98caaab144115975a6b890076facf2f460e89f6ad203b601"
     },
     {
       "id": "card burning-abyss-alich",
       "name": "Burning Abyss - Alich",
       "manifestIndex": 3,
-      "sourceHash": "a2ec40112904bdcd0bb8920554f8f3f521b4cfd5469b82c198eabb582656838d",
+      "sourceHash": "743c031b0c32a348d86dc71131b16ea738c808ff1ba648889bf8874f755e20e3",
       "artworkHash": "6d320c5ecd8f602447063c41bb3c578232da52bffbac9ebe4ce535b6e22fe04e",
       "render": "Burning Abyss - Alich.png",
-      "renderHash": "7b31a4b06e69ae5468266a9100ffef0a664ddd639c9a284916086f1301bee983",
-      "renderPixelHash": "16518cda460a66fb6d408cbad0e021649fa87938bdf6f09b24f850722227cb9b"
+      "renderHash": "89681bcc0f4407ff883f310510ef1cd99a5221f55a40f3f4a0a7ad2f2a473d86",
+      "renderPixelHash": "1ccd40d41249cab95d4cb00efe889e5774f692b4b615d578ec445d1d8c1bd474"
     },
     {
       "id": "card burning-abyss-barbar",
       "name": "Burning Abyss - Barbar",
       "manifestIndex": 4,
-      "sourceHash": "d278fb8752e6676628fc5ed68b94afc9c2fc289558d6e2bd8577870bcedab438",
+      "sourceHash": "14342cf6588c74e319240f0d8ca658fd7163e13ab2571321f18edd59d749c548",
       "artworkHash": "87457310956599ae60e2a7ac02efa819aacf953e063babcfa7e718a774744cb6",
       "render": "Burning Abyss - Barbar.png",
-      "renderHash": "ff4bd73420b6f859a7e911bb17b0ce8e184fe7cf0798a473f6b15d6debf4870a",
-      "renderPixelHash": "295404e5762996ea37b3d66d0e61978e5acd3a67af000424a2d9c0157dbd9678"
+      "renderHash": "61e8a88b740b07c8e5ffdcf419a1b64ee1243a63bbe5527a7e6dd6fff4c153b2",
+      "renderPixelHash": "e5d7ea04913ff21fc6292dbf06e07bae0b3801272176e89d491f923d6ad033e2"
     },
     {
       "id": "card burning-abyss-calcab",
       "name": "Burning Abyss - Calcab",
       "manifestIndex": 5,
-      "sourceHash": "364b4f27f96794160983922232511ca7ce2e1fb961a2aeae20fc47bde709944a",
+      "sourceHash": "e1d46214b80f1b12cc5e08aad2d114955f8d79e51a01ae82746e8ad64aed13bd",
       "artworkHash": "887b1bbcabe08dc033ee5155b2aedc1446058ec0d14918ed61031d658c2ba3d0",
       "render": "Burning Abyss - Calcab.png",
-      "renderHash": "6048e960d4e2c1d1ca9b8a06e21d4baa324651b3893975ff7f346519b532dd59",
-      "renderPixelHash": "db4194edc0b6ef98344aba99a83e582bc6824a25fed3beae0ad490baec60665b"
+      "renderHash": "7a427dc9fcf221b3e48a882065f475087acdf8c2a04e124f6a2d6e0e2ce1b95c",
+      "renderPixelHash": "d4f6235fc127140734117151c293553699cc01a2e64adfbed05b282c63d446df"
     },
     {
       "id": "card burning-abyss-cir",
       "name": "Burning Abyss - Cir",
       "manifestIndex": 6,
-      "sourceHash": "e869b89b4cb47e8058f3ff451cac0bd03cdc03e4f819b0fb5988edb0921e9396",
+      "sourceHash": "f8032d9bf0198b908895e7bd7e121f8b2aa86d0542e72a628bfb8b4d14713ac5",
       "artworkHash": "eaa06ea73c241681e436c958feadc7ef81741a9728f31c4322ca678b7d04c16e",
       "render": "Burning Abyss - Cir.png",
-      "renderHash": "c7796995ebc8d1fbb96dfa65ba003a39693f87eb3892dc400529dce6713ea1d4",
-      "renderPixelHash": "f65d304d9dfdc575bea2916a0c727f89674ff98e4cf6d156cdfa968936b3de85"
+      "renderHash": "500144e3239953b573df047f013c7576e62764d073037cc7137a41c2f900e565",
+      "renderPixelHash": "121a4889a9f1408d451f4ca84fa12941dc104d2dd78b896680cd992d05dd5b2b"
     },
     {
       "id": "card burning-abyss-dante",
       "name": "Burning Abyss - Dante",
       "manifestIndex": 7,
-      "sourceHash": "64cdd695834c8aa68f867396157144b00199791fc9ec9af571c76ef84b952fed",
+      "sourceHash": "33f8798f088e99ecc575c68bac8398a1eba8779216c53088c3ebb1cf2ff581c7",
       "artworkHash": "b2df765478321c8266e83b9fb75cf7b48ca7f5bcdc7ef279fe11a7a85ae51d8b",
       "render": "Burning Abyss - Dante.png",
-      "renderHash": "fb224c12da12afea9e404cbb845bca91bbf9566102c23a51d81bbe198e73cc63",
-      "renderPixelHash": "9dbff23c323c2fa2d635bc9e5d7e28cef416f8e582a765bc21f3e20372566144"
+      "renderHash": "00d362101e165b8a33e72b52d914e05e62b3750f36df55ac53d7819c1c195a99",
+      "renderPixelHash": "6d920936928dcb202d92ecb59f84c4c835ce01130ae9882abab375f06bdfc9eb"
     },
     {
       "id": "card burning-abyss-draghig",
       "name": "Burning Abyss - Draghig",
       "manifestIndex": 8,
-      "sourceHash": "5d225a21c1bc258cd54119ac06dc5dedf639f926258dd0b53fe9fd226221ff7c",
+      "sourceHash": "7c2073b6b86e0becae9bd22ece06608a9641634be05034ef4a7f63b6a92d7413",
       "artworkHash": "ca8fa13738dedb060f81f06f8286ea3fdbe78d7e3c672bcf124f8348bdb10546",
       "render": "Burning Abyss - Draghig.png",
-      "renderHash": "70b7a76ae152a50ee9947fdfc0f013293734b1314eac1be9a663c71424d181ba",
-      "renderPixelHash": "8f80332ad749794c073ecd28c700764d5a7d383c9f9876d56aa4f9eebcb2126d"
+      "renderHash": "34b95d79d0505aa94e3964f7cd0352c236b410e53f9a581161f6715c63969e9c",
+      "renderPixelHash": "2f69402dfb5ac26841773bddd05fa0f7ee3b29f4721d8011a9a689b0e06c314d"
     },
     {
       "id": "card burning-abyss-farfa",
       "name": "Burning Abyss - Farfa",
       "manifestIndex": 9,
-      "sourceHash": "ba786bcf016658f31e2493602cb14c112d2be8b328f70838ce99390dbcdebd35",
+      "sourceHash": "d8e9c9392edfd8e36b19533e8cabfd7d72821c8ef5e6488baa89e2c969c9ca80",
       "artworkHash": "e038bcce8423ef2f3de47f7e8aaccb1dd8fb69d9db09c3eccd4771b85d0ca36a",
       "render": "Burning Abyss - Farfa.png",
-      "renderHash": "6ad0bec9a4fc10be6e743644ea40ae7144998205360a151ee6bc0bce40d3aa9b",
-      "renderPixelHash": "117435c15e2edfa0dfedbd78165d0da3da85025f761abc0ad3a231584db47cff"
+      "renderHash": "dbe95f1a8cfcccfd6dcbc957766bb6adef287a8ec79e569cfca2acf6a0b135dc",
+      "renderPixelHash": "a33203fede7243e10b19cd215cb7c4130b6a2c7048b89562a7f28e25f0ebfa55"
     },
     {
       "id": "card burning-abyss-fire-lake",
       "name": "Burning Abyss - Fire Lake",
       "manifestIndex": 10,
-      "sourceHash": "eefebdf57388c98cd271850b2c1b811668feb3bf04fe614051f117cc997cc6ff",
+      "sourceHash": "8e7fb4f5706b71ffef4058c9af812e74936fb8764acfc2813637115ff3c6df48",
       "artworkHash": "a40b098d06bbffe0b7800cd55c99b7dcc4caafe76355ef6a542cbdbe59be7914",
       "render": "Burning Abyss - Fire Lake.png",
-      "renderHash": "204629c8bbad6367e8732cb5865353275b8f2032604ab69631a71a97a207e72f",
-      "renderPixelHash": "125ccd2d097b1912dbefa4e3e2fa99e6eef269d7f17985b5cb035ef5d8b457ed"
+      "renderHash": "7d4516d9f1165d52e587635ec8789db55a5fc4fe5b3d3640844f7f51393ad9dd",
+      "renderPixelHash": "15a71f3e84cfe71527bcab80d2f879af70bf042ab2e4e970cf6f89753f3e4c13"
     },
     {
       "id": "card burning-abyss-graff",
       "name": "Burning Abyss - Graff",
       "manifestIndex": 11,
-      "sourceHash": "147187b209281bf978f8ce9ce7caf2497d229f8bd051cb607a8ea153724d4f7c",
+      "sourceHash": "db875cf7dcfc6ca86b93d4bb6204d59700e5d377269c4e2936df2fa0bcf33eb5",
       "artworkHash": "d77a78d532ee45699ef16cc95a7fe2dc4273197a6d76ce309fec77f190a8dca6",
       "render": "Burning Abyss - Graff.png",
-      "renderHash": "abe82e816fc39c17bbf135d57b81f6b2744662cfde809d1394622161e16c0a10",
-      "renderPixelHash": "b80ded3531dce7abc793e51febb61ca95e071c8a85c626d5a2f9c4e7f1b38490"
+      "renderHash": "678fb43e3f5176c84517f83fdb9f33622a1a6f0009f999b4429cce9cd7d0789b",
+      "renderPixelHash": "baf35cbd746e48766382bbc57e5b3078a5cc865fb46195e4347434b3079a2111"
     },
     {
       "id": "card burning-abyss-rubic",
       "name": "Burning Abyss - Rubic",
       "manifestIndex": 12,
-      "sourceHash": "848f01082f556a37aab46002d99b1f5860412e4da69d2e45614783f13c5d5b19",
+      "sourceHash": "f40a78bcf209cb1374936b10d844bfd2cc99f80c6f777a4656fa258dc19b6581",
       "artworkHash": "e8ff989dc10b135fa2bfe1bae215e7bd86c4dd61443e3ed6db5ec770d063c8eb",
       "render": "Burning Abyss - Rubic.png",
-      "renderHash": "f218218b1101cfd03fc65c5fdf1d39ad7bc52600400bed60827f00ba5ae3d299",
-      "renderPixelHash": "7a4f4aca8cf9add9bd35afa40716bbebc535ca9b6d98045b03dc2dbb82d7f3a1"
+      "renderHash": "2113028fcf96cb76c478cf17890f3a206944a0a69cd7cff48d7bb0b01256005e",
+      "renderPixelHash": "aed50e36ee1b905c5d306d9082199b4757cce4118f614519fe0eb20e5414fda3"
     },
     {
       "id": "card burning-abyss-scarm",
       "name": "Burning Abyss - Scarm",
       "manifestIndex": 13,
-      "sourceHash": "b8026b2a24aee53e86031e0f341b7ec8ebd3bed345cb240e7896308ec0b5739c",
+      "sourceHash": "babb13c556312d0c9f13ea8dc31a247c76e9c028d41eb3ad597ac8d1910cc9cf",
       "artworkHash": "dfbd8193543a78b68a8b916d1707710370363c46db2d6d1ef3764464d3d9e6c5",
       "render": "Burning Abyss - Scarm.png",
-      "renderHash": "579cb340acb823bc943ce325522e34ef74e63428ca956bb62ed6096fc4515873",
-      "renderPixelHash": "bc17fa1f78f0eb226a9715190d14751e39f44d5f746ea388b5240e24ffb2ae9a"
+      "renderHash": "489b235c5bfaa01351c2041b67088dc0bfbd03d787f52dd4b2eb8efb1d691c10",
+      "renderPixelHash": "829384800567bea898d94f88c92fd31663fdc7badf52f7970e23eaba326949c1"
     },
     {
       "id": "card burning-abyss-traveler",
       "name": "Burning Abyss - Traveler",
       "manifestIndex": 14,
-      "sourceHash": "89a60ce63e7aad55956b1379b4ad9b985f41915c17e196f060551420491f7c98",
+      "sourceHash": "1c61d361938461e831795b209c96a32b0ef3a688b9ddb4f7af4750542050a43e",
       "artworkHash": "486edd160f8f7cf54097ba7069b4108cb4c0947656939482461dea274b8d4ace",
       "render": "Burning Abyss - Traveler.png",
-      "renderHash": "1d01f1ba94ca513d164ae7589092ec088406221948528c980452170831e070dc",
-      "renderPixelHash": "bf7cc15c79e668a3e410264cdbe90fee443d98f7aa3fb379dfa8a0e4037f8cc0"
+      "renderHash": "9554a00d1dc805032d6d094b224019c6f6a8aa81c8c5e50ce436b4ccbd48441e",
+      "renderPixelHash": "d32641c1673c1e5b2c3bfed39979142cc2ed47a965398e7de1fd039f514e48ac"
     },
     {
       "id": "card burning-abyss-virgil",
       "name": "Burning Abyss - Virgil",
       "manifestIndex": 15,
-      "sourceHash": "48f5fae21196bc52c903a745d3fc4e670a25f251665092642fd6a101d711a939",
+      "sourceHash": "2cd16be1b1786bfe5879e661c80997a2c2cc91be2a392f62d646ed609351681f",
       "artworkHash": "36649d92409d87dd471ca0cdd6172a16a4137dd70facc84d3d220cf222b4f971",
       "render": "Burning Abyss - Virgil.png",
-      "renderHash": "f6fc890d3dc281e29fd8882e955d9522f1a1ad481b2108ba07c65b1efb609af2",
-      "renderPixelHash": "7cb99dcefe520c76d11985e2091e5cff323bd2cb0e3bd1b948bc06424aaaef27"
+      "renderHash": "f7059db49e1691ace061f88875e17b40c2d923159786f91d2f74ea104f72a33a",
+      "renderPixelHash": "05842224c07b23f53fc094c1f22f9977594b25067c1e952666a6d77bf472063b"
     },
     {
       "id": "card d-d-crow",
       "name": "D.D. Crow",
       "manifestIndex": 16,
-      "sourceHash": "d89afab2ad93db28ccff6f56d3e926213dba7422e977de549f63934d57ab3c01",
+      "sourceHash": "195020f791cebb6087aa3b8ea6d179e31726b36ab1441ebea18800d15fe74de8",
       "artworkHash": "16eb9d1dccb00af641876e0952e8d658772337fd308f016c5b66999440161795",
       "render": "D.D. Crow.png",
-      "renderHash": "6e84eb9dbd343701ed123d96e270a52f49a5d1ac723bd3549aa40d9185610852",
-      "renderPixelHash": "aa276be9cb95216188f4aabc5082af648bf75b3c731198a0b8fd41bb3d3a147b"
+      "renderHash": "fe9de0edbf36d6f35b87372dc3a955b708be769e6944e577de015cbfb79d05f9",
+      "renderPixelHash": "b9a70852c7d63ce10882d017009ead93a06533d1535b90a6218919d70724a366"
     },
     {
       "id": "card daigusto-emeral",
       "name": "Daigusto Emeral",
       "manifestIndex": 17,
-      "sourceHash": "dba91f0932befa82efd73ca2965dfccb835b42473edbe4938fd028589cc46ec8",
+      "sourceHash": "b45ba31845f16d1466c774a0479c200b8fbec59e99619a30b15123ecddcbce34",
       "artworkHash": "7a60903244521e66d2c7dafacf8d1733cc09a98bc10c6e2c9130d4b9dc6bd89f",
       "render": "Daigusto Emeral.png",
-      "renderHash": "b26d3cb642ca24822c784f106220491f506d5432db8b2fcab0141fba05e75b21",
-      "renderPixelHash": "4c836f8212d774e5760bd349ce7af5d8e72904ac1ed606eeb845df447ed1a5a1"
+      "renderHash": "b5905120d9e4f24372a298ba3cf3de4b7b7bcc0705c6ab640d7314f10599f93b",
+      "renderPixelHash": "2775e92430c8312e781787494009551105d70e43b38caacbdd64de65f1f09cfb"
     },
     {
       "id": "card dark-hole",
       "name": "Dark Hole",
       "manifestIndex": 18,
-      "sourceHash": "251c6d5d6d0702b8b3f4443b21c69b981d614a7ab5007e55b2f2bd390608d6dd",
+      "sourceHash": "521f893a3b84c217a65cfda4d187eb94603d779c0f5bb0e2a1ab05d60be9840e",
       "artworkHash": "a0484e4864278ce4d6f723ee41ef234b5503cebd01a0e53cff4c216e5689e686",
       "render": "Dark Hole.png",
-      "renderHash": "8a3818ee324dcf3e11fb216f224a356e0016d9c75bc09a2a8a6f76ce59e55960",
-      "renderPixelHash": "a60357af7d6c4b5fdcc5dd46d9064c6208ff3c253d6185e88a1dcbc188eb43d6"
+      "renderHash": "05148b5c7c134c918b740effb0673ce188af301154f7574fba6564be3ea4bb3e",
+      "renderPixelHash": "7265cd6c945af196344eb15ecfda0ba561cacd7403e279d885e8ab4627c9bf2f"
     },
     {
       "id": "card downerd-magician",
       "name": "Downerd Magician",
       "manifestIndex": 19,
-      "sourceHash": "fabaeead9fc24353072ea0569a34caff1fd6f41e979da28b8fe61109766d115e",
+      "sourceHash": "9ad6b69321e6ffb65922fd3a27fae113a0c3763f3c554a6529e645d4ec6d7374",
       "artworkHash": "1ca714a22eae430d0f62e819dea3db44e70f9d1c2934f2b01545b55803fb4c3f",
       "render": "Downerd Magician.png",
-      "renderHash": "d7467b38dbad9e40f21d7f22f9e38e900f56c3ad32f3985ace74a129c67ce106",
-      "renderPixelHash": "39aeba544ab02a251d95bad5f6990ebb680a9cc8e0996f7f3ca2a8d5eb1ee7bc"
+      "renderHash": "29bc3f18fd4adfe536f225716f1f3ecd7786d90c7f85f2f1f2b9ef18d8968112",
+      "renderPixelHash": "ccc35d377de278eb55129d1c3c71fcf1634258a605eb85a443e8efcceca79227"
     },
     {
       "id": "card effect-veiler",
       "name": "Effect Veiler",
       "manifestIndex": 20,
-      "sourceHash": "613e76f9323e53ac1d1b53449eb9a346886221cb4f62c924f462f5efb6bbe6af",
+      "sourceHash": "f9f5551613c9ece8c59ddc1b26662584c0f5e2762e2190e88f34e2679b9bf498",
       "artworkHash": "efa5fa3d8a4d3114e91099f0cc23efa8e4e1c69ec4da03f15dc7de4964b2834b",
       "render": "Effect Veiler.png",
-      "renderHash": "319335376eda870652953d0925c1418ae5ea49a2bdeaa44db54c341321b6ea2f",
-      "renderPixelHash": "9475d7202f2df8716758703bed0614fd939c3ffbea620bfcba7c81ec01cd249e"
+      "renderHash": "e26205335575e93b7ba5a8d8c34a10da672a7b6026fcda93f33faba858cf82d4",
+      "renderPixelHash": "5f372d1c3005181e62f25fe772951ebdb3ed93b07d1733f816fbb06104c6b877"
     },
     {
       "id": "card evilswarm-exciton-knight",
       "name": "Evilswarm Exciton Knight",
       "manifestIndex": 21,
-      "sourceHash": "e5fc5647b4ff09ce0a8e4615efb4552810040e3e36477eed0d38403ce9f12ffc",
+      "sourceHash": "96e80d87623abc122352ea5d13dc1685b3a47b6d83ce88ce0ddeb6feb29c146d",
       "artworkHash": "74b1a49182896cbd720ee644b210826a0d013dd30b1bd75cddf722064f210239",
       "render": "Evilswarm Exciton Knight.png",
-      "renderHash": "506aff3a5b8a35a58d923eeef7d3b2ffef2aea2e1774d3113c47c91d704fa609",
-      "renderPixelHash": "16330bc904280090381461673aa578bbbecb2b0d3138cec192a0bc82589279fe"
+      "renderHash": "9ad13dc5aaf8f72bbf2c0efd340712701fe9f27d7d3da66ad0e9c7187956feeb",
+      "renderPixelHash": "7b3ac549f59006bb1e296d95e53a3df99b2b2f7a418c363c9c6202200565bc0c"
     },
     {
       "id": "card foolish-burial",
       "name": "Foolish Burial",
       "manifestIndex": 22,
-      "sourceHash": "9ccfeacf2cff82674431de0beb9ef18b63a9b26d5297ab601175c3227bfea7b5",
+      "sourceHash": "a3ab7b33cb8f4f90f43bf624228e05415a1309b5d955a326cee20e1ac4c070cd",
       "artworkHash": "b09bcb372d979ed5c28be57388900ddf65a345e3e92f34fee04c6ca58e510d11",
       "render": "Foolish Burial.png",
-      "renderHash": "a151811b67923eabbd5d99645bfc3cfffb05371b9399535523cb522dd4aa897d",
-      "renderPixelHash": "e53372c503105572693de0334b7cb18855f61e4fad87c2dad910fbd1c34a8dd9"
+      "renderHash": "e3307629ef7473e8e1f0010084da4235495a514d4246b98101523fef7d3a2cc3",
+      "renderPixelHash": "964f21c27fd7d4a6255dd2518ac8ad38db1a99a831ba1277727fc0f8e75dd76c"
     },
     {
       "id": "card gagaga-cowboy",
       "name": "Gagaga Cowboy",
       "manifestIndex": 23,
-      "sourceHash": "12b4d030617d98d95d62fd0dfbc0b6627dae39962a96c9b3020eb44f45c26586",
+      "sourceHash": "f1302315b8fde6dc50f5dc77848e15d221bf3d5644235a11ca140a9f77329806",
       "artworkHash": "5af383d0f009853b4a2a5eca9a4b9e7138b20b817c98ceca904702c9c7d87e87",
       "render": "Gagaga Cowboy.png",
-      "renderHash": "15da8c8cf6af12a83a916c217de0b63111fb6ae93f2408bfc705b905b4a2727d",
-      "renderPixelHash": "970d2064becef57ed62712f80c073cb96beed72cb0077e6288b11bb2a3922888"
+      "renderHash": "c576086baf60d7a00bad61108bd9191ddcffffb550c595dee608bcd574fea75e",
+      "renderPixelHash": "e080ee7f6a0064d9131542845cbb8e66305b0595ad207262ea9e02fb8ab8b775"
     },
     {
       "id": "card herald-of-the-arc-light",
       "name": "Herald of the Arc Light",
       "manifestIndex": 24,
-      "sourceHash": "00bace32a8139ed791e13fd3d26e8b9f09bbb54d50fb6850719017e40eebd2f6",
+      "sourceHash": "836b48b208ad3990ef1e1ac7258fb5382bbfd093e2c74ebd0b2f7bd8e12ec3d7",
       "artworkHash": "c565aa125e765c1c980a6afdfff8e3d8e54ade5754c117ed45346ac58c53c87b",
       "render": "Herald of the Arc Light.png",
-      "renderHash": "9d929eabcc4fa87969e7368a0a3c805a2f314855871c53ce16300f2b55e046af",
-      "renderPixelHash": "4760acae0e93970d805e81feccb2f11589529a1afe7cbaafdb6fe9aa4cff6d45"
+      "renderHash": "6b529ff41f63ad9fdd29c58ada36307bfa014e7aa43131894f3d71f8a9e74657",
+      "renderPixelHash": "0dae9870163fb6e0d9b30c980d1f3b64e5fc189f8f0237127a6076f7927ccc5d"
     },
     {
       "id": "card karma-cut",
       "name": "Karma Cut",
       "manifestIndex": 25,
-      "sourceHash": "d893a031f28d68087712d801240953618f004e400c9e3bf2c328b8179b49e0b5",
+      "sourceHash": "11c49ca6c9b776346a6ae36f9f69318e51bd0d5b85bde16c3d055328b91bcf18",
       "artworkHash": "d55c5f1f584d69ff773fb1692bedb66d59e6a2730dd8118d9ce697eb526ece63",
       "render": "Karma Cut.png",
-      "renderHash": "d2b815809d55f0b9f9d5e53a89142967ee2913d8cb8867fde970281fd88221ff",
-      "renderPixelHash": "3d625247a0e93f42cb7cd234cc4d9bbe2e70b0aa48774589276ab1e123c977f5"
+      "renderHash": "8c6df5e1ff822db5501b62636ba6bbbaddfd8a994e32e1e75f2a72e17f9637d2",
+      "renderPixelHash": "2745cad7321dcb3f1d3978b9c9d50d6267b2b2f2e2ce4bf28f9064dad572b0c8"
     },
     {
       "id": "card leviair-the-sea-dragon",
       "name": "Leviair the Sea Dragon",
       "manifestIndex": 26,
-      "sourceHash": "a3baafb7821f220411dcbf1407d7b9173c17656473e36d5856fb36f9d1c9f1e8",
+      "sourceHash": "d7ecaaded929ca9af08e1fa787dad175a716d69b0e4322b239b268325247e410",
       "artworkHash": "e3de72059a712fde32eef72636430efeb49944ee1f430c9fa27cae72c4f4181c",
       "render": "Leviair the Sea Dragon.png",
-      "renderHash": "093b82ffa6042dd2e3ed0ee11c27dd03463e0608136971313ae1491ce44f03b2",
-      "renderPixelHash": "ebe6619f2ad3a22aaf0d8c622c95a4da9a75e63468aa2ae95ba4e279416f6cc0"
+      "renderHash": "1031346429e97b1d87caadcfad1ed9b42430cbd653fe82e05b68f8f895b27e19",
+      "renderPixelHash": "a5683228c66c2ca5bfe6d3f44a1e8ae8a0ac6c4169ec2106c01ff736f1c14dc0"
     },
     {
       "id": "card manju-of-the-ten-thousand-hands",
       "name": "Manju of the Ten Thousand Hands",
       "manifestIndex": 27,
-      "sourceHash": "a99a6230bad8b09b91575cd675dd9d64e08f41320b280e195baa907aca0c5c32",
+      "sourceHash": "284f540542ee554bd291b2f5f543d0053bea7fde50e5f3cd3f98583e04cfc347",
       "artworkHash": "7f64fbccbf6539d8c564d10edd456f4f76ba90fd1171f12e912ff141ecc1ee29",
       "render": "Manju of the Ten Thousand Hands.png",
-      "renderHash": "d0332f578e9694f6a1cf73d21991cb3dc663d628764df752a15249abae2ef01d",
-      "renderPixelHash": "d928ce9c2f03388574b712e944cc82f17f2f9599ce189f929a584ec4dbbf30a3"
+      "renderHash": "6a37fae92586851f1c51eb9329a965269d558fd01f9f6b491cd0db35c112b761",
+      "renderPixelHash": "c5c7fe7efbf481adb001b1fd7d578347e6122712bb35f8f0dccec9a9152623a3"
     },
     {
       "id": "card maxx-c",
       "name": "Maxx \u201cC\u201d",
       "manifestIndex": 28,
-      "sourceHash": "e16432af3c52f100eea2de8d234bc4b837c2c249fa372f79896206ad019888e9",
+      "sourceHash": "82b45e0c96d310fec4d5d77e835c1d3d8e0022710ec7c0b513405b5886f416f8",
       "artworkHash": "dda94e7d5c1b146a8f912a0e89f977c9d9d4e44b9229e67085b33e25810d4c88",
       "render": "Maxx \u201cC\u201d.png",
-      "renderHash": "34197ce0ac8a779acba6824c9ffadaca709cfd197384bf953e41b4afc2ca5c50",
-      "renderPixelHash": "e5d0128dbd10959bd123c8f16f8880f83454f111a151d66a0b5218e5d818deea"
+      "renderHash": "e094538cb9ee177c34f4116c460c3c5e13aa84670f21bda277c911d03a6a90db",
+      "renderPixelHash": "f858b9d6bf8947e477dcd6d1ef9e719a0f404e136e08757e546ee6131c0b908a"
     },
     {
       "id": "card nekroz-brionac",
       "name": "Nekroz - Brionac",
       "manifestIndex": 29,
-      "sourceHash": "bbdcbd4dffa2a8756bb6a78ea5f53799cd660911b2cba7dd54011cc476b72621",
+      "sourceHash": "cf61299377d02681e33e56d39964cbc71059630d9e295f95b3395c3a09fc31b4",
       "artworkHash": "d17b9d3c9297a0ce3496473056f9fb0417838aaae7d7d1e672ed28d3e12df7e7",
       "render": "Nekroz - Brionac.png",
-      "renderHash": "e3e80ff8af6e6be48a5a1ce12de2acf0a39555ed9ee98be65a567461f5c70d29",
-      "renderPixelHash": "c7860432141c969798bfea0e311a92e561a1c64302111ab4572e66ba8d14af9a"
+      "renderHash": "42ce76165cc474ca88c212f0aac3d67afebc60fe2602561aaa0936637d52c005",
+      "renderPixelHash": "0ce8dfb4c8e088831b0a76514e99c111553c45490af39aa2965d62d2f973846c"
     },
     {
       "id": "card nekroz-catastor",
       "name": "Nekroz - Catastor",
       "manifestIndex": 30,
-      "sourceHash": "fe0de180af9ea27a34121dc7932ab8e1d686a6cd02eb371226225d4cefa182cb",
+      "sourceHash": "1100a404dd74393ad5bcd7789f3fd7a732ed8de60969260317a2a70095503e9c",
       "artworkHash": "66dc27bcf82eeb062b830df2db79860a56330e4e911e0fb4c19cf38d62516335",
       "render": "Nekroz - Catastor.png",
-      "renderHash": "c19ba36ab8fae1f1bd37644aecf9caa836ded62dd20ea342692644af73f54982",
-      "renderPixelHash": "70541781487e05acb7236a2b5a8dda0111ec5b33c755642e87ced669cd8982bb"
+      "renderHash": "f387ab408fc4b104c30186525305b23477f5a23ad06bd9708cdc26a1aa70520e",
+      "renderPixelHash": "946d7df8cbde8441cb020a998fc2740dc0207444b2c1243fa1dabd7dd170fd25"
     },
     {
       "id": "card nekroz-clausolas",
       "name": "Nekroz - Clausolas",
       "manifestIndex": 31,
-      "sourceHash": "cdcf605f8a7463839377b2973ed727851ab08058c9dc5623036a23dd2bd3c620",
+      "sourceHash": "cc169d4e111e2644a3eb7dd578ae725e12ce8b4d8804701f3812b2de70bf450b",
       "artworkHash": "17d2d214aba44ed4e1037e70828042ad88bcb609ce65642532b294e0a62b8c5f",
       "render": "Nekroz - Clausolas.png",
-      "renderHash": "37c5429de1c15e9745e4154fe5527988586c32fe33c0f7e8c567929ba96a43d6",
-      "renderPixelHash": "d99ce5aac02720fc3cc198cdc98068a14aee51023d8650595059bb6ebd969863"
+      "renderHash": "1e5bdad5a13a9ce8c6df31bbb57cba8fcbc24fca17b005fb3ff27065a89849e3",
+      "renderPixelHash": "a51673613e98dc38c5cadf10f3092005671f8aa651925c984bc43708c300f161"
     },
     {
       "id": "card nekroz-cycle",
       "name": "Nekroz - Cycle",
       "manifestIndex": 32,
-      "sourceHash": "94476bc8f14235f9a233a4e5b83e07ec9c2888acff1ce5299ebd702d7c94010b",
+      "sourceHash": "e2925cd8759c6efd12cfc17c669f4c2ace15839ca19aa17f7cc8c878a1649f07",
       "artworkHash": "ac505389605a47350d0c995ecdb325e664f4ef5017cae7f55424f12edf112eb4",
       "render": "Nekroz - Cycle.png",
-      "renderHash": "f55a7ed5b93f7bcae1cdf59859cc78f5933f29607a6ec61b9f1f2208d93c1e01",
-      "renderPixelHash": "36841063b784bfb1ac0206e2eb66348e21c5e23cfa40bbfce42a83f806fdd4c6"
+      "renderHash": "e44651acd68971ce6e49707586313161f70009493cf741c46f6564e8da367834",
+      "renderPixelHash": "872e8263d6b5c86bccacfb27dc6503892d74def2ae2bbfb80b511ee0698405f1"
     },
     {
       "id": "card nekroz-dance-princess",
       "name": "Nekroz - Dance Princess",
       "manifestIndex": 33,
-      "sourceHash": "133fe9dd5c574af405734304a32861cae093988a5ef760c4c0b4dd64b5a6691d",
+      "sourceHash": "6a72d0a480671a93ee8263938afcc382180ddea737c35cd35c6a8d1d2e7e30b1",
       "artworkHash": "59d5193ad4f2d6c2cf70c0fcd36ee11de8e3554396a7088a6da715c4ceae5f2b",
       "render": "Nekroz - Dance Princess.png",
-      "renderHash": "5abd95793a171d8abf9e2d95f6a05aae0cbc81cb7a5f18779d932e4411c833fb",
-      "renderPixelHash": "6680e98a2073c9da7a443c6dfd5b368749e17d7dec760e16f605cf0bd2f4d7a7"
+      "renderHash": "c9673e4deb27acb38ecd34e3531a4840b3ced78be9120c9c80d0aede4d9daa0e",
+      "renderPixelHash": "a37c1ea29cccf2d03bb60fa794327f5aec0aa3b47be3d4633e635a8e128b29f0"
     },
     {
       "id": "card nekroz-decisive-armor",
       "name": "Nekroz - Decisive Armor",
       "manifestIndex": 34,
-      "sourceHash": "ad4d7aaa6652087a2871daf36f02d00de95b6ad4431b7fea83b334fb2e68c460",
+      "sourceHash": "95d2cc22e910317070b159c4e31f4e40200755bd0d3720f87f2c3d9f6e35abd7",
       "artworkHash": "66d43cf87e53f7344466d8d5cee94ec0f08422274b58d8671d98834c80a8411f",
       "render": "Nekroz - Decisive Armor.png",
-      "renderHash": "1edaeb48db74e25a36ce3ff877cbe12bf0d16d453e58713ec54591e0e08de58a",
-      "renderPixelHash": "85af9510a292c25d86cebb9dcfa24cd45c6d21ae9f1b81aff45e3ea576488b6c"
+      "renderHash": "e245afe07d780ec88c435ad8d26fd75941178e02fee83b4d523045a055485c79",
+      "renderPixelHash": "e9e7a770e289bde0743c5d0a0f400c0334ce1443204f25ff2368a2d6cc0309f5"
     },
     {
       "id": "card nekroz-exa",
       "name": "Nekroz - Exa",
       "manifestIndex": 35,
-      "sourceHash": "f9112b2a497f5081b61512a99be6d3935ad2f46b671f9ed7e591baecc46e3011",
+      "sourceHash": "db1752f5c0c7835cee09b79b4545ca3a854dcb928da9af0ebcb7f3b3820b52eb",
       "artworkHash": "c12c9f2261f58403c8608f3ee4aa40af553206447ab94f30ed57560b40098b9c",
       "render": "Nekroz - Exa.png",
-      "renderHash": "382f16baa75367bbe302ea59b5297d4419c8bde5eb2938f442150e1c0be6dd6d",
-      "renderPixelHash": "3c9b4748b30ea8ab37b12c98a56c8495fdccdaf5d4b81a34ff226d07505598f6"
+      "renderHash": "474e428068c2d09ad43d01cb4da05208afdf1b71b747e6fa01f25bcde8fc4795",
+      "renderPixelHash": "919c860a0ef3178dfd1e708a1bca3bb8df3f63d0ed9935cbe96d933aa697bf32"
     },
     {
       "id": "card nekroz-great-sorcerer",
       "name": "Nekroz - Great Sorcerer",
       "manifestIndex": 36,
-      "sourceHash": "315b6cab6497820bce2ce57323132e7ca4217c531b5b0de69e013b9d82af910c",
+      "sourceHash": "6195bb087eb6e2cca94ac6c87c595fcec787fda41d9788a427c638b176e045da",
       "artworkHash": "718e31b056b3c35a749a2a00e696ab496318bf70d303d18dffcc7230a89084f9",
       "render": "Nekroz - Great Sorcerer.png",
-      "renderHash": "67c107e61aebb8c1c40d802cda522f37172e65d2d07215fe44cb28c2d31ad8e8",
-      "renderPixelHash": "b0471adca56b4e77a058c9852691d1dab346a62c3bde83495b72a49963ac7aed"
+      "renderHash": "b6dedcbb83e3d05e74a9ba46586b345cdbcb86457051c99f034e9461967de7cb",
+      "renderPixelHash": "2112ec9e4dad9b7aee6734bba15be3b6182d61f22518a1c59fc428ab1752b76f"
     },
     {
       "id": "card nekroz-gungnir",
       "name": "Nekroz - Gungnir",
       "manifestIndex": 37,
-      "sourceHash": "58a789c1b42fce38f5982151e951a5355ffbe4de67d12d3190d4db7b2f313541",
+      "sourceHash": "f85da5f032a97c081eb260ed1fa6ec8f0f4d0916d4e1c3721cb111c1dd0c2a85",
       "artworkHash": "e7c759649f6020b8b95962d81036aa20fb6535f6e9a328935ee19cd765a6b5eb",
       "render": "Nekroz - Gungnir.png",
-      "renderHash": "20c01f74d3115bfba1e55d859b76fc148006035ba26d1a02b1b9305b0848bee6",
-      "renderPixelHash": "4df57ad809bcb089efc626e2dedf062203622a671d8ca94e8ff6443a25c79d32"
+      "renderHash": "aa9120ab1368062a66a22203413dafe026f0206a9d4dc50a2abe1831db561457",
+      "renderPixelHash": "9911db3f1731e120ccced515f4f5d38b0156b63395bc4ab6b123ee054a820495"
     },
     {
       "id": "card nekroz-kaleidoscope",
       "name": "Nekroz - Kaleidoscope",
       "manifestIndex": 38,
-      "sourceHash": "1a7fc76694c8c163497335094dfaf6357a66efeaa48f0ca8c1b156402bde453a",
+      "sourceHash": "3048a570ea9858898c96df00307511f78330fd77084a75b6824a3cd0af7dfdba",
       "artworkHash": "d5f762255ef4430e1d5d1fdcdaa0f63831a2e65d1c922380cd2609779d568c1a",
       "render": "Nekroz - Kaleidoscope.png",
-      "renderHash": "700bb1e7075d59d28d3495a8b3431e1a7e23c2f77a8e737b1adf77d679697550",
-      "renderPixelHash": "d32b0e1172a796c38ea07b28305b841e3f9ee7c3c07e6c86811bcd4bdd53df87"
+      "renderHash": "dff4bdc33f9bb4f0ab24046e2eae8ebed5c192bcdb3b8f9d60860242b354aee7",
+      "renderPixelHash": "cd02ea4cd3c536af38ab612c50b15b77fef513030b6148454697e7820601a4cc"
     },
     {
       "id": "card nekroz-mirror",
       "name": "Nekroz - Mirror",
       "manifestIndex": 39,
-      "sourceHash": "55e54e638c28914bac87f787fe6f13bc1165297ad6a1c5a9c45d5e2a492a981d",
+      "sourceHash": "cb4240b898a143eb4d4c87838214892720a28fbb62f39ff0f5e8f1856c2deab6",
       "artworkHash": "f47bc6a19e60187ce9f96214cdcd23f561a8807c6247f43a705d65adb999c9a9",
       "render": "Nekroz - Mirror.png",
-      "renderHash": "153a3df9410b40c7be653c0de9200a3c658055475acfd9eded6f6f987335f15b",
-      "renderPixelHash": "12d974319eb2fd0b093ef83a11fc6d4620e55e56dc1f098a66e43eb57c4bcc16"
+      "renderHash": "e83006c571cac3b3e29a23ebe12bac72f12275385ceb86f6b684ad8386b633ee",
+      "renderPixelHash": "13f4bf786ea0a4857daeab555f0083e516e25cef235c4ccb26e8883c8ab9249c"
     },
     {
       "id": "card nekroz-shurit",
       "name": "Nekroz - Shurit",
       "manifestIndex": 40,
-      "sourceHash": "fb8768aff7722cf6fda3fb897752b8c4bc06daa54f2444292e55a92a6e6ada52",
+      "sourceHash": "490625725004b5aef794440d3c7dfda4e34dd76dd0a3d31cd593bba3f35843cc",
       "artworkHash": "2e28aca6d7398ee1335291660e64c66454957f6827b1572200e13217369da776",
       "render": "Nekroz - Shurit.png",
-      "renderHash": "59bea9f27a7d4dc4fc1751ba360404679d491c0621eab0f47ab93b985ce7fcf2",
-      "renderPixelHash": "c84eb23eec4d5600036621d1af7f58f8dec5e175c1b5a29c24977e38c942ec3d"
+      "renderHash": "8b4b31d4475130df51d1d282728bf337aca8f42239d53b598bd86de90533dee9",
+      "renderPixelHash": "2d63ee2f8d04ba8e2cf81c44bfac1d79e58fc65a12ee8be278c4a79313b26a92"
     },
     {
       "id": "card nekroz-trishula",
       "name": "Nekroz - Trishula",
       "manifestIndex": 41,
-      "sourceHash": "bc9e8eff2d818c7ddc04c7905815911f06bdc6aa65e0969549e865aa4c1e942c",
+      "sourceHash": "5bce535725c6786e386558ae4ed8375b645fe02e982ebab4639320cf9deb6072",
       "artworkHash": "c6c0fdf1dc432af3bd8441b08ad5054244d3117ff844efe7071f88b7a950d1af",
       "render": "Nekroz - Trishula.png",
-      "renderHash": "7a98e2b881303afa791af635a8a91955064014e800c52f76aa07f8e258600813",
-      "renderPixelHash": "aa61610e0a22540968bfc763be8d1c4178f664a24c43781e449ea2be2ad726e1"
+      "renderHash": "b517781ab3cfc0e9b3cd6645c6ceb25d0a99be2db678bbb6568f10a6348f1734",
+      "renderPixelHash": "7360bfbb5264d436f08102ad20e79ae5d383fafe253d732960417f1968865bf3"
     },
     {
       "id": "card nekroz-unicore",
       "name": "Nekroz - Unicore",
       "manifestIndex": 42,
-      "sourceHash": "cdccbab8a0e78e958d575ad1a1e4dc5b694212f6d603c6d24db36d8921bfe0b2",
+      "sourceHash": "ce983dd2fb926dfa7dbd040bed49f77b479124136b57da6d498ad5087b45ad1f",
       "artworkHash": "ef76f76a71bf610a934a9c8cb3c13600ba98bcb712facc51e489ee1b33874ee5",
       "render": "Nekroz - Unicore.png",
-      "renderHash": "dbcec9477689bd65cb2b0d51764eb2302028bab14ae917983cfe75d19c703e7d",
-      "renderPixelHash": "c687fe6892016c303b4a4706f70616182faf47ff3e8f7785fdb44d783f5ff38a"
+      "renderHash": "2dd291a1b3fc3859ae33cfef760c656b05ab3f48c682e10ba57836ef2b21511f",
+      "renderPixelHash": "a63fd5d165646c496ff059200be2d8593ca0ae0de6478f54cec85da122b81423"
     },
     {
       "id": "card nekroz-valkyrus",
       "name": "Nekroz - Valkyrus",
       "manifestIndex": 43,
-      "sourceHash": "a17f439a50822457b4e9e6a501e801a57118cb65a3ab65833679866980451b53",
+      "sourceHash": "8b10bd35944f6b0ba274f0dc9c2c914f86cbdc781fa5c92484615465ed91a625",
       "artworkHash": "5134430712188c52d49eab79644745e521527abeed23a0a89c65179b4e2a4216",
       "render": "Nekroz - Valkyrus.png",
-      "renderHash": "4af0e143b6dcb376cd1583b09d41965f269cd51136c9878a0676b3bc35cfe426",
-      "renderPixelHash": "e00b35355a8153011673868a1dc7ffbd76c6a1492dea15491d24208619c402ac"
+      "renderHash": "c90602df027f546804873e1998821b65d0ef2fa406a5da7f4ec98b4ca38765d8",
+      "renderPixelHash": "2cfb512ed06d5d4b31f8b58ddd7e9b525da58820b3a40405e703f34d41d36ffd"
     },
     {
       "id": "card preparation-of-rites",
       "name": "Preparation of Rites",
       "manifestIndex": 44,
-      "sourceHash": "f17ff57fb7754d19f5b17b02b17ac838d9349be25fa591f96cf89821d23d01eb",
+      "sourceHash": "6ec31ea46210bc160c572b7b660d2271805be49d288e688acc69cf1681f7ca2b",
       "artworkHash": "99c136721246f91e1b75b96a7f90f5106cb7811a3a6c33adfb016e511df23390",
       "render": "Preparation of Rites.png",
-      "renderHash": "2985a74f6dddd72a24c381efbc73f8c24fff4b29074915fdd45ff5a0726f2a7e",
-      "renderPixelHash": "18a6e2982795ebd9f7694ae5ac04121ea191db8194e9dffcdb010e161f608741"
+      "renderHash": "7bd3206fcd689688b85101487a900869a4a45bf62437f802042be80960839443",
+      "renderPixelHash": "4b2d2fcdae0ea08f97811265995af9f52a23daaec0a5722d9bdafbb5068f7dc9"
     },
     {
       "id": "card senju-of-the-thousand-hands",
       "name": "Senju of the Thousand Hands",
       "manifestIndex": 45,
-      "sourceHash": "6d9c7f236aabf7588492ba38b9c9052889996707364fb26c050b396a3f127eb3",
+      "sourceHash": "572defe67f72ca97a512bcaba61aad0f4aa08e539cf320245d5043baacd86f50",
       "artworkHash": "ad050c802ca3ed9ccf4f85c4d0865c3b13551672f796e0c5e24e87b8ff20e21a",
       "render": "Senju of the Thousand Hands.png",
-      "renderHash": "697096f77240074a5652a975016ac7d8d7ef55dea67abbcc5c667b8176da3daa",
-      "renderPixelHash": "101f340408370fb7d29ea9a1dd24ab2156f45614e4c202368f5816060b71b86b"
+      "renderHash": "85126f8e7d7d1f0a3a71800ecc9b281958e640d5eea869c1838b9efd9f04c5b0",
+      "renderPixelHash": "308ab9d651ebc42dd77ee6e00b01e5f9f157b644ed7f79c86db5e93ac2c488ee"
     },
     {
       "id": "card silent-honor-ark",
       "name": "Silent Honor ARK",
       "manifestIndex": 46,
-      "sourceHash": "34f29e09d54672b6e7704d55fc51753c3b1ee4b62338a3b0be497ee93e9efc1a",
+      "sourceHash": "8a06b8d4833469ece8daab325432d4bbd0e2e27b87c0fcc957ba73614b0258d5",
       "artworkHash": "8596e47604db7295159a1e4e51ba1f8495bb9f89eab72213bf9ce2718982bc72",
       "render": "Silent Honor ARK.png",
-      "renderHash": "75830eb3444fd2bb7ab5e102dd452506bdebed99af8de4132b538213c5bedaa5",
-      "renderPixelHash": "d83954eab221a00d0c5bb38ec596acd64de5866159d3e2a19fe56ca3bb141051"
+      "renderHash": "123762b4ac42130ac093fcd815159c15627650fdf33416706bac41205926344e",
+      "renderPixelHash": "16579a1d42cee68805bf3332cdc307c6cb733a023068580b8590717d462ded69"
     },
     {
       "id": "card stealth-kragen",
       "name": "Stealth Kragen",
       "manifestIndex": 47,
-      "sourceHash": "00d9956756bb87e339667a9ebe974e49df12aa7d2d2ff31b944d6d7ba4f3b34e",
+      "sourceHash": "6b34901165ee51f2108d90b0532950daea7bf3356636148f06bed824b9eea674",
       "artworkHash": "2ab4404e9e6d9c6ae4552f9790457d6334501e08e6cfb0c080e695513f586c1a",
       "render": "Stealth Kragen.png",
-      "renderHash": "10cfc3c9b0d561803ae32f2159bd91e14e0a03cdf3f760f997fcc429069bb035",
-      "renderPixelHash": "ce744a58c805b9357c4607ccaf9146ed71a269882be050f892dddd705d4c9175"
+      "renderHash": "4428ef772e3292b28cb5940358a263d7191e8c87ceadb041724fd512c0ab3f04",
+      "renderPixelHash": "901194b3f299d4eb0d70580a9fbc765be62e43e9e34bc5e2be87be9b52a53975"
     },
     {
       "id": "card tornado-dragon",
       "name": "Tornado Dragon",
       "manifestIndex": 48,
-      "sourceHash": "841560bd143d8b85032c13c286534c632c6628db9d67d32c06e910bdc9e8b85e",
+      "sourceHash": "05b1ed9412496d3989312533dda70227e004a77b08676e38dd246d545a01a239",
       "artworkHash": "95069cef26062a1c42a4ed7923bf82b962a2e7e7c278ae7297e8bfce34dc40fc",
       "render": "Tornado Dragon.png",
-      "renderHash": "2558376ab00469ef5d0f9f1087db09e3b58af4be549a7189e43c2b215f362fe8",
-      "renderPixelHash": "8616e95c3a42e5e3768d1f7d7ab354b32c3ab2a8b5d079738f40d11480bef28a"
+      "renderHash": "81286da9bad8280d2de3634b7e2ef0214b07e197aaebe67a8c9ceb1e5607e1c6",
+      "renderPixelHash": "56617c2f8e92890ffab0201f0a1b58bd53917460cbc47e0b80bfe1eed12feb39"
     },
     {
       "id": "card tour-guide-from-the-underworld",
       "name": "Tour Guide From the Underworld",
       "manifestIndex": 49,
-      "sourceHash": "f5a5afc8a6e37278cd8f6f1080446d9e32e8cac1e5bd1d498758be6cf4bb7513",
+      "sourceHash": "5aec47cee3ffa32ffe7d95312f54779fdc5c3b965ce8d350c58e213371d14c4b",
       "artworkHash": "b1c347098a101ed8f9f71c8d10e9690a1020dcf8d06654fcd66745e22f985218",
       "render": "Tour Guide From the Underworld.png",
-      "renderHash": "26f7712b428fc7edbea3004377bf34dd30a5d057318202f3085ab10f37bdc459",
-      "renderPixelHash": "1d4faee0d0659a6f42c642cb85f26dde9dab3e9d894676f6f66ee2b9374f0fd1"
+      "renderHash": "0a886f3255cdfc750f779e6fe2a5d3e79ff54736e924ff055e8a6fc66a8f7d3a",
+      "renderPixelHash": "30f9e65209ca1727293802023af72a914a0ab9d367b1c9a4cf3dc2ea51c246ea"
     }
   ]
 }

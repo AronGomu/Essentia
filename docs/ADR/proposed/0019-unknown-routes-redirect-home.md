@@ -1,7 +1,7 @@
 # ADR 0019 — Unknown routes redirect home; there is no welcome page
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai_artefacts/PLAN_2026_08_07_website-feedback-pass.md` (T2, T12)
+- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md` (T2, T12)
 - Scope: website routing, entry points, spec supersession
 
 ## Context

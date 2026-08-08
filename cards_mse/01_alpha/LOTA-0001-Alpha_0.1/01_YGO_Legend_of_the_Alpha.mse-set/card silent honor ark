@@ -14,7 +14,7 @@ card:
 	mainframe_image_2: 
 	super_type: <word-list-type-en>Xyz Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Aqua</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
-	rarity: rare
+	rarity: common
 	rule_text:
 		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
 		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 2</b> and <b>Target</b> 1 untapped Creature an opponent controls; <b>Attach</b> it to Silent Honor ARK.
@@ -22,6 +22,6 @@ card:
 	flavor_text: <i-flavor></i-flavor>
 	power: 5
 	toughness: 2
-	card_code_text: 047/050 R
-	card_code_text_2: 047/050 R
-	card_code_text_3: 047/050 R
+	card_code_text: 047/050 C
+	card_code_text_2: 047/050 C
+	card_code_text_3: 047/050 C
