@@ -30,6 +30,20 @@
     --radius-sm: 0.35rem;
     --radius: 0.7rem;
     --sidebar: 17rem;
+    /* Reading surfaces — long-form docs and blog prose. A lit reading room
+       inside the dark archive: the substrate lifts well clear of the gallery
+       black and carries a small WARM chroma, so prose reads as paper under a
+       lamp and sits perceptually opposite the cool card art beside it. Ink is
+       deliberately below maximum to kill halation on long text.
+       See website/DESIGN.md § Reading Surfaces and docs/ADR/proposed/0020. */
+    --reading-surface: oklch(0.27 0.008 80);
+    --reading-surface-raised: oklch(0.325 0.009 80);
+    --reading-ink: oklch(0.94 0.012 80);
+    --reading-ink-muted: oklch(0.78 0.016 80);
+    --reading-rule: oklch(0.44 0.01 80);
+    --reading-measure: 70ch;
+    --reading-rail: 17rem;
+    --reading-toc: 15rem;
     --header: 4.5rem;
     --z-sticky: 20;
     --z-backdrop: 40;

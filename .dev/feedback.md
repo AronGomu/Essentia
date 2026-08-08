@@ -7,6 +7,9 @@ Website/UX feedback backlog. One entry per item, newest on top.
 Status: open | done
 -->
 
+## 2026-08-07 — website feedback batch 2
+Status: open
+
 # HOME PAGE UPDATES
 
 1.

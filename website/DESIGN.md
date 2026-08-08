@@ -59,6 +59,42 @@ Use a full palette with disciplined jurisdiction. Shell neutrals establish one d
 
 **The Neutral Night Rule.** Dark substrate is chroma-zero. Mood comes from imagery and named accents, not a purple or navy wash.
 
+## Reading Surfaces (Docs & Blog)
+
+Long-form docs and blog prose gets its own lit reading room inside the dark
+archive: a narrow, documented exception to the Neutral Night Rule (see
+`docs/ADR/proposed/0020-reading-surfaces-for-docs-and-blog.md`), scoped
+strictly to `.reading-*` selectors. The gallery shell, section atmospheres,
+and every card surface stay chroma-zero.
+
+- **`--reading-surface`** — `oklch(0.27 0.008 80)`. The reading panel
+  substrate: a warm-hue, small-chroma lift well clear of `--blackfoil`, so
+  prose reads as paper under a lamp rather than the gallery void turned up.
+- **`--reading-surface-raised`** — `oklch(0.325 0.009 80)`. A slightly
+  lifted step of the reading surface for nested or emphasized panels
+  (callouts, code blocks) within reading pages only.
+- **`--reading-ink`** — `oklch(0.94 0.012 80)`. Primary reading-surface body
+  text. Kept below maximum lightness on purpose to avoid the halation of
+  near-maximum contrast on long passages.
+- **`--reading-ink-muted`** — `oklch(0.78 0.016 80)`. Metadata-only text on
+  the reading surface (timestamps, breadcrumbs, captions) — never body prose.
+- **`--reading-rule`** — `oklch(0.44 0.01 80)`. Quiet divider for reading
+  pages, matching the warm reading-surface family instead of the neutral
+  `--ruleline`.
+- **`--reading-measure`** — `70ch`. Maximum prose line length on reading
+  pages, for comfortable long-form reading.
+- **`--reading-rail`** — `17rem`. Width of the docs/blog navigation rail.
+- **`--reading-toc`** — `15rem`. Width of the reading-page table-of-contents
+  column.
+
+**The Reading Contrast Rule.** Long-form text uses `--reading-ink` on
+`--reading-surface`; `--reading-ink-muted` is for metadata only.
+
+**The Lit Room Rule.** Only the prose panel and its rails take the reading
+surface tokens. The site header, the catalog rail, and the page gutter stay
+on `--blackfoil` — a reading page is one lit room inside the same dark
+archive, not a separate site.
+
 ## Typography
 
 **Display Font:** Serif display using a system stack **[exact stack to be chosen at implementation]**
