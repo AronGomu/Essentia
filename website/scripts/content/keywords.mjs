@@ -1,6 +1,7 @@
-import { readFile, stat } from 'node:fs/promises';
+import { lstat, readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { CONTENT, ROOT, fail } from './shared.mjs';
+import { ROOT, fail } from './shared.mjs';
+import { parseKeywordFile } from './keyword-file.mjs';
 import {
   normalizeQuotes,
   normalizeKeyword,
@@ -8,6 +9,9 @@ import {
 } from '../../shared/keywords.mjs';
 
 export { normalizeQuotes, normalizeKeyword, splitComposite };
+
+export const KEYWORDS_DIR = path.join(ROOT, 'docs', 'keywords');
+export const KEYWORD_FILE_RE = /^([a-z0-9]+(?:-[a-z0-9]+)*)\.md$/;
 
 const CATEGORIES = new Set([
   'action',
@@ -18,6 +22,8 @@ const CATEGORIES = new Set([
 ]);
 
 const ORIGINS = new Set(['magic', 'essentia']);
+
+const MAX_KEYWORD_BYTES = 32_768;
 
 /** The owning doc must be a real file inside the repo, never an escaping path. */
 async function docExists(relative) {
@@ -35,49 +41,81 @@ async function docExists(relative) {
   }
 }
 
-export async function loadKeywordRegistry(
-  file = path.join(CONTENT, 'keywords.json'),
-) {
-  const data = JSON.parse(await readFile(file, 'utf8'));
-  if (data.schemaVersion !== 2)
-    fail('keyword registry must use schemaVersion 2');
-  if (!Array.isArray(data.keywords)) fail('invalid keyword registry');
+export async function loadKeywordRegistry(directory = KEYWORDS_DIR) {
+  const entries = (await readdir(directory, { withFileTypes: true })).sort(
+    (a, b) => a.name.localeCompare(b.name),
+  );
+
   const byTerm = new Map();
-  const ids = new Set();
-  for (const entry of data.keywords) {
-    if (
-      typeof entry.term !== 'string' ||
-      !entry.term.trim() ||
-      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.id ?? '') ||
-      !CATEGORIES.has(entry.category) ||
-      ids.has(entry.id) ||
-      byTerm.has(entry.term)
-    )
-      fail(`invalid keyword entry ${entry.term ?? entry.id ?? 'unknown'}`);
+  for (const entry of entries) {
+    // Decide from the directory entry alone before touching the filesystem:
+    // `docs/keywords/` also holds the UPPER_CASE module docs, and stat-ing a
+    // name we are about to skip turns an unrelated concurrent delete into an
+    // ENOENT that aborts the whole build.
+    if (entry.isDirectory()) continue;
+    if (!KEYWORD_FILE_RE.test(entry.name)) continue;
+
+    const file = path.join(directory, entry.name);
+    const info = await lstat(file);
+    if (info.isSymbolicLink())
+      fail(`keyword ${entry.name}: symlinks are not allowed`);
+    if (info.size > MAX_KEYWORD_BYTES)
+      fail(`keyword ${entry.name}: file exceeds ${MAX_KEYWORD_BYTES} bytes`);
+
+    const id = KEYWORD_FILE_RE.exec(entry.name)[1];
+    const { data, definition } = parseKeywordFile(
+      await readFile(file, 'utf8'),
+      id,
+    );
+
+    for (const key of ['term', 'category', 'origin', 'doc']) {
+      if (!data[key]) fail(`keyword ${id}: missing required key ${key}`);
+    }
+    // `archetype` is required for an archetype keyword, and allowed on any
+    // other category too: `on-cast-spellbook` is `category: event` with
+    // `archetype: spellbook`, and the orchestrator publishes it regardless.
+    if (data.category === 'archetype' && !data.archetype)
+      fail(`keyword ${id}: missing required key archetype`);
+
+    if (!CATEGORIES.has(data.category))
+      fail(`keyword ${id}: invalid keyword entry ${data.term}`);
+    if (!ORIGINS.has(data.origin))
+      fail(`keyword ${id}: origin must be magic or essentia`);
     // The term reaches a raw-HTML sink: `BaseLayout.astro` serialises the
     // ruling map into a `<script type="application/json">` block with
     // `set:html`, so a term containing `</script>` would close that block and
     // become live markup on every page. Guard it exactly like `definition`.
-    if (/[<>]/.test(entry.term))
-      fail(`keyword ${entry.term}: term must be plain text without < or >`);
-    if (entry.term !== normalizeKeyword(entry.term))
-      fail(`keyword ${entry.term} must be stored in normalized form`);
+    if (/[<>]/.test(data.term))
+      fail(`keyword ${id}: term must be plain text without < or >`);
+    if (data.term !== normalizeKeyword(data.term))
+      fail(`keyword ${id} must be stored in normalized form`);
+
+    if (/\n/.test(definition))
+      fail(`keyword ${id}: definition must be a single paragraph`);
     if (
-      typeof entry.definition !== 'string' ||
-      entry.definition.trim() !== entry.definition ||
-      entry.definition.length < 20 ||
-      entry.definition.length > 400 ||
-      /[<>]/.test(entry.definition)
+      typeof definition !== 'string' ||
+      definition.trim() !== definition ||
+      definition.length < 20 ||
+      definition.length > 400 ||
+      /[<>]/.test(definition)
     )
-      fail(
-        `keyword ${entry.id}: definition must be 20-400 plain-text characters`,
-      );
-    if (!ORIGINS.has(entry.origin))
-      fail(`keyword ${entry.id}: origin must be magic or essentia`);
-    if (!(await docExists(entry.doc)))
-      fail(`keyword ${entry.id}: doc ${entry.doc} does not exist`);
-    ids.add(entry.id);
-    byTerm.set(entry.term, entry);
+      fail(`keyword ${id}: definition must be 20-400 plain-text characters`);
+
+    if (!(await docExists(data.doc)))
+      fail(`keyword ${id}: doc ${data.doc} does not exist`);
+
+    if (byTerm.has(data.term))
+      fail(`keyword ${id}: duplicate keyword term ${data.term}`);
+
+    byTerm.set(data.term, {
+      id,
+      term: data.term,
+      category: data.category,
+      archetype: data.archetype ?? undefined,
+      origin: data.origin,
+      doc: data.doc,
+      definition,
+    });
   }
   return byTerm;
 }
@@ -99,7 +137,7 @@ export function extractKeywords(ruleText, registry, source) {
       if (!term) continue;
       if (!registry.has(term))
         fail(
-          `${source}: unknown keyword ${JSON.stringify(term)} — add it to content/keywords.json or fix the card text`,
+          `${source}: unknown keyword ${JSON.stringify(term)} — add docs/keywords/{id}.md or fix the card text`,
         );
       found.add(term);
     }

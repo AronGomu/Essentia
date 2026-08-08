@@ -9,7 +9,7 @@ A keyword is an atomic term whose meaning comes from Magic rules, global cube ru
 3. [Ability keywords](keywords/ABILITIES.md) — Magic evergreen or custom abilities.
 4. [Cost and procedure keywords](keywords/COSTS_AND_PROCEDURES.md) — named costs, summon procedures, or activation shortcuts.
 
-The website's per-keyword ruling text lives in `website/content/keywords.json` and must agree with the owning module named in each entry's `doc` field; these modules stay the source of record.
+The website's per-keyword ruling text lives in `docs/keywords/{id}.md`, one lower-case kebab-case file per keyword. That file is the source of record for the published ruling; its `doc:` key names the module that narrates the keyword. UPPER_CASE files in `docs/keywords/` remain module docs and are published as doc pages; lower-case files never are. Adding a file publishes a new keyword on the next `cd website && npm run content`.
 
 Render complete keyword invocations in bold with canonical capitalization. Unknown bold phrases are invalid until documented in one owning module. Ability metadata such as `Static`, `Triggered`, `Activated`, `Resolution`, `Flash`, `Sorcery`, `Ritual`, `Soft`, `Hard`, and `Hard Linked` belongs inside the ability prefix and is not keyword text.
 

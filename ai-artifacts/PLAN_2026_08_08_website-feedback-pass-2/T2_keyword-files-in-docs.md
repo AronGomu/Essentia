@@ -40,7 +40,28 @@
   Send N cards from the top of your Deck to the Grave. The quantity is always printed.
   ```
 
-  `archetype: burning-abyss` is present **iff** `category: archetype`.
+  `archetype: burning-abyss` is **required when** `category: archetype`, and
+  **optional otherwise**.
+
+  > **Parent correction (inlined 2026-08-08 — supersedes the original "present
+  > **iff** `category: archetype`" wording everywhere in this ticket).** The
+  > original iff-rule contradicts the real registry and would break the
+  > "byte-identical output" requirement that governs this ticket. Measured against
+  > the unmodified `HEAD:website/content/keywords.json` (73 entries):
+  > - 4 entries have `category: archetype`; **all 4** carry an `archetype` field →
+  >   the "required when archetype" half is true and must be enforced.
+  > - **Exactly 1** entry has a non-archetype category **and** carries an
+  >   `archetype` field: `on-cast-spellbook` — `category: "event"`,
+  >   `archetype: "spellbook"`, `origin: "essentia"`,
+  >   `doc: docs/04_spellbook/KEYWORDS.md`. It is live production data:
+  >   `orchestrator.mjs` publishes `archetype: entry.archetype ?? null`
+  >   irrespective of category, so that `"spellbook"` value already reaches the
+  >   catalog today.
+  >
+  > Therefore: **keep `archetype` on `on-cast-spellbook` exactly as it is** — do not
+  > change its `category`, do not drop the field, do not special-case the id. The
+  > loader must accept an `archetype` key on any category and reject only a
+  > `category: archetype` entry that is missing one.
 - `website/scripts/content/keywords.mjs` loads that directory instead of the JSON
   file, keeping every current validation and adding the new ones listed below.
 - `website/content/keywords.json` is **deleted**.
@@ -100,7 +121,7 @@ All in `website/tests/unit/keywords.test.ts` unless stated. Run with
 | `rejects angle brackets in a term` | fixture `term: Demo <b>` | rejects `/term must be plain text without < or >/` |
 | `rejects an unknown origin` | fixture `origin: konami` | rejects `/origin must be magic or essentia/` |
 | `rejects a missing doc` | fixture `doc: docs/NOPE.md` | rejects `/doc docs\/NOPE\.md does not exist/` |
-| `rejects a non-archetype entry carrying archetype` | fixture `category: action` + `archetype: nekroz` | rejects `/archetype is only valid for category archetype/` |
+| `accepts a non-archetype entry carrying archetype` | fixture `category: event` + `archetype: spellbook` | loads, and `registry.get('On Cast "Spellbook"').archetype === 'spellbook'` |
 | `rejects an archetype entry without archetype` | fixture `category: archetype`, no `archetype:` | rejects `/missing required key archetype/` |
 | `rejects a duplicate term` | two fixture files with `term: Demo` | rejects `/duplicate keyword term Demo/` |
 | `rejects an unnormalized term` | fixture `term: Detach 1` | rejects `/must be stored in normalized form/` |
@@ -110,7 +131,7 @@ All in `website/tests/unit/keywords.test.ts` unless stated. Run with
 
 ## Impl steps
 
-- [ ] 1. Create `website/scripts/content/keyword-file.mjs` exporting
+- [x] 1. Create `website/scripts/content/keyword-file.mjs` exporting
       `parseKeywordFile(text, id)`:
       - Match `/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/`; no match → `fail(\`keyword ${id}: missing front matter\`)`.
       - Allowed keys, exactly: `new Set(['term','category','origin','doc','archetype'])`.
@@ -118,40 +139,44 @@ All in `website/tests/unit/keywords.test.ts` unless stated. Run with
         `fail(\`keyword ${id}: unknown front-matter key ${key}\`)`; malformed line →
         `fail(\`keyword ${id}: malformed front-matter line "${line}"\`)`.
       - Return `{ data, definition: body.trim() }`.
-- [ ] 2. In `website/scripts/content/keywords.mjs` add
+- [x] 2. In `website/scripts/content/keywords.mjs` add
       `export const KEYWORDS_DIR = path.join(ROOT, 'docs', 'keywords');` and
       `export const KEYWORD_FILE_RE = /^([a-z0-9]+(?:-[a-z0-9]+)*)\.md$/;`.
-- [ ] 3. Rewrite the signature to
+- [x] 3. Rewrite the signature to
       `export async function loadKeywordRegistry(directory = KEYWORDS_DIR)`.
-- [ ] 4. Inside it: `readdir(directory, { withFileTypes: true })`, sort by
+- [x] 4. Inside it: `readdir(directory, { withFileTypes: true })`, sort by
       `name.localeCompare`. For each entry: `lstat`; symlink →
       `fail(\`keyword ${entry.name}: symlinks are not allowed\`)`; size > `32_768` →
       `fail(\`keyword ${entry.name}: file exceeds 32768 bytes\`)`; skip directories;
       skip any name not matching `KEYWORD_FILE_RE`.
-- [ ] 5. `const id = KEYWORD_FILE_RE.exec(entry.name)[1];` then
+- [x] 5. `const id = KEYWORD_FILE_RE.exec(entry.name)[1];` then
       `const { data, definition } = parseKeywordFile(await readFile(file,'utf8'), id);`.
-- [ ] 6. Required keys `['term','category','origin','doc']`; missing →
+- [x] 6. Required keys `['term','category','origin','doc']`; missing →
       `fail(\`keyword ${id}: missing required key ${key}\`)`. When
       `data.category === 'archetype'`, `archetype` is also required with the same
-      message; when it is not, a present `archetype` →
-      `fail(\`keyword ${id}: archetype is only valid for category archetype\`)`.
-- [ ] 7. Keep every existing validation, re-worded to the `keyword ${id}:` prefix:
+      message. **Parent correction (inlined 2026-08-08):** when the category is
+      *not* `archetype`, a present `archetype` is **allowed** — do **not** emit
+      `archetype is only valid for category archetype`, and delete that branch if
+      you already wrote it. Real record proving the rule: `on-cast-spellbook`
+      (`category: event`, `archetype: spellbook`). See the boxed correction under
+      "Requirements".
+- [x] 7. Keep every existing validation, re-worded to the `keyword ${id}:` prefix:
       `CATEGORIES.has(category)`, `ORIGINS.has(origin)`, `!/[<>]/.test(term)`
       (message `term must be plain text without < or >`),
       `term === normalizeKeyword(term)` (message `must be stored in normalized form`),
       `await docExists(doc)` (message `doc ${doc} does not exist`).
-- [ ] 8. Definition validation: `/\n/.test(definition)` →
+- [x] 8. Definition validation: `/\n/.test(definition)` →
       `fail(\`keyword ${id}: definition must be a single paragraph\`)`; then the
       existing 20–400 / no-`<>` / trimmed rule with message
       `definition must be 20-400 plain-text characters`.
-- [ ] 9. Duplicate guards: `byTerm.has(term)` →
+- [x] 9. Duplicate guards: `byTerm.has(term)` →
       `fail(\`keyword ${id}: duplicate keyword term ${term}\`)`.
-- [ ] 10. Build the entry object with the same shape the orchestrator consumes:
+- [x] 10. Build the entry object with the same shape the orchestrator consumes:
       `{ id, term, category, archetype: data.archetype ?? undefined, origin, doc, definition }`.
       Return `byTerm` (`Map<term, entry>`) — unchanged contract.
-- [ ] 11. Delete the `schemaVersion` check and the JSON `readFile` from
+- [x] 11. Delete the `schemaVersion` check and the JSON `readFile` from
       `keywords.mjs`. Keep `extractKeywords` untouched.
-- [ ] 12. Write the one-shot migration script `website/scripts/migrate-keywords.mjs`:
+- [x] 12. Write the one-shot migration script `website/scripts/migrate-keywords.mjs`:
 
       ```js
       import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -175,21 +200,21 @@ All in `website/tests/unit/keywords.test.ts` unless stated. Run with
       console.log(`wrote ${keywords.length} keyword files`);
       ```
 
-- [ ] 13. `cd website && node scripts/migrate-keywords.mjs` → prints `wrote 73 keyword files`.
-- [ ] 14. `rm website/scripts/migrate-keywords.mjs` — it is a one-shot, never committed.
-- [ ] 15. `rm website/content/keywords.json`.
-- [ ] 16. In `website/scripts/content/docs.mjs`, inside `discoverDocPaths()`'s
+- [x] 13. `cd website && node scripts/migrate-keywords.mjs` → prints `wrote 73 keyword files`.
+- [x] 14. `rm website/scripts/migrate-keywords.mjs` — it is a one-shot, never committed.
+- [x] 15. `rm website/content/keywords.json`.
+- [x] 16. In `website/scripts/content/docs.mjs`, inside `discoverDocPaths()`'s
       `walk()`, right after `const relative = …`, add:
       `if (/^docs\/keywords\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(relative)) continue;`
       with the comment `// Per-keyword ruling files are registry data, not doc pages.`
-- [ ] 17. Update `website/tests/unit/keywords.test.ts`: replace the JSON `fixture()`
+- [x] 17. Update `website/tests/unit/keywords.test.ts`: replace the JSON `fixture()`
       helper with a directory-based one —
       `function fixture(frontMatter: Record<string,string>, body = VALID_BODY): string`
       that `mkdtempSync`es a directory, writes `demo.md` (or the given filename), and
       returns the directory path for `loadKeywordRegistry(dir)`. Add every row of the
       test plan.
-- [ ] 18. Add the docs-corpus exclusion test to `website/tests/unit/docs-corpus.test.ts`.
-- [ ] 19. Update `docs/KEYWORDS.md`: replace the sentence
+- [x] 18. Add the docs-corpus exclusion test to `website/tests/unit/docs-corpus.test.ts`.
+- [x] 19. Update `docs/KEYWORDS.md`: replace the sentence
       "The website's per-keyword ruling text lives in `website/content/keywords.json`
       and must agree with the owning module named in each entry's `doc` field; these
       modules stay the source of record." with:
@@ -199,10 +224,22 @@ All in `website/tests/unit/keywords.test.ts` unless stated. Run with
       keyword. UPPER_CASE files in `docs/keywords/` remain module docs and are
       published as doc pages; lower-case files never are. Adding a file publishes a
       new keyword on the next `cd website && npm run content`."
-- [ ] 20. `cd website && npm run content` → stdout still ends with `… 73 keywords, … docs, … posts`.
-- [ ] 21. `cd website && git diff --stat src/generated/catalog.ts` → confirm the
+- [x] 20. `cd website && npm run content` → stdout still ends with `… 73 keywords, … docs, … posts`.
+      Observed: `content: 1 releases, 3 sections, 50 current cards, 50 versions, 73 keywords, 38 docs, 1 posts`, exit 0.
+- [x] 21. `cd website && git diff --stat src/generated/catalog.ts` → confirm the
       `keywords` array is unchanged in content (only whitespace/order may move; if
       any `definition` differs, a file was written wrong — fix it, do not accept it).
+      The prescribed command is inert here: `website/.gitignore:5:src/generated/`
+      untracks the file, so `git diff` reports nothing. Substituted a stronger check —
+      the `keywords` array was extracted from `catalog.ts` before the rebuild and
+      after, and compared: **73 → 73, content-identical as a set (every `id`, `term`,
+      `category`, `archetype`, `origin`, `doc`, `definition` byte-equal); zero
+      `definition` deltas.** The only delta is position, for 8 ids
+      (`exile`, `exile-from-grave`, `exile-n-plant-from-grave`, `on-enter`,
+      `on-enter-or-mv2-opponent-creature-enter`, `on-enter-synchro`,
+      `on-send-grave`, `on-send-grave-by-effect`) — the JSON was ASCII-sorted by
+      `id`, whereas step 4's prescribed `name.localeCompare` sort of the filenames
+      collates the hyphen differently. Permitted by this step.
 
 ## Outputs
 
@@ -218,8 +255,16 @@ All in `website/tests/unit/keywords.test.ts` unless stated. Run with
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run test` and `cd website && npm run ci`
-- [ ] manual check: `printf -- '---\nterm: Demo Keyword\ncategory: action\norigin: essentia\ndoc: docs/KEYWORDS.md\n---\n\nA demonstration ruling written by hand for the smoke test.\n' > docs/keywords/demo-keyword.md && (cd website && npm run content)` prints `74 keywords`; then `rm docs/keywords/demo-keyword.md && (cd website && npm run content)` prints `73 keywords`
-- [ ] manual check: `docs/keywords/mill-n.md` opens, edits, and its new text reaches `website/src/generated/catalog.ts` after `npm run content` (revert the edit afterwards)
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `feat(website): read keyword rulings from docs/keywords files`
+- [x] tests pass: `cd website && npm run test` and `cd website && npm run ci` →
+      `npm run ci` exit **0**; `Test Files 47 passed (47)`, `Tests 448 passed (448)`
+      (T1 baseline was 47 / 435 — the +13 are this ticket's new rows);
+      `151 page(s) built`; `dist scan: clean`.
+- [x] manual check: `printf -- '---\nterm: Demo Keyword\ncategory: action\norigin: essentia\ndoc: docs/KEYWORDS.md\n---\n\nA demonstration ruling written by hand for the smoke test.\n' > docs/keywords/demo-keyword.md && (cd website && npm run content)` prints `74 keywords`; then `rm docs/keywords/demo-keyword.md && (cd website && npm run content)` prints `73 keywords`
+      → observed `… 74 keywords, 38 docs, 1 posts`, then after `rm` `… 73 keywords, 38 docs, 1 posts`.
+- [x] manual check: `docs/keywords/mill-n.md` opens, edits, and its new text reaches `website/src/generated/catalog.ts` after `npm run content` (revert the edit afterwards)
+      → edited the body to `… EDIT SMOKE TEST marker text.`, rebuilt, `grep -c` in
+      `catalog.ts` = **1**; reverted, rebuilt, marker count = **0** and the original
+      ruling count = **1**. Final `catalog.keywords` re-extracted and confirmed
+      identical to the post-migration snapshot.
+- [x] app functional — `cd website && npm run build` exits 0 → `BUILD_EXIT=0`.
+- [x] commit msg draft: `feat(website): read keyword rulings from docs/keywords files`

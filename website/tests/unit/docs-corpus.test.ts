@@ -1,9 +1,12 @@
+import { rmSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   docRoute,
   loadDocs,
   rewriteDocLinks,
 } from '../../scripts/content/docs.mjs';
+import { loadKeywordRegistry } from '../../scripts/content/keywords.mjs';
 
 const set = new Set([
   'docs/RULES.md',
@@ -88,5 +91,36 @@ describe('loadDocs', () => {
     const groups = docs.map((doc) => doc.group);
     expect(groups[0]).toBe('overview');
     expect(groups.at(-1)).toBe('project');
+  });
+
+  it('skips keyword definition files', async () => {
+    const docs = await loadDocs();
+    expect(
+      docs.some((doc) => /^docs\/keywords\/[a-z0-9-]+\.md$/.test(doc.path)),
+    ).toBe(false);
+  });
+
+  it('does not load a non-kebab-case keyword file, and fails the corpus with it left as an unlisted doc', async () => {
+    const target = fileURLToPath(
+      new URL('../../../docs/keywords/Bad_Name.md', import.meta.url),
+    );
+    writeFileSync(
+      target,
+      '---\nterm: Bad Name\ncategory: action\norigin: essentia\ndoc: docs/KEYWORDS.md\n---\n\nA demonstration ruling written by hand for the smoke test.\n',
+      'utf8',
+    );
+    try {
+      // Half one: it is not a keyword — the loader's kebab-case filter drops it.
+      const registry = await loadKeywordRegistry();
+      expect(
+        [...registry.values()].some((entry) => entry.id === 'Bad_Name'),
+      ).toBe(false);
+      expect(registry.size).toBe(73);
+      // Half two: so nothing claims it, and the docs corpus refuses it loudly
+      // rather than letting a misnamed ruling vanish from the site.
+      await expect(loadDocs()).rejects.toThrow(/is not listed in DOC_GROUPS/);
+    } finally {
+      rmSync(target, { force: true });
+    }
   });
 });

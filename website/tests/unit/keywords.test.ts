@@ -98,41 +98,80 @@ describe('published keyword closure', () => {
   });
 });
 
-const FIXTURES = mkdtempSync(path.join(tmpdir(), 'essentia-keyword-registry-'));
+const VALID_BODY = 'A valid demonstration definition for the registry fixture.';
 
-const VALID_ENTRY = {
-  id: 'demo',
+const VALID_FRONT_MATTER: Record<string, string> = {
   term: 'Demo',
   category: 'action',
-  definition: 'A valid demonstration definition for the registry fixture.',
   origin: 'essentia',
   doc: 'docs/KEYWORDS.md',
 };
 
-let fixtureCount = 0;
-
-/** Write a one-entry registry to a temp file so the loader can reject it. */
-function fixture(
-  overrides: Record<string, unknown>,
-  schemaVersion = 2,
-): string {
-  fixtureCount += 1;
-  const file = path.join(FIXTURES, `registry-${fixtureCount}.json`);
-  writeFileSync(
-    file,
-    JSON.stringify({
-      schemaVersion,
-      source: 'unit-test fixture',
-      keywords: [{ ...VALID_ENTRY, ...overrides }],
-    }),
+/** Write one keyword file into `dir`, front matter first then body. */
+function writeKeywordFile(
+  dir: string,
+  filename: string,
+  frontMatter: Record<string, string>,
+  body: string = VALID_BODY,
+) {
+  const lines = Object.entries(frontMatter).map(
+    ([key, value]) => `${key}: ${value}`,
   );
-  return file;
+  writeFileSync(
+    path.join(dir, filename),
+    `---\n${lines.join('\n')}\n---\n\n${body}\n`,
+    'utf8',
+  );
+}
+
+/** Write a one-entry keyword directory so the loader can accept or reject it. */
+function fixture(
+  overrides: Record<string, string | undefined>,
+  body: string = VALID_BODY,
+): string {
+  const dir = mkdtempSync(path.join(tmpdir(), 'essentia-keyword-registry-'));
+  const merged: Record<string, string> = { ...VALID_FRONT_MATTER };
+  for (const [key, value] of Object.entries(overrides)) {
+    if (value === undefined) delete merged[key];
+    else merged[key] = value;
+  }
+  writeKeywordFile(dir, 'demo.md', merged, body);
+  return dir;
 }
 
 describe('keyword registry rulings', () => {
-  it('every registered keyword has a definition', async () => {
+  it('loads every keyword file', async () => {
     const registry = await loadKeywordRegistry();
     expect(registry.size).toBe(73);
+  });
+
+  it('reads the definition from the file body', async () => {
+    const registry = await loadKeywordRegistry();
+    expect(registry.get('Mill N')?.definition).toBe(
+      'Send N cards from the top of your Deck to the Grave. The quantity is always printed.',
+    );
+  });
+
+  it('keeps the archetype key', async () => {
+    const registry = await loadKeywordRegistry();
+    const entry = registry.get('Nekroz Recovery');
+    expect(entry?.category).toBe('archetype');
+    expect(entry?.archetype).toBe('nekroz');
+  });
+
+  it('derives the id from the filename', async () => {
+    const registry = await loadKeywordRegistry();
+    expect(registry.get('Mill N')?.id).toBe('mill-n');
+  });
+
+  it('ignores the UPPER_CASE module docs', async () => {
+    const registry = await loadKeywordRegistry();
+    for (const entry of registry.values())
+      expect(entry.id).not.toMatch(/[A-Z_]/);
+  });
+
+  it('every registered keyword has a definition', async () => {
+    const registry = await loadKeywordRegistry();
     for (const entry of registry.values()) {
       expect(typeof entry.definition).toBe('string');
       expect(entry.definition.trim()).toBe(entry.definition);
@@ -154,37 +193,47 @@ describe('keyword registry rulings', () => {
       ).toBe(true);
   });
 
-  it('rejects schemaVersion 1', async () => {
-    await expect(loadKeywordRegistry(fixture({}, 1))).rejects.toThrow(
-      'content: keyword registry must use schemaVersion 2',
-    );
+  it('rejects an unknown front-matter key', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ colour: 'red' })),
+    ).rejects.toThrow(/unknown front-matter key colour/);
+  });
+
+  it('rejects a missing term', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ term: undefined })),
+    ).rejects.toThrow(/missing required key term/);
   });
 
   it('rejects a short definition', async () => {
-    await expect(
-      loadKeywordRegistry(fixture({ definition: 'too short' })),
-    ).rejects.toThrow(/definition must be 20-400 plain-text characters/);
+    await expect(loadKeywordRegistry(fixture({}, 'too short'))).rejects.toThrow(
+      /definition must be 20-400 plain-text characters/,
+    );
   });
 
   it('rejects HTML in a definition', async () => {
     await expect(
-      loadKeywordRegistry(
-        fixture({ definition: 'a <b>bold</b> definition here' }),
-      ),
+      loadKeywordRegistry(fixture({}, 'a <b>bold</b> definition here')),
     ).rejects.toThrow(/definition must be 20-400 plain-text characters/);
+  });
+
+  it('rejects a multi-line definition', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({}, 'line one\n\nline two')),
+    ).rejects.toThrow(/definition must be a single paragraph/);
+  });
+
+  it('rejects angle brackets in a term', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ term: 'Demo <b>' })),
+    ).rejects.toThrow(/term must be plain text without < or >/);
   });
 
   it('R5 rejects a term carrying a script-closing tag', async () => {
     await expect(
       loadKeywordRegistry(
-        fixture({ id: 'demo', term: '</script><script>alert(1)</script>' }),
+        fixture({ term: '</script><script>alert(1)</script>' }),
       ),
-    ).rejects.toThrow(/<\/script><script>alert\(1\)<\/script>/);
-  });
-
-  it('R5 rejects angle brackets in a term', async () => {
-    await expect(
-      loadKeywordRegistry(fixture({ term: 'Demo <b>' })),
     ).rejects.toThrow(/term must be plain text without < or >/);
   });
 
@@ -199,6 +248,40 @@ describe('keyword registry rulings', () => {
       loadKeywordRegistry(fixture({ doc: 'docs/NOPE.md' })),
     ).rejects.toThrow(/doc docs\/NOPE\.md does not exist/);
   });
+
+  // `on-cast-spellbook` is live registry data: `category: event` with
+  // `archetype: spellbook`. The loader must accept `archetype` on any category.
+  it('accepts a non-archetype entry carrying archetype', async () => {
+    const registry = await loadKeywordRegistry(
+      fixture({
+        term: 'On Cast "Spellbook"',
+        category: 'event',
+        archetype: 'spellbook',
+      }),
+    );
+    expect(registry.get('On Cast "Spellbook"')?.archetype).toBe('spellbook');
+  });
+
+  it('rejects an archetype entry without archetype', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ category: 'archetype' })),
+    ).rejects.toThrow(/missing required key archetype/);
+  });
+
+  it('rejects a duplicate term', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'essentia-keyword-registry-'));
+    writeKeywordFile(dir, 'demo-a.md', { ...VALID_FRONT_MATTER, term: 'Demo' });
+    writeKeywordFile(dir, 'demo-b.md', { ...VALID_FRONT_MATTER, term: 'Demo' });
+    await expect(loadKeywordRegistry(dir)).rejects.toThrow(
+      /duplicate keyword term Demo/,
+    );
+  });
+
+  it('rejects an unnormalized term', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ term: 'Detach 1' })),
+    ).rejects.toThrow(/must be stored in normalized form/);
+  });
 });
 
 describe('catalog keyword rulings', () => {
@@ -209,7 +292,7 @@ describe('catalog keyword rulings', () => {
     expect(typeof first.doc).toBe('string');
   });
 
-  it('counts the keyword origins', () => {
+  it('keyword count in the catalog', () => {
     expect(
       catalog.keywords.filter((keyword) => keyword.origin === 'magic'),
     ).toHaveLength(22);

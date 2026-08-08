@@ -102,6 +102,9 @@ async function discoverDocPaths() {
       const absolute = path.join(current, entry.name);
       const relative = path.relative(ROOT, absolute).split(path.sep).join('/');
       if (relative === 'docs/ADR' || relative.startsWith('docs/ADR/')) continue;
+      // Per-keyword ruling files are registry data, not doc pages.
+      if (/^docs\/keywords\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(relative))
+        continue;
       const info = await lstat(absolute);
       if (info.isSymbolicLink()) fail(`linked doc path ${relative}`);
       if (entry.isDirectory()) {
