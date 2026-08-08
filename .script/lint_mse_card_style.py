@@ -101,11 +101,16 @@ TYPE_RE = re.compile(r"\b(" + "|".join(TYPE_FORMS) + r")\b", re.IGNORECASE)
 EXILE_ZONE_CONTEXT_RE = re.compile(r"(?:\bfrom|\bin|\binto|\bto|\bof)\s+(?:your\s+|their\s+|its\s+|that\s+|the\s+)?$", re.IGNORECASE)
 # A bold action named as an example inside a parenthesised italic enumeration —
 # "(Draw, Mill X, Search, etc.)" — is a legitimate keyword invocation with no
-# argument. The action must be introduced by the opening "(" or by a comma, and
-# be followed by ",", ")" or " or ", so that prose inside an italic aside — an
-# ability prefix such as "(1 - Activated Flash Counter)" — keeps raising MSE009.
-ENUMERATED_ACTION_RE = re.compile(r"\s*(?:,|\)|or\b)")
-ENUMERATION_LEAD_IN_RE = re.compile(r"[(,]\s*$")
+# argument.
+#
+# The exemption is structural, not positional. The whole parenthesised aside
+# must be a list: split it on commas and every item, once an introductory "or "
+# is dropped, must be either a bold run standing on its own or the literal
+# "etc." — so prose sharing the aside keeps raising MSE009. That is what the
+# earlier lead-in/follower regexes only appeared to do: they accepted a comma
+# anywhere before the action and a bare "or" after it, which exempted
+# "(Deal 2 damage, Draw, then win.)" and "(Counter or nothing happens.)".
+ENUMERATION_FILLER = {"etc", "etc."}
 
 ABILITY_METADATA = {
     "Static",
@@ -420,15 +425,66 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
     def italic_containers(match: re.Match[str]) -> list[tuple[int, int]]:
         return [item for item in italic_ranges if item[0] <= match.start() and item[1] >= match.end()]
 
+    def trim(start: int, end: int) -> tuple[int, int]:
+        """The span with surrounding whitespace dropped."""
+        while start < end and visible[start].isspace():
+            start += 1
+        while end > start and visible[end - 1].isspace():
+            end -= 1
+        return start, end
+
+    def is_bold_run(start: int, end: int) -> bool:
+        """True when visible[start:end] is exactly one bold run and nothing else."""
+        return any(trim(*item) == (start, end) for item in bold_ranges)
+
+    def enumeration_items(start: int, end: int) -> list[tuple[int, int]] | None:
+        """Spans of the comma-separated items of the parenthesised aside visible[start:end].
+
+        None when the aside is not a bare parenthesised list, or when any item
+        is prose rather than a bold run standing alone or the "etc." filler.
+        """
+        open_paren = visible.find("(", start, end)
+        # Nothing but whitespace may precede the "(". An italic run with no
+        # parentheses, and one that opens with prose — "Choose one (Draw, Mill
+        # X)" — are both asides rather than lists.
+        if open_paren == -1 or visible[start:open_paren].strip():
+            return None
+        close_paren = visible.find(")", open_paren + 1)
+        if close_paren == -1 or close_paren > end:
+            close_paren = end
+
+        items: list[tuple[int, int]] = []
+        cursor = open_paren + 1
+        while cursor <= close_paren:
+            comma = visible.find(",", cursor, close_paren)
+            item_start, item_end = trim(cursor, close_paren if comma == -1 else comma)
+            # Drop the "or" that introduces the final item of a list.
+            if visible[item_start:item_end].lower().startswith("or "):
+                item_start, item_end = trim(item_start + 3, item_end)
+            # An empty item — a doubled or trailing comma — is neither a bold
+            # run nor the filler, so the one check below rejects it too.
+            if not is_bold_run(item_start, item_end) and visible[item_start:item_end].lower() not in ENUMERATION_FILLER:
+                return None
+            items.append((item_start, item_end))
+            if comma == -1:
+                break
+            cursor = comma + 1
+        return items
+
     def is_enumerated_example(match: re.Match[str]) -> bool:
         """True for an action listed as an example in a parenthesised italic aside."""
-        if not ENUMERATED_ACTION_RE.match(visible[match.end() :]):
-            return False
-        return any(
-            visible[start:end].lstrip().startswith("(")
-            and ENUMERATION_LEAD_IN_RE.search(visible[start : match.start()])
-            for start, end in italic_containers(match)
-        )
+        for start, end in italic_containers(match):
+            items = enumeration_items(start, end)
+            if items is None:
+                continue
+            # The action must *be* one of the listed items, not merely sit
+            # inside the aside next to them.
+            if any(
+                item_start <= match.start() and item_end >= match.end() and is_bold_run(item_start, item_end)
+                for item_start, item_end in items
+            ):
+                return True
+        return False
 
     for match in re.finditer(r"(?<!\w)(?:graveyards?|GYD?|G\.Y\.)(?!\w)", visible, re.I):
         findings.append(Finding(path, line_number, "MSE019", f"legacy Grave term '{match.group(0)}'", "use Grave"))

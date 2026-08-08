@@ -118,20 +118,49 @@ class MseCardStyleTests(unittest.TestCase):
                 self.assertIn("MSE009", {finding.rule for finding in LINTER.lint(Path(directory))})
 
     def test_bold_action_in_italic_enumeration_is_accepted(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            write_project(
-                root,
-                "<b>Target</b> 1 Spell <i-auto>(<b>Draw</b>, <b>Mill X</b>, <b>Search</b>, etc.)</i-auto>",
-            )
-            self.assertNotIn("MSE009", {finding.rule for finding in LINTER.lint(root)})
+        cases = (
+            # The Ash Blossom form: a comma-separated list closed by "etc.".
+            "<b>Target</b> 1 Spell <i-auto>(<b>Draw</b>, <b>Mill X</b>, <b>Search</b>, etc.)</i-auto>",
+            # "or" may introduce the final item of the list.
+            "<b>Target</b> 1 Spell <i-auto>(<b>Draw</b>, <b>Mill X</b>, or <b>Search</b>)</i-auto>",
+            # A one-item list is still a list.
+            "<i-auto>(<b>Draw</b>)</i-auto>",
+        )
+        for rule_text in cases:
+            with self.subTest(rule_text=rule_text), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_project(root, rule_text)
+                self.assertNotIn("MSE009", {finding.rule for finding in LINTER.lint(root)})
 
     def test_bold_action_in_italic_prose_is_rejected(self) -> None:
+        """Every sub-condition of the MSE009 enumeration exemption, one case each.
+
+        The exemption is for a parenthesised italic aside that is *nothing but*
+        a list of bold actions. Each case below removes exactly one property of
+        that shape, and each must raise MSE009 again.
+        """
         cases = (
             # An ability prefix is an italic aside, not an enumeration.
             "<i-auto>(1 - Activated Flash <b>Counter</b>)</i-auto>",
-            # Introduced by "(", but the action is not followed by ",", ")" or " or ".
+            # Introduced by "(", but the item carries prose alongside the action.
             "<i-auto>(<b>Draw</b> ordinary cards.)</i-auto>",
+            # A comma earlier in the aside does not make the prose around it a
+            # list — the item "Deal 2 damage" is not a bold action.
+            "<i-auto>(Deal 2 damage, <b>Draw</b>, then win.)</i-auto>",
+            # A trailing "or" does not make what follows another list item.
+            "<i-auto>(<b>Counter</b> or nothing happens.)</i-auto>",
+            # A comma-separated italic run with no parentheses at all.
+            "<i-auto><b>Draw</b>, <b>Mill X</b></i-auto>",
+            # Prose before the "(": an aside containing a list, not a list.
+            "<i-auto>Choose one (<b>Draw</b>, <b>Mill X</b>)</i-auto>",
+            # A doubled comma leaves an empty item.
+            "<i-auto>(<b>Draw</b>, , <b>Mill X</b>)</i-auto>",
+            # A list, but the action sits outside it.
+            "<i-auto>(<b>Draw</b>) then <b>Counter</b> nothing</i-auto>",
+            # Not parenthesised, and not even an aside.
+            "Choose one, <b>Draw</b>, or stop.",
+            # The same text as an italic run: still not an enumeration.
+            "<i-auto>Choose one, <b>Draw</b>, or stop.</i-auto>",
         )
         for rule_text in cases:
             with self.subTest(rule_text=rule_text), tempfile.TemporaryDirectory() as directory:
@@ -139,6 +168,14 @@ class MseCardStyleTests(unittest.TestCase):
                 self.assertEqual(findings, [])
                 write_project(Path(directory), rule_text)
                 self.assertIn("MSE009", {finding.rule for finding in LINTER.lint(Path(directory))})
+
+    def test_action_outside_the_enumeration_is_the_one_rejected(self) -> None:
+        """The listed action stays exempt while the one beside the list does not."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_project(root, "<i-auto>(<b>Draw</b>) then <b>Counter</b> nothing</i-auto>")
+            flagged = [finding for finding in LINTER.lint(root) if finding.rule == "MSE009"]
+            self.assertEqual([finding.message for finding in flagged], ["'Counter' is not an action in this context"])
 
     def test_bold_action_before_comma_outside_italic_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
