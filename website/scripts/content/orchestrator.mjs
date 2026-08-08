@@ -26,9 +26,10 @@ import { loadDocs } from './docs.mjs';
 import { loadPosts } from './blog.mjs';
 import { loadKeywordRegistry } from './keywords.mjs';
 import { loadSectionIntros, sectionIntroSummary } from './section-intros.mjs';
+import { loadReadingOrder, postGroups } from './reading-order.mjs';
 import { discover } from './packages.mjs';
 
-export const CATALOG_SCHEMA_VERSION = 9;
+export const CATALOG_SCHEMA_VERSION = 10;
 
 async function loadExplanations(knownIds) {
   const output = {};
@@ -66,8 +67,10 @@ export async function build({ checkOnly }) {
   const sectionIntros = await loadSectionIntros(
     new Set([...registry.sections.values()].map((section) => section.slug)),
   );
-  const docs = await loadDocs();
+  const readingOrder = await loadReadingOrder();
+  const docs = await loadDocs(readingOrder.docs);
   const posts = await loadPosts();
+  const groupedPosts = postGroups(readingOrder.blog, posts);
 
   if (!checkOnly) {
     await rm(GENERATED_PUBLIC, { recursive: true, force: true });
@@ -210,6 +213,7 @@ export async function build({ checkOnly }) {
     updates,
     docs,
     posts,
+    postGroups: groupedPosts,
     publicationDiagnostics: [],
   };
 

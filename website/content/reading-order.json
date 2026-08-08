@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "docs": [
+    {
+      "key": "overview",
+      "label": "Overview",
+      "files": ["docs/PRESENTATION.md", "docs/CONTEXT.md", "docs/GLOSSARY.md"]
+    },
+    {
+      "key": "design",
+      "label": "Design",
+      "files": [
+        "docs/DESIGN.md",
+        "docs/design/CONVERSION.md",
+        "docs/design/BALANCE.md",
+        "docs/design/FRAMES.md"
+      ]
+    },
+    {
+      "key": "rules",
+      "label": "Rules",
+      "files": [
+        "docs/RULES.md",
+        "docs/rules/DECK_BUILDING.md",
+        "docs/rules/CARD_TYPES.md",
+        "docs/rules/ZONES.md",
+        "docs/rules/SUMMONING.md",
+        "docs/rules/TEMPLATING.md",
+        "docs/rules/DECKLISTS_ALPHA_0.1.md"
+      ]
+    },
+    {
+      "key": "keywords",
+      "label": "Keywords",
+      "files": [
+        "docs/KEYWORDS.md",
+        "docs/keywords/ACTIONS.md",
+        "docs/keywords/EVENTS.md",
+        "docs/keywords/ABILITIES.md",
+        "docs/keywords/COSTS_AND_PROCEDURES.md"
+      ]
+    },
+    { "key": "archetypes", "label": "Archetypes", "files": null },
+    {
+      "key": "project",
+      "label": "Project",
+      "files": ["docs/RELEASES.md", "docs/SET_PROMOTIONS.md", "docs/MSE.md"]
+    }
+  ],
+  "blog": [{ "key": "all", "label": "All posts", "slugs": null }]
+}

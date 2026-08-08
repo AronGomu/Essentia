@@ -6,54 +6,6 @@ import { ROOT, fail, slugify } from './shared.mjs';
 const DOCS_ROOT = path.join(ROOT, 'docs');
 const MAX_DOC_BYTES = 262_144;
 
-export const DOC_GROUPS = [
-  {
-    key: 'overview',
-    label: 'Overview',
-    files: ['docs/PRESENTATION.md', 'docs/CONTEXT.md', 'docs/GLOSSARY.md'],
-  },
-  {
-    key: 'design',
-    label: 'Design',
-    files: [
-      'docs/DESIGN.md',
-      'docs/design/CONVERSION.md',
-      'docs/design/BALANCE.md',
-      'docs/design/FRAMES.md',
-    ],
-  },
-  {
-    key: 'rules',
-    label: 'Rules',
-    files: [
-      'docs/RULES.md',
-      'docs/rules/DECK_BUILDING.md',
-      'docs/rules/CARD_TYPES.md',
-      'docs/rules/ZONES.md',
-      'docs/rules/SUMMONING.md',
-      'docs/rules/TEMPLATING.md',
-      'docs/rules/DECKLISTS_ALPHA_0.1.md',
-    ],
-  },
-  {
-    key: 'keywords',
-    label: 'Keywords',
-    files: [
-      'docs/KEYWORDS.md',
-      'docs/keywords/ACTIONS.md',
-      'docs/keywords/EVENTS.md',
-      'docs/keywords/ABILITIES.md',
-      'docs/keywords/COSTS_AND_PROCEDURES.md',
-    ],
-  },
-  { key: 'archetypes', label: 'Archetypes', files: null },
-  {
-    key: 'project',
-    label: 'Project',
-    files: ['docs/RELEASES.md', 'docs/SET_PROMOTIONS.md', 'docs/MSE.md'],
-  },
-];
-
 /** `docs/rules/ZONES.md` → `/docs/rules/zones/`; `docs/PRESENTATION.md` → `/docs/`. */
 export function docRoute(relativePath) {
   const withoutExtension = relativePath.replace(/\.md$/, '');
@@ -120,15 +72,15 @@ async function discoverDocPaths() {
   return output;
 }
 
-function groupFor(relativePath, archetypeOrder) {
-  for (const group of DOC_GROUPS) {
+function groupFor(relativePath, archetypeOrder, groups) {
+  for (const group of groups) {
     if (group.files) {
       const index = group.files.indexOf(relativePath);
       if (index !== -1) return { group, order: index };
     }
   }
   if (/^docs\/0\d_[^/]+\/[A-Z_]+\.md$/.test(relativePath)) {
-    const archetypeGroup = DOC_GROUPS.find((g) => g.key === 'archetypes');
+    const archetypeGroup = groups.find((g) => g.key === 'archetypes');
     const order = archetypeOrder.indexOf(relativePath);
     return { group: archetypeGroup, order };
   }
@@ -136,7 +88,7 @@ function groupFor(relativePath, archetypeOrder) {
 }
 
 /** @returns {Promise<DocEntry[]>} sorted by group order then title */
-export async function loadDocs() {
+export async function loadDocs(groups) {
   const discovered = await discoverDocPaths();
   const knownPaths = new Set(discovered);
 
@@ -144,10 +96,22 @@ export async function loadDocs() {
     .filter((relative) => /^docs\/0\d_[^/]+\/[A-Z_]+\.md$/.test(relative))
     .sort((a, b) => a.localeCompare(b));
 
+  // A config listing a file that does not exist on disk must fail as loudly
+  // as one that omits a real doc — otherwise a typo'd path silently drops
+  // the intended entry from its group without ever surfacing an error.
+  for (const group of groups) {
+    if (!group.files) continue;
+    for (const file of group.files)
+      if (!knownPaths.has(file))
+        fail(
+          `reading group ${group.key}: configured doc ${file} does not exist`,
+        );
+  }
+
   const entries = [];
   for (const relative of discovered) {
-    const placement = groupFor(relative, archetypeOrder);
-    if (!placement) fail(`doc ${relative} is not listed in DOC_GROUPS`);
+    const placement = groupFor(relative, archetypeOrder, groups);
+    if (!placement) fail(`doc ${relative} is not listed in the reading order`);
 
     const raw = await readFile(path.join(ROOT, relative), 'utf8');
     const lines = raw.split('\n');
@@ -181,9 +145,7 @@ export async function loadDocs() {
     });
   }
 
-  const groupIndex = new Map(
-    DOC_GROUPS.map((group, index) => [group.key, index]),
-  );
+  const groupIndex = new Map(groups.map((group, index) => [group.key, index]));
   entries.sort(
     (a, b) =>
       groupIndex.get(a.group) - groupIndex.get(b.group) ||

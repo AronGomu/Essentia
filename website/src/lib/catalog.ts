@@ -182,7 +182,7 @@ export interface CatalogPost {
 }
 
 export interface Catalog {
-  schemaVersion: 9;
+  schemaVersion: 10;
   generatedAt: string;
   heroSectionSlug: string;
   sections: CatalogSection[];
@@ -202,6 +202,12 @@ export interface Catalog {
   }>;
   docs: CatalogDoc[];
   posts: CatalogPost[];
+  /** Blog sections, in reading-order.json order; every slug resolves to a post. */
+  postGroups: ReadonlyArray<{
+    key: string;
+    label: string;
+    slugs: readonly string[];
+  }>;
   publicationDiagnostics: Array<{
     sectionSlug: string;
     sourceFile: string;

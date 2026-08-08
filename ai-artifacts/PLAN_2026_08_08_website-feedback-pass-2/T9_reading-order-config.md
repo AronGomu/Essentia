@@ -106,10 +106,10 @@ Run with `cd website && npm run test`.
 
 ## Impl steps
 
-- [ ] 1. Create `website/content/reading-order.json` with the exact JSON in
+- [x] 1. Create `website/content/reading-order.json` with the exact JSON in
       **Requirements**, copying every path from `DOC_GROUPS` in
       `website/scripts/content/docs.mjs`.
-- [ ] 2. Create `website/scripts/content/reading-order.mjs`:
+- [x] 2. Create `website/scripts/content/reading-order.mjs`:
       ```js
       import { readFile } from 'node:fs/promises';
       import path from 'node:path';
@@ -118,11 +118,11 @@ Run with `cd website && npm run test`.
       export const READING_ORDER_FILE = path.join(CONTENT, 'reading-order.json');
       const KEY_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
       ```
-- [ ] 3. Implement `loadReadingOrder(file = READING_ORDER_FILE)`:
+- [x] 3. Implement `loadReadingOrder(file = READING_ORDER_FILE)`:
       parse JSON; `data.schemaVersion !== 1` →
       `fail('reading order must use schemaVersion 1')`; `docs` and `blog` must be
       arrays or `fail('invalid reading order')`.
-- [ ] 4. For each docs group validate: `KEY_RE.test(key)` else
+- [x] 4. For each docs group validate: `KEY_RE.test(key)` else
       `fail(\`invalid reading group key ${key}\`)`; unique key else
       `fail(\`duplicate reading group ${key}\`)`; non-empty trimmed `label` else
       `fail(\`reading group ${key}: label is required\`)`; `files` is `null` or a
@@ -130,10 +130,10 @@ Run with `cd website && npm run test`.
       previous group → `fail(\`doc ${file} is listed twice in the reading order\`)`.
       Count `files === null`; not exactly 1 →
       `fail('exactly one docs group may use files: null')`.
-- [ ] 5. Same key/label validation for blog groups, with `slugs` instead of `files`
+- [x] 5. Same key/label validation for blog groups, with `slugs` instead of `files`
       (array of `/^[a-z0-9-]+$/` or `null`), and
       `fail('exactly one blog group may use slugs: null')`.
-- [ ] 6. Add and export from the same module:
+- [x] 6. Add and export from the same module:
       ```js
       /** Blog groups filled from loaded posts; explicit slugs first, catch-all takes the rest. */
       export function postGroups(groups, posts) {
@@ -157,30 +157,30 @@ Run with `cd website && npm run test`.
       }
       ```
       (`posts` arrives already sorted newest-first from `loadPosts()`.)
-- [ ] 7. In `website/scripts/content/docs.mjs`: delete `export const DOC_GROUPS`;
+- [x] 7. In `website/scripts/content/docs.mjs`: delete `export const DOC_GROUPS`;
       change `groupFor(relativePath, archetypeOrder, groups)` to take the groups;
       change the signature to `export async function loadDocs(groups)`; replace both
       `DOC_GROUPS` references (`groupFor` and the `groupIndex` map) with `groups`;
       change the failure message to
       `fail(\`doc ${relative} is not listed in the reading order\`)`.
-- [ ] 8. In `website/scripts/content/orchestrator.mjs`: import
+- [x] 8. In `website/scripts/content/orchestrator.mjs`: import
       `loadReadingOrder, postGroups`; add
       `const readingOrder = await loadReadingOrder();` before the docs load; change
       to `const docs = await loadDocs(readingOrder.docs);`; after `const posts = …`
       add `const groupedPosts = postGroups(readingOrder.blog, posts);`; add
       `postGroups: groupedPosts,` to the `catalog` object; bump
       `CATALOG_SCHEMA_VERSION` by one.
-- [ ] 9. In `website/src/lib/catalog.ts` add to the `Catalog` interface:
+- [x] 9. In `website/src/lib/catalog.ts` add to the `Catalog` interface:
       ```ts
       /** Blog sections, in reading-order.json order; every slug resolves to a post. */
       postGroups: ReadonlyArray<{ key: string; label: string; slugs: readonly string[] }>;
       ```
-- [ ] 10. Update `website/tests/unit/docs-corpus.test.ts` `loadDocs()` calls to pass
+- [x] 10. Update `website/tests/unit/docs-corpus.test.ts` `loadDocs()` calls to pass
       `(await loadReadingOrder()).docs`, and add the two new rows.
-- [ ] 11. Add `website/tests/unit/reading-order.test.ts` with every remaining row.
-- [ ] 12. `cd website && npm run content` → exit 0, same counts as before.
-- [ ] 13. `cd website && npm run test && npm run build` → exit 0.
-- [ ] 14. Manual: reorder `docs/GLOSSARY.md` above `docs/CONTEXT.md` in
+- [x] 11. Add `website/tests/unit/reading-order.test.ts` with every remaining row.
+- [x] 12. `cd website && npm run content` → exit 0, same counts as before.
+- [x] 13. `cd website && npm run test && npm run build` → exit 0.
+- [x] 14. Manual: reorder `docs/GLOSSARY.md` above `docs/CONTEXT.md` in
       `reading-order.json`, run `npm run content`, confirm the docs rail order
       changed, then revert.
 
@@ -199,10 +199,15 @@ Run with `cd website && npm run test`.
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run test`; `cd website && npm run ci`
-- [ ] manual check: `/docs/` still shows Overview / Design / Rules / Keywords /
-      Archetypes / Project in that order
-- [ ] manual check: editing `reading-order.json` and re-running `npm run content`
+- [x] tests pass: `cd website && npm run test`; `cd website && npm run ci`
+      (run in a disposable detached worktree at HEAD — the main checkout's
+      `blog/` is mid-edit by the owner and breaks `npm run content` there for
+      unrelated reasons; see report)
+- [x] manual check: `/docs/` still shows Overview / Design / Rules / Keywords /
+      Archetypes / Project in that order (`docs-corpus.test.ts` "orders groups"
+      + "groups docs from the config" pass; generated catalog groups verified)
+- [x] manual check: editing `reading-order.json` and re-running `npm run content`
       changes the order (reverted afterwards)
-- [ ] app functional — `cd website && npm run build` exits 0
+- [x] app functional — `cd website && npm run build` exits 0
 - [ ] commit msg draft: `feat(website): drive docs and blog ordering from reading-order.json`
+      (draft only — commit not yet made, see report)

@@ -40,7 +40,7 @@ describe('immutable publication graph', () => {
   });
 
   it('publishes open/locked packages, never drafts', () => {
-    expect(catalog.schemaVersion).toBe(9);
+    expect(catalog.schemaVersion).toBe(10);
     expect(catalog.releases.length).toBeGreaterThan(0);
     expect(catalog.cards.length).toBeGreaterThan(0);
     expect(catalog.cardVersions.length).toBeGreaterThan(0);
@@ -95,5 +95,12 @@ describe('immutable publication graph', () => {
     expect(sectionsBySlug.get('non-archetype')!.intro).toBe(
       'All cards not part of any defined archetype. Collection of classic Yu-Gi-Oh! Staples',
     );
+  });
+
+  it('exposes post groups', () => {
+    expect(Array.isArray(catalog.postGroups)).toBe(true);
+    const slugs = new Set(catalog.posts.map((post) => post.slug));
+    for (const group of catalog.postGroups)
+      for (const slug of group.slugs) expect(slugs.has(slug)).toBe(true);
   });
 });

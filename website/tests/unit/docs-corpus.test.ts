@@ -7,6 +7,7 @@ import {
   rewriteDocLinks,
 } from '../../scripts/content/docs.mjs';
 import { loadKeywordRegistry } from '../../scripts/content/keywords.mjs';
+import { loadReadingOrder } from '../../scripts/content/reading-order.mjs';
 
 const set = new Set([
   'docs/RULES.md',
@@ -66,17 +67,17 @@ describe('rewriteDocLinks', () => {
 
 describe('loadDocs', () => {
   it('loads every published doc', async () => {
-    const docs = await loadDocs();
+    const docs = await loadDocs((await loadReadingOrder()).docs);
     expect(docs.length).toBe(38);
   });
 
   it('excludes ADRs', async () => {
-    const docs = await loadDocs();
+    const docs = await loadDocs((await loadReadingOrder()).docs);
     expect(docs.every((doc) => !doc.path.startsWith('docs/ADR/'))).toBe(true);
   });
 
   it('extracts titles and outlines', async () => {
-    const docs = await loadDocs();
+    const docs = await loadDocs((await loadReadingOrder()).docs);
     const entry = docs.find((doc) => doc.path === 'docs/keywords/EVENTS.md');
     expect(entry?.title).toBe('Event keywords');
     expect(entry?.headings).toContainEqual({
@@ -87,17 +88,43 @@ describe('loadDocs', () => {
   });
 
   it('orders groups', async () => {
-    const docs = await loadDocs();
+    const docs = await loadDocs((await loadReadingOrder()).docs);
     const groups = docs.map((doc) => doc.group);
     expect(groups[0]).toBe('overview');
     expect(groups.at(-1)).toBe('project');
   });
 
   it('skips keyword definition files', async () => {
-    const docs = await loadDocs();
+    const docs = await loadDocs((await loadReadingOrder()).docs);
     expect(
       docs.some((doc) => /^docs\/keywords\/[a-z0-9-]+\.md$/.test(doc.path)),
     ).toBe(false);
+  });
+
+  it('groups docs from the config', async () => {
+    const docs = await loadDocs((await loadReadingOrder()).docs);
+    expect(docs[0]?.path).toBe('docs/PRESENTATION.md');
+    expect(docs[0]?.group).toBe('overview');
+  });
+
+  it('fails on an ungrouped doc', async () => {
+    const { docs: groups } = await loadReadingOrder();
+    const withoutRules = groups.filter((group) => group.key !== 'rules');
+    await expect(loadDocs(withoutRules)).rejects.toThrow(
+      /is not listed in the reading order/,
+    );
+  });
+
+  it('fails on a configured doc that does not exist', async () => {
+    const { docs: groups } = await loadReadingOrder();
+    const withGhost = groups.map((group) =>
+      group.key === 'overview'
+        ? { ...group, files: [...(group.files ?? []), 'docs/GHOST.md'] }
+        : group,
+    );
+    await expect(loadDocs(withGhost)).rejects.toThrow(
+      /reading group overview: configured doc docs\/GHOST\.md does not exist/,
+    );
   });
 
   it('does not load a non-kebab-case keyword file, and fails the corpus with it left as an unlisted doc', async () => {
@@ -118,7 +145,9 @@ describe('loadDocs', () => {
       expect(registry.size).toBe(73);
       // Half two: so nothing claims it, and the docs corpus refuses it loudly
       // rather than letting a misnamed ruling vanish from the site.
-      await expect(loadDocs()).rejects.toThrow(/is not listed in DOC_GROUPS/);
+      await expect(loadDocs((await loadReadingOrder()).docs)).rejects.toThrow(
+        /is not listed in the reading order/,
+      );
     } finally {
       rmSync(target, { force: true });
     }
