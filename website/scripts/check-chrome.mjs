@@ -24,9 +24,21 @@ export const UTILITY_LINKS = [
  * @returns {string[]} problems for this page
  */
 export function chromeIssues(file, html, base) {
-  if (file === '404.html') return [];
+  // Browser-local decks are read at runtime, in the visitor's own browser.
+  // Seeing one in a built file means the index was assembled at build time,
+  // which would publish a visitor's private decklist. Fail the build.
+  //
+  // This runs before the 404 exemption below: 404.html is exempt from the
+  // chrome rules because it is a redirect stub with no header to check, but a
+  // leak is a leak whatever the document, and the one rule here that protects
+  // visitor data must be fail-closed.
+  const leak = html.includes('deck:local:')
+    ? [`${file}: a browser-local deck leaked into the built page`]
+    : [];
 
-  const problems = [];
+  if (file === '404.html') return leak;
+
+  const problems = [...leak];
   const navMatch = html.match(/<nav class="utility-nav"[\s\S]*?<\/nav>/);
   const navBlock = navMatch ? navMatch[0] : '';
 
@@ -43,13 +55,6 @@ export function chromeIssues(file, html, base) {
 
   if (!html.includes('class="search-trigger"') || !/>Find<\/span>/.test(html)) {
     problems.push(`${file}: header is missing the Find palette`);
-  }
-
-  // Browser-local decks are read at runtime, in the visitor's own browser.
-  // Seeing one in a built file means the index was assembled at build time,
-  // which would publish a visitor's private decklist. Fail the build.
-  if (html.includes('deck:local:')) {
-    problems.push(`${file}: a browser-local deck leaked into the built page`);
   }
 
   if (navBlock.includes('>Rules<') || navBlock.includes('>Philosophy<')) {

@@ -692,6 +692,17 @@ describe('a browser-local deck must never reach a built page', () => {
     );
     expect(chromeIssues('index.html', html, '/')).toEqual([]);
   });
+
+  it('flags a leak in the 404 document too', () => {
+    // 404.html is exempt from the chrome rules because it is a redirect stub
+    // with no header to check. The privacy gate is not a chrome rule and has
+    // no exemption.
+    const html =
+      '<html><body><li id="find-result-deck:local:u1">My Nekroz</li></body></html>';
+    expect(chromeIssues('404.html', html, '/')).toEqual([
+      '404.html: a browser-local deck leaked into the built page',
+    ]);
+  });
 });
 
 describe('every blog page ships a rail', () => {
