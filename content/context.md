@@ -25,3 +25,9 @@ Keep filenames inside the folder clear and free of date prefixes:
 ├── thumbnail.png
 └── graph.svg
 ```
+
+## Relationship to the blog
+
+Raw video scripts stay here; the published article derived from a script lives at
+`blog/<date>-<slug>.md` at the repository root, which is the source of record for the
+website.

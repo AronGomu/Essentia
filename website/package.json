@@ -18,6 +18,7 @@
     "hero:art": "node scripts/make-hero-art.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "content": "node scripts/build-content.mjs",
     "content:check": "node scripts/build-content.mjs --check",
     "immutability:check": "\"${PYTHON:-python}\" ../.script/check_immutable_stages.py",
     "links:check": "node scripts/check-links.mjs",

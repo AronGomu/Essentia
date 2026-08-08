@@ -62,6 +62,8 @@ npm run dev
 
 Website setup, checks, rights, history, and deployment live in [`website/README.md`](website/README.md).
 
+- `blog/` : Published blog articles, one `YYYY-MM-DD-slug.md` per post; `cd website && npm run content` regenerates the site.
+
 ## Verification
 
 ```bash

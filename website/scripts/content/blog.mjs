@@ -1,10 +1,10 @@
 import { lstat, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import { CONTENT, fail, validDate } from './shared.mjs';
+import { ROOT, fail, validDate } from './shared.mjs';
 
-const BLOG_ROOT = path.join(CONTENT, 'blog');
+const BLOG_ROOT = path.join(ROOT, 'blog');
 const MAX_POST_BYTES = 262_144;
-const DIR_RE = /^(\d{4}-\d{2}-\d{2})-([a-z0-9-]+)$/;
+const FILE_RE = /^(\d{4}-\d{2}-\d{2})-([a-z0-9-]+)\.md$/;
 
 export const ALLOWED_POST_KEYS = new Set([
   'title',
@@ -54,22 +54,21 @@ export async function loadPosts() {
     const entryInfo = await lstat(entryPath);
     if (entryInfo.isSymbolicLink())
       fail(`post ${entry.name}: symlinks are not allowed`);
-    if (!entry.isDirectory()) fail(`post ${entry.name}: expected a directory`);
+    // Directories under blog/ are reserved for per-post assets, not posts.
+    if (entryInfo.isDirectory()) continue;
+    if (!entry.name.endsWith('.md'))
+      fail(`post ${entry.name}: expected a .md file`);
 
-    const dirMatch = DIR_RE.exec(entry.name);
-    if (!dirMatch)
-      fail(`post ${entry.name}: directory name must match yyyy-mm-dd-slug`);
-    const [, datePrefix, slug] = dirMatch;
+    const fileMatch = FILE_RE.exec(entry.name);
+    if (!fileMatch)
+      fail(`post ${entry.name}: filename must match yyyy-mm-dd-slug.md`);
+    const [, datePrefix, slug] = fileMatch;
 
-    const indexPath = path.join(entryPath, 'index.md');
-    const indexInfo = await lstat(indexPath);
-    if (indexInfo.isSymbolicLink())
-      fail(`post ${slug}: symlinks are not allowed`);
-    if (!indexInfo.isFile()) fail(`post ${slug}: index.md must be a file`);
-    if (indexInfo.size > MAX_POST_BYTES)
-      fail(`post ${slug}: index.md exceeds ${MAX_POST_BYTES} bytes`);
+    if (!entryInfo.isFile()) fail(`post ${slug}: expected a file`);
+    if (entryInfo.size > MAX_POST_BYTES)
+      fail(`post ${slug}: file exceeds ${MAX_POST_BYTES} bytes`);
 
-    const raw = await readFile(indexPath, 'utf8');
+    const raw = await readFile(entryPath, 'utf8');
     const { data, body } = parseFrontMatter(raw, slug);
 
     for (const key of ['title', 'date', 'author', 'summary']) {
@@ -78,7 +77,7 @@ export async function loadPosts() {
     if (!validDate(data.date)) fail(`post ${slug}: date must be YYYY-MM-DD`);
     if (data.date !== datePrefix)
       fail(
-        `post ${slug}: date ${data.date} does not match directory prefix ${datePrefix}`,
+        `post ${slug}: date ${data.date} does not match filename prefix ${datePrefix}`,
       );
     if (data.summary.length > 240)
       fail(`post ${slug}: summary exceeds 240 characters`);

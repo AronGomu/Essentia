@@ -25,6 +25,10 @@ npm run dev
 
 Use Node version declared in `package.json`. MSE installation is unnecessary for website builds because packages contain canonical renders.
 
+## Regenerating site content
+
+Edit any `docs/**/*.md` or `blog/*.md` at the repo root, then run `cd website && npm run content`. That regenerates `website/src/generated/catalog.ts` and the public asset copies. `npm run dev` and `npm run build` already run it first, so you only need it explicitly when you want to refresh data without starting a server. `npm run content:check` verifies the generated output is up to date without writing.
+
 ## Checks
 
 ```bash
