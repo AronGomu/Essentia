@@ -47,12 +47,27 @@ describe('docs and blog reading shell', () => {
   });
 
   it('the prose column caps its measure', () => {
-    const measureIndex = globalCss.indexOf('max-width: var(--reading-measure)');
-    expect(measureIndex).toBeGreaterThan(-1);
-    const preceding = globalCss.slice(
-      Math.max(0, measureIndex - 300),
-      measureIndex,
+    // Assert on the selectors that *own* the cap, not on whatever text happens
+    // to sit above it: `.reading-body { … }` is always a couple of hundred
+    // characters up, so a proximity check stays green even when the cap moves
+    // to another column and the prose runs the full 88rem shell width.
+    const capped = [...globalCss.matchAll(/([^{}]*)\{([^{}]*)\}/g)].filter(
+      (rule) => /max-width:\s*var\(--reading-measure\)/.test(rule[2] ?? ''),
     );
-    expect(preceding).toContain('.reading-body');
+    expect(capped.length).toBeGreaterThan(0);
+    const selectors = capped
+      .flatMap((rule) => (rule[1] ?? '').split(','))
+      .map((selector) => selector.trim())
+      .filter(Boolean);
+    for (const selector of selectors) {
+      expect(selector.startsWith('.reading-body')).toBe(true);
+    }
+    for (const element of ['p', 'li', 'blockquote']) {
+      expect(
+        selectors.some((selector) =>
+          new RegExp(`\\b${element}$`).test(selector),
+        ),
+      ).toBe(true);
+    }
   });
 });
