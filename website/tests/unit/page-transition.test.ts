@@ -62,9 +62,32 @@ describe('page transition cross-fade', () => {
     expect(firstTime(oldAnimation)).toBe(firstTime(newAnimation));
   });
 
-  it('keeps the pair unisolated', () => {
-    const body = ruleBody('::view-transition-image-pair(root)');
-    expect(body).toMatch(/isolation:\s*auto\s*;/);
+  it('keeps the additive compositing that makes the halves sum to one frame', () => {
+    // `plus-lighter` inside an isolated pair is the only combination in which
+    // two half-opaque snapshots add up to full coverage. Overriding either half
+    // of it (`isolation: auto`, `mix-blend-mode: normal`) composites the
+    // snapshots in sequence instead and lets the group background bleed
+    // through mid-transition.
+    const pair = ruleBody('::view-transition-image-pair(root)');
+    expect(pair).toMatch(/isolation:\s*isolate\s*;/);
+    expect(pair).not.toMatch(/isolation:\s*auto/);
+
+    // The reduced-motion block names the same two pseudos, so take every rule
+    // that does and require exactly one of them to carry the blend mode.
+    const blendBodies = [
+      ...css.matchAll(
+        /::view-transition-old\(root\),\s*::view-transition-new\(root\)\s*\{([^}]*)\}/g,
+      ),
+    ].map((match) => match[1] ?? '');
+    expect(blendBodies.length).toBeGreaterThan(0);
+    expect(
+      blendBodies.filter((body) =>
+        /mix-blend-mode:\s*plus-lighter\s*;/.test(body),
+      ),
+    ).toHaveLength(1);
+    expect(
+      blendBodies.some((body) => /mix-blend-mode:\s*normal/.test(body)),
+    ).toBe(false);
   });
 
   it('drops the legacy black-dip keyframes', () => {
