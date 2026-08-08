@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Tuner Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Zombie</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> Ash Blossom and <b>Target</b> 1 Spell or ability whose effect interacts with Deck <i-auto>(draw, <b>Mill X</b>, search, etc.)</i-auto>; <b>Counter</b> it.
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> Ash Blossom and <b>Target</b> 1 Spell or ability whose effect interacts with Deck <i-auto>(<b>Draw</b>, <b>Mill X</b>, <b>Search</b>, etc.)</i-auto>; <b>Counter</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 4

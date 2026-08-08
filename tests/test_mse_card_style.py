@@ -117,6 +117,21 @@ class MseCardStyleTests(unittest.TestCase):
                 write_project(Path(directory), rule_text)
                 self.assertIn("MSE009", {finding.rule for finding in LINTER.lint(Path(directory))})
 
+    def test_bold_action_in_italic_enumeration_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_project(
+                root,
+                "<b>Target</b> 1 Spell <i-auto>(<b>Draw</b>, <b>Mill X</b>, <b>Search</b>, etc.)</i-auto>",
+            )
+            self.assertNotIn("MSE009", {finding.rule for finding in LINTER.lint(root)})
+
+    def test_bold_action_before_comma_outside_italic_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_project(root, "<b>Draw</b>, then stop.")
+            self.assertIn("MSE009", {finding.rule for finding in LINTER.lint(root)})
+
     def test_plain_non_action_keywords_and_prefix_are_rejected(self) -> None:
         cases = {
             "Flying": "MSE014",

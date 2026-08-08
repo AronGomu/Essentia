@@ -21,4 +21,19 @@ describe('published card text', () => {
       catalog.cards.find((card) => card.id === 'nekroz-brionac')?.keywords,
     ).toEqual(['Discard', 'Search', 'Shuffle', 'Target']);
   });
+
+  it('exposes the keywords of Ash Blossom', () => {
+    expect(
+      catalog.cards.find((card) => card.id === 'ash-blossom-and-joyous-spring')
+        ?.keywords,
+    ).toEqual(['Counter', 'Discard', 'Draw', 'Mill N', 'Search', 'Target']);
+  });
+
+  it('prints the capitalised deck-interaction examples', () => {
+    const ruleTextPlain = catalog.cards.find(
+      (card) => card.id === 'ash-blossom-and-joyous-spring',
+    )?.ruleTextPlain;
+    expect(ruleTextPlain).toContain('(Draw, Mill X, Search, etc.)');
+    expect(ruleTextPlain).not.toContain('(draw,');
+  });
 });

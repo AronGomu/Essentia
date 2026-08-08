@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "project": "LOTA-0001-Alpha_0.1_all_cards.mse-set",
-  "exportedAt": "2026-08-08T14:36:03.572492Z",
+  "exportedAt": "2026-08-08T17:30:59.489100Z",
   "mse": {
     "version": "2.0.2",
     "game": "magic",
@@ -17,11 +17,11 @@
       "id": "card ash-blossom-and-joyous-spring",
       "name": "Ash Blossom & Joyous Spring",
       "manifestIndex": 0,
-      "sourceHash": "55b39958074838e7afb4370931a28ea86b5321147862894096e5511966f54ec6",
+      "sourceHash": "7f4f42e62780b32645068d06b514f77d4e1d8529cb0d1b288abab2cf1f911366",
       "artworkHash": "a4939540888accb70b8f97995971f3b94d6887218439a5879daed7dd7501c21e",
       "render": "Ash Blossom & Joyous Spring.png",
-      "renderHash": "6a4a3577562fa2af05c6e9db49149ebc5408b620ec8a643178154ad2e4fa98fb",
-      "renderPixelHash": "1ce75d44ad7493b2e6c7108e7e8b02a1a82bef8be844a10a29d5d1aae68c7e64"
+      "renderHash": "0c42f8d463e056767e20ed80f989c3b0b4304a60c78ffbf4af9741d80062730d",
+      "renderPixelHash": "e44007048d6acb3d68dcd430dd88953532093115f6d9327935aa0f962ed08fff"
     },
     {
       "id": "card bagooska",

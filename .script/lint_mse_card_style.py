@@ -99,6 +99,9 @@ TYPE_WORDS = ("Creature", "Spell")
 TYPE_FORMS = (*TYPE_WORDS, "Creatures", "Spells")
 TYPE_RE = re.compile(r"\b(" + "|".join(TYPE_FORMS) + r")\b", re.IGNORECASE)
 EXILE_ZONE_CONTEXT_RE = re.compile(r"(?:\bfrom|\bin|\binto|\bto|\bof)\s+(?:your\s+|their\s+|its\s+|that\s+|the\s+)?$", re.IGNORECASE)
+# A bold action named as an example inside an italic reminder — "(Draw, Mill X,
+# Search, etc.)" — is a legitimate keyword invocation with no argument.
+ENUMERATED_ACTION_RE = re.compile(r"\s*(?:,|\)|or\b)")
 
 ABILITY_METADATA = {
     "Static",
@@ -410,6 +413,9 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
     def containers(match: re.Match[str]) -> list[tuple[int, int]]:
         return [item for item in bold_ranges if item[0] <= match.start() and item[1] >= match.end()]
 
+    def italic_containers(match: re.Match[str]) -> list[tuple[int, int]]:
+        return [item for item in italic_ranges if item[0] <= match.start() and item[1] >= match.end()]
+
     for match in re.finditer(r"(?<!\w)(?:graveyards?|GYD?|G\.Y\.)(?!\w)", visible, re.I):
         findings.append(Finding(path, line_number, "MSE019", f"legacy Grave term '{match.group(0)}'", "use Grave"))
 
@@ -458,6 +464,8 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
         if action_use and not enclosing:
             findings.append(Finding(path, line_number, "MSE006", f"action keyword '{actual}' is not bold", f"use <b>{canonical}</b>"))
         elif not action_use and any(visible[start:end].strip().casefold() == canonical.casefold() for start, end in enclosing):
+            if italic_containers(match) and ENUMERATED_ACTION_RE.match(visible[match.end() :]):
+                continue
             findings.append(Finding(path, line_number, "MSE009", f"'{actual}' is not an action in this context", f"use plain {actual.casefold()}"))
 
     required_exact = KNOWN_KEYWORDS - set(ACTION_WORDS) - ABILITY_METADATA

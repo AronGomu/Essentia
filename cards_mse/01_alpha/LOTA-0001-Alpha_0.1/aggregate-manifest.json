@@ -2,14 +2,14 @@
   "aggregate": "LOTA-0001-Alpha_0.1_all_cards.mse-set",
   "cards": [
     {
-      "contentHash": "4e7fcb2743bbec22f1fa9c84aee25da44d03fb608eaaa4b1e690101a3b73af03",
+      "contentHash": "8641631af7b9653cff987ad15b9d27271edf6192efb0b3840c2242812bc47d90",
       "files": {
         "image": "a4939540888accb70b8f97995971f3b94d6887218439a5879daed7dd7501c21e"
       },
       "name": "Ash Blossom & Joyous Spring",
       "output": "card ash-blossom-and-joyous-spring",
       "source": "01_YGO_Legend_of_the_Alpha.mse-set/card ash blossom  joyous spring",
-      "sourceHash": "d1f6056e7e48ee36ebd42cb08669898fb6ec74305d785f534ac1dee654cdd0d3",
+      "sourceHash": "84dc9621b21e981da57a8f34bdfcce300eafb883f550f714e7b21110bbcff61a",
       "stableId": "ash-blossom-and-joyous-spring"
     },
     {
@@ -553,5 +553,5 @@
     }
   ],
   "schemaVersion": 1,
-  "unionHash": "b7e29cfce30d1ddcd69283bd7939bd951cc0405ea5dee9653e1663197f6345fa"
+  "unionHash": "3a9fac1a1c59e17177bde6ef2be414c139c726e11df63ba03aab5120eece4ebf"
 }

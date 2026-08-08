@@ -22,6 +22,32 @@
   in T1), so `release_package.py rebuild` — which shells out to
   `.script/export_mse_renders.py` — works on this machine.
 
+> **Parent note (inlined 2026-08-08) — Pillow is missing from the bare interpreter.**
+> The host python (`/etc/profiles/per-user/aron/bin/python`, 3.13.14, NixOS, no venv,
+> no `pip`) has **no `PIL`**, so a bare `python .script/release_package.py validate`
+> exits 1 with `ModuleNotFoundError: No module named 'PIL'`. That is an environment
+> gap, not a code defect: the import has been on `main` since `02f6e17` (2026-07-19),
+> and **both** `validate` and `rebuild` genuinely reach PIL —
+> `validate` → `validate_package` → `validate_project` → `_validate_local_refs` →
+> `load_manifest` → `mse_content.validate_image` → `Image.open()`; `rebuild`
+> additionally shells out to `export_mse_renders.py`, which imports PIL at module
+> level.
+>
+> **Therefore: run every `.script/release_package.py` command in this ticket inside a
+> nix-shell that provides Pillow.** Verified working by the parent — this exact
+> command exits **0** and prints `lifecycle valid`:
+>
+> ```bash
+> nix-shell -p python313Packages.pillow --run "python .script/release_package.py validate"
+> ```
+>
+> Use the same wrapper for the `rebuild` in step 8. A
+> `warning: Nix search path entry '/nix/var/nix/profiles/per-user/root/channels' does
+> not exist, ignoring` line on stderr is expected noise. The pure-python commands
+> (`python -m unittest …`, `python .script/lint_mse_card_style.py`) do **not** need
+> the wrapper. Do not install Pillow globally, do not add a dependency file, do not
+> edit `.script/mse_content.py` to make the import lazy — the wrapper is the whole fix.
+
 ## Requirements
 
 - `rule_text` of the component card file becomes, on one line, exactly:
@@ -100,46 +126,46 @@
 
 ## Impl steps
 
-- [ ] 1. In `.script/lint_mse_card_style.py`, next to the other module-level
+- [x] 1. In `.script/lint_mse_card_style.py`, next to the other module-level
       regexes (after `EXILE_ZONE_CONTEXT_RE`, ~line 101), add:
       ```python
       # A bold action named as an example inside an italic reminder — "(Draw, Mill X,
       # Search, etc.)" — is a legitimate keyword invocation with no argument.
       ENUMERATED_ACTION_RE = re.compile(r"\s*(?:,|\)|or\b)")
       ```
-- [ ] 2. In `lint_visible_style`, directly under the existing `containers` closure,
+- [x] 2. In `lint_visible_style`, directly under the existing `containers` closure,
       add:
       ```python
       def italic_containers(match: re.Match[str]) -> list[tuple[int, int]]:
           return [item for item in italic_ranges if item[0] <= match.start() and item[1] >= match.end()]
       ```
-- [ ] 3. Rewrite the MSE009 branch of the `ACTION_RE` loop to:
+- [x] 3. Rewrite the MSE009 branch of the `ACTION_RE` loop to:
       ```python
       elif not action_use and any(visible[start:end].strip().casefold() == canonical.casefold() for start, end in enclosing):
           if italic_containers(match) and ENUMERATED_ACTION_RE.match(visible[match.end():]):
               continue
           findings.append(Finding(path, line_number, "MSE009", f"'{actual}' is not an action in this context", f"use plain {actual.casefold()}"))
       ```
-- [ ] 4. Add the two new tests from the test plan to `tests/test_mse_card_style.py`,
+- [x] 4. Add the two new tests from the test plan to `tests/test_mse_card_style.py`,
       in the class that already holds `test_plain_non_action_keywords_and_prefix_are_rejected`.
 - [ ] 5. `python -m unittest tests.test_mse_card_style` → exit 0.
-- [ ] 6. Edit line 18 of
+- [x] 6. Edit line 18 of
       `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set/card ash blossom  joyous spring`
       to the exact string in **Requirements**. Change nothing else in the file.
 - [ ] 7. `python .script/lint_mse_card_style.py` → exit 0.
-- [ ] 8. `python .script/release_package.py rebuild cards_mse/01_alpha/LOTA-0001-Alpha_0.1`
+- [x] 8. `python .script/release_package.py rebuild cards_mse/01_alpha/LOTA-0001-Alpha_0.1`
       → exit 0. This regenerates the aggregate set, re-exports renders via
       `MSE/bin/magicseteditor`, refreshes `render-provenance.json` and
       `package-sha256.json`.
-- [ ] 9. `python .script/release_package.py validate` → exit 0.
-- [ ] 10. `git diff --stat cards_mse/` — expect the component card, the aggregate
+- [x] 9. `python .script/release_package.py validate` → exit 0.
+- [x] 10. `git diff --stat cards_mse/` — expect the component card, the aggregate
       card, `aggregate-manifest.json`, `render-provenance.json`,
       `package-sha256.json` and the Ash Blossom render PNG(s) to appear. If the PNG
       is unchanged, the render did not re-run — investigate before continuing.
-- [ ] 11. `cd website && npm run content` → exit 0.
-- [ ] 12. Add the two `card-text.test.ts` rows.
-- [ ] 13. `cd website && npm run test` → exit 0.
-- [ ] 14. `cd website && npm run build` → exit 0 (the `check-chrome.mjs` reminder
+- [x] 11. `cd website && npm run content` → exit 0.
+- [x] 12. Add the two `card-text.test.ts` rows.
+- [x] 13. `cd website && npm run test` → exit 0.
+- [x] 14. `cd website && npm run build` → exit 0 (the `check-chrome.mjs` reminder
       gate must stay silent: `Draw`, `Mill X` and `Search` all resolve, and only
       `Mill N` / `Search` are in the page ruling map, both of which carry
       `reminder: true`).
@@ -158,10 +184,10 @@
 ## Validation
 
 - [ ] tests pass: `python -m unittest discover -s tests`; `python .script/lint_mse_card_style.py`; `python .script/release_package.py validate`; `cd website && npm run ci`
-- [ ] manual check: `/cards/ash-blossom-and-joyous-spring/` shows
+- [x] manual check: `/cards/ash-blossom-and-joyous-spring/` shows
       `(Draw, Mill X, Search, etc.)` with the three actions bold, and no `Counter(…)`
       reminder
-- [ ] manual check: hovering the Ash Blossom `gallery-card` on
+- [x] manual check: hovering the Ash Blossom `gallery-card` on
       `/sections/non-archetype/non-archetype/` lists **Mill N** and **Search** rulings
-- [ ] app functional — `cd website && npm run build` exits 0
+- [x] app functional — `cd website && npm run build` exits 0
 - [ ] commit msg draft: `fix(cards): capitalise and bold the deck-interaction actions on Ash Blossom`
