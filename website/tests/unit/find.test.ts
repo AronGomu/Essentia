@@ -195,10 +195,13 @@ describe('findGroups', () => {
     );
   });
 
-  it('ignores the cap when a kind is selected', () => {
-    const groups = findGroups(buildFindEntries(manyCards(20)), '', 'card', 6);
+  it('swaps the per-kind cap for the selected-kind bound', () => {
+    // More entries than SELECTED_KIND_LIMIT (24), so the bound is actually
+    // exercised: with 20 the list fell short of it and raising the limit to
+    // Infinity changed nothing.
+    const groups = findGroups(buildFindEntries(manyCards(30)), '', 'card', 6);
     expect(groups).toHaveLength(1);
-    expect(groups[0]?.entries).toHaveLength(20);
+    expect(groups[0]?.entries).toHaveLength(24);
   });
 
   it('returns a browsable index for an empty query', () => {
