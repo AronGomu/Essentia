@@ -551,7 +551,10 @@ ${siteFooter}
   });
 
   it('leaves a bold phrase that is not a registry keyword alone', () => {
-    const html = cardPage(true).replace(
+    // No reminder span: the rule only fires on a phrase that resolves *and*
+    // lost its reminder, so a page that already carries one makes the
+    // resolution unreachable and the assertion tautological.
+    const html = cardPage(false).replace(
       '<strong>Mill 3</strong>',
       '<strong>Cost:</strong>',
     );
