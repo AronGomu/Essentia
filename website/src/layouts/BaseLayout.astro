@@ -88,7 +88,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
 ---
 
 <!doctype html>
-<html lang="en" data-accent={accent} data-theme={theme}>
+<html lang="en" data-accent={accent} data-theme={theme} data-catalog="expanded">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -98,6 +98,15 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-src 'none'; manifest-src 'self'"
     />
     <Seo {title} {description} {image} />
+    <script is:inline>
+      try {
+        if (localStorage.getItem('essentia.v1.catalog-rail') === 'collapsed')
+          document.documentElement.dataset.catalog = 'collapsed';
+      } catch {
+        // Blocked by a privacy setting or a sandboxed context; the rail
+        // simply renders expanded, its documented default.
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

@@ -1,5 +1,12 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import type { CatalogSection } from '../lib/catalog';
+  import {
+    RAIL_STORAGE_KEY,
+    normalizeRailState,
+    toggleRailState,
+    type RailState,
+  } from '../lib/catalog-rail';
 
   type NavSection = Pick<
     CatalogSection,
@@ -12,6 +19,25 @@
   let dialog: HTMLDialogElement;
   let opener: HTMLButtonElement;
   let nonArchetypeOpen = true;
+  let railState: RailState = 'expanded';
+
+  onMount(() => {
+    railState = normalizeRailState(
+      globalThis.localStorage?.getItem(RAIL_STORAGE_KEY) ?? null,
+    );
+    document.documentElement.dataset.catalog = railState;
+  });
+
+  function toggleRail() {
+    railState = toggleRailState(railState);
+    document.documentElement.dataset.catalog = railState;
+    try {
+      globalThis.localStorage?.setItem(RAIL_STORAGE_KEY, railState);
+    } catch {
+      // Blocked by a privacy setting or a sandboxed context; the in-memory
+      // state above still applies for the rest of this visit.
+    }
+  }
 
   const href = (route: string) =>
     `${base.replace(/\/$/, '')}/${route.replace(/^\//, '')}`;
@@ -70,7 +96,19 @@
   <span aria-hidden="true">☰</span> Catalog
 </button>
 
-<nav class="desktop-catalog" aria-label="Catalog">
+<button
+  class="rail-toggle"
+  aria-expanded={railState === 'expanded'}
+  aria-controls="desktop-catalog"
+  on:click={toggleRail}
+>
+  <span aria-hidden="true">{railState === 'expanded' ? '⟨' : '⟩'}</span>
+  <span class="sr-only"
+    >{railState === 'expanded' ? 'Collapse catalog' : 'Expand catalog'}</span
+  >
+</button>
+
+<nav id="desktop-catalog" class="desktop-catalog" aria-label="Catalog">
   <a class="brand" href={href('/')} aria-label="Essentia home">Essentia</a>
   <button
     class="nav-group"

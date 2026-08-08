@@ -42,7 +42,15 @@ ${Array.from({ length: items }, () => '<li class="new-card-item"></li>').join(
  * enforces, so the fixture has to carry all of them — an incomplete fixture is
  * what let three fail-open checks sit unnoticed (R4).
  */
+/** Every page carries these at the document level: the rail state on
+ * `<html>` and the persistent toggle button. */
+const railChrome = `
+<html data-catalog="expanded">
+<button class="rail-toggle" aria-expanded="true"></button>
+`;
+
 const homePage = (base = '/') => `
+${railChrome}
 <header class="site-header">
   <nav class="utility-nav" aria-label="Sections">
     <a href="${base}docs/">Learn about Essentia</a>
@@ -342,6 +350,7 @@ ${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
   });
 
   const compliantGalleryHtml = `
+${railChrome}
 <header class="site-header">
   <nav class="utility-nav" aria-label="Sections">
     <a href="/docs/">Learn about Essentia</a>
@@ -475,6 +484,7 @@ describe('card preview triggers must carry keyword data', () => {
 
 describe('R7 card pages must emit inline keyword reminders', () => {
   const cardPage = (reminder: boolean) => `
+${railChrome}
 <nav class="utility-nav" aria-label="Sections">
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
@@ -551,6 +561,7 @@ ${siteFooter}
 describe('the footer legal line must sit under the footer links', () => {
   it('accepts links-then-licence order', () => {
     const html = `
+${railChrome}
 <nav class="utility-nav" aria-label="Sections">
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
@@ -712,5 +723,42 @@ ${siteFooter}
         issue.includes('reading page is missing its rail'),
       ),
     ).toBe(true);
+  });
+});
+
+describe('every page ships the catalog rail state and toggle', () => {
+  it('accepts a page carrying data-catalog and the toggle', () => {
+    const issues = chromeIssues('index.html', compliantHomeHtml, '/');
+    expect(issues.some((issue) => issue.includes('catalog rail'))).toBe(false);
+  });
+
+  it('flags a page whose <html> has no data-catalog attribute', () => {
+    const html = compliantHomeHtml.replace(
+      '<html data-catalog="expanded">',
+      '<html>',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('page is missing the catalog rail state'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a page with no rail-toggle button', () => {
+    const html = compliantHomeHtml.replace(
+      '<button class="rail-toggle" aria-expanded="true"></button>',
+      '',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('page is missing the catalog rail toggle'),
+      ),
+    ).toBe(true);
+  });
+
+  it('exempts the 404 document', () => {
+    expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
   });
 });

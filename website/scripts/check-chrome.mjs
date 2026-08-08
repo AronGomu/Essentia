@@ -64,6 +64,13 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: page is missing a breadcrumb`);
   }
 
+  if (!/<html[^>]*\sdata-catalog="(?:expanded|collapsed)"/.test(html)) {
+    problems.push(`${file}: page is missing the catalog rail state`);
+  }
+  if (!html.includes('class="rail-toggle"')) {
+    problems.push(`${file}: page is missing the catalog rail toggle`);
+  }
+
   if (html.includes('zoom-trigger') || html.includes('zoom-dialog')) {
     problems.push(`${file}: the full-size card viewer must be gone`);
   }

@@ -217,6 +217,7 @@
     z-index: var(--z-sticky);
     min-height: var(--header);
     margin-left: var(--sidebar);
+    transition: margin-left 220ms var(--ease-out);
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -271,6 +272,7 @@
   main,
   .site-footer {
     margin-left: var(--sidebar);
+    transition: margin-left 220ms var(--ease-out);
   }
   main {
     min-height: calc(100vh - var(--header));
@@ -1651,6 +1653,47 @@ main {
   }
   html[data-theme='spellbook'] body::after {
     left: 1rem;
+  }
+}
+
+html[data-catalog='collapsed'] {
+  --sidebar: 0rem;
+}
+html[data-catalog='collapsed'] .desktop-catalog {
+  transform: translateX(-100%);
+  visibility: hidden;
+}
+.desktop-catalog {
+  transition:
+    transform 220ms var(--ease-out),
+    visibility 0s linear 220ms;
+}
+html[data-catalog='expanded'] .desktop-catalog {
+  transition:
+    transform 220ms var(--ease-out),
+    visibility 0s;
+}
+.rail-toggle {
+  position: fixed;
+  z-index: calc(var(--z-sticky) + 1);
+  top: 0.9rem;
+  left: calc(var(--sidebar) + 0.5rem);
+  min-height: 2.25rem;
+  padding: 0.35rem 0.6rem;
+  transition: left 220ms var(--ease-out);
+}
+@media (max-width: 64rem) {
+  .rail-toggle {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .desktop-catalog,
+  .rail-toggle,
+  .site-header,
+  main,
+  .site-footer {
+    transition: none;
   }
 }
 
