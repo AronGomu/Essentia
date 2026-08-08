@@ -1,4 +1,5 @@
 import type { CatalogDoc } from './catalog';
+import { truncateAtWordBoundary } from './text';
 
 export interface DocsRailGroup {
   key: string;
@@ -62,8 +63,5 @@ export function docDescription(body: string): string {
     .replace(/\s+/g, ' ')
     .trim();
 
-  if (text.length <= DESCRIPTION_LIMIT) return text;
-  const cut = text.slice(0, DESCRIPTION_LIMIT);
-  const boundary = cut.lastIndexOf(' ');
-  return `${(boundary > 0 ? cut.slice(0, boundary) : cut).replace(/[\s.,;:—-]+$/, '')}…`;
+  return truncateAtWordBoundary(text, DESCRIPTION_LIMIT);
 }

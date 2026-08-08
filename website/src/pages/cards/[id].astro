@@ -13,6 +13,7 @@ import {
   relatedCards,
   essentiaKeywordsFor,
 } from '../../lib/catalog';
+import { truncateAtWordBoundary } from '../../lib/text';
 
 export function getStaticPaths() {
   return catalog.cards.map((card) => ({
@@ -35,6 +36,14 @@ const explanation = catalog.explanations[card.id];
 const ruleDefinitions = new Map(
   catalog.keywords.map((keyword) => [keyword.term, keyword.definition]),
 );
+// Same cut as the docs descriptions: a bare slice() lands mid-word, and 35 of
+// the 50 cards have rule text longer than the excerpt.
+const description = [
+  `${card.name}: ${card.superType}.`,
+  truncateAtWordBoundary(card.ruleTextPlain, 130),
+]
+  .filter(Boolean)
+  .join(' ');
 const versions = catalog.cardVersions
   .filter((version) => version.id === card.id)
   .sort(
@@ -45,7 +54,7 @@ const versions = catalog.cardVersions
 
 <BaseLayout
   title={`${card.name} — Essentia`}
-  description={`${card.name}: ${card.superType}. ${card.ruleTextPlain.slice(0, 130)}`}
+  description={description}
   image={card.images.display.webp}
   accent={section.accent}
   theme={section.slug}
