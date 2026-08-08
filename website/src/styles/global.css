@@ -232,11 +232,14 @@
     font-weight: 700;
     text-decoration: none;
   }
+  /* DESIGN.md — Minimum size: the wordmark renders no narrower than 160px.
+     Driving the width and letting the height follow keeps that floor without
+     stretching the raster: a definite height plus `min-width` would clamp the
+     used width while the height stayed put, drawing 320×74 as 160×28. */
   .compact-brand img {
     display: block;
-    height: 1.75rem;
-    width: auto;
-    min-width: 160px;
+    width: 160px;
+    height: auto;
   }
   .utility-nav {
     display: flex;
@@ -1054,10 +1057,10 @@
   .site-header {
     padding-left: 7.8rem;
   }
+  /* The letter mark is square (64×64), so both axes are stated outright. */
   .compact-brand img {
     height: 2rem;
-    width: 32px;
-    min-width: 0;
+    width: 2rem;
   }
   .search-trigger {
     min-width: 0;
