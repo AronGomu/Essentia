@@ -1,4 +1,5 @@
 ---
+import BackToTop from '../components/BackToTop.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import CardHoverPreview from '../components/CardHoverPreview.astro';
 import CardQualityUpgrade from '../components/CardQualityUpgrade.astro';
@@ -185,6 +186,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       set:html={keywordRulingsJson}
     />
     <CardHoverPreview />
+    <BackToTop />
     <footer class="site-footer">
       <nav aria-label="Footer">
         <a href={`${base}legal/`}>Licence & attribution</a><a

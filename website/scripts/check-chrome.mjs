@@ -79,6 +79,9 @@ export function chromeIssues(file, html, base) {
   if (!/class="rail-toggle(?:"|\s)/.test(html)) {
     problems.push(`${file}: page is missing the catalog rail toggle`);
   }
+  if (!html.includes('class="back-to-top"')) {
+    problems.push(`${file}: page is missing the back-to-top control`);
+  }
 
   if (html.includes('zoom-trigger') || html.includes('zoom-dialog')) {
     problems.push(`${file}: the full-size card viewer must be gone`);

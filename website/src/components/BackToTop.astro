@@ -1,0 +1,37 @@
+---
+/**
+ * Bottom-right control that returns the visitor to the top of the page once
+ * they have scrolled far enough down for it to be worth offering.
+ */
+---
+
+<button class="back-to-top" type="button" hidden>
+  <span aria-hidden="true">↑</span>
+  <span class="sr-only">Back to top</span>
+</button>
+
+<script>
+  import {
+    BACK_TO_TOP_THRESHOLD,
+    shouldShowBackToTop,
+  } from '../lib/back-to-top';
+
+  const control = document.querySelector<HTMLButtonElement>('.back-to-top');
+  if (control) {
+    const sync = () => {
+      control.hidden = !shouldShowBackToTop(
+        window.scrollY,
+        BACK_TO_TOP_THRESHOLD,
+      );
+    };
+    control.addEventListener('click', () => {
+      const reduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    });
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  }
+</script>

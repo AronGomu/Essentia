@@ -1695,6 +1695,28 @@ html[data-catalog='collapsed'] .desktop-catalog {
 .rail-toggle--bottom {
   margin-top: auto;
 }
+.back-to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: var(--z-sticky);
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--ruleline);
+  background: var(--blackfoil-raised);
+  color: var(--cardstock);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  border-color: var(--accent);
+  background: var(--sleeve);
+}
+.back-to-top[hidden] {
+  display: none;
+}
 @media (prefers-reduced-motion: reduce) {
   .desktop-catalog,
   .rail-toggle,

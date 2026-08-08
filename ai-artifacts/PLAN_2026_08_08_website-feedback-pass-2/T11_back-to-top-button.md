@@ -96,7 +96,7 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
 
 ## Impl steps
 
-- [ ] 1. Create `website/src/lib/back-to-top.ts`:
+- [x] 1. Create `website/src/lib/back-to-top.ts`:
       ```ts
       /** Pixels of scroll after which returning to the top is worth a control. */
       export const BACK_TO_TOP_THRESHOLD = 480;
@@ -109,7 +109,7 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
         return Number.isFinite(scrollY) && scrollY >= threshold;
       }
       ```
-- [ ] 2. Create `website/src/components/BackToTop.astro` with the markup from
+- [x] 2. Create `website/src/components/BackToTop.astro` with the markup from
       **Requirements** and this script:
       ```astro
       <script>
@@ -138,10 +138,10 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
         }
       </script>
       ```
-- [ ] 3. In `website/src/layouts/BaseLayout.astro`, import `BackToTop` next to the
+- [x] 3. In `website/src/layouts/BaseLayout.astro`, import `BackToTop` next to the
       other component imports and render `<BackToTop />` on the line immediately
       before `<footer class="site-footer">`.
-- [ ] 4. In `website/src/styles/global.css`, inside `@layer layout`, next to
+- [x] 4. In `website/src/styles/global.css`, inside `@layer layout`, next to
       `.rail-toggle`-style chrome rules, add:
       ```css
       .back-to-top {
@@ -167,21 +167,31 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
         display: none;
       }
       ```
-- [ ] 5. In `website/scripts/check-chrome.mjs`, after the existing
+- [x] 5. In `website/scripts/check-chrome.mjs`, after the existing
       `class="rail-toggle"` rule, add:
       ```js
       if (!html.includes('class="back-to-top"')) {
         problems.push(`${file}: page is missing the back-to-top control`);
       }
       ```
-- [ ] 6. Add `<button class="back-to-top" type="button" hidden></button>` to the
+- [x] 6. Add `<button class="back-to-top" type="button" hidden></button>` to the
       valid page fixture in `website/tests/unit/chrome.test.ts`, then add the two
       chrome rows from the test plan.
-- [ ] 7. Add `website/tests/unit/back-to-top.test.ts` with its seven rows.
-- [ ] 8. Add the new e2e test to `website/tests/e2e/showcase.spec.ts`.
-- [ ] 9. `cd website && npm run format && npm run test` → exit 0.
-- [ ] 10. `cd website && npm run build` → exit 0.
-- [ ] 11. `cd website && npm run test:e2e` → exit 0.
+- [x] 7. Add `website/tests/unit/back-to-top.test.ts` with its seven rows.
+- [x] 8. Add the new e2e test to `website/tests/e2e/showcase.spec.ts`.
+- [x] 9. `cd website && npm run format && npm run test` → exit 0. (verified via
+      isolated worktree `npm run ci`: exit 0, 52/52 files, 522/522 tests; the
+      main checkout's plain `npm run test` shows 5 pre-existing unrelated
+      failures from the owner's in-flight blog edits — not touched here.)
+- [x] 10. `cd website && npm run build` → exit 0. (via worktree `npm run ci`:
+      151 page(s) built, dist scan clean, chrome gate passed on all 151 pages.)
+- [ ] 11. `cd website && npm run test:e2e` → unrunnable on this host: the dev
+      server used by Playwright fails to boot in the main checkout (owner's
+      `blog/lota-alpha-v0.1-presentation.md` breaks `npm run content`), and
+      separately no browser binary launches here (`libglib-2.0.so.0` missing,
+      per baseline). `npx playwright test --list` confirms the new test
+      `back to top returns the visitor to the top` is registered across all
+      3 projects; unverified by execution.
 
 ## Outputs
 
@@ -197,12 +207,16 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run ci`; `cd website && npm run test:e2e`
-- [ ] manual check: `/docs/rules/templating/` — the button is absent at the top,
-      appears after scrolling, sits bottom-right, and returns to the top on click
-- [ ] manual check: with `prefers-reduced-motion: reduce` forced in devtools, the
-      jump is instant and does not animate
-- [ ] manual check: at 390 px the button does not cover the footer links when the
-      page is fully scrolled
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `feat(website): add a back-to-top control to every page`
+- [x] tests pass: `cd website && npm run ci` — exit 0 in isolated worktree
+      (52/52 test files, 522/522 tests, 151 pages built, dist scan clean,
+      chrome gate green). `cd website && npm run test:e2e` — unrunnable on
+      this host, see Impl step 11.
+- [ ] manual check: `/docs/rules/templating/` — no browser available on this
+      host; not performed. Compiled markup/CSS inspected instead (see report).
+- [ ] manual check: reduced-motion — no browser available; the script reads
+      `prefers-reduced-motion` at click time and the compiled CSS still flips
+      `scroll-behavior: auto` under that media query (source-inspected only).
+- [ ] manual check: 390px footer overlap — no browser available; not performed.
+- [x] app functional — `cd website && npm run build` exits 0 (via worktree
+      `npm run ci`: 151 page(s) built).
+- [x] commit msg draft: `feat(website): add a back-to-top control to every page`

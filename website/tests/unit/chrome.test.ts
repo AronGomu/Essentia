@@ -48,6 +48,7 @@ const railChrome = `
 <html data-catalog="expanded">
 <meta name="color-scheme" content="dark" />
 <button class="rail-toggle" aria-expanded="true"></button>
+<button class="back-to-top" type="button" hidden></button>
 `;
 
 const homePage = (base = '/') => `
@@ -826,7 +827,20 @@ describe('every page ships the catalog rail state and toggle', () => {
     ).toBe(true);
   });
 
-  it('exempts the 404 document', () => {
+  it('flags a page with no back-to-top control', () => {
+    const html = compliantHomeHtml.replace(
+      '<button class="back-to-top" type="button" hidden></button>',
+      '',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('page is missing the back-to-top control'),
+      ),
+    ).toBe(true);
+  });
+
+  it('exempts the 404 stub', () => {
     expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
   });
 });

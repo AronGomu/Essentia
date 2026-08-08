@@ -213,3 +213,15 @@ test('catalog rail collapses to a strip that keeps both toggles', async ({
     'expanded',
   );
 });
+
+test('back to top returns the visitor to the top', async ({ page }) => {
+  await page.goto(urlFor('/docs/'));
+  const control = page.getByRole('button', { name: 'Back to top' });
+  await expect(control).toBeHidden();
+  await page.mouse.wheel(0, 2000);
+  await expect(control).toBeVisible();
+  await control.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
