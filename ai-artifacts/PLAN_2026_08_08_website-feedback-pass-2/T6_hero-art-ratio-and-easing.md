@@ -102,32 +102,47 @@ Run with `cd website && npm run test`.
 
 ## Impl steps
 
-- [ ] 1. In `website/src/styles/global.css`, in `.catalog-hero`, replace
+- [x] 1. In `website/src/styles/global.css`, in `.catalog-hero`, replace
       `padding-bottom: var(--space-6);` with
       `padding-block: var(--space-2) var(--space-4);`.
-- [ ] 2. In `.catalog-hero-art`, change `aspect-ratio: 3 / 2;` to `aspect-ratio: 1 / 1;`.
-- [ ] 3. In `.catalog-hero img`, change the transition to
+      Evidence: rule now reads `padding-block: var(--space-2) var(--space-4);`.
+- [x] 2. In `.catalog-hero-art`, change `aspect-ratio: 3 / 2;` to `aspect-ratio: 1 / 1;`.
+      Evidence: rule now reads `aspect-ratio: 1 / 1;`.
+- [x] 3. In `.catalog-hero img`, change the transition to
       `transition:\n      transform 900ms var(--ease-out),\n      opacity 180ms linear;`
       (Prettier formats it one declaration per line — run `npm run format` after).
-- [ ] 4. In the `@media (hover: hover) and (pointer: fine)` block, change
+      Evidence: `npm run format` run, no diff produced by formatter on this block.
+- [x] 4. In the `@media (hover: hover) and (pointer: fine)` block, change
       `.catalog-hero-art img { transform: scale(1.08); }` to `scale(1.12)`.
-- [ ] 5. Replace the stale comment above the hover rule with:
-      ```css
-      /* The hero source is square and so is the frame, so `cover` no longer crops.
-         The reveal is kept anyway: `contain` guarantees the whole illustration is
-         visible even for a source that is not perfectly square, and the slow
-         un-zoom is the motion the hover is for. */
-      ```
-- [ ] 6. In the `@media (max-width: 64rem)` block, replace
+      Evidence: rule now reads `transform: scale(1.12);`.
+- [x] 5. Replace the stale comment above the hover rule with the new wording.
+      Evidence: comment replaced verbatim as specified.
+- [x] 6. In the `@media (max-width: 64rem)` block, replace
       `.catalog-hero-art { max-height: 22rem; }` with
       `.catalog-hero-art { max-width: 24rem; margin-inline: auto; }`.
-- [ ] 7. Leave the reduced-motion block untouched.
-- [ ] 8. Add the five new rows to `website/tests/unit/catalog-hero-art.test.ts`.
+      Evidence: rule now reads `max-width: 24rem; margin-inline: auto;`.
+- [x] 7. Leave the reduced-motion block untouched.
+      Evidence: `git diff` shows no change to the `prefers-reduced-motion` block content
+      (only touched transiently for a mutation test, then reverted — see report).
+- [x] 8. Add the five new rows to `website/tests/unit/catalog-hero-art.test.ts`.
       For the `.catalog-hero` block use a new slice
       `sliceBlock(css, '.catalog-hero {', '.catalog-hero p {')`; for the narrow
       override, slice from `'@media (max-width: 64rem)'` to `'@media (max-width: 44rem)'`.
-- [ ] 9. `cd website && npm run format && npm run test` → exit 0.
-- [ ] 10. `cd website && npm run build` → exit 0.
+      Evidence: added; red before CSS edits (5 failing), green after (10/10 passing).
+- [x] 9. `cd website && npm run format && npm run test` → exit 0.
+      Evidence (main checkout, polluted by unrelated concurrent blog-file work):
+      `catalog-hero-art.test.ts` — Test Files 1 passed, Tests 10 passed. Full suite:
+      474 passed, 2 failed, both in `blog.test.ts`/`blog-corpus.test.ts` (not this
+      ticket's diff — confirmed by `git stash` isolation). Superseded by step 10's
+      clean-worktree run: **48/48 test files, 476/476 tests, exit 0.**
+- [x] 10. `cd website && npm run build` → exit 0.
+      Confirmed clean in a disposable detached worktree at HEAD carrying only this
+      ticket's diff (`git worktree add --detach .../wt-t6 HEAD` + `git apply` the
+      2-file patch): `npm run ci` → **exit 0**, `Test Files 48 passed (48)`,
+      `Tests 476 passed (476)`, `151 page(s) built`, `dist scan: clean`. Worktree
+      removed after (`git worktree remove --force`). Main-checkout build remains
+      blocked only by the repo owner's unrelated in-flight blog/image work — not by
+      this ticket.
 
 ## Outputs
 
@@ -138,11 +153,23 @@ Run with `cd website && npm run test`.
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run test`; `cd website && npm run ci`
+- [x] tests pass: `cd website && npm run test` — `catalog-hero-art.test.ts` 10/10 green
+      (was 5/5). `cd website && npm run ci` — reached exit 0 in a disposable detached
+      worktree at HEAD carrying only this ticket's 2-file diff: `Test Files 48 passed
+      (48)`, `Tests 476 passed (476)`. Main checkout's `npm run ci` remains blocked by
+      the repo owner's unrelated in-flight blog/image work (confirmed via `git stash`
+      isolation: same 2 blog-test failures occur with or without this ticket's diff).
 - [ ] manual check: `/sections/non-archetype/non-archetype/`, `/archetypes/nekroz/`,
-      `/archetypes/burning-abyss/` — the hero art is square, fills more of the
-      column, and un-zooms smoothly over roughly a second on hover
+      `/archetypes/burning-abyss/` — not run: no browser available on this host
+      (parent baseline: Playwright cannot launch here at all).
 - [ ] manual check: at 900 px viewport width the art is centred, capped at 24rem, and
-      still square
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `style(website): square the section hero art and slow its un-zoom`
+      still square — not run: no browser available on this host.
+- [x] app functional — `cd website && npm run build` exits 0 in the disposable
+      worktree: `151 page(s) built`, `dist scan: clean`. Shipped `dist/` CSS verified:
+      `.catalog-hero-art{aspect-ratio:1;...}`, `.catalog-hero img{...transition:
+      transform .9s var(--ease-out), opacity .18s linear}`, `.catalog-hero-art
+      img{transform:scale(1.12)}`, narrow-viewport `.catalog-hero-art{max-width:24rem;
+      margin-inline:auto}`, and the reduced-motion selector list still includes
+      `.catalog-hero-art img,.catalog-hero-art:hover img{transform:none}` (no
+      `object-fit`).
+- [x] commit msg draft: `style(website): square the section hero art and slow its un-zoom`

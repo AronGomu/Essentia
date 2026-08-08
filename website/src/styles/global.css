@@ -777,7 +777,7 @@
     gap: clamp(2rem, 6vw, 7rem);
     align-items: center;
     border-bottom: 1px solid var(--ruleline);
-    padding-bottom: var(--space-6);
+    padding-block: var(--space-2) var(--space-4);
   }
   .catalog-hero p {
     max-width: 65ch;
@@ -796,7 +796,7 @@
   }
   .catalog-hero-art {
     width: 100%;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: var(--radius);
     background: var(--blackfoil);
@@ -806,16 +806,17 @@
     height: 100%;
     object-fit: cover;
     transition:
-      transform 600ms var(--ease-out),
+      transform 900ms var(--ease-out),
       opacity 180ms linear;
   }
   @media (hover: hover) and (pointer: fine) {
     .catalog-hero-art img {
-      transform: scale(1.08);
+      transform: scale(1.12);
     }
-    /* The hero source is square and the frame is 3:2, so `cover` always
-       crops. Undoing the resting zoom is not enough — only `contain`
-       shows the whole illustration, letterboxed on --blackfoil. */
+    /* The hero source is square and so is the frame, so `cover` no longer crops.
+       The reveal is kept anyway: `contain` guarantees the whole illustration is
+       visible even for a source that is not perfectly square, and the slow
+       un-zoom is the motion the hover is for. */
     .catalog-hero-art:hover img,
     .catalog-hero-art:focus-within img {
       object-fit: contain;
@@ -1068,7 +1069,8 @@
     grid-template-columns: 1fr;
   }
   .catalog-hero-art {
-    max-height: 22rem;
+    max-width: 24rem;
+    margin-inline: auto;
   }
 }
 

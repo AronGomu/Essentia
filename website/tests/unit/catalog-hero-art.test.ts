@@ -23,6 +23,16 @@ function sliceBlock(
 }
 
 const heroBlock = sliceBlock(css, '.catalog-hero-art {', '.catalog-stats {');
+const heroContainerBlock = sliceBlock(
+  css,
+  '.catalog-hero {',
+  '.catalog-hero p {',
+);
+const narrowViewportBlock = sliceBlock(
+  css,
+  '@media (max-width: 64rem)',
+  '@media (max-width: 44rem)',
+);
 
 describe('catalog hero art hover reveal', () => {
   it('crops the hero at rest', () => {
@@ -44,6 +54,42 @@ describe('catalog hero art hover reveal', () => {
   it('resets the resting zoom on hover', () => {
     const hoverRule = sliceBlock(heroBlock, '.catalog-hero-art:hover img', '}');
     expect(hoverRule).toMatch(/transform:\s*scale\(1\)/);
+  });
+
+  it('matches the square source ratio', () => {
+    const artBlock = sliceBlock(heroBlock, '.catalog-hero-art {', '}');
+    expect(artBlock).toMatch(/aspect-ratio:\s*1\s*\/\s*1/);
+  });
+
+  it('un-zooms slowly', () => {
+    const imgBlock = sliceBlock(heroBlock, '.catalog-hero img {', '}');
+    expect(imgBlock).toMatch(/transform 900ms var\(--ease-out\)/);
+  });
+
+  it('rests zoomed in further than before', () => {
+    const hoverBlockStart = heroBlock.indexOf(
+      '@media (hover: hover) and (pointer: fine)',
+    );
+    expect(hoverBlockStart).toBeGreaterThan(-1);
+    const restRule = sliceBlock(
+      heroBlock.slice(hoverBlockStart),
+      '.catalog-hero-art img {',
+      '}',
+    );
+    expect(restRule).toMatch(/transform:\s*scale\(1\.12\)/);
+  });
+
+  it('trims the hero padding to absorb the taller art', () => {
+    expect(heroContainerBlock).toMatch(
+      /padding-block:\s*var\(--space-2\) var\(--space-4\)/,
+    );
+    expect(heroContainerBlock).not.toMatch(/padding-bottom:/);
+  });
+
+  it('keeps the narrow-viewport art in ratio', () => {
+    const artRule = sliceBlock(narrowViewportBlock, '.catalog-hero-art {', '}');
+    expect(artRule).toMatch(/max-width:\s*24rem/);
+    expect(artRule).not.toMatch(/max-height/);
   });
 
   it('keeps the reveal under reduced motion', () => {
