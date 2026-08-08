@@ -96,9 +96,21 @@ describe('page transition cross-fade', () => {
   });
 
   it('stops re-animating main', () => {
-    const mainRules = css.match(/main\s*\{[^}]*\}/g) ?? [];
+    // Match on the selector *list*, not on `main` as a lone selector: the
+    // regression that started this was `main, aside { animation: … }`, which a
+    // `/main\s*\{/` pattern never sees.
+    const mainRules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)].filter(
+      (rule) =>
+        (rule[1] ?? '')
+          .split(',')
+          .map((selector) => selector.trim())
+          .some(
+            (selector) => selector === 'main' || /^main[\s:[.#]/.test(selector),
+          ),
+    );
+    expect(mainRules.length).toBeGreaterThan(0);
     for (const rule of mainRules) {
-      expect(rule).not.toMatch(/animation:/);
+      expect(rule[2] ?? '').not.toMatch(/animation(?:-name)?\s*:/);
     }
   });
 });
