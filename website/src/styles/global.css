@@ -232,6 +232,12 @@
     font-weight: 700;
     text-decoration: none;
   }
+  .compact-brand img {
+    display: block;
+    height: 1.75rem;
+    width: auto;
+    min-width: 160px;
+  }
   .utility-nav {
     display: flex;
     align-items: center;
@@ -1048,8 +1054,10 @@
   .site-header {
     padding-left: 7.8rem;
   }
-  .compact-brand {
-    display: none;
+  .compact-brand img {
+    height: 2rem;
+    width: 32px;
+    min-width: 0;
   }
   .search-trigger {
     min-width: 0;

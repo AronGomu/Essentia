@@ -10,6 +10,7 @@ const textExtensions = new Set([
   '.css',
   '.xml',
   '.txt',
+  '.webmanifest',
 ]);
 const allowedExtensions = new Set([
   ...textExtensions,

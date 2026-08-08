@@ -95,6 +95,42 @@ surface tokens. The site header, the catalog rail, and the page gutter stay
 on `--blackfoil` — a reading page is one lit room inside the same dark
 archive, not a separate site.
 
+## Logo
+
+The Essentia identity ships as two raster marks, committed under `website/brand/`
+and derived into public assets by `npm run brand:assets`
+(`website/scripts/make-brand-assets.mjs`): a wordmark ("Essentia" in a rounded
+plate) and a letter mark (the `E` in a rounded-square frame). Both are
+brushed-silver emboss with a soft outer glow and a teal hairline down the stem
+of the `E` — that hairline reads as the same family as `--relic` and `--ice`,
+so the mark is already consistent with the shell's interaction colour without
+being recoloured to match it exactly.
+
+**The Two Marks Rule.** The wordmark identifies the site in chrome that has
+room — header, footer, social card. The letter mark stands in wherever the
+space is square or smaller than `160px` wide: favicon, app icon, narrow
+header, in-page badge. They are never used together in one region.
+
+**The Untouched Mark Rule.** The mark is never recoloured, tinted, outlined,
+rotated, stretched, given a drop shadow, or placed on an archetype accent
+surface. Its own glow is the only effect it carries. This extends _The
+Artifact Color Rule_ from card renders to the identity.
+
+**Clear space.** Minimum clear space on all four sides equals the height of
+the `E` bowl — practically, `0.5 ×` the mark's rendered height. Nothing
+crosses it.
+
+**Substrate.** The mark is silver-on-dark by design and is placed only on
+`--blackfoil`, `--blackfoil-raised`, or `--sleeve`. It is **not** placed on
+`--reading-surface` (the lit warm panel from **Reading Surfaces** above):
+silver emboss on warm vellum reads as a smudge. If a reading page needs the
+mark, it goes in the chrome, which stays dark per the **Lit Room Rule**.
+
+**Minimum size.** The emboss and the teal hairline are raster detail; under
+roughly `28px` of height the wordmark turns to mush. The wordmark renders no
+narrower than `160px` wide; below a `44rem` viewport, chrome swaps to the
+letter mark, which survives small sizes because it is one glyph.
+
 ## Typography
 
 **Display Font:** Serif display using a system stack **[exact stack to be chosen at implementation]**
