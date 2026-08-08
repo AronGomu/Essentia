@@ -3,7 +3,7 @@
   import type { CatalogSection } from '../lib/catalog';
   import {
     RAIL_STORAGE_KEY,
-    normalizeRailState,
+    readRailState,
     toggleRailState,
     type RailState,
   } from '../lib/catalog-rail';
@@ -22,9 +22,7 @@
   let railState: RailState = 'expanded';
 
   onMount(() => {
-    railState = normalizeRailState(
-      globalThis.localStorage?.getItem(RAIL_STORAGE_KEY) ?? null,
-    );
+    railState = readRailState();
     document.documentElement.dataset.catalog = railState;
   });
 
