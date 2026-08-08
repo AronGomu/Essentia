@@ -53,10 +53,21 @@ describe('catalog hero art hover reveal', () => {
       reducedMotionStart,
       css.indexOf('\n  }\n', reducedMotionStart) + 6,
     );
-    const heroPortion = reducedMotionBlock
-      .split('\n')
-      .filter((line) => line.includes('catalog-hero'))
-      .join('\n');
-    expect(heroPortion).not.toMatch(/object-fit/);
+    // Take whole rules — selector list through closing brace — not the lines
+    // that merely mention the selector. Prettier puts every declaration on its
+    // own line, so a line filter keeps only selectors and can never see a
+    // declaration: that is how `object-fit: cover` could be added here, killing
+    // the hover reveal for every reduced-motion visitor, with this test green.
+    const heroRules = [
+      ...reducedMotionBlock.matchAll(/([^{}]*)\{([^{}]*)\}/g),
+    ].filter((rule) => (rule[1] ?? '').includes('.catalog-hero-art'));
+    expect(heroRules.length).toBeGreaterThan(0);
+    for (const rule of heroRules) {
+      // Reduced motion drops the resting zoom, and nothing else: the reveal is
+      // a crop change, not motion.
+      const declarations = rule[2] ?? '';
+      expect(declarations).toMatch(/transform:\s*none/);
+      expect(declarations).not.toMatch(/object-fit/);
+    }
   });
 });
