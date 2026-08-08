@@ -41,3 +41,27 @@ export function readRailState(): RailState {
     return normalizeRailState(null);
   }
 }
+
+/**
+ * Persists the state under the same key the pre-paint inline `<head>` script in
+ * `BaseLayout.astro` reads, so the next navigation paints the rail the visitor
+ * left behind. Storage is unreachable under the same conditions as
+ * `readRailState`, and a throw here would abandon the rest of the toggle.
+ */
+export function writeRailState(state: RailState): void {
+  try {
+    globalThis.localStorage?.setItem(RAIL_STORAGE_KEY, state);
+  } catch {
+    // Blocked by a privacy setting or a sandboxed context; the in-memory state
+    // still applies for the rest of this visit.
+  }
+}
+
+/**
+ * Mirrors the state onto the root element, which is what the CSS reacts to.
+ * No-op without a document (server render).
+ */
+export function applyRailState(state: RailState): void {
+  const root = globalThis.document?.documentElement;
+  if (root) root.dataset.catalog = state;
+}

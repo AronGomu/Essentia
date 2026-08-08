@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import type { CatalogSection } from '../lib/catalog';
   import {
-    RAIL_STORAGE_KEY,
+    applyRailState,
     readRailState,
     toggleRailState,
+    writeRailState,
     type RailState,
   } from '../lib/catalog-rail';
 
@@ -23,18 +24,13 @@
 
   onMount(() => {
     railState = readRailState();
-    document.documentElement.dataset.catalog = railState;
+    applyRailState(railState);
   });
 
   function toggleRail() {
     railState = toggleRailState(railState);
-    document.documentElement.dataset.catalog = railState;
-    try {
-      globalThis.localStorage?.setItem(RAIL_STORAGE_KEY, railState);
-    } catch {
-      // Blocked by a privacy setting or a sandboxed context; the in-memory
-      // state above still applies for the rest of this visit.
-    }
+    applyRailState(railState);
+    writeRailState(railState);
   }
 
   const href = (route: string) =>
