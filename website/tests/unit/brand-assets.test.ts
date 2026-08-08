@@ -90,6 +90,15 @@ describe('brand assets', () => {
     expect(manifest.theme_color).toBe('#020202');
   });
 
+  it('never claims maskable for icons rendered without a safe zone', () => {
+    // The icons come from renderBrandAsset with fit: 'contain' over a trimmed
+    // master, so the glyph reaches the canvas edge on at least one axis.
+    // Android's maskable contract reserves a 20% safe zone and would crop it.
+    for (const icon of manifest.icons as Array<{ purpose?: string }>) {
+      expect(icon.purpose ?? 'any').toBe('any');
+    }
+  });
+
   it('header brand keeps an accessible name', () => {
     const brandMatch = baseLayout.match(
       /<a class="compact-brand"[\s\S]*?<\/a>/,
