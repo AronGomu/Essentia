@@ -6,6 +6,8 @@ const ALLOWED_KEYS = new Set([
   'origin',
   'doc',
   'archetype',
+  'preview',
+  'reminder',
 ]);
 
 /**

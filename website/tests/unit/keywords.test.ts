@@ -105,6 +105,8 @@ const VALID_FRONT_MATTER: Record<string, string> = {
   category: 'action',
   origin: 'essentia',
   doc: 'docs/KEYWORDS.md',
+  preview: 'true',
+  reminder: 'true',
 };
 
 /** Write one keyword file into `dir`, front matter first then body. */
@@ -268,6 +270,30 @@ describe('keyword registry rulings', () => {
     ).rejects.toThrow(/missing required key archetype/);
   });
 
+  it('requires preview', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ preview: undefined })),
+    ).rejects.toThrow(/missing required key preview/);
+  });
+
+  it('requires reminder', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ reminder: undefined })),
+    ).rejects.toThrow(/missing required key reminder/);
+  });
+
+  it('rejects a non-boolean flag', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ preview: 'yes' })),
+    ).rejects.toThrow(/preview must be true or false/);
+  });
+
+  it('rejects preview without reminder', async () => {
+    await expect(
+      loadKeywordRegistry(fixture({ preview: 'true', reminder: 'false' })),
+    ).rejects.toThrow(/preview requires reminder/);
+  });
+
   it('rejects a duplicate term', async () => {
     const dir = mkdtempSync(path.join(tmpdir(), 'essentia-keyword-registry-'));
     writeKeywordFile(dir, 'demo-a.md', { ...VALID_FRONT_MATTER, term: 'Demo' });
@@ -300,5 +326,17 @@ describe('catalog keyword rulings', () => {
       catalog.keywords.filter((keyword) => keyword.origin === 'essentia'),
     ).toHaveLength(51);
     expect(catalog.keywords).toHaveLength(73);
+  });
+
+  it('counts the preview keywords', () => {
+    expect(catalog.keywords.filter((keyword) => keyword.preview)).toHaveLength(
+      52,
+    );
+  });
+
+  it('counts the reminder keywords', () => {
+    expect(catalog.keywords.filter((keyword) => keyword.reminder)).toHaveLength(
+      72,
+    );
   });
 });

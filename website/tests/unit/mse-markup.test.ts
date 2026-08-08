@@ -79,4 +79,11 @@ describe('keyword ruling reminders', () => {
       'Unknown MSE tag: blink',
     );
   });
+
+  it('appends no reminder for an excluded keyword', () => {
+    const html = renderMseMarkup('<b>Counter</b> it.', {
+      definitions: new Map([['Mill N', 'Send N cards to the Grave.']]),
+    });
+    expect(html).not.toContain('class="reminder"');
+  });
 });

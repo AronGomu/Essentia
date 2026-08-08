@@ -38,6 +38,10 @@ export interface CatalogKeyword {
   origin: 'magic' | 'essentia';
   /** Repo-relative path to the module of record for this ruling. */
   doc: string;
+  /** Show this ruling in the gallery hover box. */
+  preview: boolean;
+  /** Append this ruling as (reminder) text after the bold phrase in card rule text. */
+  reminder: boolean;
 }
 
 export interface CardVersion {
@@ -176,7 +180,7 @@ export interface CatalogPost {
 }
 
 export interface Catalog {
-  schemaVersion: 7;
+  schemaVersion: 8;
   generatedAt: string;
   heroSectionSlug: string;
   sections: CatalogSection[];
@@ -281,21 +285,30 @@ export const keywordsByTerm = new Map(
   catalog.keywords.map((keyword) => [keyword.term, keyword]),
 );
 
-/** Only the terms this project defines — the ones worth a hover explainer. */
-export const essentiaKeywordsByTerm = new Map(
+/** Only the terms the hover box previews — the ones worth a hover explainer. */
+export const previewKeywordsByTerm = new Map(
   catalog.keywords
-    .filter((keyword) => keyword.origin === 'essentia')
+    .filter((keyword) => keyword.preview)
     .map((keyword) => [keyword.term, keyword]),
 );
 
-/** The card's keywords that Essentia defines, in printed order, each with its ruling. */
-export function essentiaKeywordsFor(card: {
+/** The card's keywords that the hover box previews, in printed order, each with its ruling. */
+export function previewKeywordsFor(card: {
   keywords: string[];
 }): Array<{ term: string; definition: string }> {
   return card.keywords
-    .map((term) => essentiaKeywordsByTerm.get(term))
+    .map((term) => previewKeywordsByTerm.get(term))
     .filter((keyword): keyword is CatalogKeyword => keyword !== undefined)
     .map((keyword) => ({ term: keyword.term, definition: keyword.definition }));
+}
+
+/** Terms whose ruling is printed as (reminder) text inside card rule text. */
+export function reminderDefinitions(): Map<string, string> {
+  return new Map(
+    catalog.keywords
+      .filter((keyword) => keyword.reminder)
+      .map((keyword) => [keyword.term, keyword.definition]),
+  );
 }
 
 export interface RelatedInput {

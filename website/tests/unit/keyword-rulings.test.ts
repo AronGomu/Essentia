@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   catalog,
-  essentiaKeywordsFor,
+  previewKeywordsFor,
   keywordsByTerm,
+  reminderDefinitions,
 } from '../../src/lib/catalog';
 
 const EXPECTED: Record<string, string> = {
@@ -54,7 +55,17 @@ describe('keyword ruling wording', () => {
   });
 
   it('serialises the updated Bounce ruling', () => {
-    const rulings = essentiaKeywordsFor({ keywords: ['Bounce'] });
+    const rulings = previewKeywordsFor({ keywords: ['Bounce'] });
     expect(rulings[0]?.definition).toBe(EXPECTED.Bounce);
+  });
+});
+
+describe('reminderDefinitions', () => {
+  it('Counter prints no card-text reminder', () => {
+    expect(reminderDefinitions().has('Counter')).toBe(false);
+  });
+
+  it('Mill N still prints a card-text reminder', () => {
+    expect(reminderDefinitions().has('Mill N')).toBe(true);
   });
 });

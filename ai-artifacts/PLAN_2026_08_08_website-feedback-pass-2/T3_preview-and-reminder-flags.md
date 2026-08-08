@@ -108,9 +108,9 @@ Run with `cd website && npm run test`.
 
 ## Impl steps
 
-- [ ] 1. In `website/scripts/content/keyword-file.mjs`, extend `ALLOWED_KEYS` to
+- [x] 1. In `website/scripts/content/keyword-file.mjs`, extend `ALLOWED_KEYS` to
       `new Set(['term','category','origin','doc','archetype','preview','reminder'])`.
-- [ ] 2. In `website/scripts/content/keywords.mjs`, add a helper
+- [x] 2. In `website/scripts/content/keywords.mjs`, add a helper
       ```js
       function booleanField(id, key, raw) {
         if (raw === 'true') return true;
@@ -118,34 +118,34 @@ Run with `cd website && npm run test`.
         fail(`keyword ${id}: ${key} must be true or false`);
       }
       ```
-- [ ] 3. Add `'preview'` and `'reminder'` to the required-key list (message stays
+- [x] 3. Add `'preview'` and `'reminder'` to the required-key list (message stays
       `keyword ${id}: missing required key ${key}`), parse both with `booleanField`.
-- [ ] 4. After parsing, add the invariant:
+- [x] 4. After parsing, add the invariant:
       ```js
       if (preview && !reminder)
         fail(`keyword ${id}: preview requires reminder — the published-HTML gate demands a reminder for any previewed term`);
       ```
-- [ ] 5. Include `preview` and `reminder` in the returned entry object.
-- [ ] 6. Write the one-shot flag migration `website/scripts/migrate-keyword-flags.mjs`:
+- [x] 5. Include `preview` and `reminder` in the returned entry object.
+- [x] 6. Write the one-shot flag migration `website/scripts/migrate-keyword-flags.mjs`:
       for every `docs/keywords/*.md` matching `/^[a-z0-9]+(?:-[a-z0-9]+)*\.md$/`,
       insert `preview: <origin === 'essentia'>` and `reminder: true` as the last two
       front-matter lines (after `doc:`). Run it, then `rm` it.
-- [ ] 7. By hand: set `preview: true` in `docs/keywords/mill-n.md`.
-- [ ] 8. By hand: set `reminder: false` in `docs/keywords/counter.md`.
-- [ ] 9. In `website/scripts/content/orchestrator.mjs` bump
+- [x] 7. By hand: set `preview: true` in `docs/keywords/mill-n.md`.
+- [x] 8. By hand: set `reminder: false` in `docs/keywords/counter.md`.
+- [x] 9. In `website/scripts/content/orchestrator.mjs` bump
       `export const CATALOG_SCHEMA_VERSION = 8;` and add
       `preview: entry.preview, reminder: entry.reminder,` to the `keywords` map at
       lines 197–205.
-- [ ] 10. In `website/src/lib/catalog.ts`, add to `CatalogKeyword`:
+- [x] 10. In `website/src/lib/catalog.ts`, add to `CatalogKeyword`:
       `/** Show this ruling in the gallery hover box. */ preview: boolean;` and
       `/** Append this ruling as (reminder) text after the bold phrase in card rule text. */ reminder: boolean;`
-- [ ] 11. In `website/src/lib/catalog.ts`, rename `essentiaKeywordsByTerm` →
+- [x] 11. In `website/src/lib/catalog.ts`, rename `essentiaKeywordsByTerm` →
       `previewKeywordsByTerm` and change its filter to `(keyword) => keyword.preview`.
-- [ ] 12. Rename `essentiaKeywordsFor` → `previewKeywordsFor`, keeping the signature
+- [x] 12. Rename `essentiaKeywordsFor` → `previewKeywordsFor`, keeping the signature
       `({ keywords: string[] }) => Array<{ term: string; definition: string }>` and
       the printed-order behaviour; update its doc comment to
       `/** The card's keywords that the hover box previews, in printed order, each with its ruling. */`.
-- [ ] 13. Add to `website/src/lib/catalog.ts`:
+- [x] 13. Add to `website/src/lib/catalog.ts`:
       ```ts
       /** Terms whose ruling is printed as (reminder) text inside card rule text. */
       export function reminderDefinitions(): Map<string, string> {
@@ -156,25 +156,25 @@ Run with `cd website && npm run test`.
         );
       }
       ```
-- [ ] 14. Update the two call sites of the old name:
+- [x] 14. Update the two call sites of the old name:
       `website/src/components/CardGallery.astro` line 27 and
       `website/src/pages/cards/[id].astro` line 152 → `previewKeywordsFor`.
-- [ ] 15. In `website/src/pages/cards/[id].astro`, replace lines 36–38 with
+- [x] 15. In `website/src/pages/cards/[id].astro`, replace lines 36–38 with
       `const ruleDefinitions = reminderDefinitions();` and import it from
       `../../lib/catalog`.
-- [ ] 16. In `website/src/layouts/BaseLayout.astro` lines 74–78, change the filter to
+- [x] 16. In `website/src/layouts/BaseLayout.astro` lines 74–78, change the filter to
       `.filter((keyword) => keyword.preview)`.
-- [ ] 17. Update `website/tests/unit/hover-keywords.test.ts` and
+- [x] 17. Update `website/tests/unit/hover-keywords.test.ts` and
       `website/tests/unit/keyword-rulings.test.ts` to the new names and add the rows
       from the test plan. In `keyword-rulings.test.ts`, the existing
       `serialises the updated Bounce ruling` test must call `previewKeywordsFor`.
-- [ ] 18. Update `website/tests/unit/keywords.test.ts` fixture helper to emit
+- [x] 18. Update `website/tests/unit/keywords.test.ts` fixture helper to emit
       `preview:` and `reminder:` lines, and add the new rejection tests.
-- [ ] 19. Add the `mse-markup.test.ts` row using an explicit inline map, e.g.
+- [x] 19. Add the `mse-markup.test.ts` row using an explicit inline map, e.g.
       `new Map([['Mill N','…']])`, so the test does not depend on the catalog.
-- [ ] 20. `cd website && npm run content && npm run build` — expect exit 0 (the
+- [x] 20. `cd website && npm run content && npm run build` — expect exit 0 (the
       `check-chrome.mjs` gate runs inside `build` and must stay silent).
-- [ ] 21. Manual: open `dist/cards/ash-blossom-and-joyous-spring/index.html` and
+- [x] 21. Manual: open `dist/cards/ash-blossom-and-joyous-spring/index.html` and
       confirm `Counter` has **no** following `<span class="reminder">` while
       `Mill X` still has one.
 
@@ -191,10 +191,10 @@ Run with `cd website && npm run test`.
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run test` and `cd website && npm run ci`
-- [ ] manual check: `/sections/non-archetype/non-archetype/` — hovering the Ash
+- [x] tests pass: `cd website && npm run test` and `cd website && npm run ci`
+- [x] manual check: `/sections/non-archetype/non-archetype/` — hovering the Ash
       Blossom `gallery-card` shows a **Mill N** ruling paragraph
-- [ ] manual check: `/cards/ash-blossom-and-joyous-spring/` — no
+- [x] manual check: `/cards/ash-blossom-and-joyous-spring/` — no
       `Counter(Cancel a spell or ability …)` reminder in the rules text
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `feat(website): drive hover and reminder rulings from per-keyword flags`
+- [x] app functional — `cd website && npm run build` exits 0
+- [x] commit msg draft: `feat(website): drive hover and reminder rulings from per-keyword flags`

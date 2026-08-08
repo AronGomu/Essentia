@@ -11,7 +11,8 @@ import {
   withBase,
   previewImage,
   relatedCards,
-  essentiaKeywordsFor,
+  previewKeywordsFor,
+  reminderDefinitions,
 } from '../../lib/catalog';
 import { truncateAtWordBoundary } from '../../lib/text';
 
@@ -33,9 +34,7 @@ const next = sectionCards[(index + 1) % sectionCards.length]!;
 const related = relatedCards(card, catalog.cards, catalog.keywords);
 const base = import.meta.env.BASE_URL;
 const explanation = catalog.explanations[card.id];
-const ruleDefinitions = new Map(
-  catalog.keywords.map((keyword) => [keyword.term, keyword.definition]),
-);
+const ruleDefinitions = reminderDefinitions();
 // Same cut as the docs descriptions: a bare slice() lands mid-word, and 35 of
 // the 50 cards have rule text longer than the excerpt.
 const description = [
@@ -149,7 +148,7 @@ const versions = catalog.cardVersions
                   <a
                     href={withBase(base, item.route)}
                     data-card-preview={withBase(base, previewImage(item))}
-                    data-card-keywords={essentiaKeywordsFor(item)
+                    data-card-keywords={previewKeywordsFor(item)
                       .map((entry) => entry.term)
                       .join(',')}
                   >

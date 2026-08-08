@@ -25,6 +25,13 @@ const ORIGINS = new Set(['magic', 'essentia']);
 
 const MAX_KEYWORD_BYTES = 32_768;
 
+/** Parse a required `true`/`false` front-matter value, or fail the build. */
+function booleanField(id, key, raw) {
+  if (raw === 'true') return true;
+  if (raw === 'false') return false;
+  fail(`keyword ${id}: ${key} must be true or false`);
+}
+
 /** The owning doc must be a real file inside the repo, never an escaping path. */
 async function docExists(relative) {
   if (
@@ -68,7 +75,14 @@ export async function loadKeywordRegistry(directory = KEYWORDS_DIR) {
       id,
     );
 
-    for (const key of ['term', 'category', 'origin', 'doc']) {
+    for (const key of [
+      'term',
+      'category',
+      'origin',
+      'doc',
+      'preview',
+      'reminder',
+    ]) {
       if (!data[key]) fail(`keyword ${id}: missing required key ${key}`);
     }
     // `archetype` is required for an archetype keyword, and allowed on any
@@ -107,6 +121,13 @@ export async function loadKeywordRegistry(directory = KEYWORDS_DIR) {
     if (byTerm.has(data.term))
       fail(`keyword ${id}: duplicate keyword term ${data.term}`);
 
+    const preview = booleanField(id, 'preview', data.preview);
+    const reminder = booleanField(id, 'reminder', data.reminder);
+    if (preview && !reminder)
+      fail(
+        `keyword ${id}: preview requires reminder — the published-HTML gate demands a reminder for any previewed term`,
+      );
+
     byTerm.set(data.term, {
       id,
       term: data.term,
@@ -115,6 +136,8 @@ export async function loadKeywordRegistry(directory = KEYWORDS_DIR) {
       origin: data.origin,
       doc: data.doc,
       definition,
+      preview,
+      reminder,
     });
   }
   return byTerm;

@@ -73,7 +73,7 @@ const findEntries = buildFindEntries({
 });
 const keywordRulings = Object.fromEntries(
   catalog.keywords
-    .filter((keyword) => keyword.origin === 'essentia')
+    .filter((keyword) => keyword.preview)
     .map((keyword) => [keyword.term, keyword.definition]),
 );
 // `set:html` writes this verbatim, so a stray `</script>` in a term or ruling
