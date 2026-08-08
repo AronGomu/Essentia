@@ -1,6 +1,7 @@
 import { lstat, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+import { hasC2paManifest } from '../shared/png-chunks.mjs';
 
 const dist = path.resolve(process.env.OUT_DIR ?? 'dist');
 const textExtensions = new Set([
@@ -56,6 +57,11 @@ async function walk(directory) {
         )
           issues.push(`${file}: unsafe image dimensions`);
       }
+      // sharp reports exif/icc/iptc/xmp but not C2PA, which PNG carries in its
+      // own `caBX` chunk — a manifest naming the signing account and when the
+      // image was generated. Read the chunk stream ourselves.
+      if (extension === '.png' && hasC2paManifest(await readFile(file)))
+        issues.push(`${file}: embedded C2PA manifest`);
       if (textExtensions.has(extension)) {
         const text = await readFile(file, 'utf8');
         for (const [label, pattern] of forbidden)
