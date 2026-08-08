@@ -91,24 +91,24 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
 
 ## Impl steps
 
-- [ ] 1. In `website/src/components/Navigation.svelte`, delete line 106 (the
+- [x] 1. In `website/src/components/Navigation.svelte`, delete line 106 (the
       `<a class="brand" …>Essentia</a>` element). Leave the `href()` helper — the
       section links still use it.
-- [ ] 2. In `website/src/layouts/BaseLayout.astro`, move the whole
+- [x] 2. In `website/src/layouts/BaseLayout.astro`, move the whole
       `<a class="compact-brand" href={base}> … </a>` block so it is the first child of
       `<header class="site-header">`, immediately before
       `{breadcrumb && <Breadcrumb items={breadcrumb} />}`. Do not change its inner
       markup.
-- [ ] 3. In `website/src/styles/global.css`, in `.compact-brand`, change
+- [x] 3. In `website/src/styles/global.css`, in `.compact-brand`, change
       `display: none;` to `display: block;`.
-- [ ] 4. Delete the whole `.brand { … }` rule (line ~362).
-- [ ] 5. In the `@media (max-width: 64rem)` block, delete the
+- [x] 4. Delete the whole `.brand { … }` rule (line ~362).
+- [x] 5. In the `@media (max-width: 64rem)` block, delete the
       `.compact-brand { display: block; }` rule.
-- [ ] 6. In `.desktop-catalog`, change `padding: 1.2rem 1rem;` to
+- [x] 6. In `.desktop-catalog`, change `padding: 1.2rem 1rem;` to
       `padding: 1rem;` so the first nav item does not float where the deleted brand
       used to sit.
-- [ ] 7. Add `website/tests/unit/header-brand.test.ts` with the four unit rows.
-- [ ] 8. Update `website/tests/e2e/showcase.spec.ts` lines 10–11 to:
+- [x] 7. Add `website/tests/unit/header-brand.test.ts` with the four unit rows.
+- [x] 8. Update `website/tests/e2e/showcase.spec.ts` lines 10–11 to:
       ```ts
       await expect(page.locator('.compact-brand img')).toHaveAttribute(
         'alt',
@@ -116,10 +116,10 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
       );
       await expect(page.locator('.brand')).toHaveCount(0);
       ```
-- [ ] 9. `cd website && npm run format && npm run test` → exit 0.
-- [ ] 10. `cd website && npm run build` → exit 0.
-- [ ] 11. `grep -r 'class="brand"' website/dist | wc -l` → `0`.
-- [ ] 12. `cd website && npm run test:e2e` → exit 0.
+- [x] 9. `cd website && npm run format && npm run test` → exit 0 (evidence gathered as `npm run ci` in a disposable worktree, see report; main checkout `npm run test` blocked by owner's unrelated in-flight blog contamination, not this ticket's files).
+- [x] 10. `cd website && npm run build` → exit 0 (in disposable worktree; main checkout `build` blocked by owner's in-flight blog contamination — see report).
+- [x] 11. `grep -r 'class="brand"' website/dist | wc -l` → `0` (in disposable worktree dist).
+- [ ] 12. `cd website && npm run test:e2e` → unrunnable on this host (`libglib-2.0.so.0` missing, Playwright cannot launch). Per parent instructions, not executed; assertions updated and reported as unverified-by-execution.
 
 ## Outputs
 
@@ -133,9 +133,21 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
 
 ## Validation
 
-- [ ] tests pass: `cd website && npm run ci`; `cd website && npm run test:e2e`
+- [x] tests pass: `cd website && npm run ci` → exit 0, 49 test files passed (49), 480 tests
+      passed (480), 151 pages built, dist scan clean — run in a disposable detached
+      worktree (see report for why); `cd website && npm run test:e2e` unrunnable on this
+      host (Playwright cannot launch, missing `libglib-2.0.so.0`) — not executed, per
+      parent instructions.
 - [ ] manual check: at 1400 px the wordmark sits top-left in the header, left of the
-      breadcrumb, and stays visible while toggling the catalog rail
-- [ ] manual check: at 390 px the square letter mark shows and the header does not overflow
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `feat(website): move the Essentia wordmark into the site header`
+      breadcrumb, and stays visible while toggling the catalog rail — no browser
+      available on this host; verified mechanically instead via built `dist/` HTML and
+      compiled CSS (`.compact-brand{...display:block}` with no narrower-viewport
+      override hiding it, and no rule at all sets `display:none` after this change) —
+      see report.
+- [ ] manual check: at 390 px the square letter mark shows and the header does not
+      overflow — no browser available; the compiled `.compact-brand img{width:2rem;
+      height:2rem}` rule (the mobile letter-mark override) is present and unchanged by
+      this ticket — see report.
+- [x] app functional — `cd website && npm run build` exits 0 (disposable worktree,
+      151 pages built)
+- [x] commit msg draft: `feat(website): move the Essentia wordmark into the site header`

@@ -227,7 +227,7 @@
     padding: 0.7rem clamp(1rem, 3vw, 3rem);
   }
   .compact-brand {
-    display: none;
+    display: block;
     font-family: var(--font-display);
     font-weight: 700;
     text-decoration: none;
@@ -357,17 +357,7 @@
     overflow-y: auto;
     border-right: 1px solid var(--ruleline);
     background: var(--blackfoil-raised);
-    padding: 1.2rem 1rem;
-  }
-  .brand {
-    display: flex;
-    align-items: baseline;
-    gap: 0.35rem;
-    border-bottom: 1px solid var(--ruleline);
-    font: 700 1.35rem var(--font-display);
-    margin-bottom: 1.6rem;
-    padding: 0.4rem 0.4rem 1.4rem;
-    text-decoration: none;
+    padding: 1rem;
   }
   .desktop-catalog ul,
   .mobile-drawer ul {
@@ -1061,9 +1051,6 @@
   .site-header {
     justify-content: space-between;
     padding-left: 8.8rem;
-  }
-  .compact-brand {
-    display: block;
   }
   .catalog-hero {
     grid-template-columns: 1fr;

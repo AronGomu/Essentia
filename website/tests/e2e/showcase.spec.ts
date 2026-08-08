@@ -7,8 +7,11 @@ const urlFor = (path: string) => `${basePath}${path}`;
 test('empty publication home is English and accessible', async ({ page }) => {
   await page.goto(urlFor('/'));
   await expect(page).toHaveTitle('Essentia — The Blackfoil Archive');
-  await expect(page.locator('.brand')).toHaveText('Essentia');
-  await expect(page.locator('.compact-brand')).toHaveText('Essentia');
+  await expect(page.locator('.compact-brand img')).toHaveAttribute(
+    'alt',
+    'Essentia',
+  );
+  await expect(page.locator('.brand')).toHaveCount(0);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(
     page.getByRole('heading', { name: 'No release packages published yet.' }),

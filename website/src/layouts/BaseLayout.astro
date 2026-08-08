@@ -136,7 +136,6 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       {base}
     />
     <header class="site-header">
-      {breadcrumb && <Breadcrumb items={breadcrumb} />}
       <a class="compact-brand" href={base}>
         <picture>
           <source
@@ -153,6 +152,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
           />
         </picture>
       </a>
+      {breadcrumb && <Breadcrumb items={breadcrumb} />}
       <nav class="utility-nav" aria-label="Sections">
         <a
           href={`${base}docs/`}
