@@ -49,6 +49,11 @@ const CARD_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const EMPTY_STORE: DeckStore = { schemaVersion: 1, decks: [] };
 
+/** `#deck-<id>` → `<id>`; anything else → null. Shared by DeckManager and Find. */
+export function deckIdFromHash(hash: string): string | null {
+  return /^#deck-(.+)$/.exec(hash)?.[1] ?? null;
+}
+
 function normalizeName(value: string): string {
   const trimmed = value.trim();
   return trimmed ? trimmed.slice(0, MAX_NAME_LENGTH) : DEFAULT_NAME;

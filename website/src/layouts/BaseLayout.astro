@@ -2,10 +2,11 @@
 import Breadcrumb from '../components/Breadcrumb.astro';
 import CardHoverPreview from '../components/CardHoverPreview.astro';
 import CardQualityUpgrade from '../components/CardQualityUpgrade.astro';
+import FindPalette from '../components/FindPalette.svelte';
 import Navigation from '../components/Navigation.svelte';
-import SearchPalette from '../components/SearchPalette.svelte';
 import Seo from '../components/Seo.astro';
 import { catalog } from '../lib/catalog';
+import { buildFindEntries } from '../lib/find';
 import '../styles/global.css';
 
 interface Props {
@@ -37,16 +38,39 @@ const navSections = catalog.sections.map(
 const section = ['docs/', 'blog/', 'decks/'].find((path) =>
   Astro.url.pathname.startsWith(`${base}${path}`),
 );
-const searchCards = catalog.cards.map(
-  ({ id, name, matchNames, route, sectionSlug, manifestIndex }) => ({
+// Build-time index only. The visitor's browser-local decks are merged inside
+// the island after mount and never travel through here — see `src/lib/find.ts`.
+const findEntries = buildFindEntries({
+  cards: catalog.cards.map(
+    ({ id, name, matchNames, route, sectionLabel, manifestIndex }) => ({
+      id,
+      name,
+      matchNames,
+      route,
+      sectionLabel,
+      manifestIndex,
+    }),
+  ),
+  docs: catalog.docs.map(({ id, title, route, groupLabel }) => ({
     id,
-    name,
-    matchNames,
+    title,
     route,
-    sectionSlug,
-    manifestIndex,
-  }),
-);
+    groupLabel,
+  })),
+  posts: catalog.posts.map(({ slug, title, route, date }) => ({
+    slug,
+    title,
+    route,
+    date,
+  })),
+  releases: catalog.releases.map(({ id, setName, version, route, decks }) => ({
+    id,
+    setName,
+    version,
+    route,
+    decks,
+  })),
+});
 const keywordRulings = Object.fromEntries(
   catalog.keywords
     .filter((keyword) => keyword.origin === 'essentia')
@@ -101,7 +125,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
           aria-current={section === 'decks/' ? 'page' : undefined}>Decks</a
         >
       </nav>
-      <SearchPalette client:load cards={searchCards} {base} />
+      <FindPalette client:load entries={findEntries} {base} />
     </header>
     <main id="main-content"><slot /></main>
     <script

@@ -22,7 +22,7 @@ export interface PickerCard {
  * `base` joined to `route` with exactly one slash between them — the same join
  * `withBase` performs in `./catalog`, duplicated here because importing that
  * module pulls the whole generated catalog into the deck island's bundle and
- * blows the 350 KiB JS budget. `SearchPalette.svelte` inlines it for the same
+ * blows the 350 KiB JS budget. `FindPalette.svelte` inlines it for the same
  * reason.
  */
 export function cardHref(base: string, route: string): string {

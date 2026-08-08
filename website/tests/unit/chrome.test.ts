@@ -10,6 +10,13 @@ const siteFooter = `
 </footer>
 `;
 
+/** The header's Find palette trigger, as the Svelte island server-renders it. */
+const findTrigger = `
+<button class="search-trigger" aria-haspopup="dialog">
+  <span aria-hidden="true">⌕</span><span>Find</span><kbd>⌘ K</kbd>
+</button>
+`;
+
 const sectionTile = (base = '/') => `
 <a class="section-tile" href="${base}sections/nekroz/">
   <img src="${base}art/nekroz-hero.webp" alt="" />
@@ -42,6 +49,7 @@ const homePage = (base = '/') => `
     <a href="${base}blog/">Blog</a>
     <a href="${base}decks/">Decks</a>
   </nav>
+  ${findTrigger}
 </header>
 <img class="hero-art" src="${base}art/nekroz-hero.webp" alt="" />
 <h1>The Yu-Gi-Oh! Feel.<br />With Magic Rules.</h1>
@@ -341,6 +349,7 @@ ${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
     <a href="/decks/">Decks</a>
   </nav>
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Archive</a></nav>
+  ${findTrigger}
 </header>
 <section class="catalog-hero">
   <div class="catalog-stats"><span>Latest release <strong>August 1, 2026</strong></span></div>
@@ -471,6 +480,7 @@ describe('R7 card pages must emit inline keyword reminders', () => {
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
 </nav>
+${findTrigger}
 <nav class="breadcrumb">…</nav>
 <div class="rules-text"><strong>Mill 3</strong>${
     reminder
@@ -546,6 +556,7 @@ describe('the footer legal line must sit under the footer links', () => {
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
 </nav>
+${findTrigger}
 <nav class="breadcrumb">…</nav>
 <footer class="site-footer">
   <nav aria-label="Footer">
@@ -591,6 +602,59 @@ describe('the footer legal line must sit under the footer links', () => {
 
   it('exempts the 404 document', () => {
     expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
+  });
+});
+
+describe('every page ships the Find palette', () => {
+  it('accepts a header carrying the Find trigger', () => {
+    const issues = chromeIssues('index.html', compliantHomeHtml, '/');
+    expect(issues.some((issue) => issue.includes('Find palette'))).toBe(false);
+  });
+
+  it('flags a header whose palette still says "Find a card"', () => {
+    const html = compliantHomeHtml.replace(
+      '<span>Find</span>',
+      '<span>Find a card</span>',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('header is missing the Find palette'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a header with no palette trigger at all', () => {
+    const html = compliantHomeHtml.replace(findTrigger, '');
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('header is missing the Find palette'),
+      ),
+    ).toBe(true);
+  });
+});
+
+describe('a browser-local deck must never reach a built page', () => {
+  it('flags a page carrying a local deck key', () => {
+    const html = compliantHomeHtml.replace(
+      '<h2 id="catalog-heading">Archetypes</h2>',
+      '<h2 id="catalog-heading">Archetypes</h2><li id="find-result-deck:local:u1">My Nekroz</li>',
+    );
+    const issues = chromeIssues('index.html', html, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('a browser-local deck leaked into the built page'),
+      ),
+    ).toBe(true);
+  });
+
+  it('leaves a published deck key alone', () => {
+    const html = compliantHomeHtml.replace(
+      '<h2 id="catalog-heading">Archetypes</h2>',
+      '<h2 id="catalog-heading">Archetypes</h2><li id="find-result-deck:catalog:LOTA-0001:nekroz">Nekroz</li>',
+    );
+    expect(chromeIssues('index.html', html, '/')).toEqual([]);
   });
 });
 

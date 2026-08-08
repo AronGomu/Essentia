@@ -56,20 +56,57 @@ test('static routes pass automated accessibility scans', async ({
   }
 });
 
+const findHotkey = process.platform === 'darwin' ? 'Meta+K' : 'Control+K';
+const findInput = (page: import('@playwright/test').Page) =>
+  page.getByRole('combobox', {
+    name: /Search cards, docs, blog posts and decks/i,
+  });
+
 test('empty search remains keyboard accessible', async ({ page }) => {
   await page.goto(urlFor('/'));
-  await page.getByRole('button', { name: /Find a card/ }).click();
+  await page.getByRole('button', { name: /Find/ }).click();
   await page.getByRole('button', { name: 'Close search' }).click();
-  await page.keyboard.press(
-    process.platform === 'darwin' ? 'Meta+K' : 'Control+K',
-  );
-  const search = page.getByRole('combobox', {
-    name: /Search current or former card name/i,
-  });
+  await page.keyboard.press(findHotkey);
+  const search = findInput(page);
   await expect(search).toBeFocused();
-  await search.fill('Trishula');
+  // Four z's cannot be a subsequence of any indexed title, so every kind drops.
+  await search.fill('zzzz');
+  await expect(page.getByText('Nothing matches “zzzz”.')).toBeVisible();
+});
+
+test('Find reaches a doc and navigates to it', async ({ page }) => {
+  await page.goto(urlFor('/'));
+  await page.keyboard.press(findHotkey);
+  await findInput(page).fill('zones');
+  const row = page
+    .locator('#find-results li[data-find-kind="doc"]')
+    .filter({ hasText: 'Zones' })
+    .first();
   await expect(
-    page.getByText('No card name matches “Trishula”.'),
+    page.locator('.find-group-label', { hasText: 'Docs' }),
+  ).toBeVisible();
+  await expect(row).toBeVisible();
+  await row.click();
+  await expect(page).toHaveURL(new RegExp(`${urlFor('/docs/rules/zones/')}$`));
+});
+
+test('Find lists this browser’s own decks and opens one', async ({ page }) => {
+  await page.goto(urlFor('/decks/'));
+  await page.getByLabel('New deck name').fill('E2E Private Deck');
+  await page.getByRole('button', { name: 'New deck' }).click();
+
+  await page.keyboard.press(findHotkey);
+  await findInput(page).fill('private');
+  const row = page
+    .locator('#find-results li[data-find-kind="deck"]')
+    .filter({ hasText: 'Saved in this browser' })
+    .first();
+  await expect(row).toContainText('E2E Private Deck');
+  await row.click();
+
+  await expect(page).toHaveURL(/\/decks\/#deck-/);
+  await expect(
+    page.getByRole('heading', { name: 'Editing E2E Private Deck' }),
   ).toBeVisible();
 });
 

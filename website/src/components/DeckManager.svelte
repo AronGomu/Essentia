@@ -13,6 +13,7 @@
     EMPTY_STORE,
     MAX_COPIES,
     createDeck,
+    deckIdFromHash,
     deckSize,
     deleteDeck,
     exportDeck,
@@ -56,10 +57,30 @@
     zone === 'main' ? 'Main deck' : 'Extra deck';
   const uuid = () => globalThis.crypto.randomUUID();
 
+  /**
+   * `/decks/#deck-<id>` opens that deck. A stale id — a deck deleted, or a
+   * link from another browser — selects nothing, so the visitor lands on the
+   * list rather than on a blank editor.
+   */
+  function selectFromHash() {
+    const id = deckIdFromHash(globalThis.location.hash);
+    selectedId = id && store.decks.some((deck) => deck.id === id) ? id : null;
+  }
+
   onMount(() => {
     store = readStored(DECKS_KEY, migrateDecks) ?? EMPTY_STORE;
+    selectFromHash();
     ready = true;
+    // A Find result picked while already on /decks/ only changes the hash.
+    globalThis.addEventListener('hashchange', selectFromHash);
+    return () => globalThis.removeEventListener('hashchange', selectFromHash);
   });
+
+  /** Opening a deck puts it in the URL, so the view can be shared or re-found. */
+  function openDeck(deck: Deck) {
+    selectedId = deck.id;
+    globalThis.history.replaceState(null, '', `#deck-${deck.id}`);
+  }
 
   function persist(next: DeckStore) {
     store = next;
@@ -146,7 +167,7 @@
               </p>
               <div class="deck-actions">
                 <button
-                  on:click={() => (selectedId = deck.id)}
+                  on:click={() => openDeck(deck)}
                   aria-pressed={selectedId === deck.id}>Open</button
                 >
                 <button on:click={() => startRename(deck)}>Rename</button>

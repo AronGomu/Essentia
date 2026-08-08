@@ -58,7 +58,7 @@ const byId = new Map(versions.map((card) => [card.id, card]));
           <h2>Decks</h2>
           {release.decks.map((deck) => (
             <section>
-              <h3>{deck.id}</h3>
+              <h3 id={`deck-${deck.id}`}>{deck.id}</h3>
               <ul>
                 {deck.cards.map((id) => {
                   const card = byId.get(id);

@@ -485,13 +485,43 @@
   .search-panel li[aria-selected='true'] {
     background: color-mix(in oklch, var(--accent) 16%, var(--sleeve));
   }
+  /* The detail column now carries already-cased text — a section label, a
+     date, a set name, or "Saved in this browser" — so it is printed as
+     authored rather than title-cased. */
   .search-panel li span {
     color: var(--silver-ink);
-    text-transform: capitalize;
   }
   .search-empty {
     color: var(--silver-ink);
     padding: 1rem;
+  }
+  .find-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.75rem 0 0;
+  }
+  .find-filters button {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  .find-filters button[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 18%, var(--sleeve));
+  }
+  .find-group-label {
+    color: var(--silver-ink);
+    font: 0.72rem/1.2 var(--font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 0.75rem 0.35rem;
+  }
+  .search-panel li[role='option'] strong {
+    font-weight: 600;
+  }
+  /* A Find result lands on `#deck-<id>`; clear the sticky header. */
+  [id^='deck-'] {
+    scroll-margin-top: calc(var(--header) + 1rem);
   }
   .hero {
     position: relative;

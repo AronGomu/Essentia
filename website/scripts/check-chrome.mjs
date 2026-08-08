@@ -41,6 +41,17 @@ export function chromeIssues(file, html, base) {
     }
   }
 
+  if (!html.includes('class="search-trigger"') || !/>Find<\/span>/.test(html)) {
+    problems.push(`${file}: header is missing the Find palette`);
+  }
+
+  // Browser-local decks are read at runtime, in the visitor's own browser.
+  // Seeing one in a built file means the index was assembled at build time,
+  // which would publish a visitor's private decklist. Fail the build.
+  if (html.includes('deck:local:')) {
+    problems.push(`${file}: a browser-local deck leaked into the built page`);
+  }
+
   if (navBlock.includes('>Rules<') || navBlock.includes('>Philosophy<')) {
     problems.push(`${file}: header still links to Rules or Philosophy`);
   }
