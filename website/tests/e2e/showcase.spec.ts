@@ -143,3 +143,34 @@ test('rules and philosophy expose chapter summaries', async ({ page }) => {
     philosophyToc.getByRole('link', { name: 'What the cube avoids' }),
   ).toHaveAttribute('href', '#avoids');
 });
+
+test('catalog rail collapses to a strip that keeps both toggles', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/'));
+
+  const collapseButtons = page.getByRole('button', {
+    name: 'Collapse catalog',
+  });
+  await expect(collapseButtons).toHaveCount(2);
+  await expect(collapseButtons.first()).toBeVisible();
+  await expect(collapseButtons.last()).toBeVisible();
+
+  await collapseButtons.first().click();
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-catalog',
+    'collapsed',
+  );
+
+  const expandButtons = page.getByRole('button', { name: 'Expand catalog' });
+  await expect(expandButtons).toHaveCount(2);
+  await expect(expandButtons.first()).toBeVisible();
+  await expect(expandButtons.last()).toBeVisible();
+
+  await expandButtons.last().click();
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-catalog',
+    'expanded',
+  );
+});

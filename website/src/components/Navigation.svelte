@@ -90,19 +90,18 @@
   <span aria-hidden="true">☰</span> Catalog
 </button>
 
-<button
-  class="rail-toggle"
-  aria-expanded={railState === 'expanded'}
-  aria-controls="desktop-catalog"
-  on:click={toggleRail}
->
-  <span aria-hidden="true">{railState === 'expanded' ? '⟨' : '⟩'}</span>
-  <span class="sr-only"
-    >{railState === 'expanded' ? 'Collapse catalog' : 'Expand catalog'}</span
-  >
-</button>
-
 <nav id="desktop-catalog" class="desktop-catalog" aria-label="Catalog">
+  <button
+    class="rail-toggle rail-toggle--top"
+    aria-expanded={railState === 'expanded'}
+    aria-controls="desktop-catalog"
+    on:click={toggleRail}
+  >
+    <span aria-hidden="true">{railState === 'expanded' ? '⟨' : '⟩'}</span>
+    <span class="sr-only"
+      >{railState === 'expanded' ? 'Collapse catalog' : 'Expand catalog'}</span
+    >
+  </button>
   <button
     class="nav-group"
     aria-expanded={nonArchetypeOpen}
@@ -132,6 +131,17 @@
       </li>
     {/each}
   </ul>
+  <button
+    class="rail-toggle rail-toggle--bottom"
+    aria-expanded={railState === 'expanded'}
+    aria-controls="desktop-catalog"
+    on:click={toggleRail}
+  >
+    <span aria-hidden="true">{railState === 'expanded' ? '⟨' : '⟩'}</span>
+    <span class="sr-only"
+      >{railState === 'expanded' ? 'Collapse catalog' : 'Expand catalog'}</span
+    >
+  </button>
 </nav>
 
 <dialog

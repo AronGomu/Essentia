@@ -76,7 +76,7 @@ export function chromeIssues(file, html, base) {
   if (!/<html[^>]*\sdata-catalog="(?:expanded|collapsed)"/.test(html)) {
     problems.push(`${file}: page is missing the catalog rail state`);
   }
-  if (!html.includes('class="rail-toggle"')) {
+  if (!/class="rail-toggle(?:"|\s)/.test(html)) {
     problems.push(`${file}: page is missing the catalog rail toggle`);
   }
 
