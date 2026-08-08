@@ -20,7 +20,7 @@ Line replaces normal materials, uses indicated creature as material, performs pr
 
 ## Ritual Summon
 
-Named procedure puts Ritual Creature(s) onto Field using stated materials/conditions. Non-creature carrier uses `Ritual Summon` supertype. Default material MV equality is explicit; card may permit greater/equal payment.
+Named procedure puts Ritual Creature onto Field, paying ritual cost stated by the Ritual Summon effect. Non-creature carrier uses `Ritual Summon` supertype. Default material MV equality is explicit; card may permit greater/equal payment.
 
 ## Fusion Summon
 

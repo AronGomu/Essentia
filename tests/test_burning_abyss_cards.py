@@ -96,6 +96,20 @@ class BurningAbyssCardTests(unittest.TestCase):
                 with self.subTest(card=path.name, fragment=fragment):
                     self.assertIn(fragment, text)
 
+    def test_draghig_rule_text_matches_spec(self) -> None:
+        text = (ACTIVE / "card burning abyss - draghig").read_text(encoding="utf-8-sig")
+        expected_lines = (
+            "\t\t<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>",
+            "\t\t<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>",
+            "\t\t<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — "
+            "<b>Discard</b> <sym-auto>1</sym-auto>, then <b>Draw</b> 1.",
+        )
+        last_index = -1
+        for line in expected_lines:
+            index = text.find(line)
+            self.assertGreater(index, last_index, f"line out of order or missing: {line!r}")
+            last_index = index
+
     def test_trap_and_extra_deck_types_use_current_contract(self) -> None:
         trap = (ACTIVE / "card burning abyss - fire lake").read_text(encoding="utf-8-sig")
         self.assertIn("super_type: <word-list-type-en>Trap Instant</word-list-type-en>", trap)

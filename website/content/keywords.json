@@ -9,7 +9,7 @@
       "archetype": "burning-abyss",
       "origin": "essentia",
       "doc": "docs/01_burning_abyss/KEYWORDS.md",
-      "definition": "If you control another creature without “Burning Abyss” in its name, Destroy this creature."
+      "definition": "If you control another creature not named “Burning Abyss”, this creature destroys itself."
     },
     {
       "id": "after-attack-or-block",
@@ -17,7 +17,7 @@
       "category": "event",
       "origin": "essentia",
       "doc": "docs/keywords/EVENTS.md",
-      "definition": "The first legal trigger window after combat damage involving this creature resolves. It does not occur if the creature leaves combat first."
+      "definition": "Event: the next time you gain priority after combat damage resolves."
     },
     {
       "id": "alternative-cost",
@@ -33,7 +33,7 @@
       "category": "action",
       "origin": "essentia",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Make the indicated card material under the indicated Xyz creature."
+      "definition": "Move the indicated card from the stated zone to become material of the named Xyz creature, without destroying it."
     },
     {
       "id": "bounce",
@@ -41,7 +41,7 @@
       "category": "action",
       "origin": "essentia",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Return the indicated permanent to its owner's Hand."
+      "definition": "Return the indicated permanents to their owner's Hand."
     },
     {
       "id": "bounded-n",
@@ -74,7 +74,7 @@
       "archetype": "burning-abyss",
       "origin": "essentia",
       "doc": "docs/01_burning_abyss/KEYWORDS.md",
-      "definition": "Sorcery-speed activated ability: if you have not summoned a “Burning Abyss” creature this turn, Summon this card from your Hand."
+      "definition": "Alternative Cast: at any time you could cast a sorcery, if you have not cast or summoned a “Burning Abyss” creature this turn, you may cast this card from your Hand without paying its mana cost."
     },
     {
       "id": "destroy",
@@ -90,7 +90,7 @@
       "category": "action",
       "origin": "essentia",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Send N materials from an Xyz creature to the Grave. Before a colon or semicolon it is a cost; after an event and em dash it is a mandatory triggered action."
+      "definition": "Send N materials from this card to the Grave. Before a colon or semicolon it is a cost; after an event and em dash it is a mandatory triggered action."
     },
     {
       "id": "discard",
@@ -218,7 +218,7 @@
       "category": "action",
       "origin": "magic",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Send the top N cards of your Deck to the Grave. The quantity is always printed."
+      "definition": "Send N cards from the top of your Deck to the Grave. The quantity is always printed."
     },
     {
       "id": "negate",
@@ -235,7 +235,7 @@
       "archetype": "nekroz",
       "origin": "essentia",
       "doc": "docs/03_nekroz/KEYWORDS.md",
-      "definition": "If you control no creatures: Exile this card and 1 other “Nekroz” from the Grave; Search 1 non-Creature Ritual Summon “Nekroz”."
+      "definition": "Activated Sorcery: if you control no creatures, Exile this card and 1 other “Nekroz” from the Grave; Search 1 non-Creature “Nekroz” Ritual Summon."
     },
     {
       "id": "on-block-or-blocked",
@@ -428,7 +428,7 @@
       "category": "action",
       "origin": "essentia",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Move the indicated card from Exile to the Field. Proper-summon rules apply."
+      "definition": "Summon the indicated card from Exile onto the Field. Proper-summon rules apply."
     },
     {
       "id": "return",
@@ -452,7 +452,7 @@
       "category": "cost-procedure",
       "origin": "essentia",
       "doc": "docs/keywords/COSTS_AND_PROCEDURES.md",
-      "definition": "Named procedure that puts a Ritual creature onto the Field using the stated materials and conditions."
+      "definition": "Put a Ritual creature onto the Field, paying the ritual cost stated by the Ritual Summon effect."
     },
     {
       "id": "sacrifice",
@@ -468,7 +468,7 @@
       "category": "action",
       "origin": "essentia",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Move the indicated card from your Grave to your Hand."
+      "definition": "Return the indicated cards from your Grave to your Hand."
     },
     {
       "id": "scry-n",
@@ -525,7 +525,7 @@
       "category": "ability",
       "origin": "essentia",
       "doc": "docs/keywords/ACTIONS.md",
-      "definition": "Target 0 to N creatures; Exile them until the next end step, then Return them to the Field under their owner's control."
+      "definition": "Exile N permanents. At the next end step, Return them onto the Field under their owner's control."
     },
     {
       "id": "spell-affinity",

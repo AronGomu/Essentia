@@ -14,7 +14,7 @@ Search Deck for indicated object, reveal when required, put into Hand, shuffle. 
 
 ### Mill N
 
-Send top N cards of Deck to Grave. Quantity is mandatory: **Mill 1**, **Mill 2**, **Mill 3**, or **Mill 0–3**; never bare **Mill**.
+Send N cards from top of Deck to Grave. Quantity is mandatory: **Mill 1**, **Mill 2**, **Mill 3**, or **Mill 0–3**; never bare **Mill**.
 
 ### Summon / Hand Summon
 
@@ -30,17 +30,17 @@ Exact-count gate template: `**Target** 1 [Creature] MV X in Grave and choose X [
 
 - **Salvage**: Grave → Hand.
 - **Reclaim**: Exile → Hand.
-- **Release**: Exile → Field; proper-summon rules apply.
+- **Release**: Summon from Exile onto Field; proper-summon rules apply.
 
 ### Attach / Detach N
 
-**Attach** makes indicated card material under indicated Xyz Creature.
+**Attach** moves indicated card from stated zone to become material of named Xyz Creature, without destroying it.
 
-**Detach N** sends N materials from Xyz Creature to Grave. Before `:`/`;`, Detach is cost. After event + em dash, it is mandatory triggered action. Keep **Detach X** only when any number is chosen.
+**Detach N** sends N materials from this card to Grave. Before `:`/`;`, Detach is cost. After event + em dash, it is mandatory triggered action. Keep **Detach X** only when any number is chosen.
 
 ### Bounce
 
-Return indicated permanent to owner's Hand.
+Return indicated permanent(s) to owner's Hand.
 
 ### Shuffle
 
@@ -60,7 +60,7 @@ Put card face down on Field under Trap/explicit rules. Setting does not use Stac
 
 ### Slow Blink N Any Creature
 
-`**Target** 0–N creatures; **Exile** them until next end step, then **Return** them to Field under owner's control.`
+`**Exile** N permanents; at next end step **Return** them onto Field under owner's control.`
 
 ### Exile from Grave
 

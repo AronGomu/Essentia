@@ -112,7 +112,7 @@ class UpdateRulesSkillTest(unittest.TestCase):
         self.assertIn("custom keyword when that keyword defines the complete effect", self.rules)
         self.assertIn("next matching event this turn", self.events)
         self.assertIn("**After Attack or Block**", self.events)
-        self.assertIn("after combat damage involving this creature resolves", self.events)
+        self.assertIn("next time you gain priority after combat damage resolves", self.events)
         self.assertIn("its owner may return it to Sideboard instead", self.zones)
         self.assertIn("If declined, it moves to the original destination", self.zones)
         self.assertIn("optional owner replacement", self.summoning)
