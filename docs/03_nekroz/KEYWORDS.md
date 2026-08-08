@@ -2,7 +2,7 @@
 
 ## Nekroz Recovery
 
-**Nekroz Recovery** means: “Activated Sorcery: if you control no creatures, **Exile** this card and 1 other *“Nekroz”* from Grave; **Search** 1 non-Creature **Ritual Summon** *“Nekroz”*.”
+**Nekroz Recovery** means: “Activated Sorcery: if you control no creatures, **Exile** this card and 1 other *“Nekroz”* from Grave; **Search** 1 non-Creature *“Nekroz”* **Ritual Summon**.”
 
 Non-Nekroz cards sharing effect print full text after em dash.
 

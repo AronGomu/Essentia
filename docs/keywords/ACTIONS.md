@@ -28,7 +28,7 @@ Exact-count gate template: `**Target** 1 [Creature] MV X in Grave and choose X [
 
 ### Salvage / Reclaim / Release
 
-- **Salvage**: Grave → Hand.
+- **Salvage**: Return indicated cards, Grave → Hand.
 - **Reclaim**: Exile → Hand.
 - **Release**: Summon from Exile onto Field; proper-summon rules apply.
 
