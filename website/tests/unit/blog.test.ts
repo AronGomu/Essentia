@@ -84,6 +84,15 @@ describe('loadPosts', () => {
     expect(posts).toHaveLength(1);
   });
 
+  it('rejects a directory named like a post', async () => {
+    // The pre-move layout: blog/2026-02-02-old-format/index.md. Skipping it
+    // silently would drop the post from /blog/ with the build still green.
+    await writeFixtureDirectory('2026-02-02-old-format');
+    await expect(loadPosts()).rejects.toThrow(
+      'content: post 2026-02-02-old-format: a post is a yyyy-mm-dd-slug.md file, not a directory',
+    );
+  });
+
   it('rejects a non-markdown file', async () => {
     await writeFixturePost('2026-02-02-x.txt', 'not markdown');
     await expect(loadPosts()).rejects.toThrow(

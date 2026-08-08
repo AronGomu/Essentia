@@ -5,6 +5,14 @@ import { ROOT, fail, validDate } from './shared.mjs';
 const BLOG_ROOT = path.join(ROOT, 'blog');
 const MAX_POST_BYTES = 262_144;
 const FILE_RE = /^(\d{4}-\d{2}-\d{2})-([a-z0-9-]+)\.md$/;
+/**
+ * A directory named like a post — `yyyy-mm-dd-slug`, the shape every post had
+ * before they became flat files. Silently skipping one would drop a real post
+ * from /blog/ with the build still exiting 0, so it is an error. Directories
+ * that do not look like a post (`images/`, `art/`) stay reserved for assets and
+ * are skipped as before.
+ */
+const DIRECTORY_POST_RE = /^\d{4}-\d{2}-\d{2}-[a-z0-9-]+$/;
 
 export const ALLOWED_POST_KEYS = new Set([
   'title',
@@ -55,7 +63,13 @@ export async function loadPosts() {
     if (entryInfo.isSymbolicLink())
       fail(`post ${entry.name}: symlinks are not allowed`);
     // Directories under blog/ are reserved for per-post assets, not posts.
-    if (entryInfo.isDirectory()) continue;
+    if (entryInfo.isDirectory()) {
+      if (DIRECTORY_POST_RE.test(entry.name))
+        fail(
+          `post ${entry.name}: a post is a yyyy-mm-dd-slug.md file, not a directory`,
+        );
+      continue;
+    }
     if (!entry.name.endsWith('.md'))
       fail(`post ${entry.name}: expected a .md file`);
 
