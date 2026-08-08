@@ -36,7 +36,13 @@ import {
 import { extractKeywords } from './keywords.mjs';
 import { buildCardImages, findPrintMaster } from './images.mjs';
 
-function parseFields(text) {
+/**
+ * Pre-fix field parse, kept ONLY as the input to visualSourceHash. Every
+ * render-provenance.json attestation under cards_mse/ was produced against this
+ * shape by .script/mse_content.py::field_values, so correcting the content parser
+ * must not invalidate them and force a full MSE re-render. See ADR 0021.
+ */
+export function legacyVisualFields(text) {
   const fields = new Map();
   let key = null;
   let lines = [];
@@ -59,6 +65,43 @@ function parseFields(text) {
     } else if (key !== null && line.startsWith('\t\t'))
       lines.push(line.slice(2));
     else {
+      flush();
+      key = null;
+      lines = [];
+    }
+  }
+  flush();
+  return fields;
+}
+
+export function parseFields(text) {
+  const fields = new Map();
+  let key = null;
+  let lines = [];
+  const flush = () => {
+    if (key !== null) {
+      if (fields.has(key)) fail(`duplicate field ${key}`);
+      fields.set(key, lines.join('\n').trimEnd());
+    }
+  };
+  for (const line of text
+    .replace(/^\uFEFF/, '')
+    .replaceAll('\r\n', '\n')
+    .replaceAll('\r', '\n')
+    .split('\n')) {
+    // A `\t\t` line is always a continuation. It must be tested before the
+    // field-start pattern: MSE writes `<error-spelling:en_US:/…>` into card
+    // text, and those colons otherwise read as a new key and truncate the field.
+    if (key !== null && line.startsWith('\t\t')) {
+      lines.push(line.slice(2));
+      continue;
+    }
+    const match = /^\t([^:\n\t]+):(?:\s?(.*))?$/.exec(line);
+    if (match) {
+      flush();
+      key = match[1].trim();
+      lines = [match[2] ?? ''];
+    } else {
       flush();
       key = null;
       lines = [];
@@ -231,7 +274,7 @@ async function parseProject(projectRoot, marker) {
     const artworkHash = imagePath ? sha(await readFile(imagePath)) : '';
     const visualSourceHash = sha(
       Buffer.from(
-        `manifest-index:${manifestIndex}\n${setVisual}\nart:${artworkHash}\n${normalizedFields(fields)}`,
+        `manifest-index:${manifestIndex}\n${setVisual}\nart:${artworkHash}\n${normalizedFields(legacyVisualFields(raw))}`,
       ),
     );
     const ruleText = fields.get('rule_text')?.trim() ?? '';
