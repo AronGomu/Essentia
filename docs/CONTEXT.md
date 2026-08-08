@@ -9,6 +9,9 @@
 - A card lives in draft **or** [active development](GLOSSARY.md#active-development), never both. Settled `alpha` / `beta` / `release` packages may each keep their own snapshot copies.
 - Documentation defines reusable design and rules. It must not reproduce card-by-card values.
 - The website reads alpha/beta/release packages (open or locked) and never writes MSE source.
+- Keyword ruling text lives only in `docs/keywords/{id}.md`, one lower-case file per keyword; its front matter carries `preview` and `reminder`. There is no keyword registry JSON. See [Keywords](KEYWORDS.md).
+- Section intro prose lives only in `website/content/section-intros/{slug}.md`, one file per section in `website/content/sections.json`.
+- The order and grouping of documentation pages and blog posts live only in `website/content/reading-order.json`.
 - Stable IDs, release dates, deck membership, and content URLs may live in metadata when they do not duplicate MSE card fields.
 - Official Yu-Gi-Oh! records and source illustrations remain under [`original_cards/`](../original_cards/) and [`original_images/`](../original_images/).
 - Shared vocabulary: [Glossary](GLOSSARY.md).

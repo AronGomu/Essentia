@@ -126,6 +126,20 @@ class MseCardStyleTests(unittest.TestCase):
             )
             self.assertNotIn("MSE009", {finding.rule for finding in LINTER.lint(root)})
 
+    def test_bold_action_in_italic_prose_is_rejected(self) -> None:
+        cases = (
+            # An ability prefix is an italic aside, not an enumeration.
+            "<i-auto>(1 - Activated Flash <b>Counter</b>)</i-auto>",
+            # Introduced by "(", but the action is not followed by ",", ")" or " or ".
+            "<i-auto>(<b>Draw</b> ordinary cards.)</i-auto>",
+        )
+        for rule_text in cases:
+            with self.subTest(rule_text=rule_text), tempfile.TemporaryDirectory() as directory:
+                findings = LINTER.lint(Path(directory))
+                self.assertEqual(findings, [])
+                write_project(Path(directory), rule_text)
+                self.assertIn("MSE009", {finding.rule for finding in LINTER.lint(Path(directory))})
+
     def test_bold_action_before_comma_outside_italic_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

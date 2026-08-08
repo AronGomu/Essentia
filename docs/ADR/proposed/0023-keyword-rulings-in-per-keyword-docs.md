@@ -66,3 +66,12 @@ Two constraints shape the answer:
   rename becomes 73 renames.
 - ADR 0015's decision 4 (`origin` drives presentation; all 73 get an inline reminder)
   is superseded.
+
+**Deviation recorded 2026-08-08 (T12).** Decision 3 says `archetype` is carried "iff
+`category: archetype`". What shipped in `website/scripts/content/keywords.mjs` is
+weaker: `archetype` is *required* when `category: archetype` and *allowed* on any other
+category. One file needs that — `docs/keywords/on-cast-spellbook.md` is
+`category: event, archetype: spellbook`, an event keyword that only exists inside one
+archetype. Tightening the rule to a true "iff" would have forced that keyword to lie
+about its category or lose its archetype link, so the looser rule was kept. Five files
+carry `archetype:`; four have `category: archetype`.

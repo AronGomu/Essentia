@@ -16,9 +16,13 @@ One word, one part of the project. Say the word, the agent knows the file.
 | catalog   | generated card/set data the site reads        | `website/src/generated/catalog.ts`, `website/src/lib/catalog.ts` |
 | shell     | base page frame wrapping every route          | `website/src/layouts/BaseLayout.astro`                           |
 | gallery   | card grid with hover preview                  | `website/src/components/CardGallery.astro`, `CardPicture.astro`  |
-| palette   | keyboard search overlay                       | `website/src/components/SearchPalette.svelte`, `src/lib/search.ts` |
+| palette   | keyboard find overlay                         | `website/src/components/FindPalette.svelte`, `src/lib/find.ts` |
 | rail      | left sidebar: card catalog, or docs/blog nav on reading pages | `website/src/components/Navigation.svelte`, `src/lib/reading-nav.ts` |
 | picker    | deck building UI and its state                | `website/src/components/DeckManager.svelte`, `src/lib/deck-picker.ts` |
+| intro     | markdown prose printed above a section grid   | `website/content/section-intros/{slug}.md`, `catalog.sections[].introMarkdown` |
+| reading-order | manual order and grouping of docs and blog posts | `website/content/reading-order.json`, `catalog.postGroups` |
+| reading-nav | docs/blog navigation model the rail renders | `website/src/lib/reading-nav.ts`, `Navigation.svelte` |
+| back-to-top | scroll-to-top control on every page but 404  | `website/src/components/BackToTop.astro`, `src/lib/back-to-top.ts` |
 | seo       | title/meta/OG tags per route                  | `website/src/components/Seo.astro`                               |
 | build     | content generation pipeline before astro      | `website/scripts/content/orchestrator.mjs`, `build-content.mjs`  |
 | preflight | pre-build environment and input checks        | `website/scripts/check-preflight.mjs`                            |
@@ -45,6 +49,7 @@ One word, one part of the project. Say the word, the agent knows the file.
 | marker    | stage/set stamp written inside MSE files       | `expected_marker()`, `write_marker()`              |
 | identity  | archetype/card identity registry               | `load_identity_registry()`                         |
 | adr       | architecture decision record                   | `docs/ADR/accepted/`, `docs/ADR/proposed/`         |
+| keyword   | one ruling file per keyword, `preview`/`reminder` | `docs/keywords/{id}.md`, `previewKeywordsFor()` |
 | plan      | ticketed implementation plan for a work pass   | `ai-artifacts/PLAN_<date>_<slug>/`                 |
 
 ## Active development

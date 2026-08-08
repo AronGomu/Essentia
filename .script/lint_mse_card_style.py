@@ -99,9 +99,13 @@ TYPE_WORDS = ("Creature", "Spell")
 TYPE_FORMS = (*TYPE_WORDS, "Creatures", "Spells")
 TYPE_RE = re.compile(r"\b(" + "|".join(TYPE_FORMS) + r")\b", re.IGNORECASE)
 EXILE_ZONE_CONTEXT_RE = re.compile(r"(?:\bfrom|\bin|\binto|\bto|\bof)\s+(?:your\s+|their\s+|its\s+|that\s+|the\s+)?$", re.IGNORECASE)
-# A bold action named as an example inside an italic reminder — "(Draw, Mill X,
-# Search, etc.)" — is a legitimate keyword invocation with no argument.
+# A bold action named as an example inside a parenthesised italic enumeration —
+# "(Draw, Mill X, Search, etc.)" — is a legitimate keyword invocation with no
+# argument. The action must be introduced by the opening "(" or by a comma, and
+# be followed by ",", ")" or " or ", so that prose inside an italic aside — an
+# ability prefix such as "(1 - Activated Flash Counter)" — keeps raising MSE009.
 ENUMERATED_ACTION_RE = re.compile(r"\s*(?:,|\)|or\b)")
+ENUMERATION_LEAD_IN_RE = re.compile(r"[(,]\s*$")
 
 ABILITY_METADATA = {
     "Static",
@@ -416,6 +420,16 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
     def italic_containers(match: re.Match[str]) -> list[tuple[int, int]]:
         return [item for item in italic_ranges if item[0] <= match.start() and item[1] >= match.end()]
 
+    def is_enumerated_example(match: re.Match[str]) -> bool:
+        """True for an action listed as an example in a parenthesised italic aside."""
+        if not ENUMERATED_ACTION_RE.match(visible[match.end() :]):
+            return False
+        return any(
+            visible[start:end].lstrip().startswith("(")
+            and ENUMERATION_LEAD_IN_RE.search(visible[start : match.start()])
+            for start, end in italic_containers(match)
+        )
+
     for match in re.finditer(r"(?<!\w)(?:graveyards?|GYD?|G\.Y\.)(?!\w)", visible, re.I):
         findings.append(Finding(path, line_number, "MSE019", f"legacy Grave term '{match.group(0)}'", "use Grave"))
 
@@ -464,7 +478,7 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
         if action_use and not enclosing:
             findings.append(Finding(path, line_number, "MSE006", f"action keyword '{actual}' is not bold", f"use <b>{canonical}</b>"))
         elif not action_use and any(visible[start:end].strip().casefold() == canonical.casefold() for start, end in enclosing):
-            if italic_containers(match) and ENUMERATED_ACTION_RE.match(visible[match.end() :]):
+            if is_enumerated_example(match):
                 continue
             findings.append(Finding(path, line_number, "MSE009", f"'{actual}' is not an action in this context", f"use plain {actual.casefold()}"))
 

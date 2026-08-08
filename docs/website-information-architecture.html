@@ -54,8 +54,9 @@
       <h1>Essentia website — information architecture</h1>
       <p class="sub">
         Route map, navigation model, and content pipeline for <code>website/</code> after the
-        2026-08-07 feedback pass. Companion to <code>WEBSITE_V2_SPEC.md</code>, which remains the
-        long-form plan; this document describes what the site <em>is</em>, not what it may become.
+        2026-08-08 feedback pass (pass 2). Companion to <code>WEBSITE_V2_SPEC.md</code>, which
+        remains the long-form plan; this document describes what the site <em>is</em>, not what it
+        may become.
       </p>
 
       <h2>Route map</h2>
@@ -67,7 +68,7 @@
             <tr><td class="route">/</td><td>Entry point for every visitor: hero, new cards, archetype tiles</td><td class="src">src/pages/index.astro</td><td>hover preview only</td></tr>
             <tr><td class="route">/docs/</td><td>Project presentation — the first page of the documentation</td><td class="src">docs/PRESENTATION.md</td><td>none</td></tr>
             <tr><td class="route">/docs/&lt;group&gt;/&lt;doc&gt;/</td><td>Every published repo doc, left rail + chapter summary</td><td class="src">docs/**/*.md except docs/ADR/**</td><td>none</td></tr>
-            <tr><td class="route">/blog/</td><td>Post index, newest first</td><td class="src">website/content/blog/*/index.md</td><td>none</td></tr>
+            <tr><td class="route">/blog/</td><td>Post index, grouped by reading order</td><td class="src">blog/&lt;date&gt;-&lt;slug&gt;.md</td><td>none</td></tr>
             <tr><td class="route">/blog/&lt;slug&gt;/</td><td>One post</td><td class="src">same</td><td>none</td></tr>
             <tr><td class="route">/decks/</td><td>Browser-local decklist manager</td><td class="src">localStorage essentia.v1.decks</td><td>required</td></tr>
             <tr><td class="route">/archetypes/&lt;slug&gt;/</td><td>Archetype gallery, alphabetical, NEW badges</td><td class="src">catalog.sections (kind archetype)</td><td>hover preview only</td></tr>
@@ -86,12 +87,20 @@
       <h2>Navigation model</h2>
       <div class="grid">
         <div class="card">
-          <h4>Left rail — the catalog</h4>
-          <p><code>Navigation.svelte</code>. Non-archetype group plus one entry per archetype, each with its published count. Collapses to a modal drawer under 58rem.</p>
+          <h4>Left rail — one surface, two modes</h4>
+          <p><code>Navigation.svelte</code>, prop <code>mode</code>. <b>Catalog</b> on every page but the reading ones: the Non-archetype group plus one entry per archetype, each with its published count. <b>Reading</b> on <code>/docs/…</code> and <code>/blog/…</code>: a two-link <code>Docs | Blog</code> switcher (<code>.reading-switch</code>) followed by the article groups, and no section or archetype links. There is no second in-page rail; the article body takes the freed width.</p>
         </div>
         <div class="card">
-          <h4>Header — three destinations</h4>
-          <p>Breadcrumb (left), brand, then <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then the search palette. Identical on every page.</p>
+          <h4>Rail toggles — two, inside the rail</h4>
+          <p>Both <code>.rail-toggle</code> buttons are children of <code>&lt;nav id="desktop-catalog"&gt;</code>, first and last, so either end of a long rail can collapse it. Collapsed is a strip, not a disappearance: <code>html[data-catalog='collapsed']</code> sets <code>--sidebar: 3.25rem</code>, hides every rail child except the two toggles, and never translates the rail off screen. State persists at <code>essentia.v1.catalog-rail</code>. Below 64rem the rail is replaced by the modal drawer, which always shows the catalog.</p>
+        </div>
+        <div class="card">
+          <h4>Header — mark, breadcrumb, destinations, Find</h4>
+          <p>In order: the brand (<code>.compact-brand</code>, wordmark above 44rem, letter mark below, <code>display: block</code> at every width), the breadcrumb, then <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then the Find trigger. Identical on every page; the rail carries no brand, so collapsing it cannot hide the identity.</p>
+        </div>
+        <div class="card">
+          <h4>Back to top</h4>
+          <p><code>BackToTop.astro</code> on every page but <code>404.html</code>, bottom-right, <code>hidden</code> until the visitor has scrolled. Behaviour lives in <code>src/lib/back-to-top.ts</code>.</p>
         </div>
         <div class="card">
           <h4>Breadcrumb — one component</h4>
@@ -106,23 +115,33 @@
           <p>One overlay per page, driven by <code>data-card-preview</code> and <code>data-card-keywords</code> on any card link. Shows the enlarged render plus one ruling box per Essentia keyword. Suppressed on coarse pointers.</p>
         </div>
         <div class="card">
-          <h4>Search</h4>
-          <p><code>SearchPalette.svelte</code>, name-scored over the whole catalog. Same scoring function feeds the deck editor's add-card box.</p>
+          <h4>Find</h4>
+          <p><code>FindPalette.svelte</code> over <code>src/lib/find.ts</code>: cards, docs, posts and decks, grouped and filterable. The name-scoring function in <code>src/lib/search.ts</code> also feeds the deck editor's add-card box.</p>
         </div>
       </div>
 
       <h2>Content pipeline</h2>
       <p><code>npm run build</code> is one deterministic, offline chain. No step calls a network service.</p>
+      <p>
+        Authored inputs, all data files: <code>docs/**/*.md</code> and <code>blog/*.md</code> (bodies),
+        <code>docs/keywords/{id}.md</code> (one file per keyword),
+        <code>website/content/sections.json</code>,
+        <code>website/content/section-intros/{slug}.md</code> (one per section),
+        <code>website/content/reading-order.json</code> (docs and blog order and grouping),
+        plus <code>identities.json</code>, <code>art-provenance.json</code>,
+        <code>asset-rights.json</code>, <code>color-overrides.json</code> and
+        <code>explanations/</code>.
+      </p>
       <div class="pipe">
-        <div class="stage"><b>1 · Registries</b><p><code>identity.mjs</code> loads <code>sections.json</code> + <code>identities.json</code>, compiles archetype name patterns, validates hero art and provenance, resolves each card's section.</p></div>
+        <div class="stage"><b>1 · Registries</b><p><code>identity.mjs</code> loads <code>sections.json</code> + <code>identities.json</code>, compiles archetype name patterns, validates hero art and provenance, resolves each card's section. <code>section-intros.mjs</code> loads one markdown intro per section — a missing, extra or unknown-slug file fails the build.</p></div>
         <div class="flowline">↓</div>
-        <div class="stage"><b>2 · Keywords</b><p><code>keywords.mjs</code> loads the closed registry — term, category, archetype, definition, origin, owning doc. An unknown bold phrase in card text fails the build.</p></div>
+        <div class="stage"><b>2 · Keywords</b><p><code>keywords.mjs</code> reads one lower-case file per keyword from <code>docs/keywords/{id}.md</code>: front matter carries term, category, origin, owning doc, <code>preview</code> and <code>reminder</code>; the body is the published ruling. UPPER_CASE files in that directory stay module docs. Adding a file publishes a keyword with no code change. <code>preview</code> without <code>reminder</code>, or an unknown bold phrase in card text, fails the build.</p></div>
         <div class="flowline">↓</div>
         <div class="stage"><b>3 · Packages</b><p><code>packages.mjs</code> walks <code>cards_mse/{01_alpha,02_beta,03_release}</code>, parses MSE fields, derives colours, types, zone and keywords, and hashes sources.</p></div>
         <div class="flowline">↓</div>
         <div class="stage"><b>4 · Images</b><p><code>images.mjs</code> derives the <code>thumb</code> and <code>display</code> tiers plus the print master with sharp. Hero art is committed, never derived here.</p></div>
         <div class="flowline">↓</div>
-        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target.</p></div>
+        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target. <code>reading-order.mjs</code> supplies the groups: a doc listed in no group fails the build, and exactly one docs group and one blog group may be the catch-all.</p></div>
         <div class="flowline">↓</div>
         <div class="stage"><b>6 · Catalog</b><p><code>orchestrator.mjs</code> selects the current version per card, builds sections, updates and releases, and writes <code>src/generated/catalog.ts</code> plus the rights inventory.</p></div>
         <div class="flowline">↓</div>
@@ -133,7 +152,7 @@
       <div class="grid">
         <div class="card gate"><h4>scan-dist</h4><p>No symlink, no unexpected extension, no local path, no private key, no source map, no embedded image metadata, no surviving <code>'unsafe-inline'</code>.</p></div>
         <div class="card gate"><h4>check-404</h4><p><code>dist/404.html</code> is a zero-delay noindex redirect to the base, and never regains the not-found page.</p></div>
-        <div class="card gate"><h4>check-chrome</h4><p>Every page carries the three header links and a breadcrumb; the home hero keeps its copy, art and CTA; galleries carry no date groups; the licence line sits under the footer links.</p></div>
+        <div class="card gate"><h4>check-chrome</h4><p>Every page carries the three header links and a breadcrumb; every page but <code>404.html</code> carries <code>class="back-to-top"</code>; every reading page carries <code>class="reading-switch"</code>, so dropping the <code>Docs | Blog</code> switcher fails the build instead of shipping an unnavigable docs page; the home hero keeps its copy, art and CTA; galleries carry no date groups; the licence line sits under the footer links; any bold phrase with a page ruling is followed by its reminder span.</p></div>
         <div class="card gate"><h4>check-links</h4><p>Every internal <code>href</code> and <code>src</code> in every built page resolves to a real file.</p></div>
         <div class="card gate"><h4>check-budgets</h4><p>JS total ≤ 350 KiB, HTML ≤ 500 KiB per page, image ≤ 3 MiB each, print masters ≤ 400 MiB total.</p></div>
         <div class="card gate"><h4>check-rights</h4><p>Every published render is covered by an owner-approved rights record before a public artifact ships.</p></div>
@@ -141,7 +160,7 @@
 
       <h2>Rules the architecture enforces</h2>
       <div class="grid">
-        <div class="card rule"><h4>MSE is the only card source</h4><p>The website never writes card data. Anything archetype-, deck- or presentation-related lives in <code>website/content/*.json</code>.</p></div>
+        <div class="card rule"><h4>MSE is the only card source</h4><p>The website never writes card data. Anything archetype-, deck- or presentation-related lives in <code>website/content/</code> — JSON registries and authored markdown — or, for keyword rulings, in <code>docs/keywords/</code>.</p></div>
         <div class="card rule"><h4>Membership mirrors the game</h4><p>A card belongs to an archetype when its printed name says so. Support cards join a section only through an explicit <code>linked: true</code>.</p></div>
         <div class="card rule"><h4>Closed keyword taxonomy</h4><p>Every bold phrase on a card must resolve to a registered keyword with a ruling, an origin and an owning doc. Unknown phrases fail the build.</p></div>
         <div class="card rule"><h4>Zero-JS baseline</h4><p>Docs, blog, card, archetype and release pages are fully readable without script. <code>/decks/</code> is the single documented exception.</p></div>
@@ -149,11 +168,84 @@
         <div class="card rule"><h4>Fail loudly</h4><p>Every build step validates its inputs and calls <code>fail()</code> on anything unknown. No silent fallback, no unclassified bucket.</p></div>
       </div>
 
-      <h2>Feedback pass 2 — accepted changes</h2>
+      <h2>Feedback pass 2 — what shipped</h2>
       <p>
-        Decided in <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code>, not yet built.
-        Each row is a contract the implementation must land; the rest of this document still
-        describes the site as it stands today.
+        Built by <code>ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2/</code>. Every row is
+        landed; the rest of this document already describes the result, not the intention.
+      </p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Area</th><th>Before</th><th>Now</th><th>Ticket</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Keyword rulings</td>
+              <td>73 rulings in one <code>website/content/keywords.json</code> array</td>
+              <td>One <code>docs/keywords/{id}.md</code> per keyword, editable by hand; a new file publishes itself</td>
+              <td>T2 · ADR 0023</td>
+            </tr>
+            <tr>
+              <td>Ruling presentation</td>
+              <td><code>origin</code> decided both the hover box and the inline reminder</td>
+              <td>Two booleans: <code>preview</code> (hover box) and <code>reminder</code> (inline). <code>Mill N</code> previews; <code>Counter</code> prints no reminder</td>
+              <td>T3 · ADR 0023</td>
+            </tr>
+            <tr>
+              <td>Ash Blossom rule text</td>
+              <td>lower-case, unbolded deck-interaction examples</td>
+              <td><code>(Draw, Mill X, Search, etc.)</code>, all three bold; the linter exempts a parenthesised italic enumeration only</td>
+              <td>T4 · MSE009</td>
+            </tr>
+            <tr>
+              <td>Section intros</td>
+              <td>First paragraph scraped from the section's design doc</td>
+              <td>Authored markdown at <code>website/content/section-intros/{slug}.md</code>, rendered through <code>Markdown.astro</code></td>
+              <td>T5 · ADR 0024</td>
+            </tr>
+            <tr>
+              <td>Section hero art</td>
+              <td>3:2 frame, fast zoom</td>
+              <td><code>aspect-ratio: 1 / 1</code>, 900 ms un-zoom, capped at <code>24rem</code> on narrow viewports</td>
+              <td>T6</td>
+            </tr>
+            <tr>
+              <td>Brand</td>
+              <td>Text brand in the rail; it vanished when the rail collapsed</td>
+              <td><code>.compact-brand</code> in <code>.site-header</code>, <code>display: block</code> at every width; the rail owns no brand</td>
+              <td>T7 · ADR 0025</td>
+            </tr>
+            <tr>
+              <td>Rail toggles</td>
+              <td>One fixed-position button floating beside the rail; collapsing translated the rail off screen</td>
+              <td>Two <code>.rail-toggle</code> buttons inside <code>&lt;nav id="desktop-catalog"&gt;</code>; collapsed is a <code>3.25rem</code> strip that keeps both</td>
+              <td>T8 · ADR 0025</td>
+            </tr>
+            <tr>
+              <td>Reading order</td>
+              <td><code>DOC_GROUPS</code> hardcoded in build code; the blog had no grouping</td>
+              <td><code>website/content/reading-order.json</code> drives both, with one catch-all group each and <code>catalog.postGroups</code></td>
+              <td>T9 · ADR 0026</td>
+            </tr>
+            <tr>
+              <td>Reading navigation</td>
+              <td>Catalog rail and a second in-page reading rail side by side</td>
+              <td>One rail: the catalog switches to <code>Docs | Blog</code> plus the article list. <code>DocsRail.astro</code>, <code>BlogRail.astro</code> and every <code>.reading-rail</code> rule are gone; check-chrome requires <code>class="reading-switch"</code></td>
+              <td>T10 · ADR 0025</td>
+            </tr>
+            <tr>
+              <td>Back to top</td>
+              <td>No way back up a long page but the scrollbar</td>
+              <td><code>BackToTop.astro</code> on all 150 non-404 pages, <code>hidden</code> until scrolled, gated by check-chrome</td>
+              <td>T11</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Feedback pass 1 — shipped 2026-08-07</h2>
+      <p>
+        Decided in <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code> and built.
+        Kept as history; where pass 2 has since replaced a row, the <em>After the pass</em> column
+        says so.
       </p>
       <div class="scroll">
         <table>
@@ -168,7 +260,7 @@
             <tr>
               <td>Keyword rulings</td>
               <td>Registry wording predates the author's current phrasing for twelve terms</td>
-              <td>Registry and the owning docs restate all twelve; <code>Nekroz Recovery</code> stays archetype-scoped</td>
+              <td>Registry and the owning docs restate all twelve; <code>Nekroz Recovery</code> stays archetype-scoped. <em>Superseded by pass 2 T2:</em> the registry is now one file per keyword under <code>docs/keywords/</code></td>
               <td>T3</td>
             </tr>
             <tr>
@@ -204,7 +296,7 @@
             <tr>
               <td>Reading surfaces</td>
               <td><code>.docs-shell</code> has no page inset and no panel; the blog has no rail at all</td>
-              <td>One <code>.reading-shell</code> / <code>.reading-rail</code> / <code>.reading-body</code> layout for docs and blog, on eight dedicated tokens</td>
+              <td>One <code>.reading-shell</code> / <code>.reading-body</code> layout for docs and blog, on dedicated reading tokens. <em>Superseded by pass 2 T10:</em> the in-page reading rail and the <code>--reading-rail</code> token are deleted; navigation moved to the catalog rail</td>
               <td>T1, T9 · ADR 0020</td>
             </tr>
             <tr>
@@ -226,9 +318,11 @@
 
       <footer>
         Sources: <code>WEBSITE_V2_SPEC.md</code> · <code>docs/CONTEXT.md</code> ·
-        <code>docs/ADR/proposed/0015</code>–<code>0021</code> ·
+        <code>website/DESIGN.md</code> ·
+        <code>docs/ADR/proposed/0015</code>–<code>0026</code> ·
         <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md</code> ·
-        <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code>
+        <code>ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md</code> ·
+        <code>ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2/</code>
       </footer>
     </div>
   </body>

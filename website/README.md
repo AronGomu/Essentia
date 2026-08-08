@@ -27,7 +27,18 @@ Use Node version declared in `package.json`. MSE installation is unnecessary for
 
 ## Regenerating site content
 
-Edit any `docs/**/*.md` or `blog/*.md` at the repo root, then run `cd website && npm run content`. That regenerates `website/src/generated/catalog.ts` and the public asset copies. `npm run dev` and `npm run build` already run it first, so you only need it explicitly when you want to refresh data without starting a server. `npm run content:check` verifies the generated output is up to date without writing.
+Edit any `docs/**/*.md` or `blog/*.md` at the repo root, then run `cd website && npm run content`. That regenerates `website/src/generated/catalog.ts` and the public asset copies.
+
+The pipeline reads, besides the packages themselves:
+
+- `docs/**/*.md` and `blog/*.md` — doc and post bodies.
+- `docs/keywords/{id}.md` — one lower-case file per keyword; its body is the published ruling and its front matter carries `preview` and `reminder`. Adding a file publishes a new keyword with no code change.
+- `content/sections.json` — the section list and its presentation metadata.
+- `content/section-intros/{slug}.md` — the intro prose printed above each section, one file per section.
+- `content/reading-order.json` — the order and grouping of documentation pages and blog posts in the rail.
+- `content/identities.json`, `content/art-provenance.json`, `content/asset-rights.json`, `content/color-overrides.json`, `content/explanations/` — identity, provenance, rights, colour and design-note inputs.
+
+`npm run dev` and `npm run build` already run it first, so you only need it explicitly when you want to refresh data without starting a server. `npm run content:check` verifies the generated output is up to date without writing.
 
 ## Checks
 

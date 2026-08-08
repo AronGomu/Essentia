@@ -89,10 +89,17 @@ and every card surface stay chroma-zero.
 **The Reading Contrast Rule.** Long-form text uses `--reading-ink` on
 `--reading-surface`; `--reading-ink-muted` is for metadata only.
 
-**The Lit Room Rule.** Only the prose panel and its rails take the reading
-surface tokens. The site header, the catalog rail, and the page gutter stay
-on `--blackfoil` — a reading page is one lit room inside the same dark
-archive, not a separate site.
+**The Lit Room Rule.** Only the prose panel takes the reading surface tokens.
+The site header, the catalog rail, and the page gutter stay on `--blackfoil` —
+a reading page is one lit room inside the same dark archive, not a separate
+site.
+
+**The One Rail Rule.** A reading page has no rail of its own. Docs and blog
+navigation is rendered by the same left rail that carries the catalog
+everywhere else, which switches to a `Docs | Blog` switcher plus the article
+list (`docs/ADR/proposed/0025-catalog-rail-owns-reading-navigation.md`). The
+prose panel therefore spans the full reading column, and the reading surface
+never touches chrome.
 
 ## Logo
 
@@ -109,6 +116,11 @@ being recoloured to match it exactly.
 room — header, footer, social card. The letter mark stands in wherever the
 space is square or smaller than `160px` wide: favicon, app icon, narrow
 header, in-page badge. They are never used together in one region.
+
+**The One Home Rule.** The mark lives in the site header (`.compact-brand`
+inside `.site-header`) and nowhere else in the shell. The left rail carries no
+brand of any kind, so collapsing or hiding the rail can never take the
+identity off the page; the header is always present, at every width.
 
 **The Untouched Mark Rule.** The mark is never recoloured, tinted, outlined,
 rotated, stretched, given a drop shadow, or placed on an archetype accent
