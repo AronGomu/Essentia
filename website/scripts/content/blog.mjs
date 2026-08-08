@@ -44,11 +44,16 @@ export function parseFrontMatter(text, source) {
   return { data, body: rawBody.trim() };
 }
 
-/** @returns {Promise<Post[]>} non-draft posts, newest date first, then slug */
-export async function loadPosts() {
+/**
+ * @param {string} [blogRoot] directory to read posts from; defaults to the
+ *   repository's own `blog/`. Tests point it at a temp directory so fixtures
+ *   never land in the working tree, where a leftover one breaks every build.
+ * @returns {Promise<Post[]>} non-draft posts, newest date first, then slug
+ */
+export async function loadPosts(blogRoot = BLOG_ROOT) {
   let entries;
   try {
-    entries = await readdir(BLOG_ROOT, { withFileTypes: true });
+    entries = await readdir(blogRoot, { withFileTypes: true });
   } catch (error) {
     if (error.code === 'ENOENT') return [];
     throw error;
@@ -58,7 +63,7 @@ export async function loadPosts() {
   const seenSlugs = new Set();
 
   for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
-    const entryPath = path.join(BLOG_ROOT, entry.name);
+    const entryPath = path.join(blogRoot, entry.name);
     const entryInfo = await lstat(entryPath);
     if (entryInfo.isSymbolicLink())
       fail(`post ${entry.name}: symlinks are not allowed`);

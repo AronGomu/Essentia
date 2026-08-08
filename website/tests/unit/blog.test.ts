@@ -1,34 +1,48 @@
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { parseFrontMatter, loadPosts } from '../../scripts/content/blog.mjs';
 import { ROOT } from '../../scripts/content/shared.mjs';
 
+/** The repository's own posts — read, never written. */
 const BLOG_ROOT = path.join(ROOT, 'blog');
 
-const FIXTURE_PATHS: string[] = [];
+/**
+ * Fixtures live in a temp directory, never in the repository's `blog/`. A run
+ * killed mid-test (Ctrl-C, CI timeout, OOM) used to strand a fixture there,
+ * after which `npm run content` hard-fails and takes dev/check/build/ci with
+ * it until someone spots the stray file.
+ */
+let fixtureRoot: string;
+
+beforeEach(async () => {
+  fixtureRoot = await mkdtemp(path.join(os.tmpdir(), 'essentia-blog-'));
+});
+
+afterEach(async () => {
+  await rm(fixtureRoot, { recursive: true, force: true });
+});
 
 async function writeFixturePost(fileName: string, content: string) {
-  const file = path.join(BLOG_ROOT, fileName);
+  const file = path.join(fixtureRoot, fileName);
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, content, 'utf8');
-  FIXTURE_PATHS.push(file);
   return file;
 }
 
 async function writeFixtureDirectory(dirName: string) {
-  const dir = path.join(BLOG_ROOT, dirName);
+  const dir = path.join(fixtureRoot, dirName);
   await mkdir(dir, { recursive: true });
-  FIXTURE_PATHS.push(dir);
   return dir;
 }
-
-afterEach(async () => {
-  let fixture: string | undefined;
-  while ((fixture = FIXTURE_PATHS.pop())) {
-    await rm(fixture, { recursive: true, force: true });
-  }
-});
 
 describe('parseFrontMatter', () => {
   it('parses front matter and body', () => {
@@ -57,11 +71,33 @@ describe('parseFrontMatter', () => {
 });
 
 describe('loadPosts', () => {
-  it('loads the migrated post', async () => {
+  it('loads every published post in the repository', async () => {
+    // Derived from what is actually committed under blog/, not pinned to a
+    // corpus of one: publishing a second post must not turn this red.
+    const expected: Array<{ slug: string; date: string }> = [];
+    for (const name of await readdir(BLOG_ROOT)) {
+      if (!name.endsWith('.md')) continue;
+      const raw = await readFile(path.join(BLOG_ROOT, name), 'utf8');
+      if (/^draft:\s*true\s*$/m.test(raw)) continue;
+      const nameMatch = /^(\d{4}-\d{2}-\d{2})-(.+)\.md$/.exec(name);
+      expect(nameMatch, name).not.toBeNull();
+      expected.push({ date: nameMatch![1]!, slug: nameMatch![2]! });
+    }
+    expect(expected.length).toBeGreaterThan(0);
+    expect(
+      expected.some(
+        (entry) => entry.slug === 'legend-of-alpha-project-introduction',
+      ),
+    ).toBe(true);
+
     const posts = await loadPosts();
-    expect(posts).toHaveLength(1);
-    expect(posts[0].slug).toBe('legend-of-alpha-project-introduction');
-    expect(posts[0].date).toBe('2026-08-01');
+    expect(
+      posts.map((entry) => ({ slug: entry.slug, date: entry.date })),
+    ).toEqual(
+      expected.sort(
+        (a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug),
+      ),
+    );
   });
 
   it('loads a flat post file', async () => {
@@ -69,7 +105,7 @@ describe('loadPosts', () => {
       '2026-02-02-fixture-one.md',
       '---\ntitle: Fixture One\ndate: 2026-02-02\nauthor: A\nsummary: s\n---\nbody',
     );
-    const posts = await loadPosts();
+    const posts = await loadPosts(fixtureRoot);
     const post = posts.find((entry) => entry.slug === 'fixture-one');
     expect(post).toBeDefined();
     expect(post.route).toBe('/blog/fixture-one/');
@@ -79,23 +115,29 @@ describe('loadPosts', () => {
 
   it('ignores directories inside blog/', async () => {
     await writeFixtureDirectory('images');
-    const posts = await loadPosts();
+    await writeFixturePost(
+      '2026-02-02-fixture-one.md',
+      '---\ntitle: Fixture One\ndate: 2026-02-02\nauthor: A\nsummary: s\n---\nbody',
+    );
+    const posts = await loadPosts(fixtureRoot);
     expect(posts.some((post) => post.slug === 'images')).toBe(false);
-    expect(posts).toHaveLength(1);
+    // Only the one post written above: the asset directory is skipped, not
+    // counted, and nothing else is in this root.
+    expect(posts.map((post) => post.slug)).toEqual(['fixture-one']);
   });
 
   it('rejects a directory named like a post', async () => {
     // The pre-move layout: blog/2026-02-02-old-format/index.md. Skipping it
     // silently would drop the post from /blog/ with the build still green.
     await writeFixtureDirectory('2026-02-02-old-format');
-    await expect(loadPosts()).rejects.toThrow(
+    await expect(loadPosts(fixtureRoot)).rejects.toThrow(
       'content: post 2026-02-02-old-format: a post is a yyyy-mm-dd-slug.md file, not a directory',
     );
   });
 
   it('rejects a non-markdown file', async () => {
     await writeFixturePost('2026-02-02-x.txt', 'not markdown');
-    await expect(loadPosts()).rejects.toThrow(
+    await expect(loadPosts(fixtureRoot)).rejects.toThrow(
       'content: post 2026-02-02-x.txt: expected a .md file',
     );
   });
@@ -105,7 +147,7 @@ describe('loadPosts', () => {
       'notes.md',
       '---\ntitle: Notes\ndate: 2026-02-02\nauthor: A\nsummary: s\n---\nbody',
     );
-    await expect(loadPosts()).rejects.toThrow(
+    await expect(loadPosts(fixtureRoot)).rejects.toThrow(
       'content: post notes.md: filename must match yyyy-mm-dd-slug.md',
     );
   });
@@ -115,7 +157,7 @@ describe('loadPosts', () => {
       '2026-02-02-x.md',
       '---\ntitle: X\ndate: 2026-02-03\nauthor: A\nsummary: s\n---\nbody',
     );
-    await expect(loadPosts()).rejects.toThrow(
+    await expect(loadPosts(fixtureRoot)).rejects.toThrow(
       'does not match filename prefix 2026-02-02',
     );
   });
@@ -125,7 +167,7 @@ describe('loadPosts', () => {
       '2026-08-02-a-draft-post.md',
       '---\ntitle: Draft\ndate: 2026-08-02\nauthor: A\nsummary: s\ndraft: true\n---\nbody',
     );
-    const posts = await loadPosts();
+    const posts = await loadPosts(fixtureRoot);
     expect(posts.some((post) => post.slug === 'a-draft-post')).toBe(false);
   });
 
@@ -138,7 +180,7 @@ describe('loadPosts', () => {
       '2026-03-03-post-b.md',
       '---\ntitle: Post B\ndate: 2026-03-03\nauthor: A\nsummary: s\n---\nbody',
     );
-    const posts = await loadPosts();
+    const posts = await loadPosts(fixtureRoot);
     const dates = posts.map((post) => post.date);
     expect(dates.indexOf('2026-03-03')).toBeLessThan(
       dates.indexOf('2026-02-02'),
@@ -150,31 +192,14 @@ describe('loadPosts', () => {
       '2026-08-05-tagged-post.md',
       '---\ntitle: Tagged\ndate: 2026-08-05\nauthor: A\nsummary: s\ntags: release, alpha\n---\nbody',
     );
-    const posts = await loadPosts();
+    const posts = await loadPosts(fixtureRoot);
     const post = posts.find((entry) => entry.slug === 'tagged-post');
     expect(post.tags).toEqual(['release', 'alpha']);
   });
 
   it('returns [] with no blog directory', async () => {
-    vi.resetModules();
-    vi.doMock('node:fs/promises', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('node:fs/promises')>();
-      return {
-        ...actual,
-        default: actual,
-        readdir: async () => {
-          const error = new Error('ENOENT') as NodeJS.ErrnoException;
-          error.code = 'ENOENT';
-          throw error;
-        },
-      };
-    });
-    try {
-      const isolated = await import('../../scripts/content/blog.mjs');
-      expect(await isolated.loadPosts()).toEqual([]);
-    } finally {
-      vi.doUnmock('node:fs/promises');
-      vi.resetModules();
-    }
+    // A real ENOENT from a root that does not exist, rather than a mocked
+    // node:fs/promises: same branch, no module-registry surgery.
+    expect(await loadPosts(path.join(fixtureRoot, 'absent'))).toEqual([]);
   });
 });
