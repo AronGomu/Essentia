@@ -37,9 +37,9 @@ const description = docDescription(doc.body);
     { label: doc.title },
   ]}
 >
-  <div class="docs-shell">
+  <div class="reading-shell">
     <DocsRail groups={groups} currentRoute={doc.route} {base} />
-    <article class="docs-body">
+    <article class="reading-body docs-body">
       <h1>{doc.title}</h1>
       <Markdown value={doc.body} />
     </article>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Markdown from '../../components/Markdown.astro';
+import BlogRail from '../../components/BlogRail.astro';
 import {
   catalog,
   formatDate,
@@ -33,11 +34,14 @@ const base = import.meta.env.BASE_URL;
     { label: post.title },
   ]}
 >
-  <article class="page-shell post-body">
-    <h1>{post.title}</h1>
-    <p class="post-meta">
-      {formatDate(post.date)} · {post.author}
-    </p>
-    <Markdown value={post.body} />
-  </article>
+  <div class="reading-shell reading-shell--no-toc">
+    <BlogRail posts={catalog.posts} currentRoute={post.route} {base} />
+    <article class="reading-body post-body">
+      <h1>{post.title}</h1>
+      <p class="post-meta">
+        {formatDate(post.date)} · {post.author}
+      </p>
+      <Markdown value={post.body} />
+    </article>
+  </div>
 </BaseLayout>

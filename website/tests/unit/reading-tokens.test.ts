@@ -69,8 +69,14 @@ describe('reading surface tokens', () => {
     expect(inkL).toBeGreaterThan(surfaceL + 0.5);
   });
 
-  it('does not consume the tokens yet', () => {
-    const matches = globalCss.match(/var\(--reading-/g);
-    expect(matches ?? []).toHaveLength(0);
+  it('consumes every reading token', () => {
+    for (const token of TOKENS) {
+      const escaped = `var(${token})`.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const matches = globalCss.match(new RegExp(escaped, 'g'));
+      expect(
+        matches?.length ?? 0,
+        `expected var(${token}) to appear at least once`,
+      ).toBeGreaterThan(0);
+    }
   });
 });

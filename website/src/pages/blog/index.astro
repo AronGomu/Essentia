@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogRail from '../../components/BlogRail.astro';
 import { catalog, formatDate, withBase } from '../../lib/catalog';
 
 const base = import.meta.env.BASE_URL;
@@ -12,26 +13,29 @@ const posts = catalog.posts;
   accent="relic"
   breadcrumb={[{ label: 'Archive', href: base }, { label: 'Blog' }]}
 >
-  <div class="page-shell">
-    <h1>Blog</h1>
-    {
-      posts.length === 0 ? (
-        <p>No posts published yet.</p>
-      ) : (
-        <ul class="post-list">
-          {posts.map((post) => (
-            <li>
-              <a href={withBase(base, post.route)}>
-                <h2>{post.title}</h2>
-              </a>
-              <p class="post-meta">
-                {formatDate(post.date)} · {post.author}
-              </p>
-              <p>{post.summary}</p>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+  <div class="reading-shell reading-shell--no-toc">
+    <BlogRail posts={posts} currentRoute={null} {base} />
+    <article class="reading-body">
+      <h1>Blog</h1>
+      {
+        posts.length === 0 ? (
+          <p>No posts published yet.</p>
+        ) : (
+          <ul class="post-list">
+            {posts.map((post) => (
+              <li>
+                <a href={withBase(base, post.route)}>
+                  <h2>{post.title}</h2>
+                </a>
+                <p class="post-meta">
+                  {formatDate(post.date)} · {post.author}
+                </p>
+                <p>{post.summary}</p>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </article>
   </div>
 </BaseLayout>

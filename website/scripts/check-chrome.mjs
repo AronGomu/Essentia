@@ -57,6 +57,19 @@ export function chromeIssues(file, html, base) {
     problems.push(`${file}: the full-size card viewer must be gone`);
   }
 
+  if (
+    /^(docs|blog)\//.test(file) ||
+    file === 'docs/index.html' ||
+    file === 'blog/index.html'
+  ) {
+    if (!html.includes('class="reading-rail')) {
+      problems.push(`${file}: reading page is missing its rail`);
+    }
+    if (!html.includes('class="reading-shell')) {
+      problems.push(`${file}: reading page is missing the reading shell`);
+    }
+  }
+
   const cardPreviewCount = (html.match(/data-card-preview="/g) ?? []).length;
   // Astro serialises an empty-string attribute as the bare boolean form
   // (`data-card-keywords` with no `="..."`), so match both shapes.

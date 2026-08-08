@@ -593,3 +593,60 @@ describe('the footer legal line must sit under the footer links', () => {
     expect(chromeIssues('404.html', '<html></html>', '/')).toEqual([]);
   });
 });
+
+describe('every blog page ships a rail', () => {
+  const utilityNav = `
+<nav class="utility-nav" aria-label="Sections">
+  <a href="/docs/">Learn about Essentia</a>
+  <a href="/blog/">Blog</a>
+  <a href="/decks/">Decks</a>
+</nav>
+`;
+
+  const withReadingRail = `
+${utilityNav}
+<nav class="breadcrumb"></nav>
+<div class="reading-shell reading-shell--no-toc">
+  <nav class="reading-rail blog-rail"></nav>
+  <article class="reading-body"><h1>Blog</h1></article>
+</div>
+${siteFooter}
+`;
+
+  const withoutReadingRail = `
+${utilityNav}
+<nav class="breadcrumb"></nav>
+<div class="page-shell">
+  <h1>Blog</h1>
+</div>
+${siteFooter}
+`;
+
+  it('accepts a blog index with the reading shell and rail', () => {
+    const issues = chromeIssues('blog/index.html', withReadingRail, '/');
+    expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
+  });
+
+  it('flags a blog index missing the rail and shell', () => {
+    const issues = chromeIssues('blog/index.html', withoutReadingRail, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('reading page is missing its rail'),
+      ),
+    ).toBe(true);
+    expect(
+      issues.some((issue) =>
+        issue.includes('reading page is missing the reading shell'),
+      ),
+    ).toBe(true);
+  });
+
+  it('flags a docs page missing the rail and shell', () => {
+    const issues = chromeIssues('docs/index.html', withoutReadingRail, '/');
+    expect(
+      issues.some((issue) =>
+        issue.includes('reading page is missing its rail'),
+      ),
+    ).toBe(true);
+  });
+});
