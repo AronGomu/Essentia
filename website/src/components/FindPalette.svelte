@@ -89,6 +89,11 @@
     }
   }
   function navigate(route: string) {
+    // Close first: a same-page result is a fragment navigation (`/decks/#deck-…`
+    // from the page it points at), which never unloads the document. A modal
+    // dialog left open would cover the target and hold the rest of the page
+    // inert until Escape.
+    dialog.close();
     window.location.href = href(route);
   }
   function keepActiveVisible(index: number, items: FindEntry[]) {
