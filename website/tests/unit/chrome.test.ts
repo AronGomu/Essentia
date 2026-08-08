@@ -708,7 +708,7 @@ describe('a browser-local deck must never reach a built page', () => {
   });
 });
 
-describe('every blog page ships a rail', () => {
+describe('every reading page ships the docs/blog switcher', () => {
   const utilityNav = `
 <nav class="utility-nav" aria-label="Sections">
   <a href="/docs/">Learn about Essentia</a>
@@ -717,17 +717,19 @@ describe('every blog page ships a rail', () => {
 </nav>
 `;
 
-  const withReadingRail = `
+  const withReadingSwitch = `
 ${utilityNav}
 <nav class="breadcrumb"></nav>
+<nav id="desktop-catalog" class="desktop-catalog" aria-label="Documentation and blog">
+  <div class="reading-switch"><a href="/docs/">Docs</a><a href="/blog/">Blog</a></div>
+</nav>
 <div class="reading-shell reading-shell--no-toc">
-  <nav class="reading-rail blog-rail"></nav>
   <article class="reading-body"><h1>Blog</h1></article>
 </div>
 ${siteFooter}
 `;
 
-  const withoutReadingRail = `
+  const withoutReadingSwitch = `
 ${utilityNav}
 <nav class="breadcrumb"></nav>
 <div class="page-shell">
@@ -736,16 +738,16 @@ ${utilityNav}
 ${siteFooter}
 `;
 
-  it('accepts a blog index with the reading shell and rail', () => {
-    const issues = chromeIssues('blog/index.html', withReadingRail, '/');
+  it('accepts a blog index with the reading shell and switcher', () => {
+    const issues = chromeIssues('blog/index.html', withReadingSwitch, '/');
     expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
   });
 
-  it('flags a blog index missing the rail and shell', () => {
-    const issues = chromeIssues('blog/index.html', withoutReadingRail, '/');
+  it('flags a blog index missing the switcher and shell', () => {
+    const issues = chromeIssues('blog/index.html', withoutReadingSwitch, '/');
     expect(
       issues.some((issue) =>
-        issue.includes('reading page is missing its rail'),
+        issue.includes('reading page is missing the docs/blog switcher'),
       ),
     ).toBe(true);
     expect(
@@ -755,13 +757,40 @@ ${siteFooter}
     ).toBe(true);
   });
 
-  it('flags a docs page missing the rail and shell', () => {
-    const issues = chromeIssues('docs/index.html', withoutReadingRail, '/');
-    expect(
-      issues.some((issue) =>
-        issue.includes('reading page is missing its rail'),
+  it('flags a reading page without the switcher', () => {
+    const issues = chromeIssues('docs/index.html', withoutReadingSwitch, '/');
+    expect(issues).toContain(
+      'docs/index.html: reading page is missing the docs/blog switcher',
+    );
+  });
+
+  it('still accepts the switcher when it grows a modifier class', () => {
+    // The gate matches the class token, not the whole attribute: a later
+    // `class="reading-switch reading-switch--wide"` must not silently stop
+    // being recognised the way an exact-string check would.
+    const issues = chromeIssues(
+      'docs/index.html',
+      withReadingSwitch.replace(
+        'class="reading-switch"',
+        'class="reading-switch reading-switch--wide"',
       ),
-    ).toBe(true);
+      '/',
+    );
+    expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
+  });
+
+  it('rejects a lookalike class that only starts the same', () => {
+    const issues = chromeIssues(
+      'docs/index.html',
+      withReadingSwitch.replace(
+        'class="reading-switch"',
+        'class="reading-switcheroo"',
+      ),
+      '/',
+    );
+    expect(issues).toContain(
+      'docs/index.html: reading page is missing the docs/blog switcher',
+    );
   });
 });
 

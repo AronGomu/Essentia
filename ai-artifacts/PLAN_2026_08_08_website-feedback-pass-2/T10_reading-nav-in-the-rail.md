@@ -149,7 +149,7 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
 
 ## Impl steps
 
-- [ ] 1. Create `website/src/lib/reading-nav.ts` exporting:
+- [x] 1. Create `website/src/lib/reading-nav.ts` exporting:
       ```ts
       export type ReadingKind = 'docs' | 'blog';
       export interface ReadingNavItem { route: string; title: string; meta?: string }
@@ -163,10 +163,10 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
       shape (`items = group.docs`). `readingNavGroups('blog', …)` maps
       `catalog.postGroups` through a `Map<slug, post>` built from `catalog.posts`,
       setting `meta: formatDate(post.date)`.
-- [ ] 2. In `Navigation.svelte`, add the three props with their defaults and wrap the
+- [x] 2. In `Navigation.svelte`, add the three props with their defaults and wrap the
       existing catalog markup (the `nav-group` button, the non-archetype `<ul>`, the
       `Archetypes` `<p class="nav-label">` and its `<ul>`) in `{#if mode === 'catalog'}`.
-- [ ] 3. Add the `{:else}` branch:
+- [x] 3. Add the `{:else}` branch:
       ```svelte
       <div class="reading-switch">
         <a href={href('/docs/')} aria-current={readingKind === 'docs' ? 'page' : undefined}>Docs</a>
@@ -185,31 +185,31 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
         </ul>
       {/each}
       ```
-- [ ] 4. Change `<nav id="desktop-catalog" … aria-label="Catalog">` to
+- [x] 4. Change `<nav id="desktop-catalog" … aria-label="Catalog">` to
       `aria-label={mode === 'reading' ? 'Documentation and blog' : 'Catalog'}`.
-- [ ] 5. In `BaseLayout.astro`, import `readingKindFor` and `readingNavGroups`, then:
+- [x] 5. In `BaseLayout.astro`, import `readingKindFor` and `readingNavGroups`, then:
       ```ts
       const readingKind = readingKindFor(Astro.url.pathname, base);
       const readingGroups = readingNavGroups(readingKind, catalog);
       ```
       and pass `mode={readingKind ? 'reading' : 'catalog'}` plus `{readingKind}` and
       `{readingGroups}` to `<Navigation … />`.
-- [ ] 6. Delete `website/src/components/DocsRail.astro` and
+- [x] 6. Delete `website/src/components/DocsRail.astro` and
       `website/src/components/BlogRail.astro`.
-- [ ] 7. In each of the four reading pages, remove the rail import, the rail element,
+- [x] 7. In each of the four reading pages, remove the rail import, the rail element,
       and any now-unused local (`const groups = docsRailGroups(catalog.docs);` in the
       two docs pages; `const posts = catalog.posts;` in `blog/index.astro` is still
       used by the list — keep that one).
-- [ ] 8. `website/src/pages/docs/index.astro` and `docs/[...path].astro` keep
+- [x] 8. `website/src/pages/docs/index.astro` and `docs/[...path].astro` keep
       `<div class="reading-shell">` with `<article class="reading-body docs-body">`
       and `<ChapterSummary …>`. `blog/index.astro` and `blog/[slug].astro` keep
       `<div class="reading-shell reading-shell--no-toc">`.
-- [ ] 9. In `global.css`: delete the `--reading-rail: 17rem;` token; set
+- [x] 9. In `global.css`: delete the `--reading-rail: 17rem;` token; set
       `.reading-shell { grid-template-columns: minmax(0, 1fr) var(--reading-toc); }`
       and `.reading-shell--no-toc { grid-template-columns: minmax(0, 1fr); }`; delete
       every `.reading-rail…` rule (lines ~1472–1510) and the `.reading-rail` rule
       inside the `@media (max-width: 64rem)` block.
-- [ ] 10. Add the switcher styles next to `.nav-label`:
+- [x] 10. Add the switcher styles next to `.nav-label`:
       ```css
       .reading-switch {
         display: grid;
@@ -233,25 +233,28 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
         color: var(--cardstock);
       }
       ```
-- [ ] 11. In `website/scripts/check-chrome.mjs`, replace the
+- [x] 11. In `website/scripts/check-chrome.mjs`, replace the
       `class="reading-rail` check with:
       ```js
       if (!html.includes('class="reading-switch"'))
         problems.push(`${file}: reading page is missing the docs/blog switcher`);
       ```
       keeping the `class="reading-shell` check as is.
-- [ ] 12. Update `website/tests/unit/reading-shell.test.ts` (drop the rail-token row,
+- [x] 12. Update `website/tests/unit/reading-shell.test.ts` (drop the rail-token row,
       add the two new rows), `website/tests/unit/reading-tokens.test.ts` (drop
       `--reading-rail`), `website/tests/unit/chrome.test.ts` (swap the fixture marker
       and the expected message).
-- [ ] 13. If `blogRailItems` is now unused, delete `website/src/lib/blog-rail.ts` and
+- [x] 13. If `blogRailItems` is now unused, delete `website/src/lib/blog-rail.ts` and
       `website/tests/unit/blog-rail.test.ts`; otherwise leave both untouched.
-- [ ] 14. Add `website/tests/unit/reading-nav.test.ts` with the rows from the test plan.
-- [ ] 15. Add the new e2e test to `website/tests/e2e/showcase.spec.ts`.
-- [ ] 16. `cd website && npm run format && npm run test` → exit 0.
-- [ ] 17. `cd website && npm run build` → exit 0.
+- [x] 14. Add `website/tests/unit/reading-nav.test.ts` with the rows from the test plan.
+- [x] 15. Add the new e2e test to `website/tests/e2e/showcase.spec.ts`.
+- [x] 16. `cd website && npm run format && npm run test` → exit 0.
+- [x] 17. `cd website && npm run build` → exit 0.
 - [ ] 18. `cd website && npm run test:e2e` → exit 0.
-- [ ] 19. `grep -rn 'reading-rail' website/src website/scripts website/dist | wc -l` → `0`.
+      _Unearned: Playwright is unrunnable on this host — every browser aborts at
+      launch with `libglib-2.0.so.0` missing. The two new specs are
+      unverified-by-execution._
+- [x] 19. `grep -rn 'reading-rail' website/src website/scripts website/dist | wc -l` → `0`.
 
 ## Outputs
 
@@ -272,13 +275,47 @@ Unit: `cd website && npm run test`. E2E: `cd website && npm run test:e2e`.
 ## Validation
 
 - [ ] tests pass: `cd website && npm run ci`; `cd website && npm run test:e2e`
-- [ ] manual check: `/docs/` — the left rail shows `Docs | Blog` and the six doc
+      _Half-earned, so unchecked: `npm run ci` exits 0 in a clean worktree at
+      HEAD (`Test Files 51 passed`, `Tests 514 passed`, `151 page(s) built`,
+      `dist scan: clean`). `npm run test:e2e` cannot run on this host (see 18)._
+
+No browser is available here, so the four manual checks below were verified
+mechanically against the built `dist/` HTML and the compiled `dist/_astro/*.css`
+rather than by eye. Each line records the proof used.
+
+- [x] manual check: `/docs/` — the left rail shows `Docs | Blog` and the six doc
       groups; no in-page rail; the article body is wider than before
-- [ ] manual check: `/blog/` and a post page — the left rail shows the blog list with
+      — `dist/docs/rules/zones/index.html`: `<nav id="desktop-catalog" …
+      aria-label="Documentation and blog">` holds `<div class="reading-switch">`
+      with `Docs` (`aria-current="page"`) and `Blog`, then six `<p
+      class="nav-label">` groups; `class="reading-shell"><article
+      class="reading-body docs-body">` is the shell's first child; compiled CSS
+      has `.reading-shell{…grid-template-columns:minmax(0, 1fr)
+      var(--reading-toc)…}` — one column fewer, so the body takes the width.
+- [x] manual check: `/blog/` and a post page — the left rail shows the blog list with
       dates and the current post marked
-- [ ] manual check: `/cards/ash-blossom-and-joyous-spring/` — the left rail still
+      — `dist/blog/index.html` rail: `Blog` carries `aria-current="page"`, group
+      `All posts`, item `<small>August 1, 2026</small>`;
+      `dist/blog/legend-of-alpha-project-introduction/index.html` marks that
+      post's own link `aria-current="page"`.
+- [x] manual check: `/cards/ash-blossom-and-joyous-spring/` — the left rail still
       shows the catalog (Non-Archetype + Archetypes)
-- [ ] manual check: collapsing the rail on `/docs/` hides the reading nav and leaves
+      — that page's nav is `aria-label="Catalog"` and still opens with
+      `<button class="nav-group" …>Non-Archetype`. Across all 151 built pages,
+      the 40 `docs/`+`blog/` pages carry `class="reading-switch"` and the other
+      111 carry none.
+- [x] manual check: collapsing the rail on `/docs/` hides the reading nav and leaves
       the two toggles
-- [ ] app functional — `cd website && npm run build` exits 0
-- [ ] commit msg draft: `feat(website): move docs and blog navigation into the catalog rail`
+      — compiled CSS carries `html[data-catalog=collapsed]{--sidebar:3.25rem}`
+      and `html[data-catalog=collapsed] .desktop-catalog>:not(.rail-toggle)
+      {display:none}`; in the built docs page the nav's first child is
+      `class="rail-toggle rail-toggle--top"`, its last is
+      `rail-toggle--bottom`, and `.reading-switch` is a direct child between
+      them — so collapse hides the reading nav and nothing else, and
+      `display: none` takes the hidden links out of the tab order rather than
+      trapping focus. `reading-nav.test.ts › the reading nav sits between the
+      two rail toggles` pins that ordering.
+- [x] app functional — `cd website && npm run build` exits 0
+      — via `npm run ci` in the worktree: `151 page(s) built`, `dist scan:
+      clean`, `chrome: 151 pages carry the site header`.
+- [x] commit msg draft: `feat(website): move docs and blog navigation into the catalog rail`

@@ -17,7 +17,7 @@ One word, one part of the project. Say the word, the agent knows the file.
 | shell     | base page frame wrapping every route          | `website/src/layouts/BaseLayout.astro`                           |
 | gallery   | card grid with hover preview                  | `website/src/components/CardGallery.astro`, `CardPicture.astro`  |
 | palette   | keyboard search overlay                       | `website/src/components/SearchPalette.svelte`, `src/lib/search.ts` |
-| rail      | docs sidebar navigation                       | `website/src/components/DocsRail.astro`                          |
+| rail      | left sidebar: card catalog, or docs/blog nav on reading pages | `website/src/components/Navigation.svelte`, `src/lib/reading-nav.ts` |
 | picker    | deck building UI and its state                | `website/src/components/DeckManager.svelte`, `src/lib/deck-picker.ts` |
 | seo       | title/meta/OG tags per route                  | `website/src/components/Seo.astro`                               |
 | build     | content generation pipeline before astro      | `website/scripts/content/orchestrator.mjs`, `build-content.mjs`  |

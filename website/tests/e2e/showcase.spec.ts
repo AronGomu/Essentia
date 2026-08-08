@@ -144,6 +144,45 @@ test('rules and philosophy expose chapter summaries', async ({ page }) => {
   ).toHaveAttribute('href', '#avoids');
 });
 
+test('docs pages navigate from the catalog rail', async ({ page }) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/docs/'));
+
+  const rail = page.getByRole('navigation', { name: 'Documentation and blog' });
+  await expect(
+    rail.getByRole('link', { name: 'Docs', exact: true }),
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(
+    rail.getByRole('link', { name: 'Blog', exact: true }),
+  ).toBeVisible();
+  // The in-page rail is gone: the article owns the freed column.
+  await expect(page.locator('.reading-rail')).toHaveCount(0);
+
+  await rail.getByRole('link', { name: 'Zones', exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`${urlFor('/docs/rules/zones/')}$`));
+  await expect(
+    page.getByRole('navigation', { name: 'Documentation and blog' }),
+  ).toBeVisible();
+
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
+
+test('blog pages swap the catalog for the blog list', async ({ page }) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/blog/'));
+
+  const rail = page.getByRole('navigation', { name: 'Documentation and blog' });
+  await expect(
+    rail.getByRole('link', { name: 'Blog', exact: true }),
+  ).toHaveAttribute('aria-current', 'page');
+  // The card catalog is not rendered here — its group toggle is gone.
+  await expect(rail.getByRole('button', { name: /Non-Archetype/ })).toHaveCount(
+    0,
+  );
+  await expect(page.locator('.reading-rail')).toHaveCount(0);
+});
+
 test('catalog rail collapses to a strip that keeps both toggles', async ({
   page,
 }) => {

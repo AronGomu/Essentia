@@ -38,12 +38,28 @@ describe('docs and blog reading shell', () => {
     expect(block).toContain('width: min(100% - 2rem, 88rem)');
   });
 
-  it('the rail uses the reading tokens', () => {
-    const railMatch = globalCss.match(/\.reading-rail\s*{[^}]*}/);
-    expect(railMatch).not.toBeNull();
-    const block = railMatch![0];
-    expect(block).toContain('var(--reading-surface)');
-    expect(block).toContain('var(--reading-rule)');
+  it('the shell has no rail column', () => {
+    const shellMatch = globalCss.match(/\.reading-shell\s*{[^}]*}/);
+    expect(shellMatch).not.toBeNull();
+    expect(shellMatch![0]).toMatch(
+      /grid-template-columns:\s*minmax\(0, 1fr\) var\(--reading-toc\)/,
+    );
+    const noTocMatch = globalCss.match(/\.reading-shell--no-toc\s*{[^}]*}/);
+    expect(noTocMatch).not.toBeNull();
+    expect(noTocMatch![0]).toMatch(
+      /grid-template-columns:\s*minmax\(0, 1fr\);/,
+    );
+  });
+
+  it('the rail styles are gone', () => {
+    expect(globalCss).not.toMatch(/\.reading-rail\b/);
+  });
+
+  it('no page imports a rail component', () => {
+    for (const source of pageSources) {
+      expect(source).not.toContain('DocsRail');
+      expect(source).not.toContain('BlogRail');
+    }
   });
 
   it('the prose column caps its measure', () => {

@@ -83,7 +83,6 @@ and every card surface stay chroma-zero.
   `--ruleline`.
 - **`--reading-measure`** — `70ch`. Maximum prose line length on reading
   pages, for comfortable long-form reading.
-- **`--reading-rail`** — `17rem`. Width of the docs/blog navigation rail.
 - **`--reading-toc`** — `15rem`. Width of the reading-page table-of-contents
   column.
 

@@ -42,7 +42,6 @@
     --reading-ink-muted: oklch(0.78 0.016 80);
     --reading-rule: oklch(0.44 0.01 80);
     --reading-measure: 70ch;
-    --reading-rail: 17rem;
     --reading-toc: 15rem;
     --header: 4.5rem;
     --z-sticky: 20;
@@ -411,6 +410,27 @@
     font-size: 0.85rem;
     margin: 1.6rem 0 0.5rem;
     padding-inline: 0.65rem;
+  }
+  .reading-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  .reading-switch a {
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    color: var(--silver-ink);
+    font-weight: 700;
+    padding: 0.5rem 0.6rem;
+    text-align: center;
+    text-decoration: none;
+  }
+  .reading-switch a:hover,
+  .reading-switch a[aria-current='page'] {
+    border-color: var(--accent);
+    background: var(--sleeve);
+    color: var(--cardstock);
   }
   .drawer-trigger {
     display: none;
@@ -1464,51 +1484,12 @@ html[data-theme='nekroz'] .render-column picture {
   margin-inline: auto;
   padding-block: var(--space-6);
   display: grid;
-  grid-template-columns: var(--reading-rail) minmax(0, 1fr) var(--reading-toc);
+  grid-template-columns: minmax(0, 1fr) var(--reading-toc);
   gap: var(--space-5);
   align-items: start;
 }
 .reading-shell--no-toc {
-  grid-template-columns: var(--reading-rail) minmax(0, 1fr);
-}
-.reading-rail {
-  position: sticky;
-  top: calc(var(--header) + 1rem);
-  max-height: calc(100vh - var(--header) - 2rem);
-  overflow-y: auto;
-  border: 1px solid var(--reading-rule);
-  border-radius: var(--radius);
-  background: var(--reading-surface);
-  padding: 1rem 0.85rem;
-}
-.reading-rail ul {
-  list-style: none;
-  margin: 0 0 1.2rem;
-  padding: 0;
-}
-.reading-rail li + li {
-  margin-top: 0.15rem;
-}
-.reading-rail a {
-  display: grid;
-  border-radius: var(--radius-sm);
-  color: var(--reading-ink-muted);
-  padding: 0.45rem 0.55rem;
-  text-decoration: none;
-}
-.reading-rail a small {
-  color: var(--reading-ink-muted);
-  font-size: 0.72rem;
-}
-.reading-rail a:hover,
-.reading-rail a:focus-visible {
-  background: var(--reading-surface-raised);
-  color: var(--reading-ink);
-}
-.reading-rail a[aria-current='page'] {
-  background: var(--reading-surface-raised);
-  color: var(--reading-ink);
-  box-shadow: inset 0.18rem 0 0 var(--accent);
+  grid-template-columns: minmax(0, 1fr);
 }
 .reading-body {
   min-width: 0;
@@ -1593,11 +1574,6 @@ html[data-theme='nekroz'] .render-column picture {
   .reading-shell,
   .reading-shell--no-toc {
     grid-template-columns: 1fr;
-  }
-  .reading-rail {
-    position: static;
-    max-height: none;
-    order: -1;
   }
 }
 .rule-glossary {

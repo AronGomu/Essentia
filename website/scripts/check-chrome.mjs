@@ -89,8 +89,11 @@ export function chromeIssues(file, html, base) {
     file === 'docs/index.html' ||
     file === 'blog/index.html'
   ) {
-    if (!html.includes('class="reading-rail')) {
-      problems.push(`${file}: reading page is missing its rail`);
+    // The docs/blog navigation lives in the catalog rail now, and the switcher
+    // is its entry point. Match the class *token*, not the whole attribute, so
+    // a later modifier class cannot silently retire this gate.
+    if (!/class="reading-switch(?:"|\s)/.test(html)) {
+      problems.push(`${file}: reading page is missing the docs/blog switcher`);
     }
     if (!html.includes('class="reading-shell')) {
       problems.push(`${file}: reading page is missing the reading shell`);

@@ -7,6 +7,7 @@ import Navigation from '../components/Navigation.svelte';
 import Seo from '../components/Seo.astro';
 import { catalog } from '../lib/catalog';
 import { buildFindEntries } from '../lib/find';
+import { readingKindFor, readingNavGroups } from '../lib/reading-nav';
 import '../styles/global.css';
 
 interface Props {
@@ -38,6 +39,10 @@ const navSections = catalog.sections.map(
 const section = ['docs/', 'blog/', 'decks/'].find((path) =>
   Astro.url.pathname.startsWith(`${base}${path}`),
 );
+// On docs and blog pages the left rail carries that section's reading
+// navigation instead of the card catalog.
+const readingKind = readingKindFor(Astro.url.pathname, base);
+const readingGroups = readingNavGroups(readingKind, catalog);
 // Build-time index only. The visitor's browser-local decks are merged inside
 // the island after mount and never travel through here — see `src/lib/find.ts`.
 const findEntries = buildFindEntries({
@@ -134,6 +139,9 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       sections={navSections}
       currentPath={Astro.url.pathname}
       {base}
+      mode={readingKind ? 'reading' : 'catalog'}
+      {readingKind}
+      {readingGroups}
     />
     <header class="site-header">
       <a class="compact-brand" href={base}>

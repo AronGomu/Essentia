@@ -17,7 +17,6 @@ const TOKENS = [
   '--reading-ink-muted',
   '--reading-rule',
   '--reading-measure',
-  '--reading-rail',
   '--reading-toc',
 ] as const;
 
@@ -55,6 +54,13 @@ describe('reading surface tokens', () => {
         `DESIGN.md should mention ${token}`,
       ).toBe(true);
     }
+  });
+
+  it('no longer declares a rail width', () => {
+    // The docs/blog navigation moved into the catalog rail, which sizes itself
+    // from `--sidebar`. A stray `--reading-rail` means a dead token is back.
+    expect(globalCss).not.toContain('--reading-rail');
+    expect(designMd).not.toContain('--reading-rail');
   });
 
   it('keeps ink above surface lightness', () => {
