@@ -74,9 +74,24 @@ test('empty search remains keyboard accessible', async ({ page }) => {
   await expect(page.getByText('Nothing matches “zzzz”.')).toBeVisible();
 });
 
+/**
+ * `page.goto` resolves on `load`, which can land before a `client:load` island
+ * has hydrated. The Find hotkey rides `<svelte:window on:keydown>`, so a press
+ * sent before hydration is dropped — and `keyboard.press` is one-shot, with no
+ * actionability retry to save it. Press until the palette answers.
+ */
+async function openFindWithHotkey(page: import('@playwright/test').Page) {
+  await expect
+    .poll(async () => {
+      await page.keyboard.press(findHotkey);
+      return findInput(page).isVisible();
+    })
+    .toBe(true);
+}
+
 test('Find reaches a doc and navigates to it', async ({ page }) => {
   await page.goto(urlFor('/'));
-  await page.keyboard.press(findHotkey);
+  await openFindWithHotkey(page);
   await findInput(page).fill('zones');
   const row = page
     .locator('#find-results li[data-find-kind="doc"]')
