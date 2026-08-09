@@ -123,3 +123,17 @@
 - [ ] At 896px and at 704px, use the keyboard shortcut `⌘ K` / `Ctrl K`: the Find dialog still opens even though the hint glyph is hidden.
 - [ ] At 1024px, inspect the accessibility tree for the docs link: it still announces "Learn about Essentia" although only "Learn" is drawn.
 - [ ] With DevTools open, sweep from 1400px to 390px and back: no console error and no `[essentia] site-header wraps to …` warning at any width.
+
+## T12 ruling-keywords
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site (not `npm run dev` — the hashed CSP only exists in the build) at `/archetypes/burning-abyss/`.
+- [ ] Hover **Burning Abyss - Alich**: the hover preview shows the card render *and* a rulings column. It lists `Static`, `Activated`, `Triggered`, `Hard` and `Linked` alongside the archetype rulings it already showed (`Abyssal Curse`, `Descent`, `On Send Grave`, `Target`). Before T12 only the bold keywords appeared.
+- [ ] Read the `Static` entry in full: "Passive ability. Does not use the Stack. Active as soon as the card enters the required zone to take effect. Default zone is Field." Confirm it matches the rule you wrote — the wording is meant to be yours, with only spelling and grammar corrected.
+- [ ] Same for `Hard` ("You can use this ability of {Name of the Card} only once per turn. …") and `Linked` ("All Soft abilities are grouped together. Same independently for Hard abilities. …"): check `independently`, `ruling` and the single "all other abilities" read correctly — those were the three corrections.
+- [ ] Hover **Burning Abyss - Fire Lake** (a `Trap Instant`): the rulings column includes `Trap` — "Cannot be cast from Hand. Can only be Set face down." — and `Resolution`. This is the super-type keyword; it is the one of the eight that comes from the type line rather than the ability prefix.
+- [ ] Hover a card with no ability prefix and no Trap type (e.g. a plain vanilla creature in `/sections/non-archetype/non-archetype/`): the hover box shows the render with **no** rulings column, exactly as before. The new terms must not appear on cards that never print them.
+- [ ] Open `/cards/burning-abyss-alich/` and read the printed rule text on the card page: the italic ability prefixes `(1 - Static)`, `(2 - Activated Hard Linked)`, `(3 - Triggered Hard Linked)` are unchanged, and **no** `(reminder)` text has been appended after them. The new rulings live only in the hover box, never on the card face.
+- [ ] Tab (do not hover) to a gallery card that prints `Static`: the same rulings appear — the hover box is keyboard-reachable, not pointer-only.
+- [ ] DevTools **Console** on `/archetypes/burning-abyss/` while hovering several cards: completely empty. In particular no `Content-Security-Policy` violation — the ruling map ships as a hashed `<script type="application/json">` island, so a CSP error here would mean the island stopped being hashed.
+- [ ] Open `/docs/keywords/` and `/docs/rules/templating/`: the keyword index now lists ability metadata and super-type keywords as classes 5 and 6, and its links to `rules/TEMPLATING.md` and `rules/CARD_TYPES.md` resolve to real pages (no 404).
+- [ ] Judgement call to confirm or reject: the hover box on a three-ability Burning Abyss card now lists up to nine rulings and is noticeably taller. If that is too much at once, say so — the fix is to flip `preview: false` on some of the eight in `docs/keywords/*.md`, which needs no code change.

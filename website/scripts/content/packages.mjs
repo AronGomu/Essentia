@@ -33,7 +33,7 @@ import {
   parseSubtypes,
   parseSupertypes,
 } from './fields.mjs';
-import { extractKeywords } from './keywords.mjs';
+import { cardKeywords } from './keywords.mjs';
 import { buildCardImages, findPrintMaster } from './images.mjs';
 
 /**
@@ -497,7 +497,11 @@ export async function discover(registry, options) {
           types,
           supertypes,
           zone: classifyZone(supertypes),
-          keywords: extractKeywords(card.ruleText, keywordRegistry, id),
+          keywords: cardKeywords(
+            { ruleText: card.ruleText, supertypes },
+            keywordRegistry,
+            id,
+          ),
           archetype: card.identity.archetype,
           archetypeRole: card.identity.role,
           supports: card.identity.supports ?? [],

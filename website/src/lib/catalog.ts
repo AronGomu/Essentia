@@ -30,7 +30,16 @@ export interface CardImages {
 export interface CatalogKeyword {
   id: string;
   term: string;
-  category: 'action' | 'event' | 'ability' | 'cost-procedure' | 'archetype';
+  category:
+    | 'action'
+    | 'event'
+    | 'ability'
+    /** Printed in the numbered italic ability prefix, never bold. */
+    | 'ability-metadata'
+    | 'cost-procedure'
+    /** Printed in the super type line, never bold. */
+    | 'super-type'
+    | 'archetype';
   archetype: string | null;
   /** One-sentence ruling, plain text, 20-400 characters. */
   definition: string;
