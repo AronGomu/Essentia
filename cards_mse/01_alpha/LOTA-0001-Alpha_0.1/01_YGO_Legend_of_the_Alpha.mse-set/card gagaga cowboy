@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card gagaga cowboy
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-08-03 00:13:02
+	time_modified: 2026-08-09 20:24:45
 	name: Gagaga Cowboy
 	casting_cost: R
 	image: mse_images/gagaga-cowboy-image.png
@@ -17,7 +17,7 @@ card:
 	rarity: common
 	rule_text:
 		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b>; deal 3 damage to each opponent.
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b>; deal 2 damage to each opponent.
 	flavor_text: <i-flavor></i-flavor>
 	power: 3
 	toughness: 6
