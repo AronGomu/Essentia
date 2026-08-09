@@ -47,7 +47,7 @@ ACTION_ARGUMENT_RE = {
     "Exile": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|all\b|any\b|one\b|up to\b|\d+|X\b|target\b|chosen\b|a\b|an\b|card\b|creature\b|“[^”]+”|[A-Z][A-Za-z0-9.'’_-]+)"),
     "Search": re.compile(r"\s+(?:\d+|X\b|\d+[–-]\d+|your\b|the\b)", re.I),
     "Summon": re.compile(r"\s+(?:\d+|X\b|this\b|that\b|the\b|a\b|an\b|any\b|up to\b|“[^”]+”|[A-Z][A-Za-z0-9.'’_-]+)"),
-    "Reanimate": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|\d+)", re.I),
+    "Reanimate": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|\d+|“[^”]+”)", re.I),
     "Salvage": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|\d+)", re.I),
     "Reclaim": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|\d+)", re.I),
     "Release": re.compile(r"\s+(?:it\b|them\b|this\b|that\b|the\b|target\b|\d+)", re.I),
@@ -191,15 +191,18 @@ KNOWN_KEYWORDS = {
     "Descent",
 }
 KNOWN_KEYWORDS.update(ACTION_WORDS)
+# A keyword quantity is a single value or an inclusive range. Ranges accept the
+# en dash and the hyphen Magic Set Editor types by default: 1–4 and 1-4 both
+# stand, as do X-Y bounds.
+QUANTITY = r"(?:\d+|X)(?:\s?[-–]\s?(?:\d+|X))?"
 KEYWORD_PATTERNS = (
-    re.compile(r"Bounded \d+"),
-    re.compile(r"Detach (?:\d+|X)"),
-    re.compile(r"Mill (?:\d+|X|\d+–\d+)"),
-    re.compile(r"Scry \d+"),
-    re.compile(r"Ward \d+"),
-    re.compile(r"Slow Blink \d+ Any Creature"),
+    re.compile(rf"Bounded {QUANTITY}"),
+    re.compile(rf"Detach {QUANTITY}"),
+    re.compile(rf"Mill {QUANTITY}"),
+    re.compile(rf"Scry {QUANTITY}"),
+    re.compile(rf"Ward {QUANTITY}"),
+    re.compile(rf"Slow Blink {QUANTITY} Any Creature"),
     re.compile(r"Xyz Alternative Cost"),
-    re.compile(r"Detach (?:\d+|X) and Mill (?:\d+|X|\d+–\d+)"),
     re.compile(r"Exile \d+ [A-Za-z][A-Za-z0-9 +“”'’-]* from Grave", re.I),
     re.compile(r"On (?:Any |Opponent )?Cast(?: “[^“”]+”)?(?: (?:Ritual|Fusion|Synchro|Xyz|Link|Creature|non-creature))*", re.I),
     re.compile(r"Protection from (?:everything|[A-Za-z][A-Za-z-]*)", re.I),
