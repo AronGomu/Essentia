@@ -10,6 +10,16 @@ every line of `feedback.md` lands, and `cd website && npm run ci` +
 
 ## Scope
 
+**Amended 2026-08-09, after the T1–T7 review fanout.** The Goal above promises
+"every line of `feedback.md` lands", but the original Scope In covered only the
+`## Header Menubar and Header` and `## /archetypes` sections. The `## "New" Badge`
+and `## Card preview ruling text` sections were dropped silently. T9 and T12 close
+that gap; T8, T10, T11 and T13 close the defects the reviewers confirmed. Scope In
+therefore also covers `website/src/styles/global.css` (`.tile-badge`),
+`docs/keywords/`, the keyword→card-preview path, `website/tests/support/css.ts`,
+`website/shared/header-row.mjs`, `website/scripts/harden-csp.mjs` and
+`website/scripts/scan-dist.mjs`.
+
 - In: `website/src/layouts/BaseLayout.astro`, `website/src/components/Navigation.svelte`,
   `website/src/components/FindPalette.svelte`, `website/src/styles/global.css`,
   `website/scripts/check-header-row.mjs` (new), `website/shared/header-row.mjs` (new),
@@ -81,6 +91,12 @@ T7[T7: Catalog hero tightening]
 | T5  | Compact header + ⋯ menu              | T1      | At ≤44rem the header shows icons only and folds the three section links into a `⋯` popover       | `PLAN_2026_08_09_website-header-and-rail-pass/T5_compact-header-overflow-menu.md`     |
 | T6  | 400px single-row guard               | T5      | A wrapped header at ≤400px warns at build time and in the console; an e2e test pins one row      | `PLAN_2026_08_09_website-header-and-rail-pass/T6_header-single-row-guard.md`          |
 | T7  | Catalog hero tightening              | —       | The archetype hero row is narrower and centred; the hero art is gone on phones                   | `PLAN_2026_08_09_website-header-and-rail-pass/T7_catalog-hero-tightening.md`          |
+| T8  | CI-green + CSP truth                 | T1–T7   | `npm run test:e2e` exits 0 and no CSP-blocked markup ships                                        | `PLAN_2026_08_09_website-header-and-rail-pass/T8_ci-green-and-csp-truth.md`           |
+| T9  | "New" badge position                 | —       | The New badge sits on the artwork instead of over the mana cost                                   | `PLAN_2026_08_09_website-header-and-rail-pass/T9_new-badge-position.md`               |
+| T10 | Catalog hero fidelity                | T7      | Hero art hides with the single-column switch; both columns keep their size                        | `PLAN_2026_08_09_website-header-and-rail-pass/T10_hero-fidelity.md`                   |
+| T11 | Staged header degradation            | T5, T6  | The header sheds width in the three ordered stages feedback 8.6 specifies                          | `PLAN_2026_08_09_website-header-and-rail-pass/T11_staged-header-degradation.md`       |
+| T12 | Eight ruling keywords                | —       | The eight authored ruling keywords exist in docs and show in card preview                          | `PLAN_2026_08_09_website-header-and-rail-pass/T12_ruling-keywords.md`                 |
+| T13 | Give the guards teeth                | T8      | Each new guard fails when the regression it protects against is present                            | `PLAN_2026_08_09_website-header-and-rail-pass/T13_give-the-guards-teeth.md`           |
 
 ## Tickets
 
@@ -91,3 +107,9 @@ T7[T7: Catalog hero tightening]
 - [T5: Compact header + ⋯ menu](PLAN_2026_08_09_website-header-and-rail-pass/T5_compact-header-overflow-menu.md) — depends: T1
 - [T6: 400px single-row guard](PLAN_2026_08_09_website-header-and-rail-pass/T6_header-single-row-guard.md) — depends: T5
 - [T7: Catalog hero tightening](PLAN_2026_08_09_website-header-and-rail-pass/T7_catalog-hero-tightening.md) — depends: none
+- [T8: CI-green + CSP truth](PLAN_2026_08_09_website-header-and-rail-pass/T8_ci-green-and-csp-truth.md) — depends: T1–T7
+- [T9: "New" badge position](PLAN_2026_08_09_website-header-and-rail-pass/T9_new-badge-position.md) — depends: none
+- [T10: Catalog hero fidelity](PLAN_2026_08_09_website-header-and-rail-pass/T10_hero-fidelity.md) — depends: T7
+- [T11: Staged header degradation](PLAN_2026_08_09_website-header-and-rail-pass/T11_staged-header-degradation.md) — depends: T5, T6
+- [T12: Eight ruling keywords](PLAN_2026_08_09_website-header-and-rail-pass/T12_ruling-keywords.md) — depends: none
+- [T13: Give the guards teeth](PLAN_2026_08_09_website-header-and-rail-pass/T13_give-the-guards-teeth.md) — depends: T8

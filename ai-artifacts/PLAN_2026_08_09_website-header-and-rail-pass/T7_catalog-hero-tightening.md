@@ -302,4 +302,4 @@ build. **Do not touch the `.astro` pages.**
       style attribute (Environment block), filtered exactly as T6 did. `npm run
       build`'s `check-chrome.mjs` / `check-404.mjs` / `scan-dist.mjs` also
       reported clean across all 152 built pages.
-- [ ] commit msg draft: `fix(website): tighten the catalog hero and drop its art on phones`
+- [x] commit msg draft: `fix(website): tighten the catalog hero and drop its art on phones`

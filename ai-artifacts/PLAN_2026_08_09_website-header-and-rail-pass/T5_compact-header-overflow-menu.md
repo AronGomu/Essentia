@@ -390,4 +390,4 @@ Both survive the markup below because the full strings stay in the DOM inside
 - [x] manual: at 1400px the three section links read exactly as before; at 400px
       only icons remain and `⋯` opens the three links
 - [x] app functional — every route renders, no console error
-- [ ] commit msg draft: `feat(website): fold the header into icons and a ⋯ menu on phones`
+- [x] commit msg draft: `feat(website): fold the header into icons and a ⋯ menu on phones`
