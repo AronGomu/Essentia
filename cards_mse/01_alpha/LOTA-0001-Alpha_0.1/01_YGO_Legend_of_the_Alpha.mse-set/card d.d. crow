@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Bird</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> D.D. Crow and <b>Target</b> 1 card in any Grave; <b>Exile</b> it.
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> <i-auto>D.D. Crow</i-auto> and <b>Target</b> 1 card in any Grave; <b>Exile</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 1

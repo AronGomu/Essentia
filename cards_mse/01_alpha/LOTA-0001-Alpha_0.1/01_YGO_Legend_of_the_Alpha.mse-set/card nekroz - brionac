@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Activated Sorcery Hard)</i-auto> <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Brionac</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>; <b>Search</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature.
+		<i-auto>(1 - Activated Sorcery Hard)</i-auto> <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Brionac”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words>; <b>Search</b> 1 <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> Creature.
 		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Target</b> 1 Creature that was put onto Field from Sideboard; <b>Shuffle</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5

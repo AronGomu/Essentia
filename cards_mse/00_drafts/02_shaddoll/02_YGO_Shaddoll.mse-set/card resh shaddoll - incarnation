@@ -23,7 +23,7 @@ card:
 	rarity: common
 	rule_text:
 		<i-auto>(1 - Resolution Hard Linked)</i-auto> <b>Target</b> 1 <i-auto>“Shaddoll”</i-auto> Creature in Grave; <b>Return</b> it to Field face up or face down.
-		<i-auto>(2 - Activated <kw-a><nospellcheck><key>Flash</key></nospellcheck></kw-a> Hard Linked)</i-auto> <b>Exile from Grave</b> and <b>Exile</b> 1 other <i-auto>“Shaddoll”</i-auto> card from Grave; choose 1 Creature you control and turn it face up or face down.
+		<i-auto>(2 - Activated <kw-a><nospellcheck><key>Flash</key></nospellcheck></kw-a> Hard Linked)</i-auto> <b>Exile from Grave</b> and <b>Exile 1 other <i-auto>“Shaddoll”</i-auto> card from Grave</b>; choose 1 Creature you control and turn it face up or face down.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 015/025 C
 	card_code_text_2: 015/025 C

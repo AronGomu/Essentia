@@ -18,7 +18,7 @@ card:
 	rule_text:
 		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
 		<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>
-		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Exile</b> 0–2 “Burning Abyss” from Grave; <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Barbar</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> deals 1 damage to each opponent for each exiled.
+		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Exile</b> 0–2 <i-auto>“Burning Abyss”</i-auto> from Grave; <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Barbar”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words> deals 1 damage to each opponent for each exiled.
 	flavor_text: <i-flavor></i-flavor>
 	power: 4
 	toughness: 2

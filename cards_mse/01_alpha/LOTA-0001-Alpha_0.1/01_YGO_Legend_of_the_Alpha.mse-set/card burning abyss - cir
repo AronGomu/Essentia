@@ -18,7 +18,7 @@ card:
 	rule_text:
 		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
 		<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>
-		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Target</b> 1 “Burning Abyss” except “Burning Abyss - Cir” Creature in Grave; <b>Reanimate</b> it.
+		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Target</b> 1 <i-auto>“Burning Abyss”</i-auto> except <i-auto>Burning Abyss - Cir</i-auto> Creature in Grave; <b>Reanimate</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 4
 	toughness: 3

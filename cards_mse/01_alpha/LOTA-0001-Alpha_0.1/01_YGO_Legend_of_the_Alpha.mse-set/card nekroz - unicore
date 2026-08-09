@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Activated Sorcery Hard)</i-auto> <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Unicore</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> and <b>Target</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” in Grave; <b>Salvage</b> it.
+		<i-auto>(1 - Activated Sorcery Hard)</i-auto> <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Unicore”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words> and <b>Target</b> 1 <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> in Grave; <b>Salvage</b> it.
 		<i-auto>(2 - Static)</i-auto> Creatures put onto Field from Sideboard lose all their abilities.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5

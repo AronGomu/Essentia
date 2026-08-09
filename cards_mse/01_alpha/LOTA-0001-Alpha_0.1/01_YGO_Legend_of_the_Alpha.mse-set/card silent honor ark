@@ -17,8 +17,8 @@ card:
 	rarity: common
 	rule_text:
 		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 2</b> and <b>Target</b> 1 untapped Creature an opponent controls; <b>Attach</b> it to Silent Honor ARK.
-		<i-auto>(2 - Static)</i-auto> If Silent Honor ARK would be destroyed, <b>Detach 1</b> instead.
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 2</b> and <b>Target</b> 1 untapped Creature an opponent controls; <b>Attach</b> it to <i-auto>Silent Honor ARK</i-auto>.
+		<i-auto>(2 - Static)</i-auto> If <i-auto>Silent Honor ARK</i-auto> would be destroyed, <b>Detach 1</b> instead.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5
 	toughness: 2

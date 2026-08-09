@@ -23,7 +23,7 @@ card:
 		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Fusion Summon</b> — You may pay 5 life up to 3 times; for each payment, choose 1 of these <i-auto>(no target)</i-auto> effects:
 		- <b>Return</b> 1 non-Creature card from Grave to Hand.
 		- <b>Destroy</b> 3 non-Creature permanents.
-		- Put X +1/+1 counters on “Coordius”, where X is the difference between your life total and 1 opponent’s life total.
+		- Put X +1/+1 counters on <i-auto>“Coordius”</i-auto>, where X is the difference between your life total and 1 opponent’s life total.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7
 	toughness: 7

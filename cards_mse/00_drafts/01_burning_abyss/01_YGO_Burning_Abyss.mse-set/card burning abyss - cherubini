@@ -21,7 +21,7 @@ card:
 	rule_text:
 		<i>2 Creatures MV 1</i>
 		<i-auto>(1 - Static)</i-auto> <b>Bounded 1</b> — The bounded Creature gains <b>Effect <kw-a><nospellcheck><key>Indestructible</key></nospellcheck></kw-a></b>.
-		<i-auto>(2 - Static)</i-auto> If Cherubini would be destroyed, you may <b>Sacrifice</b> 1 other permanent instead.
+		<i-auto>(2 - Static)</i-auto> If <i-auto>“Cherubini”</i-auto> would be destroyed, you may <b>Sacrifice</b> 1 other permanent instead.
 		<i-auto>(3 - Activated Sorcery Soft)</i-auto> <b>Send</b> 1 Creature with MV 1 from Deck to Grave and <b>Target</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature; the target gets +X/+X to end turn, where X is its power.
 	flavor_text: <i-flavor></i-flavor>
 	power: 1
