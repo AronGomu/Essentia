@@ -1665,6 +1665,21 @@ html {
   .breadcrumb li:not(:last-child) {
     display: none;
   }
+  /* The last crumb is the only variable-width thing in the compact header.
+     Let it shrink and ellipsise rather than wrap the whole row. */
+  .breadcrumb {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .breadcrumb ol {
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  .breadcrumb li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   html[data-theme='spellbook'] body::after {
     left: 1rem;
   }

@@ -221,5 +221,44 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       </p>
       <CardQualityUpgrade />
     </footer>
+    <script is:inline>
+      // 400px is the narrowest supported width and the header must hold one
+      // row there. A wrap is reported, never thrown: the page stays usable,
+      // the regression is visible in the console and in `npm run build`.
+      (() => {
+        const check = () => {
+          if (window.innerWidth > 400) return;
+          const header = document.querySelector('.site-header');
+          if (!header) return;
+          const items = header.querySelectorAll(
+            '.compact-brand, .drawer-trigger, .breadcrumb, .utility-nav, .search-trigger',
+          );
+          // The compact header's controls have different authored heights
+          // (T5: 32px brand, ~36-44px drawer trigger, ~39px utility-more,
+          // ~48-49px search trigger) and are vertically centered, so their
+          // `top` differs by up to ~17px even on one visual row. Cluster
+          // sorted tops instead of comparing exact rounded values: a gap
+          // bigger than one row's own height variance means a real wrap.
+          const tops = [];
+          for (const item of items) {
+            if (!item.getClientRects().length) continue;
+            tops.push(item.getBoundingClientRect().top);
+          }
+          tops.sort((a, b) => a - b);
+          let rowCount = tops.length ? 1 : 0;
+          for (let i = 1; i < tops.length; i++) {
+            if (tops[i] - tops[i - 1] > 20) rowCount++;
+          }
+          const rows = { size: rowCount };
+          if (rows.size > 1) {
+            console.warn(
+              `[essentia] site-header wraps to ${rows.size} rows at ${window.innerWidth}px`,
+            );
+          }
+        };
+        addEventListener('load', check);
+        addEventListener('resize', check);
+      })();
+    </script>
   </body>
 </html>

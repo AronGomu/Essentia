@@ -51,3 +51,13 @@
 - [ ] Click outside the open popover (or press Escape): it closes.
 - [ ] Resize the browser slowly from 1400px to 390px and back: the switch between the inline row and the `⋯` button happens exactly at 44rem (704px) with no layout jump or flash of unstyled content.
 - [ ] Open the browser devtools console at 400px while opening/closing the popover: no console errors.
+
+## T6 header-single-row-guard
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open DevTools at exactly 400×800 on `/cards/ash-blossom-and-joyous-spring/`: the header stays one row (brand, hamburger icon, breadcrumb, `⋯` button, Find icon all sit on the same line — no wrap).
+- [ ] At 400×800, the breadcrumb's last crumb ("Ash Blossom & Joyous Spring") is truncated with an ellipsis rather than wrapping the header to a second line.
+- [ ] With the console open at 400×800, reload the page: no `[essentia] site-header wraps to …` warning appears and no console error appears.
+- [ ] Resize the window from 401px down to 400px and back while watching the console: the wrap warning never appears at any width above 400px (the guard is a no-op there by design).
+- [ ] Temporarily shrink the window well below 400px (e.g. 300px): if the header genuinely wraps, confirm a `[essentia] site-header wraps to N rows at …px` warning appears in the console and the page keeps working (no thrown error, nothing broken).
+- [ ] Run `cd website && npm run build` from a terminal: confirm the build completes and exits 0 whether or not a `[warn] site-header may wrap …` line is printed (it should NOT print in the current checkout, since the shipped budget fits).
+- [ ] Visit `/` and `/archetypes/burning-abyss/` at 400×800: both hold a single header row, same as the card page above.

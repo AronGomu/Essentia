@@ -36,6 +36,7 @@ export default tseslint.config(
         URL: 'readonly',
         URLSearchParams: 'readonly',
         clearTimeout: 'readonly',
+        console: 'readonly',
         document: 'readonly',
         history: 'readonly',
         location: 'readonly',

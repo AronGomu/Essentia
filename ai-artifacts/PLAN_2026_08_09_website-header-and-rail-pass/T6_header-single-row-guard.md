@@ -48,6 +48,93 @@ Other facts:
 - `BaseLayout.astro` already carries one `<script is:inline>` in `<head>` (the
   rail-state pre-paint script); the page CSP allows `'unsafe-inline'` scripts.
 
+### Environment — verified by the parent, do not rediscover
+
+- **Playwright cannot launch natively on this host.** It is NixOS; the downloaded
+  chromium/firefox/webkit binaries fail on missing `libglib-2.0.so.0` /
+  `libgtk-3.so.0`, and `playwright install-deps` needs sudo, which is blocked.
+  Wherever this ticket says to run Playwright, run it through Docker instead:
+
+  ```bash
+  docker pull mcr.microsoft.com/playwright:v1.61.1-noble   # once, separately
+  cd /home/aron/projects/essentia/website && docker run --rm --ipc=host \
+    -v /home/aron/projects/essentia:/work -w /work/website \
+    mcr.microsoft.com/playwright:v1.61.1-noble \
+    bash -c "npm ci --no-audit --no-fund && npx playwright test tests/e2e/<spec>.spec.ts"
+  ```
+
+  The in-container `npm ci` is required and must run first, in the same
+  `bash -c`. `playwright.config.ts` starts its own web server
+  (`npm run build && node scripts/serve-dist.mjs`) inside the container, and its
+  three projects are chromium, firefox and webkit.
+
+- **After every Docker Playwright run, delete `website/playwright-report/` and
+  `website/test-results/` before running `npm run ci` on the host.** They are
+  gitignored test output, but `astro check` walks them anyway and dies with
+  `FATAL ERROR: Ineffective mark-compacts near heap limit — JavaScript heap out
+  of memory`. Deleting them makes `npm run ci` exit 0. Then run
+  `find /home/aron/projects/essentia/website -not -user aron` and confirm it is
+  empty (no root-owned files left by the bind mount).
+
+- **One e2e row already fails on `main`, unrelated to this plan.**
+  `empty publication home is English and accessible`
+  (`website/tests/e2e/showcase.spec.ts:7`) asserts the heading
+  `No release packages published yet.`, which `website/src/pages/index.astro:142`
+  renders only when no sections are published. Sections *are* published in this
+  checkout, so the assertion is stale. It is out of this plan's scope — **do not
+  fix it, do not touch `index.astro`**. Treat an e2e gate as green when that
+  single row is the only failure.
+
+- **Pixel tolerances written into this ticket's own test code are guidance, not
+  contract.** If a tolerance turns out to be unsatisfiable purely because of an
+  untouched, out-of-scope value (container padding, border, authored `clamp()`),
+  widen the tolerance to that structural value plus a small slack and add a code
+  comment naming where the number comes from. Do **not** change the out-of-scope
+  CSS to chase the number, and do **not** report it as a plan defect — this
+  paragraph is the parent's standing decision on it. Only report a plan defect
+  if the *behaviour* the ticket asks for is impossible, not merely a threshold.
+
+- **Only 3 of the 5 configured sections actually publish in this checkout.**
+  The sole release package is `LOTA-0001-Alpha_0.1`, so the built site renders
+  Non-archetype, Burning Abyss and Nekroz; Shaddoll and Spellbook have no
+  released cards and therefore no rail entry. Any e2e assertion that enumerates
+  rail labels must expect those three, not five. Do not touch `cards_mse/` to
+  change this — it is out of scope.
+
+- **The built site runs a hashed CSP — inline `style="…"` attributes are inert.**
+  `website/scripts/harden-csp.mjs` rewrites `style-src 'self' 'unsafe-inline'`
+  and `script-src 'self' 'unsafe-inline'` (as authored in
+  `BaseLayout.astro:120`) into specific `sha256-` allowlists on every
+  `npm run build`. A `<style>` block in the page is hashed and works; a per-element
+  `style` attribute is NOT, so its custom properties never reach
+  `getComputedStyle`. This bit T4, which had to move its per-item tint to a
+  CSSOM `setProperty` pass in `onMount`. `npm run dev` keeps `'unsafe-inline'`,
+  so a bug here reproduces only in the built site — always confirm through the
+  Docker Playwright runbook, which serves `dist`. The native HTML `popover`
+  attribute needs no JS and is unaffected.
+
+- **T5 shipped (`d712955`) and its contract is now live.** At ≤44rem the
+  header's laid-out children are exactly `.compact-brand` (32px letter mark),
+  `.drawer-trigger` (icon-only), `.utility-nav` (containing only the 2.45rem
+  `.utility-more` `⋯` button — the native popover itself is out of flow), and
+  `.search-trigger` (icon-only, its `<kbd>` hidden). The section links moved
+  from `.utility-nav a` into `.utility-menu a` inside the popover. One known
+  cosmetic leftover: a now-dead `.utility-nav a` rule remains in the phone
+  `@media` block under `@layer utilities` — harmless, do not chase it.
+
+- **T1 shipped (`9057dae`) and its contract is now live.** `<Navigation>` renders
+  **inside** `<header class="site-header">`, directly after `.compact-brand`.
+  The header's laid-out children, in order, are `.compact-brand`,
+  `.drawer-trigger` (≤64rem only), `.breadcrumb` (optional), `.utility-nav`,
+  `.search-trigger`. `.site-header` no longer has `margin-left` or a
+  `padding-left` hamburger reservation, and its `z-index` is
+  `calc(var(--z-sticky) + 2)`; `.desktop-catalog` now has
+  `inset: var(--header) auto 0 0`. `.site-header` keeps its authored
+  `padding: 0.7rem clamp(1rem, 3vw, 3rem)`, so `.compact-brand` sits at
+  `x = 42` at a 1400px viewport — do not assert a tighter left edge than 48px,
+  and do not change that padding.
+
+
 ## Requirements
 
 1. New module `website/shared/header-row.mjs` exports `COMPACT_VIEWPORT_PX`,
@@ -102,12 +189,12 @@ Other facts:
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/header-row.test.ts` with the eleven unit rows
+- [x] 1. Create `website/tests/unit/header-row.test.ts` with the eleven unit rows
       above, importing `headerRowBudget` from `../../shared/header-row.mjs` and
       `resolve` from `../support/css`.
-- [ ] 2. Run `cd website && npx vitest run tests/unit/header-row.test.ts`;
+- [x] 2. Run `cd website && npx vitest run tests/unit/header-row.test.ts`;
       confirm red.
-- [ ] 3. Create `website/shared/header-row.mjs`:
+- [x] 3. Create `website/shared/header-row.mjs`:
       ```js
       /**
        * Width budget for the compact site header.
@@ -154,7 +241,7 @@ Other facts:
         };
       }
       ```
-- [ ] 4. Create `website/scripts/check-header-row.mjs`:
+- [x] 4. Create `website/scripts/check-header-row.mjs`:
       ```js
       import { COMPACT_VIEWPORT_PX, headerRowBudget } from '../shared/header-row.mjs';
 
@@ -171,9 +258,9 @@ Other facts:
         );
       }
       ```
-- [ ] 5. In `website/package.json`, append ` && node scripts/check-header-row.mjs`
+- [x] 5. In `website/package.json`, append ` && node scripts/check-header-row.mjs`
       to the `build` script.
-- [ ] 6. In `website/src/layouts/BaseLayout.astro`, add a second
+- [x] 6. In `website/src/layouts/BaseLayout.astro`, add a second
       `<script is:inline>` immediately before `</body>` (after the `<footer>`):
       ```astro
       <script is:inline>
@@ -207,7 +294,7 @@ Other facts:
       (The class list, not `header.children`: `<Navigation>` and `<FindPalette>`
       are wrapped in `astro-island`, which is `display: contents` and has no box
       of its own.)
-- [ ] 7. In `website/src/styles/global.css`, in `@media (max-width: 44rem)` — the
+- [x] 7. In `website/src/styles/global.css`, in `@media (max-width: 44rem)` — the
       block that already holds `.breadcrumb li:not(:last-child) { display: none }`
       — add:
       ```css
@@ -227,9 +314,9 @@ Other facts:
         white-space: nowrap;
       }
       ```
-- [ ] 8. Run `cd website && npx vitest run tests/unit/header-row.test.ts`;
+- [x] 8. Run `cd website && npx vitest run tests/unit/header-row.test.ts`;
       confirm green.
-- [ ] 9. Create `website/tests/e2e/header-row.spec.ts`:
+- [x] 9. Create `website/tests/e2e/header-row.spec.ts`:
       ```ts
       import { test, expect } from '@playwright/test';
 
@@ -270,13 +357,13 @@ Other facts:
         expect(messages.filter((m) => /site-header wraps/.test(m.text))).toEqual([]);
       });
       ```
-- [ ] 10. Run `cd website && npx playwright test tests/e2e/header-row.spec.ts --project=chromium`; confirm green.
-- [ ] 11. Prove the warning path by hand: temporarily set
+- [x] 10. Run `cd website && npx playwright test tests/e2e/header-row.spec.ts --project=chromium`; confirm green.
+- [x] 11. Prove the warning path by hand: temporarily set
       `BREADCRUMB_MIN_PX = 400` in `shared/header-row.mjs`, run
       `cd website && node scripts/check-header-row.mjs`, confirm one `[warn] …`
       line and `echo $?` prints `0`. Restore `64`.
-- [ ] 12. Run `cd website && npm run format && npm run ci`.
-- [ ] 13. Run `graphify update .` from the repo root.
+- [x] 12. Run `cd website && npm run format && npm run ci`.
+- [x] 13. Run `graphify update .` from the repo root.
 
 ## Outputs
 
@@ -292,10 +379,10 @@ Other facts:
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/header-row.test.ts` passes
-- [ ] `cd website && npm run ci` passes and prints no `[warn] site-header` line
-- [ ] `cd website && npx playwright test tests/e2e/header-row.spec.ts` passes on all three projects
-- [ ] manual: DevTools at 400×800 on `/cards/ash-blossom-and-joyous-spring/` —
+- [x] `cd website && npx vitest run tests/unit/header-row.test.ts` passes
+- [x] `cd website && npm run ci` passes and prints no `[warn] site-header` line
+- [x] `cd website && npx playwright test tests/e2e/header-row.spec.ts` passes on all three projects
+- [x] manual: DevTools at 400×800 on `/cards/ash-blossom-and-joyous-spring/` —
       one header row, crumb ellipsised, console clean
-- [ ] app functional — every route renders, no console error
+- [x] app functional — every route renders, no console error
 - [ ] commit msg draft: `test(website): warn when the compact header stops fitting one row`
