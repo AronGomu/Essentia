@@ -2,6 +2,8 @@
 
 Event keyword introducing ability is bold followed by em dash. Combined defined events use lowercase bold ` or ` only; never `/` or uppercase `OR`.
 
+A combined event is one documented token. Two separately documented events joined for one ability keep their own bold and leave the connector plain: `**After Attack** or **After Block**`. Prefer this form when both halves are documented on their own.
+
 Printed event keywords must match the documented token exactly, including Title Case of fixed words. Write `**On Exile**`, never `on Exile`, `ON EXILE`, or other casing variants. Applies to the whole documented event family.
 
 Controller-default event looks at your side. Do not add `Your`. Use `Opponent` or `Any` when scope expands.
@@ -13,7 +15,8 @@ Controller-default event looks at your side. Do not add `Your`. Use `Opponent` o
 - **On Block** — this creature blocks.
 - **On Blocked** — this creature becomes blocked.
 - **On Attack or Block** — this creature attacks or blocks.
-- **After Attack or Block** — next time you gain priority after combat damage resolves.
+- **After Attack** — this creature attacked; next time you gain priority after combat damage resolves.
+- **After Block** — this creature blocked; next time you gain priority after combat damage resolves.
 - **On Block or Blocked** — this creature blocks or becomes blocked.
 - **On Fusion Summon** — Fusion Creature enters via own Fusion Summon; generic movement does not trigger.
 - **On Link Summon** — Link Creature enters via own Link Summon; generic movement does not trigger.

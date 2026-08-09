@@ -126,6 +126,8 @@ ABILITY_METADATA = {
 }
 
 KNOWN_KEYWORDS = {
+    "After Attack",
+    "After Block",
     "Alternative Cost",
     "Attach",
     "Bounce",
