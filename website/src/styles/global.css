@@ -832,10 +832,16 @@
     padding: 0.25rem 0.55rem;
     white-space: nowrap;
   }
+  /* The row is capped well inside `.page-shell`'s 88rem so the prose and the
+     art meet near the middle of the page instead of at its two edges. Both
+     tracks keep their authored ratios — only the row width and the gutter
+     between them shrink. */
   .catalog-hero {
     display: grid;
+    width: min(100%, 72rem);
+    margin-inline: auto;
     grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-    gap: clamp(2rem, 6vw, 7rem);
+    gap: clamp(1.5rem, 2.5vw, 3rem);
     align-items: center;
     border-bottom: 1px solid var(--ruleline);
     padding-block: var(--space-2) var(--space-4);
@@ -1123,6 +1129,11 @@
   .compact-brand img {
     height: 2rem;
     width: 2rem;
+  }
+  /* A phone gets the prose and the gallery; the square hero art costs a
+     whole viewport of scrolling before the first card. */
+  .catalog-hero-art {
+    display: none;
   }
   .search-trigger {
     min-width: 0;

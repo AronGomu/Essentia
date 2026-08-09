@@ -61,3 +61,14 @@
 - [ ] Temporarily shrink the window well below 400px (e.g. 300px): if the header genuinely wraps, confirm a `[essentia] site-header wraps to N rows at …px` warning appears in the console and the page keeps working (no thrown error, nothing broken).
 - [ ] Run `cd website && npm run build` from a terminal: confirm the build completes and exits 0 whether or not a `[warn] site-header may wrap …` line is printed (it should NOT print in the current checkout, since the shipped budget fits).
 - [ ] Visit `/` and `/archetypes/burning-abyss/` at 400×800: both hold a single header row, same as the card page above.
+
+## T7 catalog-hero-tightening
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` at 1440px: the prose and the hero art read as one row capped well short of the browser edges, roughly centred on the page, with a visibly tighter gutter between them than before this change.
+- [ ] At 1440px, the two columns keep their prior proportions — the prose column is still noticeably wider than the art column, just closer together.
+- [ ] Resize down to 900px (the `64rem` stacked layout): the hero collapses to one column, the art still shows, capped at `24rem` wide and centred — unchanged from before this change.
+- [ ] Resize down to 704px and 704.1px: the hero art is still visible on both sides of that boundary (this pass only removes it below 44rem / 704px, not at the 64rem stack point).
+- [ ] Resize down to 390px (a phone width): the hero art disappears entirely — no broken image box, no leftover whitespace where it was — and the archetype name heading plus the first card in the gallery below are visible without excess scrolling.
+- [ ] With a screen reader (or the accessibility tree inspector), confirm at 390px that the hidden hero art (`role="img"`, `tabindex="0"`) is not announced and not reachable by Tab — it should be fully removed from the accessibility tree, not just visually hidden.
+- [ ] Repeat the 1440px and 390px checks on `/sections/non-archetype/non-archetype/` (the non-archetype hero shares the same CSS class) to confirm both hero routes moved together.
+- [ ] Open the browser devtools console while loading `/archetypes/nekroz/` at both 1440px and 390px: no console errors other than the known, pre-existing CSP-violation message for the inert `--nav-tint` inline style (queued separately, not part of this ticket).

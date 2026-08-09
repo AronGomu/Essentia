@@ -322,3 +322,24 @@ test('header compacts to icons and a ⋯ menu at 400px', async ({ page }) => {
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
+
+test('the archetype hero drops its art on a phone', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto(urlFor('/archetypes/burning-abyss/'));
+  await expect(page.locator('.catalog-hero-art')).toBeHidden();
+  await expect(
+    page.getByRole('heading', { name: 'Burning Abyss', level: 1 }),
+  ).toBeVisible();
+  await expect(page.locator('.gallery-card').first()).toBeVisible();
+});
+
+test('the archetype hero columns sit close on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/archetypes/burning-abyss/'));
+  const text = (await page
+    .locator('.catalog-hero > div')
+    .first()
+    .boundingBox())!;
+  const art = (await page.locator('.catalog-hero-art').boundingBox())!;
+  expect(art.x - (text.x + text.width)).toBeLessThanOrEqual(56);
+});

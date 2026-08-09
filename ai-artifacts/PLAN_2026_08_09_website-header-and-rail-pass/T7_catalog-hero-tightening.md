@@ -65,6 +65,84 @@ every `archetypes/**` and `sections/**` page to carry a
 gate is unaffected; removing the element from the `.astro` pages would fail the
 build. **Do not touch the `.astro` pages.**
 
+### Environment — verified by the parent, do not rediscover
+
+- **Playwright cannot launch natively on this host.** It is NixOS; the downloaded
+  chromium/firefox/webkit binaries fail on missing `libglib-2.0.so.0` /
+  `libgtk-3.so.0`, and `playwright install-deps` needs sudo, which is blocked.
+  Wherever this ticket says to run Playwright, run it through Docker instead:
+
+  ```bash
+  docker pull mcr.microsoft.com/playwright:v1.61.1-noble   # once, separately
+  cd /home/aron/projects/essentia/website && docker run --rm --ipc=host \
+    -v /home/aron/projects/essentia:/work -w /work/website \
+    mcr.microsoft.com/playwright:v1.61.1-noble \
+    bash -c "npm ci --no-audit --no-fund && npx playwright test tests/e2e/<spec>.spec.ts"
+  ```
+
+  The in-container `npm ci` is required and must run first, in the same
+  `bash -c`. `playwright.config.ts` starts its own web server
+  (`npm run build && node scripts/serve-dist.mjs`) inside the container, and its
+  three projects are chromium, firefox and webkit.
+
+- **After every Docker Playwright run, delete `website/playwright-report/` and
+  `website/test-results/` before running `npm run ci` on the host.** They are
+  gitignored test output, but `astro check` walks them anyway and dies with
+  `FATAL ERROR: Ineffective mark-compacts near heap limit — JavaScript heap out
+  of memory`. Deleting them makes `npm run ci` exit 0. Then run
+  `find /home/aron/projects/essentia/website -not -user aron` and confirm it is
+  empty (no root-owned files left by the bind mount).
+
+- **One e2e row already fails on `main`, unrelated to this plan.**
+  `empty publication home is English and accessible`
+  (`website/tests/e2e/showcase.spec.ts:7`) asserts the heading
+  `No release packages published yet.`, which `website/src/pages/index.astro:142`
+  renders only when no sections are published. Sections *are* published in this
+  checkout, so the assertion is stale. It is out of this plan's scope — **do not
+  fix it, do not touch `index.astro`**. Treat an e2e gate as green when that
+  single row is the only failure.
+
+- **Pixel tolerances written into this ticket's own test code are guidance, not
+  contract.** If a tolerance turns out to be unsatisfiable purely because of an
+  untouched, out-of-scope value (container padding, border, authored `clamp()`),
+  widen the tolerance to that structural value plus a small slack and add a code
+  comment naming where the number comes from. Do **not** change the out-of-scope
+  CSS to chase the number, and do **not** report it as a plan defect — this
+  paragraph is the parent's standing decision on it. Only report a plan defect
+  if the *behaviour* the ticket asks for is impossible, not merely a threshold.
+
+- **Only 3 of the 5 configured sections actually publish in this checkout.**
+  The sole release package is `LOTA-0001-Alpha_0.1`, so the built site renders
+  Non-archetype, Burning Abyss and Nekroz; Shaddoll and Spellbook have no
+  released cards and therefore no rail entry. Any e2e assertion that enumerates
+  rail labels must expect those three, not five. Do not touch `cards_mse/` to
+  change this — it is out of scope.
+
+- **The built site runs a hashed CSP — inline `style="…"` attributes are inert.**
+  `website/scripts/harden-csp.mjs` rewrites `style-src 'self' 'unsafe-inline'`
+  and `script-src 'self' 'unsafe-inline'` (as authored in
+  `BaseLayout.astro:120`) into specific `sha256-` allowlists on every
+  `npm run build`. A `<style>` block in the page is hashed and works; a per-element
+  `style` attribute is NOT, so its custom properties never reach
+  `getComputedStyle`. This bit T4, which had to move its per-item tint to a
+  CSSOM `setProperty` pass in `onMount`. `npm run dev` keeps `'unsafe-inline'`,
+  so a bug here reproduces only in the built site — always confirm through the
+  Docker Playwright runbook, which serves `dist`. The native HTML `popover`
+  attribute needs no JS and is unaffected.
+
+- **T1 shipped (`9057dae`) and its contract is now live.** `<Navigation>` renders
+  **inside** `<header class="site-header">`, directly after `.compact-brand`.
+  The header's laid-out children, in order, are `.compact-brand`,
+  `.drawer-trigger` (≤64rem only), `.breadcrumb` (optional), `.utility-nav`,
+  `.search-trigger`. `.site-header` no longer has `margin-left` or a
+  `padding-left` hamburger reservation, and its `z-index` is
+  `calc(var(--z-sticky) + 2)`; `.desktop-catalog` now has
+  `inset: var(--header) auto 0 0`. `.site-header` keeps its authored
+  `padding: 0.7rem clamp(1rem, 3vw, 3rem)`, so `.compact-brand` sits at
+  `x = 42` at a 1400px viewport — do not assert a tighter left edge than 48px,
+  and do not change that padding.
+
+
 ## Requirements
 
 1. `.catalog-hero` gets `width: min(100%, 72rem); margin-inline: auto;` so the
@@ -111,12 +189,14 @@ build. **Do not touch the `.astro` pages.**
 
 ## Impl steps
 
-- [ ] 1. Create `website/tests/unit/catalog-hero-layout.test.ts` with the seven
+- [x] 1. Create `website/tests/unit/catalog-hero-layout.test.ts` with the seven
       unit rows above, importing `resolve` from `../support/css` and reading
-      `../../src/styles/global.css`.
-- [ ] 2. Run `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts`;
-      confirm red.
-- [ ] 3. In `website/src/styles/global.css`, replace the `.catalog-hero` block
+      `../../src/styles/global.css`. Evidence: file created at
+      `website/tests/unit/catalog-hero-layout.test.ts`.
+- [x] 2. Run `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts`;
+      confirm red. Evidence: 3 failed | 4 passed (7) — width/gap/mobile-display
+      failing as expected, ratio/padding/tablet/stacked passing (unchanged).
+- [x] 3. In `website/src/styles/global.css`, replace the `.catalog-hero` block
       with:
       ```css
       /* The row is capped well inside `.page-shell`'s 88rem so the prose and the
@@ -134,7 +214,7 @@ build. **Do not touch the `.astro` pages.**
         padding-block: var(--space-2) var(--space-4);
       }
       ```
-- [ ] 4. In `@media (max-width: 44rem)` — the block near line 1087 that holds
+- [x] 4. In `@media (max-width: 44rem)` — the block near line 1087 that holds
       `.compact-brand img`, `.search-trigger`, `.site-footer`, `.section-heading`,
       `.card-detail` — add:
       ```css
@@ -144,12 +224,12 @@ build. **Do not touch the `.astro` pages.**
         display: none;
       }
       ```
-- [ ] 5. Run
+- [x] 5. Run
       `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts tests/unit/catalog-hero-art.test.ts`;
       both must be green. If `catalog-hero-art.test.ts` broke, the `.catalog-hero`
       block lost `padding-block` or grew a `padding-bottom` — fix that, do not
-      edit the old test.
-- [ ] 6. Append to `website/tests/e2e/showcase.spec.ts`:
+      edit the old test. Evidence: `Test Files 2 passed (2)`, `Tests 17 passed (17)`.
+- [x] 6. Append to `website/tests/e2e/showcase.spec.ts`:
       ```ts
       test('the archetype hero drops its art on a phone', async ({ page }) => {
         await page.setViewportSize({ width: 390, height: 800 });
@@ -167,12 +247,26 @@ build. **Do not touch the `.astro` pages.**
         expect(art.x - (text.x + text.width)).toBeLessThanOrEqual(56);
       });
       ```
-- [ ] 7. Run `cd website && npx playwright test tests/e2e/showcase.spec.ts --project=chromium`; confirm green.
-- [ ] 8. Run `cd website && npm run build` alone and confirm `check-chrome.mjs`
+- [x] 7. Run `cd website && npx playwright test tests/e2e/showcase.spec.ts --project=chromium`; confirm green.
+      Evidence (via Docker runbook): 16 passed, 1 failed — the known pre-existing
+      `empty publication home is English and accessible` row (Environment block).
+      Ran on all three projects too: 46 passed, 3 failed (same one row × 3
+      browsers), 2 skipped; the two new hero tests passed on chromium, firefox,
+      and webkit.
+- [x] 8. Run `cd website && npm run build` alone and confirm `check-chrome.mjs`
       still reports nothing for `archetypes/**` and `sections/**` (the hero
-      markup is untouched, only its CSS changed).
-- [ ] 9. Run `cd website && npm run format && npm run ci`.
-- [ ] 10. Run `graphify update .` from the repo root.
+      markup is untouched, only its CSS changed). Evidence: build exited 0,
+      printed `csp: hashed inline content in 152 HTML files`, `dist scan: clean`,
+      `404: redirects to site root`, `chrome: 152 pages carry the site header`
+      — `check-chrome.mjs` throws on any problem and did not.
+- [x] 9. Run `cd website && npm run format && npm run ci`. Evidence: format
+      ran clean (only whitespace-normalized the two files I touched); `npm run ci`
+      exited 0 — `Test Files 58 passed (58)`, `Tests 631 passed (631)`,
+      `astro check` reported `0 errors`, build/csp/dist-scan/404/chrome checks
+      all clean.
+- [x] 10. Run `graphify update .` from the repo root. Evidence: "Rebuilt: 2994
+       nodes, 4219 edges, 305 communities"; "graph.json, graph.html and
+       GRAPH_REPORT.md updated in graphify-out".
 
 ## Outputs
 
@@ -185,10 +279,27 @@ build. **Do not touch the `.astro` pages.**
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts tests/unit/catalog-hero-art.test.ts` passes
-- [ ] `cd website && npm run ci` passes
-- [ ] `cd website && npx playwright test tests/e2e/showcase.spec.ts` passes on all three projects
-- [ ] manual: `/archetypes/nekroz/` at 1440px — the prose and the art read as one
-      centred row; at 390px the art is gone and the first card is above the fold
-- [ ] app functional — every route renders, no console error
+- [x] `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts tests/unit/catalog-hero-art.test.ts` passes.
+      Evidence: `Test Files 2 passed (2)`, `Tests 17 passed (17)`.
+- [x] `cd website && npm run ci` passes. Evidence: exit 0, `Test Files 58 passed (58)`,
+      `Tests 631 passed (631)`, `astro check` 0 errors.
+- [x] `cd website && npx playwright test tests/e2e/showcase.spec.ts` passes on all three projects.
+      Evidence (via Docker runbook): 46 passed, 3 failed (the single known
+      pre-existing `empty publication home is English and accessible` row × 3
+      browsers, named in the Environment block), 2 skipped. The two new hero
+      tests passed on chromium, firefox and webkit.
+- [x] manual: `/archetypes/nekroz/` at 1440px — the prose and the art read as one
+      centred row; at 390px the art is gone and the first card is above the fold.
+      Evidence: ad-hoc Playwright check (via Docker, deleted after use) against
+      `/archetypes/nekroz/` — `.catalog-hero-art` visible at 1440px with the
+      `Nekroz` h1, `.catalog-hero-art` hidden at 390px, first `.gallery-card`
+      bounding box `{x:16, y:747.8, width:358, height:553.7}` — inside the
+      390×800 phone viewport, i.e. above the fold.
+- [x] app functional — every route renders, no console error. Evidence: same
+      ad-hoc check captured `page.on('console', 'error')` across both viewport
+      loads of `/archetypes/nekroz/`: 0 non-CSP errors; the only errors were the
+      known, out-of-scope CSP-violation messages from the inert `--nav-tint`
+      style attribute (Environment block), filtered exactly as T6 did. `npm run
+      build`'s `check-chrome.mjs` / `check-404.mjs` / `scan-dist.mjs` also
+      reported clean across all 152 built pages.
 - [ ] commit msg draft: `fix(website): tighten the catalog hero and drop its art on phones`
