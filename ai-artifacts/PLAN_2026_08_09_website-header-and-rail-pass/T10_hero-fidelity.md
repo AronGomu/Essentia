@@ -329,4 +329,9 @@ directive together.
       warnings`), `Tests  639 passed (639)`, and the full build with
       `csp: hashed inline content in 152 HTML files` / `dist scan: clean`.
 
-- [ ] commit msg draft: `fix(website): hide the hero art with the single-column switch and hold the column sizes`
+- [x] commit msg draft: `fix(website): hide the hero art with the single-column switch and hold the column sizes`
+
+      Committed verbatim as `baa47b8` (5 files, +308/−37) and pushed to
+      `origin/plan/website-header-and-rail-pass` (`25ec83c..baa47b8`). The
+      modified `blog/2026-08-08-lota-alpha-v0-1-presentation.md` is the user's
+      own writing and was deliberately left unstaged.
