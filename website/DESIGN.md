@@ -125,7 +125,9 @@ inside `.site-header`) and nowhere else in the shell. The left rail carries no
 brand of any kind, so collapsing or hiding the rail can never take the
 identity off the page; the header is always present, at every width. The
 header is the full width of the viewport and paints above the rail; the rail
-starts at the header's bottom border.
+starts at the header's bottom border. Below 44rem the header keeps only the
+mark and three icon controls — Catalog, ⋯ sections, Find — with every label
+hidden by CSS and preserved as an `aria-label`.
 
 **The Untouched Mark Rule.** The mark is never recoloured, tinted, outlined,
 rotated, stretched, given a drop shadow, or placed on an archetype accent

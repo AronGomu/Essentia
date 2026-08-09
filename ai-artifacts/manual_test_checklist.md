@@ -40,3 +40,14 @@
 - [ ] Narrow to a phone width (390px) and open the hamburger drawer: the same tints (Burning Abyss orange, Nekroz blue, Non-archetype black) appear in the drawer's list, and hovering/tapping deepens them the same way.
 - [ ] Open the browser devtools console while loading the page: no CSP violation reports and no other console errors.
 - [ ] `cd website && npm run dev` (unhardened dev CSP), open at 1400px: the same tints render correctly (the dev-mode CSP still allows the plain inline `style=""` attribute, so this should look identical to the production build).
+
+## T5 compact-header-overflow-menu
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site at 1400px: the header shows the brand, the hamburger drawer trigger, and the utility nav as a plain inline row of three text links — "Learn about Essentia", "Blog", "Decks" — exactly as before this change; no `⋯` button is visible.
+- [ ] Narrow the browser to 400px width: the utility nav collapses to a single small square `⋯` button (labelled "More sections"); the "Learn about Essentia" text link is not visible anywhere in the header.
+- [ ] At 400px, the drawer trigger and the Find trigger show as icon-only squares (`☰` and `⌕`) with no visible text label.
+- [ ] At 400px, click the `⋯` button: a small popover panel opens below the header at the right edge, listing "Learn", "Blog", "Decks" (short labels).
+- [ ] With the popover open, inspect each link's accessible name via a screen reader or the browser's accessibility tree inspector: the docs link announces "Learn about Essentia" even though only "Learn" is visible; the drawer trigger announces "Catalog" (or "Docs & blog" in reading mode); the Find trigger announces "Find".
+- [ ] Click outside the open popover (or press Escape): it closes.
+- [ ] Resize the browser slowly from 1400px to 390px and back: the switch between the inline row and the `⋯` button happens exactly at 44rem (704px) with no layout jump or flash of unstyled content.
+- [ ] Open the browser devtools console at 400px while opening/closing the popover: no console errors.

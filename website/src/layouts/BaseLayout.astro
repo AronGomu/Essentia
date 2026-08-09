@@ -161,19 +161,39 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       />
       {breadcrumb && <Breadcrumb items={breadcrumb} />}
       <nav class="utility-nav" aria-label="Sections">
-        <a
-          href={`${base}docs/`}
-          aria-current={section === 'docs/' ? 'page' : undefined}
-          >Learn about Essentia</a
+        <!-- Native popover: no island, no script, and it survives the page CSP.
+             Above 44rem the author `display` on `.utility-menu` beats the UA
+             `[popover]:not(:popover-open) { display: none }`, so the three
+             links simply lay out inline and the ⋯ trigger is hidden. -->
+        <button
+          class="utility-more"
+          popovertarget="utility-menu"
+          aria-label="More sections"><span aria-hidden="true">⋯</span></button
         >
-        <a
-          href={`${base}blog/`}
-          aria-current={section === 'blog/' ? 'page' : undefined}>Blog</a
-        >
-        <a
-          href={`${base}decks/`}
-          aria-current={section === 'decks/' ? 'page' : undefined}>Decks</a
-        >
+        <div class="utility-menu" id="utility-menu" popover>
+          <a
+            href={`${base}docs/`}
+            aria-label="Learn about Essentia"
+            aria-current={section === 'docs/' ? 'page' : undefined}
+            ><span class="label-full">Learn about Essentia</span><span
+              class="label-short">Learn</span
+            ></a
+          >
+          <a
+            href={`${base}blog/`}
+            aria-current={section === 'blog/' ? 'page' : undefined}
+            ><span class="label-full">Blog</span><span class="label-short"
+              >Blog</span
+            ></a
+          >
+          <a
+            href={`${base}decks/`}
+            aria-current={section === 'decks/' ? 'page' : undefined}
+            ><span class="label-full">Decks</span><span class="label-short"
+              >Decks</span
+            ></a
+          >
+        </div>
       </nav>
       <FindPalette client:load entries={findEntries} {base} />
     </header>

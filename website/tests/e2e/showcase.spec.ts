@@ -301,3 +301,24 @@ test('rail items carry their archetype colour', async ({ page }) => {
   await abyss.hover();
   await expect.poll(() => bg(abyss)).not.toBe(abyssRest);
 });
+
+test('header compacts to icons and a ⋯ menu at 400px', async ({ page }) => {
+  await page.setViewportSize({ width: 400, height: 800 });
+  await page.goto(urlFor('/'));
+
+  // Scoped to the header nav: the homepage body also has "Learn about
+  // Essentia" CTA links (index.astro, out of this ticket's scope) sharing
+  // the same accessible name, which an unscoped role locator would match too.
+  const menu = page.locator('.utility-menu');
+  const docs = menu.getByRole('link', { name: 'Learn about Essentia' });
+  await expect(docs).toBeHidden();
+  await expect(menu).toBeHidden();
+
+  await page.getByRole('button', { name: 'More sections' }).click();
+  await expect(docs).toBeVisible();
+  await expect(menu.getByRole('link', { name: 'Blog' })).toBeVisible();
+  await expect(menu.getByRole('link', { name: 'Decks' })).toBeVisible();
+
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});

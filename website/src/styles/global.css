@@ -251,7 +251,7 @@
     gap: 0.35rem;
     margin-left: auto;
   }
-  .utility-nav a {
+  .utility-menu a {
     min-height: 2.75rem;
     display: inline-flex;
     align-items: center;
@@ -260,10 +260,44 @@
     padding: 0.5rem 0.8rem;
     text-decoration: none;
   }
-  .utility-nav a:hover,
-  .utility-nav a[aria-current='page'] {
+  .utility-menu a:hover,
+  .utility-menu a[aria-current='page'] {
     border-color: var(--accent);
     background: var(--sleeve);
+  }
+  /* Author `display` beats the UA's `[popover]:not(:popover-open)` rule, so
+     above the phone breakpoint the menu is just a flex row of links and the
+     popover machinery is inert. */
+  .utility-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    position: static;
+    inset: auto;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    color: inherit;
+  }
+  .utility-more {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.45rem;
+    height: 2.45rem;
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+  }
+  .label-short {
+    display: none;
   }
   .breadcrumb ol {
     display: flex;
@@ -1633,6 +1667,34 @@ html {
   }
   html[data-theme='spellbook'] body::after {
     left: 1rem;
+  }
+  .label-full {
+    display: none;
+  }
+  .label-short {
+    display: inline;
+  }
+  .utility-more {
+    display: inline-flex;
+  }
+  .utility-menu {
+    display: none;
+    position: fixed;
+    inset: auto;
+    top: var(--header);
+    right: 0.5rem;
+    left: auto;
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    background: var(--blackfoil-raised);
+    padding: 0.4rem;
+  }
+  .utility-menu:popover-open {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .drawer-trigger {
+    padding: 0.5rem;
   }
 }
 

@@ -133,9 +133,10 @@
   bind:this={opener}
   on:click={openDrawer}
   aria-haspopup="dialog"
+  aria-label={drawerLabel}
 >
   <span aria-hidden="true">☰</span>
-  {drawerLabel}
+  <span class="label-full">{drawerLabel}</span>
 </button>
 
 <nav id="desktop-catalog" class="desktop-catalog" aria-label={navLabel}>
