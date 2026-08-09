@@ -4,7 +4,14 @@ import AxeBuilder from '@axe-core/playwright';
 const basePath = process.env.E2E_BASE_PATH?.replace(/\/$/, '') ?? '';
 const urlFor = (path: string) => `${basePath}${path}`;
 
-test('empty publication home is English and accessible', async ({ page }) => {
+// `index.astro` has two home branches: the `.empty-publication` hero when no
+// section publishes, and the section-tile grid when at least one does. The
+// sole release (LOTA-0001-Alpha_0.1) publishes three sections, so this build
+// renders the grid — the empty-state heading this test used to require has
+// not existed in `dist` since sections started publishing. Assert the branch
+// the site actually ships; the language, brand and accessibility checks are
+// branch-independent and stay.
+test('published home is English and accessible', async ({ page }) => {
   await page.goto(urlFor('/'));
   await expect(page).toHaveTitle('Essentia — The Blackfoil Archive');
   await expect(page.locator('.compact-brand img')).toHaveAttribute(
@@ -13,9 +20,8 @@ test('empty publication home is English and accessible', async ({ page }) => {
   );
   await expect(page.locator('.brand')).toHaveCount(0);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(
-    page.getByRole('heading', { name: 'No release packages published yet.' }),
-  ).toBeVisible();
+  await expect(page.locator('.empty-publication')).toHaveCount(0);
+  expect(await page.locator('.section-tile').count()).toBeGreaterThan(0);
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
@@ -294,10 +300,15 @@ test('rail items carry their archetype colour', async ({ page }) => {
   // legacy rgba literal.
   const isTransparent = (color: string) => /[,/]\s*0\)$/.test(color);
 
-  const abyssRest = await bg(abyss);
-  expect(isTransparent(abyssRest)).toBe(false);
+  // The tint exists only after Navigation.svelte's onMount CSSOM pass — the
+  // hardened CSP blocks the SSR `style` attribute, so nothing is tinted until
+  // the island hydrates. `page.goto` resolves on `load`, and the
+  // `client:load` island's chunk is a dynamic import that can settle after
+  // that, so poll rather than read once (same guard as the hover assertion).
+  await expect.poll(async () => isTransparent(await bg(abyss))).toBe(false);
   expect(isTransparent(await bg(plain))).toBe(true);
 
+  const abyssRest = await bg(abyss);
   await abyss.hover();
   await expect.poll(() => bg(abyss)).not.toBe(abyssRest);
 });

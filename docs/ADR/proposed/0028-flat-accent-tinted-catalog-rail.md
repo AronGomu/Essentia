@@ -16,7 +16,7 @@ Separately, the rail was monochrome. Every entry rested on the same near-black w
 
 1. The catalog rail and the mobile drawer each render **one** flat `<ul>` over `sections`, in the order received. No group button, no `<details>`, no group heading.
 2. The reading mode of the same component (docs and blog) keeps its `.reading-switch` and its per-group `.nav-label` headings. That grouping is authored in `website/content/reading-order.json` and is checked by `website/scripts/check-chrome.mjs`.
-3. Each archetype `<li>` sets `--nav-tint: var(--{accent})` inline. Links rest on `color-mix(in oklch, var(--nav-tint, transparent) 14%, transparent)` and lift to `color-mix(in oklch, var(--nav-tint, var(--sleeve)) 32%, var(--sleeve))` on hover, `:focus-visible` and `aria-current="page"`.
+3. Each archetype `<li>` gets `--nav-tint: var(--{accent})` set on it **through the CSSOM**, by the `onMount` pass in `Navigation.svelte` — `li.style.setProperty('--nav-tint', …)` over `#desktop-catalog-sections > li` and `#mobile-catalog-sections > li`. It is **not** a server-rendered `style` attribute: `harden-csp.mjs` rewrites `style-src` into a sha256 allowlist with no `'unsafe-hashes'`, so a per-element `style=""` is refused by the browser and logs a CSP violation on every catalog page. CSP does not police direct CSSOM mutation. Links rest on `color-mix(in oklch, var(--nav-tint, transparent) 14%, transparent)` and lift to `color-mix(in oklch, var(--nav-tint, var(--sleeve)) 32%, var(--sleeve))` on hover, `:focus-visible` and `aria-current="page"`.
 4. The tint keys off `kind === 'archetype'`, **not** off `accent`. `non-archetype` carries `accent: relic` as its *page* theme, which is not a section identity; the rail leaves it untinted on its own black.
 5. No colour token is re-authored. `burning-abyss → --ember` (orange) and `nekroz → --ice` (blue) already match what was asked for.
 
@@ -30,6 +30,7 @@ The untinted fallbacks are exact: with `--nav-tint` unset, the resting mix resol
 
 ## Consequences
 
+- **The tint is hydration-gated.** Nothing sets `--nav-tint` until the `client:load` island mounts, so with JavaScript disabled — and for the moment between first paint and hydration — the rail renders in its pre-tint appearance: the `var(--nav-tint, transparent)` / `var(--nav-tint, var(--sleeve))` fallbacks in `global.css`, which are exactly the untinted look. Section identity is a progressive enhancement, not a load-bearing affordance; every rail entry stays legible and clickable without it. E2e assertions on the tint must therefore poll rather than read once after `load`.
 - One flat list, no disclosure to open, identical on desktop and phone.
 - Section identity is visible in the rail before the visitor clicks.
 - `Navigation.svelte`'s `sections` prop gains a required `accent: string`; `BaseLayout.astro` must stop dropping it when it narrows `catalog.sections`.

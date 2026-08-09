@@ -43,23 +43,17 @@ test('no console error or wrap warning at 400px', async ({ page }) => {
   await page.setViewportSize({ width: 400, height: 800 });
   await page.goto(urlFor('/archetypes/burning-abyss/'));
   await page.waitForLoadState('load');
-  // Navigation.svelte's SSR `style="--nav-tint: …"` attribute is inert under
-  // the hashed CSP (see its onMount comment) and every engine reports that
-  // as a CSP violation console error; T4 already accepted this and reapplies
-  // the tint via CSSOM instead. Pre-existing, out of scope for this ticket
-  // (T2-T4, not touched here) — filtered so this test targets header-row
-  // regressions specifically.
-  // Chromium: "... Content Security Policy directive 'style-src ...'".
-  // Firefox: "Refused to apply a stylesheet because its hash, its nonce, or
-  // 'unsafe-inline' does not appear in the style-src directive ...".
-  // WebKit: "Content-Security-Policy: ... blocked an inline style
-  // (style-src-attr) ... Source: --nav-tint: ...".
-  const isKnownCspNoise = (text: string) =>
-    /style-src/i.test(text) &&
-    /(content[ -]security[ -]policy|refused to apply)/i.test(text);
-  const unexpectedErrors = messages.filter(
-    (m) => m.type === 'error' && !isKnownCspNoise(m.text),
-  );
-  expect(unexpectedErrors).toEqual([]);
+  // No filter. This assertion used to exempt every `style-src` CSP error as
+  // "pre-existing, out of scope" — it was neither: Navigation.svelte's SSR
+  // `style="--nav-tint: …"` attribute was introduced on this branch and was
+  // the sole source of that noise. It is gone now (the tint is applied
+  // through the CSSOM in onMount), so the built site raises no CSP error at
+  // all. The exemption was also far wider than the thing it excused: its
+  // predicate never mentioned `--nav-tint`, so it equally swallowed a
+  // harden-csp.mjs hash mismatch on a real <style> block — the whole
+  // stylesheet refused, the page rendering unstyled, this test still green.
+  // This is the only console-error assertion in the e2e suite; it has to be
+  // able to fail.
+  expect(messages.filter((m) => m.type === 'error')).toEqual([]);
   expect(messages.filter((m) => /site-header wraps/.test(m.text))).toEqual([]);
 });

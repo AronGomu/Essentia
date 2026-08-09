@@ -160,10 +160,11 @@
         </div>
         <div class="card">
           <h4>Tint by <code>kind</code></h4>
-          <p>Each archetype <code>&lt;li&gt;</code> sets <code>--nav-tint: var(--{accent})</code> inline. <code>non-archetype</code> is not an archetype and stays untinted — its authored <code>relic</code> accent is a page theme, not a section identity.</p>
+          <p>Each archetype <code>&lt;li&gt;</code> gets <code>--nav-tint: var(--{accent})</code> — set through the CSSOM by <code>Navigation.svelte</code>'s <code>onMount</code> pass, not as a <code>style</code> attribute. The built site runs a hashed <code>style-src</code> with no <code>'unsafe-hashes'</code>, so a per-element <code>style=""</code> is blocked and logs a CSP error; <code>li.style.setProperty()</code> is not policed. <code>non-archetype</code> is not an archetype and stays untinted — its authored <code>relic</code> accent is a page theme, not a section identity.</p>
           <ul>
             <li>rest: <code>color-mix(in oklch, var(--nav-tint, transparent) 14%, transparent)</code></li>
             <li>hover / focus / current: <code>color-mix(in oklch, var(--nav-tint, var(--sleeve)) 32%, var(--sleeve))</code></li>
+            <li><strong>hydration-gated:</strong> with JavaScript off the tint never lands and both fallbacks above apply — the rail's pre-tint look.</li>
           </ul>
         </div>
         <div class="card">

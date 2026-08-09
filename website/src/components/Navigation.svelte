@@ -29,18 +29,27 @@
   onMount(() => {
     railState = readRailState();
     applyRailState(railState);
+    // This CSSOM pass is the *only* thing that paints the rail tint.
+    //
     // BaseLayout's CSP `style-src` (hardened by scripts/harden-csp.mjs) lists
     // only the sha256 hashes of this page's static <style> elements — it
     // carries no `'unsafe-inline'`/`'unsafe-hashes'` for the *attribute*
     // form, and a per-section value like `--nav-tint: var(--ember)` can't be
-    // hashed statically anyway. Every browser therefore silently drops the
-    // SSR-rendered `style="--nav-tint: …"` on each <li>: the text is still
-    // visible via `getAttribute('style')`, but it never reaches
-    // `element.style` or `getComputedStyle`, so `color-mix()` in
-    // `.desktop-catalog li a` never sees it. Verified cross-engine — a CSP-
-    // free minimal repro of the identical markup+CSS renders the tint fine.
+    // hashed statically anyway. So a server-rendered
+    // `style="--nav-tint: …"` on each <li> is blocked: it never reaches
+    // `element.style` or `getComputedStyle`, `color-mix()` in
+    // `.desktop-catalog li a` never sees it, and every engine logs a CSP
+    // violation for it. Worse, it does not even hand off to hydration:
+    // Svelte compiles `style:--nav-tint` to `set_style(node, '', prev, next)`,
+    // which short-circuits when the serialised value already equals the
+    // element's `style` attribute — which it does, so Svelte never writes to
+    // `element.style` either. The markup was therefore pure cost, and both
+    // <li> sites now ship without it.
+    //
     // CSP does not restrict direct CSSOM mutation, so apply the tint that
     // way instead, once, from the same `sections` data `tintStyle` reads.
+    // Consequence, documented in ADR 0028: with JavaScript disabled the rail
+    // renders untinted (the fallbacks in global.css are the pre-tint look).
     const applyTint = (list: NodeListOf<HTMLLIElement>) => {
       list.forEach((li, index) => {
         const value = tintStyle(sections[index]);
@@ -84,12 +93,9 @@
    * black and only lifts on hover.
    *
    * Returns the CSS value each <li> should carry as its `--nav-tint`
-   * property. Bound both as a `style:--nav-tint` directive on the markup
-   * (kept for readability/SSR intent) and applied again through the CSSOM
-   * in `onMount` above — see the comment there for why the second pass is
-   * required: BaseLayout's CSP `style-src` has no allowance for inline
-   * `style=""` attribute values, so the SSR-rendered attribute is silently
-   * inert in every engine and only the CSSOM write actually paints it.
+   * property. Applied only through the CSSOM in `onMount` above — never as a
+   * `style:--nav-tint` directive, because the attribute Svelte would emit is
+   * blocked by BaseLayout's hardened CSP. See the comment there.
    */
   const tintStyle = (section: NavSection) =>
     section.kind === 'archetype' ? `var(--${section.accent})` : null;
@@ -146,7 +152,11 @@
          them again only added a heading and a disclosure to click through. -->
     <ul id="desktop-catalog-sections">
       {#each sections as section (section.slug)}
-        <li style:--nav-tint={tintStyle(section)}>
+        <!-- No `style:--nav-tint` here: Svelte would serialise it into a
+             `style="--nav-tint: …"` attribute, which the hardened CSP blocks
+             (see the onMount comment). The tint is applied through the CSSOM
+             instead. -->
+        <li>
           <a href={href(section.route)} aria-current={current(section.route)}
             >{section.label}<small>{section.count}</small></a
           >
@@ -212,10 +222,10 @@
          the rail is in, or a reading page strands the visitor. -->
     <nav aria-label={`Mobile ${navLabel.toLowerCase()}`}>
       {#if mode === 'catalog'}
+        <!-- Same as the desktop list: the tint arrives via the CSSOM, never as
+             a CSP-blocked `style` attribute. -->
         <ul id="mobile-catalog-sections">
-          {#each sections as section (section.slug)}<li
-              style:--nav-tint={tintStyle(section)}
-            >
+          {#each sections as section (section.slug)}<li>
               <a
                 href={href(section.route)}
                 aria-current={current(section.route)}

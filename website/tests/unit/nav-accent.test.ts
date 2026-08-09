@@ -10,6 +10,43 @@ const navigation = read('../../src/components/Navigation.svelte');
 const globalCss = read('../../src/styles/global.css');
 const sectionsJson = JSON.parse(read('../../content/sections.json'));
 
+type Section = { slug: string; kind: string; accent: string };
+const section = (slug: string): Section => {
+  const found = sectionsJson.sections.find((s: Section) => s.slug === slug);
+  if (!found) throw new Error(`sections.json has no section ${slug}`);
+  return found;
+};
+
+/**
+ * `tintStyle` is a pure expression over one section record, so run the real
+ * source instead of pattern-matching it: lift the arrow function out of
+ * Navigation.svelte, drop its TypeScript parameter annotation (`Function`
+ * parses JavaScript), and evaluate it. Grepping for `kind === 'archetype'`
+ * proved nothing — an implementation returning the same accent for every
+ * archetype matched that grep. These assertions do not.
+ */
+const tintStyle: (input: Section) => string | null = (() => {
+  const match = navigation.match(/const tintStyle =([\s\S]*?);\n/);
+  if (!match?.[1])
+    throw new Error('Navigation.svelte no longer defines tintStyle');
+  return new Function(`return (${match[1].replace(/:\s*NavSection/g, '')});`)();
+})();
+
+/** The `oklch(L C H)` value authored for a `--token` in global.css `:root`. */
+const accentValue = (token: string) => {
+  const match = globalCss.match(
+    new RegExp(`--${token}:\\s*(oklch\\([^)]*\\));`),
+  );
+  if (!match) throw new Error(`global.css has no --${token} token`);
+  return match[1]!;
+};
+/** Hue is the third `oklch()` component — the one that makes ember orange. */
+const hue = (value: string) => {
+  const match = value.match(/oklch\(\s*[\d.]+\s+[\d.]+\s+([\d.]+)\s*\)/);
+  if (!match) throw new Error(`cannot read a hue from ${value}`);
+  return Number(match[1]);
+};
+
 describe('nav accent tint', () => {
   it('the layout forwards the accent', () => {
     expect(baseLayout).toMatch(
@@ -23,25 +60,65 @@ describe('nav accent tint', () => {
     expect(pickMatch![0]).toMatch(/'accent'/);
   });
 
-  it('archetypes get a tint, non-archetypes do not', () => {
-    const statementMatch = navigation.match(/const tintStyle[\s\S]*?;\n/);
-    expect(statementMatch).not.toBeNull();
-    const statement = statementMatch![0];
-    expect(statement).toMatch(/kind === 'archetype'/);
-    expect(statement).toMatch(/: null/);
+  it('each archetype resolves its own accent, non-archetype gets none', () => {
+    expect(tintStyle(section('burning-abyss'))).toBe('var(--ember)');
+    expect(tintStyle(section('nekroz'))).toBe('var(--ice)');
+    expect(tintStyle(section('shaddoll'))).toBe('var(--shadow)');
+    expect(tintStyle(section('spellbook'))).toBe('var(--aether)');
+    expect(tintStyle(section('non-archetype'))).toBeNull();
   });
 
-  // Bound via Svelte's `style:--nav-tint` directive (CSSOM `setProperty`),
-  // not a plain `style={tintStyle(section)}` attribute string — see the
-  // doc comment above `tintStyle` in Navigation.svelte for why: Chromium,
-  // Firefox and WebKit all fail to resolve `var(--nav-tint, …)` inside the
-  // stylesheet's `color-mix()` when `--nav-tint` arrives as raw
-  // `style="--nav-tint: …"` markup, verified with a cross-engine e2e repro.
-  it('both catalog lists bind the tint', () => {
-    const matches = navigation.match(
-      /style:--nav-tint=\{tintStyle\(section\)\}/g,
+  it('no two archetypes share a tint', () => {
+    const tints = sectionsJson.sections
+      .filter((s: Section) => s.kind === 'archetype')
+      .map((s: Section) => tintStyle(s));
+    expect(tints).toHaveLength(4);
+    expect(new Set(tints).size).toBe(tints.length);
+  });
+
+  it('Burning Abyss is orange and Nekroz is blue', () => {
+    expect(section('burning-abyss').accent).toBe('ember');
+    expect(section('nekroz').accent).toBe('ice');
+    // Exact hues, not a substring search: the previous
+    // `/--ember:\s*oklch\([^)]*32[^)]*\)/` also accepted `oklch(0.32 0.1 250)`
+    // — a blue — because `32` matched the lightness component.
+    expect(accentValue('ember')).toBe('oklch(0.68 0.18 32)');
+    expect(accentValue('ice')).toBe('oklch(0.78 0.13 218)');
+    expect(hue(accentValue('ember'))).toBe(32);
+    expect(hue(accentValue('ice'))).toBe(218);
+    expect(hue(accentValue('ember'))).not.toBe(hue(accentValue('ice')));
+  });
+
+  it('non-archetype is not an archetype', () => {
+    expect(section('non-archetype').kind).toBe('non-archetype');
+  });
+
+  // The delivered mechanism is the `onMount` CSSOM pass and nothing else.
+  // BaseLayout's CSP `style-src` (hardened by scripts/harden-csp.mjs) carries
+  // sha256 hashes for static <style> blocks and no `'unsafe-hashes'`, so a
+  // per-element `style="--nav-tint: …"` attribute is refused by the browser
+  // *and* logs a CSP error on every catalog page. (The earlier note here
+  // blamed `var()` inside `color-mix()`; that resolves fine. The real causes
+  // are the CSP block plus Svelte compiling `style:--nav-tint` to
+  // `set_style(node, '', prev, next)`, which short-circuits during hydration
+  // when the serialised value already equals the element's `style`
+  // attribute — so Svelte never wrote to `element.style` either.)
+  it('the tint is applied through the CSSOM, on both catalog lists', () => {
+    const mountMatch = navigation.match(
+      /onMount\(\(\) => \{[\s\S]*?\n {2}\}\);/,
     );
-    expect(matches?.length).toBe(2);
+    expect(mountMatch).not.toBeNull();
+    const mount = mountMatch![0];
+    expect(mount).toContain("li.style.setProperty('--nav-tint', value)");
+    expect(mount).toContain('tintStyle(sections[index])');
+    expect(mount).toContain('#desktop-catalog-sections > li');
+    expect(mount).toContain('#mobile-catalog-sections > li');
+  });
+
+  it('no <li> ships a CSP-blocked style attribute', () => {
+    const markup = navigation.slice(navigation.indexOf('</script>'));
+    expect(markup).not.toMatch(/style:--nav-tint=/);
+    expect(markup).not.toMatch(/<li[^>]*\sstyle=/);
   });
 
   it('nav links rest on a faint tint', () => {
@@ -65,6 +142,8 @@ describe('nav accent tint', () => {
   });
 
   it("hover keeps today's look when there is no tint", () => {
+    // Also the with-JavaScript-disabled look: nothing sets --nav-tint until
+    // the island hydrates, so these fallbacks are what a no-JS visitor sees.
     expect(globalCss).toMatch(/var\(--nav-tint, var\(--sleeve\)\)/);
     expect(globalCss).toMatch(/, var\(--sleeve\)\)/);
   });
@@ -72,25 +151,5 @@ describe('nav accent tint', () => {
   it('focus-visible is tinted too', () => {
     expect(globalCss).toMatch(/\.desktop-catalog li a:focus-visible/);
     expect(globalCss).toMatch(/\.mobile-drawer li a:focus-visible/);
-  });
-
-  it('Burning Abyss is orange and Nekroz is blue', () => {
-    const abyss = sectionsJson.sections.find(
-      (section: { slug: string }) => section.slug === 'burning-abyss',
-    );
-    const nekroz = sectionsJson.sections.find(
-      (section: { slug: string }) => section.slug === 'nekroz',
-    );
-    expect(abyss.accent).toBe('ember');
-    expect(nekroz.accent).toBe('ice');
-    expect(globalCss).toMatch(/--ember:\s*oklch\([^)]*32[^)]*\)/);
-    expect(globalCss).toMatch(/--ice:\s*oklch\([^)]*218[^)]*\)/);
-  });
-
-  it('non-archetype is not an archetype', () => {
-    const plain = sectionsJson.sections.find(
-      (section: { slug: string }) => section.slug === 'non-archetype',
-    );
-    expect(plain.kind).toBe('non-archetype');
   });
 });

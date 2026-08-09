@@ -72,3 +72,15 @@
 - [ ] With a screen reader (or the accessibility tree inspector), confirm at 390px that the hidden hero art (`role="img"`, `tabindex="0"`) is not announced and not reachable by Tab — it should be fully removed from the accessibility tree, not just visually hidden.
 - [ ] Repeat the 1440px and 390px checks on `/sections/non-archetype/non-archetype/` (the non-archetype hero shares the same CSS class) to confirm both hero routes moved together.
 - [ ] Open the browser devtools console while loading `/archetypes/nekroz/` at both 1440px and 390px: no console errors other than the known, pre-existing CSP-violation message for the inert `--nav-tint` inline style (queued separately, not part of this ticket).
+
+## T8 ci-green-and-csp-truth
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/` at 1440px with DevTools **Console** visible: the page shows the section-tile archive (three tiles — Non-archetype, Burning Abyss, Nekroz), **not** the "No release packages published yet." hero, and the console is completely empty — no CSP violation, no error of any kind.
+- [ ] Same page, same console: repeat on `/archetypes/burning-abyss/` and `/docs/`. Zero console errors on each. (Before this change every catalog page logged a `style-src` CSP violation for the inert `style="--nav-tint: …"` attribute; the T7 checklist line calling that "known, pre-existing" is now obsolete.)
+- [ ] In DevTools **Elements**, inspect any `<li>` inside `#desktop-catalog-sections`: it must carry **no** `style` attribute in the served HTML source (View Source / Network response), yet `getComputedStyle` on it resolves `--nav-tint` once the page has hydrated.
+- [ ] Look at the catalog rail on `/`: Burning Abyss rests on a faint orange wash, Nekroz on a faint blue one, Shaddoll and Spellbook on their own distinct colours, and Non-archetype sits on the plain rail black. Hovering each one deepens its own colour — no two archetypes share a tint.
+- [ ] Open the mobile drawer at 390px (hamburger → Catalog): the same per-section tints appear there too, matching the desktop rail.
+- [ ] Disable JavaScript in DevTools and reload `/`: the rail renders **untinted** (every entry on plain black, grey `--sleeve` hover) and every rail link is still readable and clickable. This is the documented, accepted consequence of the tint being hydration-gated — not a bug.
+- [ ] Re-enable JavaScript and hard-reload `/` a few times while watching the rail: the tint appears as the page settles. A brief untinted flash before hydration is expected; a rail that stays untinted after the page is interactive is not.
+- [ ] Regression check on the guards: temporarily edit `website/src/layouts/BaseLayout.astro` to author `style-src 'self' 'unsafe-inline' 'unsafe-hashes'`, run `cd website && npm run build`, and confirm it **fails** with `CSP hardening incomplete — 'unsafe-hashes'`. Revert the edit and confirm the build passes again.
+- [ ] `cd website && npm run ci` from a clean checkout exits 0, and `grep -ro 'style="--nav-tint' website/dist | wc -l` prints `0`.
