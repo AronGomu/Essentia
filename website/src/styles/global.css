@@ -210,13 +210,12 @@
 }
 
 @layer layout {
+  /* Full-width menubar: it outranks the rail, so no transform/filter/will-change may be added here — the fixed rail is nested inside it. */
   .site-header {
     position: sticky;
     top: 0;
-    z-index: var(--z-sticky);
+    z-index: calc(var(--z-sticky) + 2);
     min-height: var(--header);
-    margin-left: var(--sidebar);
-    transition: margin-left 220ms var(--ease-out);
     display: flex;
     align-items: center;
     /* The wordmark is the first child and holds the left edge on every page.
@@ -354,7 +353,7 @@
   }
   .desktop-catalog {
     position: fixed;
-    inset: 0 auto 0 0;
+    inset: var(--header) auto 0 0;
     z-index: var(--z-sticky);
     width: var(--sidebar);
     display: flex;
@@ -438,6 +437,14 @@
   }
   .drawer-trigger {
     display: none;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+    padding: 0.5rem 0.8rem;
   }
   .mobile-drawer {
     width: min(92vw, 26rem);
@@ -1058,22 +1065,11 @@
     display: none;
   }
   .drawer-trigger {
-    position: fixed;
-    z-index: calc(var(--z-sticky) + 1);
-    top: 0.8rem;
-    left: 1rem;
     display: inline-flex;
-    gap: 0.4rem;
   }
-  .site-header,
   main,
   .site-footer {
     margin-left: 0;
-  }
-  /* No `justify-content` override here: it used to be `space-between`, which
-     masked the flush-right wordmark below 64rem and hid the bug on phones. */
-  .site-header {
-    padding-left: 8.8rem;
   }
   .catalog-hero {
     grid-template-columns: 1fr;
@@ -1085,9 +1081,6 @@
 }
 
 @media (max-width: 44rem) {
-  .site-header {
-    padding-left: 7.8rem;
-  }
   /* The letter mark is square (64×64), so both axes are stated outright. */
   .compact-brand img {
     height: 2rem;

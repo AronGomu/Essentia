@@ -131,15 +131,6 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <Navigation
-      client:load
-      sections={navSections}
-      currentPath={Astro.url.pathname}
-      {base}
-      mode={readingKind ? 'reading' : 'catalog'}
-      {readingKind}
-      {readingGroups}
-    />
     <header class="site-header">
       <a class="compact-brand" href={base}>
         <picture>
@@ -157,6 +148,16 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
           />
         </picture>
       </a>
+      <!-- The hamburger is a header item, not a floating button: the brand must own the top-left corner at every width. Astro's astro-island is display:contents, so the island is transparent to this flex row. -->
+      <Navigation
+        client:load
+        sections={navSections}
+        currentPath={Astro.url.pathname}
+        {base}
+        mode={readingKind ? 'reading' : 'catalog'}
+        {readingKind}
+        {readingGroups}
+      />
       {breadcrumb && <Breadcrumb items={breadcrumb} />}
       <nav class="utility-nav" aria-label="Sections">
         <a

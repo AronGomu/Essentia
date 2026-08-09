@@ -120,7 +120,9 @@ header, in-page badge. They are never used together in one region.
 **The One Home Rule.** The mark lives in the site header (`.compact-brand`
 inside `.site-header`) and nowhere else in the shell. The left rail carries no
 brand of any kind, so collapsing or hiding the rail can never take the
-identity off the page; the header is always present, at every width.
+identity off the page; the header is always present, at every width. The
+header is the full width of the viewport and paints above the rail; the rail
+starts at the header's bottom border.
 
 **The Untouched Mark Rule.** The mark is never recoloured, tinted, outlined,
 rotated, stretched, given a drop shadow, or placed on an archetype accent

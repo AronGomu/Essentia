@@ -242,3 +242,21 @@ test('back to top returns the visitor to the top', async ({ page }) => {
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
+
+test('header owns the top row and the rail docks beneath it', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/'));
+  const header = (await page.locator('.site-header').boundingBox())!;
+  const rail = (await page.locator('.desktop-catalog').boundingBox())!;
+  const brand = (await page.locator('.compact-brand').boundingBox())!;
+  expect(header.x).toBe(0);
+  expect(header.width).toBe(1400);
+  expect(rail.y).toBeGreaterThanOrEqual(header.y + header.height - 1);
+  // 48px is the ceiling of the header's own `clamp(1rem, 3vw, 3rem)`
+  // horizontal padding, so the brand sits at the header's content edge.
+  // The pre-change layout put it at ~141px (an 8.8rem padding reservation
+  // for the floating hamburger), so this still discriminates.
+  expect(brand.x).toBeLessThanOrEqual(48);
+});

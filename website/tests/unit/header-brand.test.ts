@@ -98,7 +98,10 @@ describe('header brand', () => {
     // nothing here, which is the exact shape of the bug.
     for (const width of WIDTHS) {
       expect(
-        brandHoldsTheLeftEdge(['.compact-brand', '.utility-nav'], width),
+        brandHoldsTheLeftEdge(
+          ['.compact-brand', '.drawer-trigger', '.utility-nav'],
+          width,
+        ),
         `home page at ${width}px`,
       ).toBe(true);
     }
@@ -108,7 +111,7 @@ describe('header brand', () => {
     for (const width of WIDTHS) {
       expect(
         brandHoldsTheLeftEdge(
-          ['.compact-brand', '.breadcrumb', '.utility-nav'],
+          ['.compact-brand', '.drawer-trigger', '.breadcrumb', '.utility-nav'],
           width,
         ),
         `inner page at ${width}px`,
