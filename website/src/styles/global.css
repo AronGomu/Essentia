@@ -399,15 +399,6 @@
   .mobile-drawer small {
     color: var(--silver-ink);
   }
-  .nav-group {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border: 0;
-    background: transparent;
-    font-weight: 700;
-    padding-inline: 0.65rem;
-  }
   .nav-label {
     color: var(--silver-ink);
     font-size: 0.85rem;

@@ -24,7 +24,6 @@
 
   let dialog: HTMLDialogElement;
   let opener: HTMLButtonElement;
-  let nonArchetypeOpen = true;
   let railState: RailState = 'expanded';
 
   onMount(() => {
@@ -44,10 +43,6 @@
 
   const href = (route: string) =>
     `${base.replace(/\/$/, '')}/${route.replace(/^\//, '')}`;
-  const nonArchetype = sections.filter(
-    (section) => section.kind === 'non-archetype',
-  );
-  const archetypes = sections.filter((section) => section.kind === 'archetype');
   const current = (route: string) => {
     const normalized = currentPath.endsWith('/')
       ? currentPath
@@ -102,30 +97,11 @@
 
 <nav id="desktop-catalog" class="desktop-catalog" aria-label={navLabel}>
   {#if mode === 'catalog'}
-    <button
-      class="nav-group"
-      aria-expanded={nonArchetypeOpen}
-      aria-controls="desktop-non-archetype"
-      on:click={() => (nonArchetypeOpen = !nonArchetypeOpen)}
-    >
-      Non-Archetype <span aria-hidden="true"
-        >{nonArchetypeOpen ? '−' : '+'}</span
-      >
-    </button>
-    {#if nonArchetypeOpen}
-      <ul id="desktop-non-archetype">
-        {#each nonArchetype as section (section.slug)}
-          <li>
-            <a href={href(section.route)} aria-current={current(section.route)}
-              >{section.label}<small>{section.count}</small></a
-            >
-          </li>
-        {/each}
-      </ul>
-    {/if}
-    <p class="nav-label">Archetypes</p>
-    <ul>
-      {#each archetypes as section (section.slug)}
+    <!-- One flat list. Sections arrive pre-ordered from
+         website/content/sections.json (non-archetype first), so grouping
+         them again only added a heading and a disclosure to click through. -->
+    <ul id="desktop-catalog-sections">
+      {#each sections as section (section.slug)}
         <li>
           <a href={href(section.route)} aria-current={current(section.route)}
             >{section.label}<small>{section.count}</small></a
@@ -192,21 +168,8 @@
          the rail is in, or a reading page strands the visitor. -->
     <nav aria-label={`Mobile ${navLabel.toLowerCase()}`}>
       {#if mode === 'catalog'}
-        <details open>
-          <summary>Non-Archetype</summary>
-          <ul>
-            {#each nonArchetype as section (section.slug)}<li>
-                <a
-                  href={href(section.route)}
-                  aria-current={current(section.route)}
-                  >{section.label} <small>{section.count}</small></a
-                >
-              </li>{/each}
-          </ul>
-        </details>
-        <p class="nav-label">Archetypes</p>
         <ul>
-          {#each archetypes as section (section.slug)}<li>
+          {#each sections as section (section.slug)}<li>
               <a
                 href={href(section.route)}
                 aria-current={current(section.route)}

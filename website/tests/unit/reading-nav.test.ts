@@ -166,16 +166,19 @@ describe('the catalog rail in reading mode', () => {
   it('reading mode hides the archetype list', () => {
     const catalogBranch = railSource.indexOf("{#if mode === 'catalog'}");
     const elseBranch = railSource.indexOf('{:else}', catalogBranch);
-    const archetypes = railSource.indexOf('{#each archetypes');
+    // T3 flattened the catalog branch to one `{#each sections as section}`
+    // list — this is that list's marker, in place of the old `archetypes`
+    // filter's.
+    const sectionsList = railSource.indexOf('{#each sections as section');
     const switcher = railSource.search(
       /class="(?:[^"]*\s)?reading-switch(?:\s[^"]*)?"/,
     );
 
     expect(catalogBranch).toBeGreaterThan(-1);
     expect(elseBranch).toBeGreaterThan(catalogBranch);
-    // The archetype list lives in the catalog branch, the switcher after it.
-    expect(archetypes).toBeGreaterThan(catalogBranch);
-    expect(archetypes).toBeLessThan(elseBranch);
+    // The section list lives in the catalog branch, the switcher after it.
+    expect(sectionsList).toBeGreaterThan(catalogBranch);
+    expect(sectionsList).toBeLessThan(elseBranch);
     expect(switcher).toBeGreaterThan(elseBranch);
   });
 
@@ -206,8 +209,10 @@ describe('the mobile drawer in reading mode', () => {
 
   it('the drawer still carries the catalog in catalog mode', () => {
     expect(drawerSource).toContain("{#if mode === 'catalog'}");
-    expect(drawerSource).toContain('{#each archetypes as section');
-    expect(drawerSource).toContain('{#each nonArchetype as section');
+    // T3 flattened the drawer's catalog branch to one
+    // `{#each sections as section}` list, in place of the old
+    // `archetypes`/`nonArchetype` split.
+    expect(drawerSource).toContain('{#each sections as section');
   });
 
   it('the drawer names itself after the mode it is in', () => {

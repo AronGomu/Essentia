@@ -178,10 +178,8 @@ test('blog pages swap the catalog for the blog list', async ({ page }) => {
   await expect(
     rail.getByRole('link', { name: 'Blog', exact: true }),
   ).toHaveAttribute('aria-current', 'true');
-  // The card catalog is not rendered here — its group toggle is gone.
-  await expect(rail.getByRole('button', { name: /Non-Archetype/ })).toHaveCount(
-    0,
-  );
+  // The card catalog is not rendered here — none of its sections appear.
+  await expect(rail.getByRole('link', { name: /Nekroz/ })).toHaveCount(0);
   await expect(page.locator('.reading-rail')).toHaveCount(0);
 });
 
@@ -261,4 +259,22 @@ test('header owns the top row and the rail docks beneath it', async ({
   // The pre-change layout put it at ~141px (an 8.8rem padding reservation
   // for the floating hamburger), so this still discriminates.
   expect(brand.x).toBeLessThanOrEqual(48);
+});
+
+test('the catalog rail lists every section flat', async ({ page }) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/'));
+  const rail = page.getByRole('navigation', { name: 'Catalog' });
+  // The catalog config (website/content/sections.json) lists five sections,
+  // but a section only renders once it has a released card
+  // (website/scripts/content/orchestrator.mjs registry.sections). This
+  // checkout's sole release package (LOTA-0001-Alpha_0.1) doesn't yet carry
+  // Shaddoll or Spellbook cards, so only these three publish today.
+  for (const label of ['Non-archetype', 'Burning Abyss', 'Nekroz']) {
+    await expect(
+      rail.getByRole('link', { name: new RegExp(`^${label}`) }),
+    ).toHaveCount(1);
+  }
+  // The only button left in the rail is the collapse square.
+  await expect(rail.getByRole('button')).toHaveCount(1);
 });

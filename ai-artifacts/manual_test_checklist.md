@@ -20,3 +20,12 @@
 - [ ] Collapse the rail, then navigate to a docs page (for example `/docs/`): the rail is still collapsed and the square is still reachable to reopen it.
 - [ ] With the rail expanded, tab to the square with the keyboard: it takes focus with a visible focus ring, and Enter or Space toggles the rail.
 - [ ] With a screen reader (or the accessibility inspector), confirm the control is announced as "Collapse catalog" when expanded and "Expand catalog" when collapsed.
+
+## T3 flat-catalog-rail
+
+- [ ] `cd website && npm run dev`, open `http://localhost:4321/` at 1400px: the catalog rail shows one flat list of links — no "Non-Archetype" toggle button, no "Archetypes" heading, no collapsible group.
+- [ ] Every published section (currently Non-archetype, Burning Abyss, Nekroz — Shaddoll and Spellbook have no released cards yet in this checkout) appears as a link with its label and a count badge, in that order.
+- [ ] Narrow to a phone width (390px or similar) and open the hamburger drawer: it shows the same flat list of links, no `<details>`/`<summary>` disclosure, no "Archetypes" heading.
+- [ ] Visit `/docs/` and `/blog/`: the rail switches to its reading mode — the Docs/Blog switcher and grouped headings (e.g. "Design", chapter names) are unchanged from before this change.
+- [ ] Click a catalog link (e.g. "Burning Abyss"): it navigates to that section and the link shows as current (a marker before it).
+- [ ] Once Shaddoll and/or Spellbook cards are released, re-check this page: those sections should appear in the flat list in the same style, with no code changes needed.
