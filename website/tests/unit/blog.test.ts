@@ -84,11 +84,6 @@ describe('loadPosts', () => {
       expected.push({ date: nameMatch![1]!, slug: nameMatch![2]! });
     }
     expect(expected.length).toBeGreaterThan(0);
-    expect(
-      expected.some(
-        (entry) => entry.slug === 'legend-of-alpha-project-introduction',
-      ),
-    ).toBe(true);
 
     const posts = await loadPosts();
     expect(

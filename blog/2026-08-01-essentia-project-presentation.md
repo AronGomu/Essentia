@@ -1,8 +1,8 @@
 ---
-title: Legend of the Alpha — project introduction
+title: Essentia Project Presentation
 date: 2026-08-01
 author: Aron Gomu
-summary: The first Essentia package, what is in it, and how the cube plays.
+summary: Presentation of the Essentia project and its first set Legent of the Alpha.
 tags: release, alpha
 ---
 
