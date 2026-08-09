@@ -185,36 +185,38 @@ test('blog pages swap the catalog for the blog list', async ({ page }) => {
   await expect(page.locator('.reading-rail')).toHaveCount(0);
 });
 
-test('catalog rail collapses to a strip that keeps both toggles', async ({
+test('catalog rail collapses to a strip that keeps its toggle', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1400, height: 900 });
   await page.goto(urlFor('/'));
 
-  const collapseButtons = page.getByRole('button', {
-    name: 'Collapse catalog',
-  });
-  await expect(collapseButtons).toHaveCount(2);
-  await expect(collapseButtons.first()).toBeVisible();
-  await expect(collapseButtons.last()).toBeVisible();
+  const collapse = page.getByRole('button', { name: 'Collapse catalog' });
+  await expect(collapse).toHaveCount(1);
+  await expect(collapse).toBeVisible();
 
-  // Same `client:load` race `openFindWithHotkey` guards against: `goto`
-  // resolves on `load`, the rail toggle server-renders, and a click that lands
-  // before hydration is dropped with no actionability retry to save it. Poll
-  // stops at the first click the island answers, so this never double-toggles.
+  const rail = (await page.locator('.desktop-catalog').boundingBox())!;
+  const box = (await collapse.boundingBox())!;
+  expect(Math.abs(box.width - box.height)).toBeLessThanOrEqual(1);
+  // 17px is structural and out of this ticket's scope: `.desktop-catalog`
+  // has `padding: 1rem` (16px) + `border-right: 1px`, and the toggle sits
+  // flush at that content edge. 20px is that plus slack; a toggle that is
+  // not corner-anchored would be hundreds of px off on a ~272px rail.
+  expect(rail.x + rail.width - (box.x + box.width)).toBeLessThanOrEqual(20);
+
+  // Same `client:load` race the other rail tests guard against: a click
+  // that lands before hydration is dropped with no actionability retry.
   await expect
     .poll(async () => {
-      await collapseButtons.first().click();
+      await collapse.click();
       return page.locator('html').getAttribute('data-catalog');
     })
     .toBe('collapsed');
 
-  const expandButtons = page.getByRole('button', { name: 'Expand catalog' });
-  await expect(expandButtons).toHaveCount(2);
-  await expect(expandButtons.first()).toBeVisible();
-  await expect(expandButtons.last()).toBeVisible();
-
-  await expandButtons.last().click();
+  const expand = page.getByRole('button', { name: 'Expand catalog' });
+  await expect(expand).toHaveCount(1);
+  await expect(expand).toBeVisible();
+  await expand.click();
   await expect(page.locator('html')).toHaveAttribute(
     'data-catalog',
     'expanded',

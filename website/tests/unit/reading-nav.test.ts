@@ -148,19 +148,19 @@ describe('the catalog rail in reading mode', () => {
     expect(switchBlock).toContain('>Blog<');
   });
 
-  it('the reading nav sits between the two rail toggles', () => {
+  it('the reading nav sits before the rail toggle', () => {
     // The collapsed rail hides `.desktop-catalog > :not(.rail-toggle)`, so the
-    // reading nav must be a sibling *between* the toggles — never wrapping one,
-    // which would make the rail impossible to reopen from a docs page.
+    // reading nav must be a sibling *before* the single bottom-right toggle —
+    // never wrapping it, which would make the rail impossible to reopen from a
+    // docs page.
     const toggles = [
       ...navigationSource.matchAll(
         /class="(?:[^"]*\s)?rail-toggle(?:\s[^"]*)?"/g,
       ),
     ].map((match) => match.index!);
-    expect(toggles).toHaveLength(2);
+    expect(toggles).toHaveLength(1);
     const switcher = switcherIndices()[0]!;
-    expect(switcher).toBeGreaterThan(toggles[0]!);
-    expect(switcher).toBeLessThan(toggles[1]!);
+    expect(switcher).toBeLessThan(toggles[0]!);
   });
 
   it('reading mode hides the archetype list', () => {

@@ -99,7 +99,8 @@ navigation is rendered by the same left rail that carries the catalog
 everywhere else, which switches to a `Docs | Blog` switcher plus the article
 list (`docs/ADR/proposed/0025-catalog-rail-owns-reading-navigation.md`). The
 prose panel therefore spans the full reading column, and the reading surface
-never touches chrome.
+never touches chrome. The rail carries a single collapse control: a 2.25rem
+square at its bottom-right corner, identical expanded or collapsed.
 
 ## Logo
 

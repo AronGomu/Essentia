@@ -1646,10 +1646,22 @@ html[data-catalog='collapsed'] .desktop-catalog {
 .desktop-catalog {
   transition: width 220ms var(--ease-out);
 }
+/* One control, bottom-right of the rail. The square keeps the same
+   footprint in the 3.25rem collapsed strip as in the 17rem rail, so the
+   button never moves or resizes when the rail toggles. */
 .rail-toggle {
-  align-self: stretch;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
   min-height: 2.25rem;
-  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--ruleline);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--cardstock);
+  padding: 0;
 }
 .rail-toggle--bottom {
   margin-top: auto;

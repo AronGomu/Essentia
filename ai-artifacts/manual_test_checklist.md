@@ -10,3 +10,13 @@
 - [ ] Narrow to a phone width (390px): the wordmark still holds the top-left corner and the header does not overflow horizontally.
 - [ ] Visit an inner page with a breadcrumb (for example `/docs/`): the order across the header is wordmark, then breadcrumb, then the utility nav and search.
 - [ ] Scroll a long page: the header stays stuck to the top and nothing from the rail bleeds over it.
+
+## T2 single-square-rail-toggle
+
+- [ ] `cd website && npm run dev`, open `http://localhost:4321/` at 1400px: the catalog rail has exactly one collapse control — a small square in its bottom-right corner. There is no second toggle at the top of the rail.
+- [ ] Click that square: the rail collapses to a narrow strip and the square is still visible in the strip's bottom-right corner.
+- [ ] Click it again: the rail expands back. The square's size does not change between the two states.
+- [ ] Watch the square while toggling: it stays a square (equal width and height) and stays pinned to the rail's bottom-right corner — it never stretches to the rail's full width.
+- [ ] Collapse the rail, then navigate to a docs page (for example `/docs/`): the rail is still collapsed and the square is still reachable to reopen it.
+- [ ] With the rail expanded, tab to the square with the keyboard: it takes focus with a visible focus ring, and Enter or Space toggles the rail.
+- [ ] With a screen reader (or the accessibility inspector), confirm the control is announced as "Collapse catalog" when expanded and "Expand catalog" when collapsed.
