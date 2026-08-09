@@ -278,3 +278,26 @@ test('the catalog rail lists every section flat', async ({ page }) => {
   // The only button left in the rail is the collapse square.
   await expect(rail.getByRole('button')).toHaveCount(1);
 });
+
+test('rail items carry their archetype colour', async ({ page }) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await page.goto(urlFor('/'));
+  const rail = page.getByRole('navigation', { name: 'Catalog' });
+  const abyss = rail.getByRole('link', { name: /^Burning Abyss/ });
+  const plain = rail.getByRole('link', { name: /^Non-archetype/ });
+  const bg = (locator: typeof abyss) =>
+    locator.evaluate((el) => getComputedStyle(el).backgroundColor);
+  // `background` is authored as `color-mix(in oklch, …)` (Requirement 4), so
+  // fully-transparent computed values serialize as `oklch(0 0 none / 0)` in
+  // Chromium/Firefox/Webkit rather than `rgba(0, 0, 0, 0)` — same alpha-0
+  // colour, different notation. Match on trailing zero alpha instead of the
+  // legacy rgba literal.
+  const isTransparent = (color: string) => /[,/]\s*0\)$/.test(color);
+
+  const abyssRest = await bg(abyss);
+  expect(isTransparent(abyssRest)).toBe(false);
+  expect(isTransparent(await bg(plain))).toBe(true);
+
+  await abyss.hover();
+  await expect.poll(() => bg(abyss)).not.toBe(abyssRest);
+});

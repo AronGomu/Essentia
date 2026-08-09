@@ -102,6 +102,8 @@ prose panel therefore spans the full reading column, and the reading surface
 never touches chrome. The rail carries a single collapse control: a 2.25rem
 square at its bottom-right corner, identical expanded or collapsed.
 
+**Rail tint.** Each archetype entry in the rail wears a 14% wash of its own accent, lifting to 32% over `--sleeve` on hover, focus and current page. Non-archetype has no section colour and stays on the rail's black.
+
 ## Logo
 
 The Essentia identity ships as two raster marks, committed under `website/brand/`

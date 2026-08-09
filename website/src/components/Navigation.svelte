@@ -12,7 +12,7 @@
 
   type NavSection = Pick<
     CatalogSection,
-    'slug' | 'label' | 'kind' | 'route' | 'count'
+    'slug' | 'label' | 'kind' | 'accent' | 'route' | 'count'
   >;
   export let sections: NavSection[];
   export let currentPath: string;
@@ -29,6 +29,32 @@
   onMount(() => {
     railState = readRailState();
     applyRailState(railState);
+    // BaseLayout's CSP `style-src` (hardened by scripts/harden-csp.mjs) lists
+    // only the sha256 hashes of this page's static <style> elements — it
+    // carries no `'unsafe-inline'`/`'unsafe-hashes'` for the *attribute*
+    // form, and a per-section value like `--nav-tint: var(--ember)` can't be
+    // hashed statically anyway. Every browser therefore silently drops the
+    // SSR-rendered `style="--nav-tint: …"` on each <li>: the text is still
+    // visible via `getAttribute('style')`, but it never reaches
+    // `element.style` or `getComputedStyle`, so `color-mix()` in
+    // `.desktop-catalog li a` never sees it. Verified cross-engine — a CSP-
+    // free minimal repro of the identical markup+CSS renders the tint fine.
+    // CSP does not restrict direct CSSOM mutation, so apply the tint that
+    // way instead, once, from the same `sections` data `tintStyle` reads.
+    const applyTint = (list: NodeListOf<HTMLLIElement>) => {
+      list.forEach((li, index) => {
+        const value = tintStyle(sections[index]);
+        if (value) li.style.setProperty('--nav-tint', value);
+      });
+    };
+    applyTint(
+      document.querySelectorAll<HTMLLIElement>(
+        '#desktop-catalog-sections > li',
+      ),
+    );
+    applyTint(
+      document.querySelectorAll<HTMLLIElement>('#mobile-catalog-sections > li'),
+    );
   });
 
   function toggleRail() {
@@ -50,6 +76,23 @@
     if (normalized.endsWith(route)) return 'page' as const;
     return normalized.includes(route) ? ('location' as const) : undefined;
   };
+
+  /**
+   * The rail wears each archetype's own colour. `non-archetype` is not an
+   * archetype and has no colour of its own — its authored `relic` accent is
+   * the page accent, not a section identity — so it rests on the rail's own
+   * black and only lifts on hover.
+   *
+   * Returns the CSS value each <li> should carry as its `--nav-tint`
+   * property. Bound both as a `style:--nav-tint` directive on the markup
+   * (kept for readability/SSR intent) and applied again through the CSSOM
+   * in `onMount` above — see the comment there for why the second pass is
+   * required: BaseLayout's CSP `style-src` has no allowance for inline
+   * `style=""` attribute values, so the SSR-rendered attribute is silently
+   * inert in every engine and only the CSSOM write actually paints it.
+   */
+  const tintStyle = (section: NavSection) =>
+    section.kind === 'archetype' ? `var(--${section.accent})` : null;
 
   function openDrawer() {
     dialog.showModal();
@@ -102,7 +145,7 @@
          them again only added a heading and a disclosure to click through. -->
     <ul id="desktop-catalog-sections">
       {#each sections as section (section.slug)}
-        <li>
+        <li style:--nav-tint={tintStyle(section)}>
           <a href={href(section.route)} aria-current={current(section.route)}
             >{section.label}<small>{section.count}</small></a
           >
@@ -168,8 +211,10 @@
          the rail is in, or a reading page strands the visitor. -->
     <nav aria-label={`Mobile ${navLabel.toLowerCase()}`}>
       {#if mode === 'catalog'}
-        <ul>
-          {#each sections as section (section.slug)}<li>
+        <ul id="mobile-catalog-sections">
+          {#each sections as section (section.slug)}<li
+              style:--nav-tint={tintStyle(section)}
+            >
               <a
                 href={href(section.route)}
                 aria-current={current(section.route)}

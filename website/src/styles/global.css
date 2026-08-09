@@ -373,8 +373,14 @@
   .mobile-drawer li + li {
     margin-top: 0.2rem;
   }
+  /* --nav-tint is set per <li> by Navigation.svelte for archetype sections only; unset it falls back to transparent (rest) and --sleeve (hover), which is exactly the pre-tint look. */
   .desktop-catalog li a,
   .mobile-drawer li a {
+    background: color-mix(
+      in oklch,
+      var(--nav-tint, transparent) 14%,
+      transparent
+    );
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -384,9 +390,16 @@
     text-decoration: none;
   }
   .desktop-catalog li a:hover,
+  .desktop-catalog li a:focus-visible,
   .desktop-catalog li a[aria-current='page'],
-  .mobile-drawer li a:hover {
-    background: var(--sleeve);
+  .mobile-drawer li a:hover,
+  .mobile-drawer li a:focus-visible,
+  .mobile-drawer li a[aria-current='page'] {
+    background: color-mix(
+      in oklch,
+      var(--nav-tint, var(--sleeve)) 32%,
+      var(--sleeve)
+    );
     color: var(--cardstock);
   }
   .desktop-catalog li a[aria-current='page']::before {

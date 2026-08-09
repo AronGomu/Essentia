@@ -29,10 +29,11 @@ const {
 } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const navSections = catalog.sections.map(
-  ({ slug, label, kind, route, count }) => ({
+  ({ slug, label, kind, accent, route, count }) => ({
     slug,
     label,
     kind,
+    accent,
     route,
     count,
   }),

@@ -29,3 +29,14 @@
 - [ ] Visit `/docs/` and `/blog/`: the rail switches to its reading mode — the Docs/Blog switcher and grouped headings (e.g. "Design", chapter names) are unchanged from before this change.
 - [ ] Click a catalog link (e.g. "Burning Abyss"): it navigates to that section and the link shows as current (a marker before it).
 - [ ] Once Shaddoll and/or Spellbook cards are released, re-check this page: those sections should appear in the flat list in the same style, with no code changes needed.
+
+## T4 accent-tinted-nav-items
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs` (production build — the tint's CSSOM fallback only matters once the CSP is hardened by `scripts/harden-csp.mjs`, which runs on build, not on `npm run dev`), open the served site at 1400px: Burning Abyss reads with a faint orange-brown wash, Nekroz with a faint blue-teal wash, and Non-archetype stays plain black.
+- [ ] Hover Burning Abyss: its wash visibly deepens (goes from a faint tint to a stronger orange-brown, still readable). Move off: it returns to the faint resting wash.
+- [ ] Hover Non-archetype: it lifts to the same plain `--sleeve` highlight as before this change — no colour appears.
+- [ ] Tab to Burning Abyss with the keyboard: the same deepened wash appears on `:focus-visible` as on hover.
+- [ ] Navigate to `/archetypes/burning-abyss/`: the Burning Abyss rail link shows the deepened wash as its "current page" state (no separate marker needed to tell it apart from hover/focus).
+- [ ] Narrow to a phone width (390px) and open the hamburger drawer: the same tints (Burning Abyss orange, Nekroz blue, Non-archetype black) appear in the drawer's list, and hovering/tapping deepens them the same way.
+- [ ] Open the browser devtools console while loading the page: no CSP violation reports and no other console errors.
+- [ ] `cd website && npm run dev` (unhardened dev CSP), open at 1400px: the same tints render correctly (the dev-mode CSP still allows the plain inline `style=""` attribute, so this should look identical to the production build).
