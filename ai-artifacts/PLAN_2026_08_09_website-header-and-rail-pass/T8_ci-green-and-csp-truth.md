@@ -249,4 +249,6 @@ including `.gallery-card` count 0 (verified still 0 in `dist/index.html`).
       `dist` in all three engines: Burning Abyss' resting background is
       non-transparent (the ember tint landed via the CSSOM pass),
       Non-archetype's stays transparent, and hover shifts it again.
-- [ ] commit msg draft: `fix(website): stop shipping CSP-blocked tint markup and get the e2e suite green`
+- [x] commit msg draft: `fix(website): stop shipping CSP-blocked tint markup and get the e2e suite green`
+      — used verbatim as the subject of `799a4d3`, pushed to
+      `origin/plan/website-header-and-rail-pass`.
