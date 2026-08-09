@@ -832,16 +832,22 @@
     padding: 0.25rem 0.55rem;
     white-space: nowrap;
   }
-  /* The row is capped well inside `.page-shell`'s 88rem so the prose and the
-     art meet near the middle of the page instead of at its two edges. Both
-     tracks keep their authored ratios — only the row width and the gutter
-     between them shrink. */
+  /* The prose and the art meet nearer the middle of the row than they used to,
+     and they do it *without changing size*. Those two pull against each other:
+     the tracks are `fr`, so a smaller gap is handed straight back to them and
+     both columns grow. So the row goes on holding the gutter it held before —
+     `--hero-track-inset` is the old `clamp(2rem, 6vw, 7rem)` — and spends the
+     difference as symmetric padding instead. The tracks resolve against the
+     same width as before (656px + 393.6px at a 1440px viewport with the rail
+     expanded), the visible gutter more than halves, and the pair reads as
+     centred because the padding is what pushed them inwards. */
   .catalog-hero {
+    --hero-track-inset: clamp(2rem, 6vw, 7rem);
+    --hero-gutter: clamp(1.5rem, 2.5vw, 3rem);
     display: grid;
-    width: min(100%, 72rem);
-    margin-inline: auto;
     grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-    gap: clamp(1.5rem, 2.5vw, 3rem);
+    gap: var(--hero-gutter);
+    padding-inline: calc((var(--hero-track-inset) - var(--hero-gutter)) / 2);
     align-items: center;
     border-bottom: 1px solid var(--ruleline);
     padding-block: var(--space-2) var(--space-4);
@@ -1117,8 +1123,18 @@
   }
   .catalog-hero {
     grid-template-columns: 1fr;
+    /* One column has no gutter to compensate for, so the hero returns to the
+       shell edges and lines up with the gallery underneath it. */
+    padding-inline: 0;
   }
+  /* The feedback stated this width as a layout condition — "when everything is
+     placed on 1 column and Title on page + description is placed before
+     hero-image". That is this breakpoint, not 44rem: from here down the prose
+     stacks above a square of art that costs a whole viewport of scrolling
+     before the first card. The stacked sizing below stays authored so the art
+     is laid out correctly the moment anything shows it again. */
   .catalog-hero-art {
+    display: none;
     max-width: 24rem;
     margin-inline: auto;
   }
@@ -1129,11 +1145,6 @@
   .compact-brand img {
     height: 2rem;
     width: 2rem;
-  }
-  /* A phone gets the prose and the gallery; the square hero art costs a
-     whole viewport of scrolling before the first card. */
-  .catalog-hero-art {
-    display: none;
   }
   .search-trigger {
     min-width: 0;

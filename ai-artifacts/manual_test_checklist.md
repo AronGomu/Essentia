@@ -64,10 +64,10 @@
 
 ## T7 catalog-hero-tightening
 
-- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` at 1440px: the prose and the hero art read as one row capped well short of the browser edges, roughly centred on the page, with a visibly tighter gutter between them than before this change.
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` at 1440px: the prose and the hero art read as one row with a visibly tighter gutter between them than before this change. (Superseded by T10: the `72rem` cap this line described was inert at this width and has since been removed — the row spans the page shell and it is the *content inside it* that is inset and centred. Check the T10 section instead.)
 - [ ] At 1440px, the two columns keep their prior proportions — the prose column is still noticeably wider than the art column, just closer together.
-- [ ] Resize down to 900px (the `64rem` stacked layout): the hero collapses to one column, the art still shows, capped at `24rem` wide and centred — unchanged from before this change.
-- [ ] Resize down to 704px and 704.1px: the hero art is still visible on both sides of that boundary (this pass only removes it below 44rem / 704px, not at the 64rem stack point).
+- [ ] Resize down to 900px (the `64rem` stacked layout): the hero collapses to one column. (Superseded by T10: the art no longer shows at this width. See the T10 section.)
+- [ ] Resize down to 704px and 704.1px. (Superseded by T10: the art now disappears at the 64rem stack point, so it is already gone on both sides of this boundary.)
 - [ ] Resize down to 390px (a phone width): the hero art disappears entirely — no broken image box, no leftover whitespace where it was — and the archetype name heading plus the first card in the gallery below are visible without excess scrolling.
 - [ ] With a screen reader (or the accessibility tree inspector), confirm at 390px that the hidden hero art (`role="img"`, `tabindex="0"`) is not announced and not reachable by Tab — it should be fully removed from the accessibility tree, not just visually hidden.
 - [ ] Repeat the 1440px and 390px checks on `/sections/non-archetype/non-archetype/` (the non-archetype hero shares the same CSS class) to confirm both hero routes moved together.
@@ -92,3 +92,20 @@
 - [ ] Open `/` at 1400×900: the "New" pill on the Non-archetype/Burning Abyss/Nekroz section tiles has also dropped lower, staying clear of the tile's title text.
 - [ ] Narrow to a phone width (390px) on `/archetypes/nekroz/`: the badge still sits over the artwork at the lower position, not overlapping the card title, at this width too.
 - [ ] Open DevTools, inspect a `.tile-badge` element's computed style: `top` resolves to `32px` (`2rem`) at every width checked.
+
+## T10 hero-fidelity
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` at exactly 1440px wide with the catalog rail expanded (its default): the prose and the hero art sit closer together than they did before this pass, and the pair reads as centred in the row — there is now visible breathing room outside the prose on the left and outside the art on the right, where before each ran to the edge of the page shell.
+- [ ] Same view, DevTools: select the first `<div>` inside `.catalog-hero` and read its box width, then the `.catalog-hero-art` width. They must be about **656px** and **394px** — the same widths they had before this whole pass began. If either reads about 688px / 413px, the `fr` tracks have eaten the gutter again and the fix has regressed.
+- [ ] Same view: measure the horizontal space between them (art's left edge minus the prose's right edge). It should be **36px**, down from 86px on `main`. This is the whole point of the change — a much tighter gutter with the columns unmoved.
+- [ ] Repeat both measurements at exactly 1280px wide: expect roughly **562px** prose, **337px** art, **32px** gutter.
+- [ ] Inspect `.catalog-hero` computed style at 1440px: `width` must NOT be `1152px` — the old `min(100%, 72rem)` cap is gone, so the element spans the full page shell (about 1136px) and the inset comes from `padding-inline` instead (about 25px each side).
+- [ ] Widen the window past ~1500px: the hero keeps growing with the page instead of freezing at 1152px. Nothing should look clipped or off-centre.
+- [ ] Resize down through 1025px → 1024px: at 1025px the hero is still two columns with the art beside the prose; the moment it drops to 1024px the hero stacks to one column **and the art disappears in the same step**. The art must never be visible below the prose. This is the feedback line being fixed — the old build kept showing it all the way down to 704px.
+- [ ] At 900px: one column, no hero art, no leftover gap or empty box where it was, and the prose block lines up flush with the card gallery beneath it (no inset — the padding compensation is switched off when stacked).
+- [ ] At 390px (phone): still no hero art; the archetype heading and the first gallery card are reachable without excessive scrolling.
+- [ ] With a screen reader or the accessibility-tree inspector at 900px and 390px: the hero art container (`role="img"`, `tabindex="0"`) is absent from the tree and cannot be reached with Tab — removed, not merely visually hidden.
+- [ ] Repeat the 1440px, 900px and 390px checks on `/sections/non-archetype/non-archetype/`: it shares `.catalog-hero`, so both hero routes must move together.
+- [ ] Collapse the catalog rail (rail toggle) at 1440px and re-check: the columns shrink together with the page, the gutter stays tight, and neither column overlaps the other.
+- [ ] DevTools **Network** tab, reload `/archetypes/nekroz/` at 900px and filter by image: the hero WebP **is still downloaded** even though it is hidden. This is a known, accepted cost recorded in T10's Outputs, not a bug to file — see the follow-up note there.
+- [ ] DevTools **Console** on `/archetypes/nekroz/` at 1440px, 900px and 390px: completely empty, no CSP violation and no error.

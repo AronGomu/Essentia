@@ -344,6 +344,18 @@ test('the archetype hero drops its art on a phone', async ({ page }) => {
   await expect(page.locator('.gallery-card').first()).toBeVisible();
 });
 
+test('the archetype hero art goes with the single-column switch', async ({
+  page,
+}) => {
+  // 900px is inside the 704–1024px band where the hero was already stacked —
+  // title and description above the art — while the art was still shown.
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.goto(urlFor('/archetypes/burning-abyss/'));
+  await expect(page.locator('.catalog-hero-art')).toBeHidden();
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(page.locator('.catalog-hero-art')).toBeVisible();
+});
+
 test('the archetype hero columns sit close on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1400, height: 900 });
   await page.goto(urlFor('/archetypes/burning-abyss/'));
@@ -354,3 +366,44 @@ test('the archetype hero columns sit close on desktop', async ({ page }) => {
   const art = (await page.locator('.catalog-hero-art').boundingBox())!;
   expect(art.x - (text.x + text.width)).toBeLessThanOrEqual(56);
 });
+
+// The rendered `.catalog-hero` column widths and gutter at commit `main`,
+// measured on the built site at `/archetypes/nekroz/` with the rail expanded.
+// chromium, firefox and webkit agreed to under 0.01px. The feedback asked for
+// the two columns to move closer together while keeping their current size, so
+// these are a contract, not a snapshot: the columns must stay put and only the
+// gutter may move.
+const HERO_BASELINE = {
+  1440: { text: 656, art: 393.6, gutter: 86.4 },
+  1280: { text: 562, art: 337.2, gutter: 76.8 },
+} as const;
+
+for (const width of [1440, 1280] as const) {
+  test(`the hero columns keep their pre-pass widths at ${width}`, async ({
+    page,
+  }) => {
+    const baseline = HERO_BASELINE[width];
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(urlFor('/archetypes/nekroz/'));
+    const text = (await page
+      .locator('.catalog-hero > div')
+      .first()
+      .boundingBox())!;
+    const art = (await page.locator('.catalog-hero-art').boundingBox())!;
+
+    expect(Math.abs(text.width - baseline.text) / baseline.text).toBeLessThan(
+      0.02,
+    );
+    expect(Math.abs(art.width - baseline.art) / baseline.art).toBeLessThan(
+      0.02,
+    );
+
+    // …and the point of the change: the space between them is visibly smaller.
+    // The gutter drops from `clamp(2rem, 6vw, 7rem)` to
+    // `clamp(1.5rem, 2.5vw, 3rem)` — 86.4 → 36 at 1440, 76.8 → 32 at 1280 —
+    // so anything at or above half the old gutter means the tracks ate the
+    // difference again.
+    const gutter = art.x - (text.x + text.width);
+    expect(gutter).toBeLessThan(baseline.gutter / 2);
+  });
+}
