@@ -97,14 +97,27 @@ the mana cost, which is essential information). Take the value as authored.
 
 ## Impl steps
 
-- [ ] 1. Add the unit test described in TDD; run it; confirm red.
-- [ ] 2. Change `.tile-badge`'s `top: 0.9rem` to `top: 2rem` in `global.css`.
-- [ ] 3. Run the unit test; confirm green.
-- [ ] 4. Visually confirm through the Docker runbook at 1400×900 on `/` that the
+- [x] 1. Add the unit test described in TDD; run it; confirm red. Evidence: `website/tests/unit/tile-badge.test.ts` created; `npx vitest run tests/unit/tile-badge.test.ts` → 5 failed, `expected '0.9rem' to be '2rem'`.
+- [x] 2. Change `.tile-badge`'s `top: 0.9rem` to `top: 2rem` in `global.css`. Evidence: `website/src/styles/global.css:698` now reads `top: 2rem;`.
+- [x] 3. Run the unit test; confirm green. Evidence: `npx vitest run tests/unit/tile-badge.test.ts` → 5 passed.
+- [x] 4. Visually confirm through the Docker runbook at 1400×900 on `/` that the
       badge sits over artwork and clears the mana cost. Capture the evidence.
-- [ ] 5. Delete `website/playwright-report/` and `website/test-results/`, then
+      Evidence: `website/tests/e2e/tile-badge-visual.spec.ts` run via the Docker
+      Playwright runbook against `/archetypes/burning-abyss/` (real
+      `.gallery-card .tile-badge`, not the homepage `.section-tile` badge) → 1
+      passed; screenshot `website/test-results/t9-tile-badge-1400x900.png`
+      shows the "NEW" pill sitting below the title bar, over the artwork, no
+      longer overlapping the card's title/cost strip.
+- [x] 5. Delete `website/playwright-report/` and `website/test-results/`, then
       run `cd website && npm run format && npm run ci`.
-- [ ] 6. Run `graphify update .` from the repo root.
+      Evidence: dirs deleted before and after the Docker run; `npm run format`
+      → no changes; `npm run ci` → exit 0, `Test Files 59 passed (59)`,
+      `Tests 638 passed (638)`, build 152 pages, `dist scan: clean`; then
+      `find /home/aron/projects/essentia/website -not -user aron` → empty.
+- [x] 6. Run `graphify update .` from the repo root.
+      Evidence: `graphify update .` → "Rebuilt: 3065 nodes, 4294 edges, 317
+      communities"; `graphify-out/graph.json, graph.html and GRAPH_REPORT.md
+      updated`.
 
 ## Outputs
 
@@ -113,7 +126,7 @@ the mana cost, which is essential information). Take the value as authored.
 
 ## Validation
 
-- [ ] the new unit test passes
-- [ ] `cd website && npm run ci` exits 0
-- [ ] observed: badge clears the mana cost on a real tile
-- [ ] commit msg draft: `fix(website): drop the new badge clear of the mana cost`
+- [x] the new unit test passes — `npx vitest run tests/unit/tile-badge.test.ts` → 5 passed (5), reconfirmed inside the full `npm run ci` run (638 passed).
+- [x] `cd website && npm run ci` exits 0 — exit code 0, `Test Files 59 passed (59)`, `Tests 638 passed (638)`, `dist scan: clean`.
+- [x] observed: badge clears the mana cost on a real tile — Docker Playwright run against `/archetypes/burning-abyss/` `.gallery-card .tile-badge`: screenshot showed the "NEW" pill positioned below the card's title bar, over the artwork, not overlapping it.
+- [x] commit msg draft: `fix(website): drop the new badge clear of the mana cost`

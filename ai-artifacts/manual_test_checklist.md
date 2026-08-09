@@ -84,3 +84,11 @@
 - [ ] Re-enable JavaScript and hard-reload `/` a few times while watching the rail: the tint appears as the page settles. A brief untinted flash before hydration is expected; a rail that stays untinted after the page is interactive is not.
 - [ ] Regression check on the guards: temporarily edit `website/src/layouts/BaseLayout.astro` to author `style-src 'self' 'unsafe-inline' 'unsafe-hashes'`, run `cd website && npm run build`, and confirm it **fails** with `CSP hardening incomplete — 'unsafe-hashes'`. Revert the edit and confirm the build passes again.
 - [ ] `cd website && npm run ci` from a clean checkout exits 0, and `grep -ro 'style="--nav-tint' website/dist | wc -l` prints `0`.
+
+## T9 new-badge-position
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/burning-abyss/` at 1400×900: on the newest-release cards, the orange "NEW" pill sits below the card's title bar, over the illustration — it no longer covers the title bar / top corner of the card.
+- [ ] Same page: confirm the pill's right edge still hugs the card's top-right corner the same distance as before this change (only the vertical offset moved; nothing else about the badge — colour, size, right offset, stacking order — changed).
+- [ ] Open `/` at 1400×900: the "New" pill on the Non-archetype/Burning Abyss/Nekroz section tiles has also dropped lower, staying clear of the tile's title text.
+- [ ] Narrow to a phone width (390px) on `/archetypes/nekroz/`: the badge still sits over the artwork at the lower position, not overlapping the card title, at this width too.
+- [ ] Open DevTools, inspect a `.tile-badge` element's computed style: `top` resolves to `32px` (`2rem`) at every width checked.
