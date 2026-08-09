@@ -33,3 +33,12 @@ website/coverage/
 
 # graphify knowledge graph output
 graphify-out/
+
+# Working scratch: progress notes, one-off exports, downloaded archives
+.tmp/
+
+# impeccable design-hook cache
+.impeccable/
+
+# Astro CLI run-state (background dev server log)
+.astro/

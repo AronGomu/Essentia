@@ -6,3 +6,4 @@ public/generated/
 src/generated/
 test-results/
 coverage/
+.impeccable/
