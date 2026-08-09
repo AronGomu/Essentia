@@ -49,7 +49,7 @@
 - [ ] At 400px, click the `⋯` button: a small popover panel opens below the header at the right edge, listing "Learn", "Blog", "Decks" (short labels).
 - [ ] With the popover open, inspect each link's accessible name via a screen reader or the browser's accessibility tree inspector: the docs link announces "Learn about Essentia" even though only "Learn" is visible; the drawer trigger announces "Catalog" (or "Docs & blog" in reading mode); the Find trigger announces "Find".
 - [ ] Click outside the open popover (or press Escape): it closes.
-- [ ] Resize the browser slowly from 1400px to 390px and back: the switch between the inline row and the `⋯` button happens exactly at 44rem (704px) with no layout jump or flash of unstyled content.
+- [ ] Resize the browser slowly from 1400px to 390px and back: the switch between the inline row and the `⋯` button still happens exactly at 44rem (704px) with no layout jump or flash of unstyled content. (Amended by T11: this is now the *third* of three changes you will pass on the way down — the labels shorten at 1024px and Find squares off at 896px first. Only the `⋯` switch is at 704px.)
 - [ ] Open the browser devtools console at 400px while opening/closing the popover: no console errors.
 
 ## T6 header-single-row-guard
@@ -109,3 +109,17 @@
 - [ ] Collapse the catalog rail (rail toggle) at 1440px and re-check: the columns shrink together with the page, the gutter stays tight, and neither column overlaps the other.
 - [ ] DevTools **Network** tab, reload `/archetypes/nekroz/` at 900px and filter by image: the hero WebP **is still downloaded** even though it is hidden. This is a known, accepted cost recorded in T10's Outputs, not a bug to file — see the follow-up note there.
 - [ ] DevTools **Console** on `/archetypes/nekroz/` at 1440px, 900px and 390px: completely empty, no CSP violation and no error.
+
+## T11 staged-header-degradation
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site at 1400px on `/archetypes/burning-abyss/`: nothing has changed from T5 — brand, breadcrumb, the three full text links "Learn about Essentia" / "Blog" / "Decks", and a wide `⌕ Find ⌘ K` box. No `⋯` button.
+- [ ] Narrow to exactly 1024px: the three links now read "Learn", "Blog", "Decks" **inline in the header row** (not in a popover), the hamburger and Find lose their "Catalog"/"Find" text, and the Find box is still wide with its `⌘ K` hint. Still no `⋯` button. This is the change T11 exists for — before it, "Learn" could only be seen inside the `⋯` popover.
+- [ ] At 1025px the labels are long again: the switch is exactly at 64rem.
+- [ ] Narrow to exactly 896px: the Find box collapses to a small square `⌕` button and the `⌘ K` hint disappears — while "Learn", "Blog", "Decks" are **still inline**. At 897px Find is still wide: the switch is exactly at 56rem.
+- [ ] Narrow to exactly 704px: only now do the three links fold into the single square `⋯` button. At 705px they are still inline.
+- [ ] Do that whole sweep once more watching the wordmark: it never gets squeezed thin or clipped at any width between 400px and 1400px. (Before T11 it was crushed to zero width between 720px and 864px.)
+- [ ] Do the sweep once more watching for a horizontal scrollbar at the bottom of the window: none appears at any width. (Before T11, `/archetypes/burning-abyss/` overflowed by up to 95px around 720px.)
+- [ ] Repeat the three boundary checks (1024, 896, 704) on `/` — a page with no breadcrumb — and on `/cards/ash-blossom-and-joyous-spring/`: the header is one row at each.
+- [ ] At 896px and at 704px, use the keyboard shortcut `⌘ K` / `Ctrl K`: the Find dialog still opens even though the hint glyph is hidden.
+- [ ] At 1024px, inspect the accessibility tree for the docs link: it still announces "Learn about Essentia" although only "Learn" is drawn.
+- [ ] With DevTools open, sweep from 1400px to 390px and back: no console error and no `[essentia] site-header wraps to …` warning at any width.

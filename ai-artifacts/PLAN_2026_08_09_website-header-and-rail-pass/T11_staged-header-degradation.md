@@ -125,26 +125,130 @@ if it does not. The 400px single-row guarantee from T6 must survive unchanged.
 2. **Green** — split the single media block into the staged blocks.
 3. **Refactor** — keep green.
 
+## Stage table
+
+Final boundaries: **64rem / 56rem / 44rem**. Root font is 16px, so 1024px /
+896px / 704px. `—` means "nothing declares it"; `resolve()` returns `undefined`.
+
+| viewport | stage | `.label-full` display | `.label-short` display | `.search-trigger` min-width | `.utility-more` display | `.utility-menu` display |
+| -------- | ----- | --------------------- | ---------------------- | --------------------------- | ----------------------- | ----------------------- |
+| 1440     | 0     | —                     | `none`                 | `min(22rem, 45vw)`          | `none`                  | `flex`                  |
+| 1025     | 0     | —                     | `none`                 | `min(22rem, 45vw)`          | `none`                  | `flex`                  |
+| 1024     | 1     | `none`                | `inline`               | `min(22rem, 45vw)`          | `none`                  | `flex`                  |
+| 897      | 1     | `none`                | `inline`               | `min(22rem, 45vw)`          | `none`                  | `flex`                  |
+| 896      | 2     | `none`                | `inline`               | `0`                         | `none`                  | `flex`                  |
+| 705      | 2     | `none`                | `inline`               | `0`                         | `none`                  | `flex`                  |
+| 704      | 3     | `none`                | `inline`               | `0`                         | `inline-flex`           | `none`                  |
+| 400      | 3     | `none`                | `inline`               | `0`                         | `inline-flex`           | `none`                  |
+
+**Boundary choice — the parent's ~56rem / ~50rem defaults did not hold; both
+were moved up one step, and each move is measured.**
+
+_Stage 1 → 64rem (default was ~56rem)._ On the pre-change build (Docker
+Playwright sweep, chromium) the header was already 2–3 rows tall and
+overflowing across the *entire* 44–64rem band, not just below 56rem. At 1024px
+on `/archetypes/burning-abyss/` the header was 121px tall; the 160px wordmark
+was crushed to 20.7px at 896px and to **0px** at 720–864px; the header
+overflowed its own box by 15px (832), 46px (800), 70px (768), 95px (720).
+Cause: from 64rem down the rail is replaced by a `.drawer-trigger`, so the
+header *gains* a control at the width it loses a column — and
+`Learn about Essentia` + `Catalog` then wrapped to two and three lines inside
+their own buttons. 64rem is therefore where the budget actually breaks, and it
+is an existing breakpoint rather than a new one. ~56rem would have left
+57–64rem broken while "fixing" the band below it.
+
+_Stage 2 → 56rem (default was ~50rem)._ Cut at 50rem first and re-swept: with
+Find still holding `min(22rem, 45vw)` = 352px, inner pages ran out of room in
+the band immediately above the boundary — 801px gave a 3-row 121px header with
+the breadcrumb at its 75px min-content and the wordmark at 11.9px; 840px gave 2
+rows. 56rem is the widest boundary that leaves no such band between stages 1
+and 2, and it re-uses the number the parent had proposed for stage 1.
+
+_Stage 3 stays at 44rem_, unchanged from T5.
+
 ## Impl steps
 
-- [ ] 1. Write the stage table into this ticket as a table of
+- [x] 1. Write the stage table into this ticket as a table of
       (width → expected declarations), then encode it in
       `compact-header.test.ts`. Run; confirm red.
-- [ ] 2. Split the `@media (max-width: 44rem)` header rules into the three
+      Evidence: table above; `staged header degradation` block added to
+      `compact-header.test.ts`; `npx vitest run tests/unit/compact-header.test.ts`
+      → `Tests  5 failed | 19 passed (24)`. The reds are exactly the stage-1 and
+      stage-2 rows (1024, 896, 800, 705) plus the `⌘ K` hint row — all failing
+      with `expected undefined to be 'none'`, i.e. nothing declares the staged
+      values above 44rem, which is the defect.
+- [x] 2. Split the `@media (max-width: 44rem)` header rules into the three
       staged blocks. Keep the 44rem stage byte-identical in effect to what T5
       shipped.
-- [ ] 3. Run the unit tests; confirm green.
-- [ ] 4. Add an e2e case to `header-row.spec.ts` asserting one row at each stage
+      Evidence: `global.css` now has `@media (max-width: 64rem)` (`.label-full`
+      / `.label-short`) and `@media (max-width: 50rem)` (`.search-trigger`
+      min-width + `kbd`) above the 44rem block; those four declarations were
+      *moved*, not copied, out of the two 44rem blocks. Each new query's range
+      contains 44rem, so at ≤44rem the same declarations still resolve to the
+      same values — the stage-3 rows of the unit stage table (704px, 400px) are
+      unchanged from T5 and pass.
+- [x] 3. Run the unit tests; confirm green.
+      Evidence: `npx vitest run tests/unit/` → `Test Files  59 passed (59) /
+      Tests  650 passed (650)`. Two T5-era assertions that used 900px as
+      "desktop" for the label swap were re-pointed at 1440px, since 900px is
+      now inside stage 1; comment in the test records why.
+- [x] 4. Add an e2e case to `header-row.spec.ts` asserting one row at each stage
       boundary width, and that `Learn` is visible inline in the stage-1 band.
-- [ ] 5. Run the e2e through the Docker runbook on all three projects.
-- [ ] 6. If any control's 400px width changed, update
+      Evidence: three new tests — `the header holds one row at every stage
+      boundary` (1024/896/704/400 × `/` and `/archetypes/burning-abyss/`, also
+      asserting `header.scrollWidth - header.clientWidth <= 0`, because above
+      44rem the header is `flex-wrap: nowrap` and the row count alone would be
+      vacuous), `` `Learn` renders inline in the header row above the `⋯` stage``
+      (1024/960/896/705: link visible, `.label-short` visible, `.label-full`
+      hidden, no `⋯`, and the link's box inside the header's box), and `Find
+      keeps its reserved width in stage 1 and squares off in stage 2`.
+- [x] 5. Run the e2e through the Docker runbook on all three projects.
+      Evidence: `npx playwright test tests/e2e/header-row.spec.ts …` in
+      `mcr.microsoft.com/playwright:v1.61.1-noble` → `18 passed (44.8s)`,
+      6 tests × chromium/firefox/webkit.
+      One tolerance was widened per the Environment note: the stage-2 Find box
+      is 39.8 × 49.2, so `|width − height|` is 9.39 (chromium) / 9.43 (firefox)
+      / 9.42 (webkit) — the control's own vertical padding, which this ticket
+      does not touch. Tolerance is 12 with those three numbers recorded in the
+      comment, plus a structural assertion (`square.width < wide.width / 4`)
+      that does not depend on it.
+      A throwaway sweep spec measured every width 400→1280 on both pages:
+      `rows=1` and `header overflow = 0` at **all** of them, with the stage
+      transitions landing exactly on the boundaries — Find 39.8→352px between
+      896 and 897, short labels off between 1024 and 1025, `⋯` on/off between
+      704 and 705. The spec was deleted afterwards; it is not part of the diff.
+- [x] 6. If any control's 400px width changed, update
       `website/shared/header-row.mjs`'s constants and its unit test, and note it.
-- [ ] 7. Update `website/DESIGN.md` and
+      Evidence: **no change needed, and this was measured, not assumed.** At
+      400px the same declarations resolve as before the split, and the sweep
+      confirms identical rendered widths before and after: `compact-brand` 32,
+      `drawer-trigger` 34, `utility-nav` 39.2, `search-trigger` 39.8 in both
+      runs. `HEADER_CONTROLS` is untouched.
+      Noted as residual risk, *not* fixed here: those constants already drifted
+      from the real numbers before this ticket (`search-trigger` 48 vs measured
+      39.8, `drawer-trigger` 36 vs 34). `check-header-row.mjs` only warns, and
+      correcting them is out of T11's scope.
+- [x] 7. Update `website/DESIGN.md` and
       `docs/ADR/proposed/0029-compact-header-at-phone-widths.md` to describe the
       staged degradation rather than a single breakpoint.
-- [ ] 8. Delete `website/playwright-report/` and `website/test-results/`, then
+      Evidence: DESIGN.md's *One Home Rule* now names all three stages;
+      ADR 0029 decision 1 is rewritten as the three-stage table with the
+      measured reason for each boundary, decision 2 reads "from stage 1 down"
+      instead of "at ≤44rem", and two consequences are added (the 44–64rem band
+      is repaired; `Catalog`/`Find` also lose their text at 64rem).
+- [x] 8. Delete `website/playwright-report/` and `website/test-results/`, then
       run `cd website && npm run format && npm run ci`.
-- [ ] 9. Run `graphify update .` from the repo root.
+      Evidence: both directories removed and
+      `find /home/aron/projects/essentia/website -not -user aron` returned
+      nothing, so the Docker runs left no root-owned files. `npm run format`
+      reported every touched file already formatted. `npm run ci` →
+      `CI_EXIT=0`, ending `csp: hashed inline content in 152 HTML files / dist
+      scan: clean / 404: redirects to site root / chrome: 152 pages carry the
+      site header`. `check-header-row.mjs` printed no `[warn] site-header may
+      wrap …` line, so the 400px budget still fits.
+- [x] 9. Run `graphify update .` from the repo root.
+      Evidence: `Rebuilt: 3073 nodes, 4302 edges, 312 communities`,
+      `graph.json, graph.html and GRAPH_REPORT.md updated in graphify-out`.
 
 ## Outputs
 
@@ -154,8 +258,27 @@ if it does not. The 400px single-row guarantee from T6 must survive unchanged.
 
 ## Validation
 
-- [ ] `Learn` renders inline in the header in the stage-1 band — observed
-- [ ] Find is an icon-only square in the stage-2 band with links still inline
-- [ ] one row at every stage boundary and at 400px, all three engines
-- [ ] `cd website && npm run ci` exits 0
-- [ ] commit msg draft: `feat(website): shed header width in ordered stages`
+- [x] `Learn` renders inline in the header in the stage-1 band — observed
+      e2e `` `Learn` renders inline in the header row above the `⋯` stage``
+      passes at 1024/960/896/705 on all three engines: the link is visible,
+      `.label-short` is visible, `.label-full` is hidden, `.utility-more` is
+      hidden, and the link's bounding box sits inside the header's own box —
+      i.e. in the row, not in a popover. The sweep independently shows
+      `short=True, more=False` from 705 to 1024 and `short=False` at 1025.
+- [x] Find is an icon-only square in the stage-2 band with links still inline
+      e2e `Find keeps its reserved width in stage 1 and squares off in stage 2`
+      passes on all three engines: at 960px the box is 352 × 49.2 with the
+      `⌘ K` hint visible; at 896px it is 39.8 × 49.2 with the hint hidden,
+      `.utility-more` still hidden and the `Learn` link still visible.
+- [x] one row at every stage boundary and at 400px, all three engines
+      e2e `the header holds one row at every stage boundary` passes at
+      1024/896/704/400 × {`/`, `/archetypes/burning-abyss/`} on
+      chromium/firefox/webkit — `rowCount === 1` and header overflow `<= 0` at
+      each. `18 passed (44.8s)` for the whole spec. The sweep goes further and
+      shows `rows=1, hdrOv=0` at every width 400/500/600/704/705/800/860/896/
+      897/900/940/980/1024/1025/1280 on both pages, so no broken band is left
+      between the boundaries — the pre-change build had 2–3 row headers and up
+      to 95px of overflow across most of that range.
+- [x] `cd website && npm run ci` exits 0
+      `CI_EXIT=0`; see Impl step 8.
+- [x] commit msg draft: `feat(website): shed header width in ordered stages`

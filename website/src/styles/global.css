@@ -1146,12 +1146,6 @@
     height: 2rem;
     width: 2rem;
   }
-  .search-trigger {
-    min-width: 0;
-  }
-  .search-trigger kbd {
-    display: none;
-  }
   .site-footer {
     flex-direction: column;
   }
@@ -1670,6 +1664,52 @@ html {
   }
 }
 
+/* The header sheds width in three ordered stages, not one.
+   `feedback.md` 8.6: "first remove 'about Essentia'; second reduce width of
+   'Find' input up until becoming only a square icon button; regroup buttons
+   into 3 dot dropdown menu; all other same on a single row." Stated as an
+   ordering, so it has to be authored as one — a single breakpoint that fires
+   all three at once means the shortened `Learn` of 8.2 only ever paints inside
+   the already-collapsed `⋯` popover, where width is not scarce, and the header
+   never actually renders it.
+
+   Each stage only ever *adds* to the one above it, so the ≤44rem stage still
+   resolves to exactly what T5 shipped. */
+
+/* Stage 1 — short labels. This is the rail→drawer breakpoint on purpose: from
+   here down `.desktop-catalog` is replaced by a `.drawer-trigger`, so the
+   header gains a control at the same width it loses a column of room. Measured
+   before this stage existed, `Learn about Essentia` and `Catalog` wrapped to
+   two and three lines inside their own buttons, the 160px wordmark was crushed
+   to 0, and inner pages overflowed the document by up to 95px. */
+@media (max-width: 64rem) {
+  .label-full {
+    display: none;
+  }
+  .label-short {
+    display: inline;
+  }
+}
+
+/* Stage 2 — Find gives up its reserved width and becomes a square icon button.
+   The `⌘ K` hint goes with it: the shortcut still works, but the glyph has no
+   room once the control is square.
+
+   56rem, not the 50rem this stage was first cut at: with Find still holding
+   `min(22rem, 45vw)`, inner pages ran out of room at 801-870px — the header
+   went to three rows, the breadcrumb collapsed to its 75px min-content and the
+   wordmark to 11.9px. 56rem is the widest boundary that leaves no such band
+   between stages 1 and 2. */
+@media (max-width: 56rem) {
+  .search-trigger {
+    min-width: 0;
+  }
+  .search-trigger kbd {
+    display: none;
+  }
+}
+
+/* Stage 3 — the section links regroup into the `⋯` popover. */
 @media (max-width: 44rem) {
   .site-header {
     flex-wrap: wrap;
@@ -1704,12 +1744,6 @@ html {
   }
   html[data-theme='spellbook'] body::after {
     left: 1rem;
-  }
-  .label-full {
-    display: none;
-  }
-  .label-short {
-    display: inline;
   }
   .utility-more {
     display: inline-flex;

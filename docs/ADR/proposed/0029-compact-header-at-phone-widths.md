@@ -16,8 +16,19 @@ The three constraints that shape the fix:
 
 ## Decision
 
-1. Compact width is the existing phone breakpoint `@media (max-width: 44rem)`. 400px is the narrowest supported viewport and the width the guard measures — it is not a new breakpoint.
-2. Labels are hidden by CSS, never removed from the DOM. Each shortenable label ships as `<span class="label-full">` (plus `<span class="label-short">` where a shorter word exists, e.g. "Learn about Essentia" → "Learn"); `.label-full` is `display: none` at ≤44rem and `.label-short` above it. Exactly one is ever in the accessibility tree.
+1. **The header sheds width in three ordered stages, not one.** `feedback.md` 8.6 states the budget as an ordering — "first remove 'about Essentia'; second reduce width of 'Find' input up until becoming only a square icon button; regroup buttons into 3 dot dropdown menu; all other same on a single row" — so it is authored as one. Each stage only ever *adds* to the stage above it, which leaves the ≤44rem stage resolving to exactly what decision 4 describes.
+
+   | stage | query                     | what it sheds                                                       |
+   | ----- | ------------------------- | ------------------------------------------------------------------- |
+   | 1     | `@media (max-width: 64rem)` | `.label-full` → `.label-short`: `Learn` / `Blog` / `Decks` inline    |
+   | 2     | `@media (max-width: 56rem)` | `.search-trigger` drops its reserved width and the `⌘ K` hint         |
+   | 3     | `@media (max-width: 44rem)` | the section links fold into the `⋯` popover (decision 4)              |
+
+   Cutting all three at 44rem made 8.2's shortened `Learn` unreachable: it only ever painted inside the already-collapsed popover, where width is not scarce, so the shortening never happened in the header row it was meant to save space in.
+
+   The boundaries are measured, not assumed. Stage 1 is the rail→drawer breakpoint because that is where the header *gains* a `.drawer-trigger` and loses the rail's column — before it existed, `/archetypes/burning-abyss/` had a 121px three-row header at 1024px, a wordmark crushed from 160px to 0px at 720–864px, and up to 95px of horizontal overflow. Stage 2 was first cut at 50rem and re-measured: with Find still holding `min(22rem, 45vw)` the 801–870px band went back to three rows, so it moved to 56rem, the widest boundary that leaves no gap between stages 1 and 2.
+
+2. Labels are hidden by CSS, never removed from the DOM. Each shortenable label ships as `<span class="label-full">` (plus `<span class="label-short">` where a shorter word exists, e.g. "Learn about Essentia" → "Learn"); `.label-full` is `display: none` from stage 1 down and `.label-short` above it. Exactly one is ever in the accessibility tree.
 3. Every control whose text can be hidden carries an explicit `aria-label` — `Learn about Essentia`, `Find`, the drawer label — so its accessible name is viewport-independent.
 4. The three section links move inside `<div class="utility-menu" id="utility-menu" popover>`, opened by `<button class="utility-more" popovertarget="utility-menu" aria-label="More sections">⋯</button>`. Native HTML `popover`: no island, no script, no CSP change. Above 44rem an author `display: flex` on `.utility-menu` beats the UA rule `[popover]:not(:popover-open) { display: none }`, so the links lay out inline exactly as before and the trigger is hidden.
 5. The breadcrumb is the only variable-width item left. At ≤44rem it gets `flex: 1 1 auto; min-width: 0`, its list gets `flex-wrap: nowrap`, and its items ellipsise. It shrinks; it does not wrap the row.
@@ -33,6 +44,8 @@ The `astro-island` wrapper is `display: contents` and has no box, so the runtime
 ## Consequences
 
 - The compact header is brand + three icon controls, and the section links are one tap away.
+- The staged budget also repairs the 44–64rem band, which the single-breakpoint version left over budget: with stages 1 and 2 in force the header holds one row and overflows its box by 0px at every width from 400px to 1280px on both `/` and a breadcrumbed page.
+- `.label-full` is hidden from 64rem down, so `Catalog` and `Find` lose their text there too, not only the section links. That is what keeps the 44–64rem band inside its budget; both controls already carry an `aria-label` per decision 3, so their accessible names are unchanged.
 - `check-chrome.mjs` keeps passing untouched: the literals it greps for still exist in the built HTML.
 - The layout budget is a single source of truth, importable by both the build script and the unit tests; changing a control's compact width means changing one entry in `HEADER_CONTROLS`.
 - The `⋯` menu depends on native `popover` support. In a browser without it the trigger does nothing and, at ≤44rem, the section links are unreachable from the header — the catalog drawer and the footer still navigate. Accepted: every browser the e2e matrix runs (Chromium, Firefox, WebKit) supports it.
