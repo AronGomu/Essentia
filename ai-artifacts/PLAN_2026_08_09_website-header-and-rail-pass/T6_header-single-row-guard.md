@@ -385,4 +385,4 @@ Other facts:
 - [x] manual: DevTools at 400×800 on `/cards/ash-blossom-and-joyous-spring/` —
       one header row, crumb ellipsised, console clean
 - [x] app functional — every route renders, no console error
-- [ ] commit msg draft: `test(website): warn when the compact header stops fitting one row`
+- [x] commit msg draft: `test(website): warn when the compact header stops fitting one row`
