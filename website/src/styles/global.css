@@ -1027,10 +1027,6 @@
     .section-tile {
       transition: none;
     }
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation: none !important;
-    }
   }
   @media (pointer: coarse) {
     .gallery-card:hover img,
@@ -1610,45 +1606,10 @@ html[data-theme='nekroz'] .render-column picture {
 html {
   background-color: var(--blackfoil);
 }
-@view-transition {
-  navigation: auto;
-}
-/* A true cross-fade: both halves run the same duration from t=0, so their
-   opacities sum to full coverage at every instant. The old two-stage fade
-   delayed the incoming half by 60ms, leaving ~120ms where neither snapshot
-   was opaque and the page canvas showed through — the reported white flash.
-
-   The compositing below is the UA default, restated rather than overridden.
-   `plus-lighter` inside an isolated pair is the one combination in which two
-   half-opaque snapshots add to one opaque frame; with `mix-blend-mode: normal`
-   they would instead composite in sequence over whatever is behind them, so at
-   t=50% roughly a quarter of the group background would bleed through. */
-::view-transition-group(root) {
-  background-color: var(--blackfoil);
-}
-::view-transition-image-pair(root) {
-  isolation: isolate;
-}
-::view-transition-old(root),
-::view-transition-new(root) {
-  mix-blend-mode: plus-lighter;
-}
-::view-transition-old(root) {
-  animation: page-fade-out 200ms linear both;
-}
-::view-transition-new(root) {
-  animation: page-fade-in 200ms linear both;
-}
-@keyframes page-fade-out {
-  to {
-    opacity: 0;
-  }
-}
-@keyframes page-fade-in {
-  from {
-    opacity: 0;
-  }
-}
+/* No cross-document view transition. Opting in with `@view-transition` put a
+   white flash between the click and the cross-fade: proven by an A/B on the
+   same build, where `navigation: none` removed the flash and restoring `auto`
+   brought it back. Navigation is an instant cut instead. */
 
 @media (hover: none), (pointer: coarse), (max-width: 58rem) {
   .card-hover-preview {

@@ -4,95 +4,42 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const css = readFileSync(
+const source = readFileSync(
   path.join(here, '../../src/styles/global.css'),
   'utf8',
 );
+// Assert against declarations only. The sheet documents *why* the view
+// transition is gone, and that prose necessarily names the very at-rule and
+// pseudo-elements these tests forbid — matching raw text would fail on the
+// explanation rather than on a real opt-in.
+const css = source.replace(/\/\*[\s\S]*?\*\//g, '');
 
 /**
- * Grab the body of the standalone rule for `selector`, i.e. the one whose
- * declarations actually drive the animation (as opposed to the
- * `prefers-reduced-motion` block, which also mentions these selectors as
- * part of a comma list but only ever sets `animation: none`).
+ * The site opts out of cross-document view transitions. Enabling them put a
+ * white flash between the click and the cross-fade — an A/B on the same build
+ * showed the flash disappear under `navigation: none` and return under `auto`.
+ * Navigation is an instant cut; ordinary CSS transitions on hover surfaces are
+ * unaffected and still expected.
  */
-function ruleBody(selector: string): string {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const bodies = [
-    ...css.matchAll(new RegExp(`${escaped}\\s*\\{([^}]*)\\}`, 'g')),
-  ].map((m) => m[1] ?? '');
-  if (bodies.length === 0) throw new Error(`rule not found: ${selector}`);
-  const driving =
-    bodies.length === 1
-      ? bodies[0]
-      : bodies.find((body) => /animation:\s*page-fade-/.test(body));
-  if (driving === undefined)
-    throw new Error(`driving rule not found: ${selector}`);
-  return driving;
-}
-
-function animationValue(body: string): string {
-  const match = body.match(/animation:\s*([^;]+);/);
-  if (!match) throw new Error('rule has no animation declaration');
-  return match[1] ?? '';
-}
-
-function firstTime(value: string): string {
-  const match = value.match(/\b\d+(?:\.\d+)?(?:ms|s)\b/);
-  if (!match) throw new Error('no time value found');
-  return match[0];
-}
-
-describe('page transition cross-fade', () => {
-  it('cross-fades with no delay', () => {
-    const animation = animationValue(ruleBody('::view-transition-new(root)'));
-    // name duration timing-function [delay] iteration-count direction fill-mode …
-    // A delay would appear as a second time value (a token ending in ms/s)
-    // after the duration. Only one time value should be present.
-    const timeValues = animation.match(/\b\d+(?:\.\d+)?(?:ms|s)\b/g) ?? [];
-    expect(timeValues).toHaveLength(1);
+describe('page transition', () => {
+  it('keeps the cross-document view transition switched off', () => {
+    // `@view-transition { navigation: auto }` is the opt-in; the pseudo-element
+    // rules only ever matter once it is present.
+    expect(css).not.toMatch(/@view-transition\b/);
+    expect(css).not.toMatch(/::view-transition/);
   });
 
-  it('uses one duration for both halves', () => {
-    const oldAnimation = animationValue(
-      ruleBody('::view-transition-old(root)'),
-    );
-    const newAnimation = animationValue(
-      ruleBody('::view-transition-new(root)'),
-    );
-    expect(firstTime(oldAnimation)).toBe(firstTime(newAnimation));
-  });
-
-  it('keeps the additive compositing that makes the halves sum to one frame', () => {
-    // `plus-lighter` inside an isolated pair is the only combination in which
-    // two half-opaque snapshots add up to full coverage. Overriding either half
-    // of it (`isolation: auto`, `mix-blend-mode: normal`) composites the
-    // snapshots in sequence instead and lets the group background bleed
-    // through mid-transition.
-    const pair = ruleBody('::view-transition-image-pair(root)');
-    expect(pair).toMatch(/isolation:\s*isolate\s*;/);
-    expect(pair).not.toMatch(/isolation:\s*auto/);
-
-    // The reduced-motion block names the same two pseudos, so take every rule
-    // that does and require exactly one of them to carry the blend mode.
-    const blendBodies = [
-      ...css.matchAll(
-        /::view-transition-old\(root\),\s*::view-transition-new\(root\)\s*\{([^}]*)\}/g,
-      ),
-    ].map((match) => match[1] ?? '');
-    expect(blendBodies.length).toBeGreaterThan(0);
-    expect(
-      blendBodies.filter((body) =>
-        /mix-blend-mode:\s*plus-lighter\s*;/.test(body),
-      ),
-    ).toHaveLength(1);
-    expect(
-      blendBodies.some((body) => /mix-blend-mode:\s*normal/.test(body)),
-    ).toBe(false);
-  });
-
-  it('drops the legacy black-dip keyframes', () => {
+  it('drops the page-fade and legacy black-dip keyframes', () => {
+    expect((css.match(/page-fade/g) ?? []).length).toBe(0);
     expect((css.match(/fade-to-black/g) ?? []).length).toBe(0);
     expect((css.match(/fade-from-black/g) ?? []).length).toBe(0);
+  });
+
+  it('keeps the ordinary hover transitions', () => {
+    // Guards the opposite mistake: removing the page transition must not turn
+    // into a sweep that strips every `transition:` in the sheet.
+    const declarations = css.match(/^\s*transition(?:-[a-z]+)?\s*:/gm) ?? [];
+    expect(declarations.length).toBeGreaterThan(0);
   });
 
   it('stops re-animating main', () => {
