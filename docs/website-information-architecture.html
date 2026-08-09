@@ -88,15 +88,15 @@
       <div class="grid">
         <div class="card">
           <h4>Left rail — one surface, two modes</h4>
-          <p><code>Navigation.svelte</code>, prop <code>mode</code>. <b>Catalog</b> on every page but the reading ones: the Non-archetype group plus one entry per archetype, each with its published count. <b>Reading</b> on <code>/docs/…</code> and <code>/blog/…</code>: a two-link <code>Docs | Blog</code> switcher (<code>.reading-switch</code>) followed by the article groups, and no section or archetype links. There is no second in-page rail; the article body takes the freed width.</p>
+          <p><code>Navigation.svelte</code>, prop <code>mode</code>. <b>Catalog</b> on every page but the reading ones: one flat list, one entry per section in authored order (Non-archetype first, then the archetypes), each with its published count and, for archetypes, a wash of its own accent. <b>Reading</b> on <code>/docs/…</code> and <code>/blog/…</code>: a two-link <code>Docs | Blog</code> switcher (<code>.reading-switch</code>) followed by the article groups, and no section or archetype links. There is no second in-page rail; the article body takes the freed width. See <a href="website-shell-chrome.html">shell chrome</a> and ADR 0028.</p>
         </div>
         <div class="card">
-          <h4>Rail toggles — two, inside the rail</h4>
-          <p>Both <code>.rail-toggle</code> buttons are children of <code>&lt;nav id="desktop-catalog"&gt;</code>, first and last, so either end of a long rail can collapse it. Collapsed is a strip, not a disappearance: <code>html[data-catalog='collapsed']</code> sets <code>--sidebar: 3.25rem</code>, hides every rail child except the two toggles, and never translates the rail off screen. State persists at <code>essentia.v1.catalog-rail</code>. Below 64rem the rail is replaced by the modal drawer, which always shows the catalog.</p>
+          <h4>Rail toggle — one square, bottom-right</h4>
+          <p>A single <code>.rail-toggle</code> button, the last child of <code>&lt;nav id="desktop-catalog"&gt;</code>: a 2.25rem square pinned to the rail's bottom-right corner, the same size expanded or collapsed. Collapsed is a strip, not a disappearance: <code>html[data-catalog='collapsed']</code> sets <code>--sidebar: 3.25rem</code>, hides every rail child except the toggle, and never translates the rail off screen. State persists at <code>essentia.v1.catalog-rail</code>. Below 64rem the rail is replaced by the modal drawer, which always shows the catalog.</p>
         </div>
         <div class="card">
-          <h4>Header — mark, breadcrumb, destinations, Find</h4>
-          <p>In order: the brand (<code>.compact-brand</code>, wordmark above 44rem, letter mark below, <code>display: block</code> at every width), the breadcrumb, then <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then the Find trigger. Identical on every page; the rail carries no brand, so collapsing it cannot hide the identity.</p>
+          <h4>Header — full width, above the rail</h4>
+          <p>The header spans the whole viewport and paints above the rail, which starts at the header's bottom border (<code>inset: var(--header) auto 0 0</code>). In order: the brand (<code>.compact-brand</code>, wordmark above 44rem, letter mark below, <code>display: block</code> at every width), the catalog hamburger (≤64rem, an in-flow item — the <code>&lt;Navigation&gt;</code> island renders inside the header), the breadcrumb, then <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then the Find trigger. Below 44rem every label is hidden by CSS and the three destinations fold into a native <code>popover</code> behind <code>⋯</code>. See ADR 0027 and ADR 0029.</p>
         </div>
         <div class="card">
           <h4>Back to top</h4>
@@ -216,8 +216,26 @@
             <tr>
               <td>Rail toggles</td>
               <td>One fixed-position button floating beside the rail; collapsing translated the rail off screen</td>
-              <td>Two <code>.rail-toggle</code> buttons inside <code>&lt;nav id="desktop-catalog"&gt;</code>; collapsed is a <code>3.25rem</code> strip that keeps both</td>
-              <td>T8 · ADR 0025</td>
+              <td>A single <code>.rail-toggle</code> square, last child of <code>&lt;nav id="desktop-catalog"&gt;</code>, bottom-right; collapsed is a <code>3.25rem</code> strip that keeps it</td>
+              <td>T8 · ADR 0025 · 2026-08-09 T2</td>
+            </tr>
+            <tr>
+              <td>Header vs. rail</td>
+              <td>Rail ran the full viewport height; the header was inset by <code>--sidebar</code> and a fixed hamburger floated over the top-left corner</td>
+              <td>Full-width header above the rail; rail docks at <code>var(--header)</code>; the <code>&lt;Navigation&gt;</code> island renders inside the header so the hamburger is in flow</td>
+              <td>2026-08-09 T1 · ADR 0027</td>
+            </tr>
+            <tr>
+              <td>Catalog rail contents</td>
+              <td>A Non-archetype disclosure plus an Archetypes heading over a second list; monochrome</td>
+              <td>One flat list in authored order; archetype entries wear a 14% wash of their accent, 32% on hover / focus / current</td>
+              <td>2026-08-09 T3–T4 · ADR 0028</td>
+            </tr>
+            <tr>
+              <td>Header below 44rem</td>
+              <td>Three full-text destination links plus labelled Catalog and Find buttons, wrapping silently</td>
+              <td>Icon-only controls with <code>aria-label</code>s, destinations behind a native <code>⋯</code> popover, and a single-row guard that warns at build time and in the console</td>
+              <td>2026-08-09 T5–T6 · ADR 0029</td>
             </tr>
             <tr>
               <td>Reading order</td>
