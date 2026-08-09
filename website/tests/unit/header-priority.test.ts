@@ -38,11 +38,25 @@ describe('header priority', () => {
   });
 
   it('the header is not a containing block for fixed children', () => {
+    // `.desktop-catalog` is `position: fixed` and is a DOM descendant of the
+    // header, so *any* of these on `.site-header` re-parents the rail onto the
+    // header box: `inset: var(--header) auto 0 0` would then resolve against a
+    // 64px-tall header instead of the viewport and collapse the rail.
+    // `container-type` is the one that bites in review — it reads as a
+    // harmless modernisation and creates a containing block for fixed
+    // descendants all the same.
     const properties = [
       'transform',
       'filter',
       'backdrop-filter',
       'will-change',
+      'contain',
+      'container-type',
+      'container',
+      'perspective',
+      'translate',
+      'rotate',
+      'scale',
     ];
     for (const property of properties) {
       for (const width of WIDTHS) {
@@ -64,11 +78,19 @@ describe('header priority', () => {
   });
 
   it('the header reserves no room for a floating hamburger', () => {
+    // Not `padding-left === undefined`: the header has always had an inline
+    // gutter, supplied by the `padding` shorthand, so that assertion was only
+    // ever reading a longhand nobody authors. Restoring the deleted
+    // reservation — `padding: 0.7rem clamp(1rem, 3vw, 3rem) 0.7rem 8.8rem` —
+    // left it green with the brand pushed 141px right.
+    //
+    // A reservation is by definition asymmetric, so compare the two sides and
+    // pin the gutter itself.
     for (const width of WIDTHS) {
-      expect(
-        resolve(globalCss, '.site-header', 'padding-left', width),
-        `at ${width}px`,
-      ).toBeUndefined();
+      const left = resolve(globalCss, '.site-header', 'padding-left', width);
+      const right = resolve(globalCss, '.site-header', 'padding-right', width);
+      expect(left, `padding-left at ${width}px`).toBe(right);
+      expect(left, `padding-left at ${width}px`).toBe('clamp(1rem, 3vw, 3rem)');
     }
   });
 

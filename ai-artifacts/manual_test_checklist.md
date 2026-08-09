@@ -137,3 +137,20 @@
 - [ ] DevTools **Console** on `/archetypes/burning-abyss/` while hovering several cards: completely empty. In particular no `Content-Security-Policy` violation — the ruling map ships as a hashed `<script type="application/json">` island, so a CSP error here would mean the island stopped being hashed.
 - [ ] Open `/docs/keywords/` and `/docs/rules/templating/`: the keyword index now lists ability metadata and super-type keywords as classes 5 and 6, and its links to `rules/TEMPLATING.md` and `rules/CARD_TYPES.md` resolve to real pages (no 404).
 - [ ] Judgement call to confirm or reject: the hover box on a three-ability Burning Abyss card now lists up to nine rulings and is noticeably taller. If that is too much at once, say so — the fix is to flip `preview: false` on some of the eight in `docs/keywords/*.md`, which needs no code change.
+
+## T13 give-the-guards-teeth
+
+T13 changes only tests and test infrastructure — no site CSS, no runtime
+behaviour. So these steps verify two things: that the corrected width constants
+match what the browser actually draws, and that the guards now scream when the
+regressions they exist to catch are reintroduced.
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site at `/cards/ash-blossom-and-joyous-spring/` and set the viewport to exactly **400 × 800**.
+- [ ] In DevTools, run `['.compact-brand img','.drawer-trigger','.utility-more','.search-trigger'].map(s => [s, document.querySelector(s).getBoundingClientRect().width])`. Expect roughly `32`, `34`, `39.2`, `39.8` — these are the numbers `website/shared/header-row.mjs` now claims. Before T13 it claimed `36` for the hamburger and `48` for Find, which is the drift this ticket removed. A deviation of more than ~1px is a real disagreement: report the measured values rather than editing the constants.
+- [ ] Run `document.querySelector('.breadcrumb').getBoundingClientRect().width` at the same width: it is whatever room is left, and shrinking the window shrinks it rather than wrapping the header. `header-row.mjs` reserves `0` for it now (it reserved `64`), which is what `.breadcrumb { min-width: 0 }` actually says.
+- [ ] Still at 400px, confirm the header is **one row** and the console shows no `[essentia] site-header wraps to …` warning. The budget arithmetic changed (`contentPx` 248 → 173.8) so this is the check that the new numbers are the safe ones.
+- [ ] Run `cd website && HEADER_ROW_VIEWPORT_PX=200 node scripts/check-header-row.mjs; echo "exit=$?"`. It must print two `[warn] site-header may wrap at 200px …` lines and `exit=0`. This is the branch that previously had no test at all, only a grep of the file for the string `console.warn`.
+- [ ] Run `cd website && node scripts/check-header-row.mjs; echo "exit=$?"` with no override: no output, `exit=0`.
+- [ ] Optional, the mutation check a reviewer would repeat. In `website/src/styles/global.css`, temporarily change `.utility-more { width: 2.45rem }` to `6rem` and run `cd website && npx vitest run tests/unit/header-row.test.ts`. It must fail with `utility-more: expected 96 to be close to 39.2`. Before T13 this passed. `git checkout -- website/src/styles/global.css` afterwards.
+- [ ] Optional, second mutation. Add `margin-left: auto` to `.compact-brand` and run `npx vitest run tests/unit/header-brand.test.ts`: the two `brand holds the left edge` tests must fail. Before T13 they passed while the wordmark sat flush right. Revert.
+- [ ] Judgement call to confirm or reject: `header-row.mjs` now records two numbers CSS cannot state — `intrinsicPx` 18 for the `☰` glyph plus its border, and `11` for `⌕` plus its border. They come from a real 400px render, and a font change would move them. If you would rather the compact header pinned those two controls to explicit widths in `global.css` so nothing is measured at all, say so — that is a CSS change and was out of scope here.

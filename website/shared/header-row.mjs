@@ -5,33 +5,128 @@
  * there; a wrap is a warning, never a build failure, so this module only
  * ever reports arithmetic — see scripts/check-header-row.mjs (build) and
  * the inline guard in src/layouts/BaseLayout.astro (browser).
+ *
+ * ## Every number here is traceable, because hand-copied ones drifted
+ *
+ * The first cut of this file hand-copied control widths out of `global.css`
+ * and nothing cross-checked them. They were already wrong when a reviewer
+ * measured a real 400px render: `search-trigger` was declared 48 and measured
+ * 39.8, `drawer-trigger` was declared 36 and measured 34, and
+ * `BREADCRUMB_MIN_PX` was 64 against an authored `.breadcrumb { min-width: 0 }`.
+ * Growing `.utility-more` to `6rem` overflowed the real header while the guard
+ * happily computed 248 ≤ 368 and printed nothing.
+ *
+ * So every measurement below is a `{ px, cssPx, intrinsicPx }` record:
+ *
+ * - `cssPx` names the authored declarations the number is built from, as
+ *   `[selector, property]` pairs. `tests/unit/header-row.test.ts` re-reads
+ *   each one from `global.css` at `COMPACT_VIEWPORT_PX`, converts it to
+ *   pixels, and fails when `px !== Σ cssPx + intrinsicPx`. Editing one of
+ *   those declarations without editing this file turns that test red.
+ * - `intrinsicPx` is the remainder CSS does not state: a glyph's own box, a
+ *   `1px` border resolved through the `border` shorthand. It comes from a real
+ *   400px render and every one carries its arithmetic in a comment.
+ *
+ * A record whose `cssPx` value stops being a static length — `min-width` going
+ * back to `min(22rem, 45vw)`, say — makes the cross-check throw rather than
+ * silently skip, which is the whole point.
  */
 export const COMPACT_VIEWPORT_PX = 400;
+
 /** `.site-header { padding: 0.7rem clamp(1rem, 3vw, 3rem) }` — the 1rem floor wins at 400px. */
-export const HEADER_PADDING_INLINE_PX = 32;
+export const HEADER_PADDING_INLINE = {
+  px: 32,
+  cssPx: [
+    ['.site-header', 'padding-left'],
+    ['.site-header', 'padding-right'],
+  ],
+  intrinsicPx: 0,
+};
+
 /** `.site-header { gap: 0.45rem }` inside `@media (max-width: 44rem)`. */
-export const HEADER_GAP_PX = 7.2;
+export const HEADER_GAP = {
+  px: 7.2,
+  cssPx: [['.site-header', 'gap']],
+  intrinsicPx: 0,
+};
+
 /** Every control the compact header renders, at its ≤44rem width. */
 export const HEADER_CONTROLS = [
-  { name: 'compact-brand', widthPx: 32 },
-  { name: 'drawer-trigger', widthPx: 36 },
-  { name: 'utility-more', widthPx: 39.2 },
-  { name: 'search-trigger', widthPx: 48 },
+  {
+    name: 'compact-brand',
+    // `@media (max-width: 44rem) { .compact-brand img { width: 2rem } }` —
+    // the square letter mark, stated outright.
+    px: 32,
+    cssPx: [['.compact-brand img', 'width']],
+    intrinsicPx: 0,
+  },
+  {
+    name: 'drawer-trigger',
+    // 8 + 8 padding, + 16 for the `☰` glyph and the 2×1px `button` border.
+    // `.label-full` is `display: none` from 64rem down, so the glyph is the
+    // whole content box. Measured 34px in a 400px render.
+    px: 34,
+    cssPx: [
+      ['.drawer-trigger', 'padding-left'],
+      ['.drawer-trigger', 'padding-right'],
+    ],
+    intrinsicPx: 18,
+  },
+  {
+    name: 'utility-more',
+    // `.utility-more { width: 2.45rem }`. Below 44rem `.utility-menu` is a
+    // closed popover, so the `⋯` button is the whole of `.utility-nav`.
+    px: 39.2,
+    cssPx: [['.utility-more', 'width']],
+    intrinsicPx: 0,
+  },
+  {
+    name: 'search-trigger',
+    // 0 + 14.4 + 14.4, + 11 for the `⌕` glyph and the 2×1px `button` border.
+    // The `min-width` term is the one that matters: it is `min(22rem, 45vw)`
+    // until stage 2 drops it to `0` at 56rem. Measured 39.8px at 400px.
+    px: 39.8,
+    cssPx: [
+      ['.search-trigger', 'min-width'],
+      ['button', 'padding-left'],
+      ['button', 'padding-right'],
+    ],
+    intrinsicPx: 11,
+  },
 ];
-/** Inner pages add a breadcrumb; below 44rem only its last crumb shows. */
-export const BREADCRUMB_MIN_PX = 64;
+
+/**
+ * Inner pages add a breadcrumb. Below 44rem it is authored
+ * `.breadcrumb { flex: 1 1 auto; min-width: 0 }` — every crumb but the last is
+ * hidden and the last one ellipsises — so it reserves nothing and yields the
+ * whole row rather than pushing it to two. This was `64`, which was fiction.
+ */
+export const BREADCRUMB = {
+  name: 'breadcrumb',
+  px: 0,
+  cssPx: [['.breadcrumb', 'min-width']],
+  intrinsicPx: 0,
+};
+
+/** Every measurement in this module, for the cross-check to walk. */
+export const HEADER_MEASUREMENTS = [
+  { name: 'header padding-inline', ...HEADER_PADDING_INLINE },
+  { name: 'header gap', ...HEADER_GAP },
+  ...HEADER_CONTROLS,
+  BREADCRUMB,
+];
 
 export function headerRowBudget(
   viewportPx = COMPACT_VIEWPORT_PX,
   { withBreadcrumb = true } = {},
 ) {
   const items = withBreadcrumb
-    ? [...HEADER_CONTROLS, { name: 'breadcrumb', widthPx: BREADCRUMB_MIN_PX }]
+    ? [...HEADER_CONTROLS, BREADCRUMB]
     : [...HEADER_CONTROLS];
   const contentPx =
-    items.reduce((total, item) => total + item.widthPx, 0) +
-    HEADER_GAP_PX * (items.length - 1);
-  const availablePx = viewportPx - HEADER_PADDING_INLINE_PX;
+    items.reduce((total, item) => total + item.px, 0) +
+    HEADER_GAP.px * (items.length - 1);
+  const availablePx = viewportPx - HEADER_PADDING_INLINE.px;
   const overflowPx = Math.max(0, contentPx - availablePx);
   return {
     viewportPx,
