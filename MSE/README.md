@@ -55,3 +55,27 @@ renders.
 To widen the set, add packages or files to `manifest.json` with their sha256 and
 re-run setup. To re-derive it from scratch, repeat the trace above against a full
 pack, then rebuild the manifest with `launcher.mse_vendor.build_manifest`.
+
+## HD inputs
+
+Phase B raises every MSE frame and every card art to HD (renders 750×1046, print
+masters 1500×2092). The frame side needs four HD frame packs the user supplies by
+hand, staged under `hd_inputs/frames/` (git-ignored, third-party art, never
+committed):
+
+- `magic-sevenhalf.mse-style/`
+- `magic-m15-spellbook.mse-style/`
+- `magic-m15-sketch.mse-style/`
+- `magic-m15-showcase-praetor.mse-style/`
+
+Each staged image must be exactly 2× the pixel dimensions of the vendored SD
+counterpart at the same relative path under `MSE/data/<pack>/`.
+
+Run `python .script/verify_hd_inputs.py` to see, per pack, whether it's staged, its
+file count, how many images pass the 2× check, and how many card arts in
+`original_images/` still have no `original_images_hd/` counterpart.
+
+`TODO(user)`: record which upscaler tool produced `original_images_hd/` (the 50
+existing HD arts). Nothing in the repo names it — ADR 0018 only says "manual,
+outside the repository" — and the same tool/settings are needed to process the
+remaining 173 files.

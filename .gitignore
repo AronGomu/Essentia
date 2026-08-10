@@ -10,6 +10,11 @@
 !/MSE/manifest.json
 !/MSE/README.md
 
+# HD frame packs staged by hand; third-party art, never committed
+/hd_inputs/*
+!/hd_inputs/frames/
+!/hd_inputs/frames/.gitkeep
+
 # Python bytecode
 __pycache__/
 *.py[cod]

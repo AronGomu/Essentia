@@ -65,30 +65,30 @@ missing — so phase B can start the moment the user drops files in.
 
 ## Impl steps
 
-- [ ] 1. Create `hd_inputs/frames/.gitkeep` and append to `.gitignore`:
+- [x] 1. Create `hd_inputs/frames/.gitkeep` and append to `.gitignore`:
       `# HD frame packs staged by hand; third-party art, never committed` then
       `/hd_inputs/*` and `!/hd_inputs/frames/.gitkeep`.
-- [ ] 2. Create `.script/verify_hd_inputs.py` with module constants
+- [x] 2. Create `.script/verify_hd_inputs.py` with module constants
       `REPO_ROOT`, `STAGING = REPO_ROOT / "hd_inputs" / "frames"`,
       `VENDORED = REPO_ROOT / "MSE" / "data"`,
       `PACKS = ("magic-sevenhalf.mse-style", "magic-m15-spellbook.mse-style", "magic-m15-sketch.mse-style", "magic-m15-showcase-praetor.mse-style")`.
-- [ ] 3. Add `def frame_report(pack: str, staging: Path, vendored: Path) -> dict` — walks
+- [x] 3. Add `def frame_report(pack: str, staging: Path, vendored: Path) -> dict` — walks
       the staged pack, opens each `.png`/`.jpg` with `PIL.Image`, compares to the same
       relative path under `vendored / pack`, counts exact 2× matches.
-- [ ] 4. Add `def art_report(sd_root: Path, hd_root: Path) -> dict` — relative-path sets,
+- [x] 4. Add `def art_report(sd_root: Path, hd_root: Path) -> dict` — relative-path sets,
       `missing = len(sd - hd)`, `sample = sorted(sd - hd)[:5]`.
-- [ ] 5. Add `def main() -> int` printing one line per pack:
+- [x] 5. Add `def main() -> int` printing one line per pack:
       `hd.frames <pack>: present=<yes|no> files=<n> double=<n> wrong-size=<n>`
       then one art line:
       `hd.art: sd=<n> hd=<n> missing=<n> e.g. <first 5, comma separated>`.
       `return 0` unconditionally.
-- [ ] 6. Add `if __name__ == "__main__": raise SystemExit(main())`.
-- [ ] 7. Write `tests/test_verify_hd_inputs.py` per the test plan, loading the module
+- [x] 6. Add `if __name__ == "__main__": raise SystemExit(main())`.
+- [x] 7. Write `tests/test_verify_hd_inputs.py` per the test plan, loading the module
       the same way `tests/test_export_mse_renders.py` does
       (`importlib.util.spec_from_file_location`).
-- [ ] 8. Add a `## HD inputs` section to `MSE/README.md` naming `hd_inputs/frames/`,
+- [x] 8. Add a `## HD inputs` section to `MSE/README.md` naming `hd_inputs/frames/`,
       the four pack names, and the 2× rule.
-- [ ] 9. Record `TODO(user)` in `MSE/README.md`: which upscaler produced
+- [x] 9. Record `TODO(user)` in `MSE/README.md`: which upscaler produced
       `original_images_hd/`, needed so T13 can process the remaining 173 files.
 
 ## Outputs
@@ -99,8 +99,8 @@ missing — so phase B can start the moment the user drops files in.
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_verify_hd_inputs -v` → OK
-- [ ] `python -m unittest discover -s tests` → OK
-- [ ] `python .script/verify_hd_inputs.py` → 5 lines, exit 0, before any asset lands
-- [ ] app functional — no import of this module anywhere else
-- [ ] commit msg draft: `chore(assets): report which HD frame and art inputs are staged`
+- [x] `python -m unittest tests.test_verify_hd_inputs -v` → OK
+- [x] `python -m unittest discover -s tests` → OK
+- [x] `python .script/verify_hd_inputs.py` → 5 lines, exit 0, before any asset lands
+- [x] app functional — no import of this module anywhere else
+- [x] commit msg draft: `chore(assets): report which HD frame and art inputs are staged`

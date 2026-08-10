@@ -154,3 +154,11 @@ regressions they exist to catch are reintroduced.
 - [ ] Optional, the mutation check a reviewer would repeat. In `website/src/styles/global.css`, temporarily change `.utility-more { width: 2.45rem }` to `6rem` and run `cd website && npx vitest run tests/unit/header-row.test.ts`. It must fail with `utility-more: expected 96 to be close to 39.2`. Before T13 this passed. `git checkout -- website/src/styles/global.css` afterwards.
 - [ ] Optional, second mutation. Add `margin-left: auto` to `.compact-brand` and run `npx vitest run tests/unit/header-brand.test.ts`: the two `brand holds the left edge` tests must fail. Before T13 they passed while the wordmark sat flush right. Revert.
 - [ ] Judgement call to confirm or reject: `header-row.mjs` now records two numbers CSS cannot state — `intrinsicPx` 18 for the `☰` glyph plus its border, and `11` for `⌕` plus its border. They come from a real 400px render, and a font change would move them. If you would rather the compact header pinned those two controls to explicit widths in `global.css` so nothing is measured at all, say so — that is a CSS change and was out of scope here.
+
+## T1 hd-input-handoff
+
+- [ ] Run `python .script/verify_hd_inputs.py` before staging anything: it prints exactly 5 lines, all four frame packs `present=no`, and the `hd.art` line shows `sd=223 hd=50 missing=173` with 5 example filenames.
+- [ ] Create `hd_inputs/frames/magic-sevenhalf.mse-style/` and drop in one PNG that is exactly 2× the size of the matching file under `MSE/data/magic-sevenhalf.mse-style/`. Re-run the script: that pack now reports `present=yes files=1 double=1 wrong-size=0`.
+- [ ] Rename or resize that same PNG to a size that is not exactly 2×. Re-run the script: `double=0 wrong-size=1`.
+- [ ] Run `git status`: files under `hd_inputs/frames/<pack>/` do not show up as trackable/stageable (they stay ignored), but `hd_inputs/frames/.gitkeep` is trackable.
+- [ ] Open `MSE/README.md`, `## HD inputs` section: confirms the four pack names, the 2× rule, and the `TODO(user)` line naming the missing upscaler-tool fact.
