@@ -16,12 +16,9 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
 
 ## Verdict from T11 — read this first
 
-> **TODO(T11):** paste the one-line verdict from `docs/ADR/proposed/0030-hd-frames-at-750.md`
-> here before starting. Either
-> **A. "art swap only"** (`ratio >= 1.30`): install images, leave every `style` file alone
-> except `card width` / `card height` if the ADR says so; or
-> **B. "art swap + coordinate scale"** (`ratio < 1.30`): also run `.script/scale_mse_style.py`
-> over each pack's `style` file with factor 2.
+> **B. Rescale to 750-space.** Graff ratio `0.9702`; Dante ratio `0.9723`; both below
+> threshold `1.30`. Install staged 2× art, then run `.script/scale_mse_style.py` over each
+> pack's `style` file with factor 2. Source: T11 SHA `4559015`, ADR 0030.
 
 ## What T1 and T11 already produced (do not redo)
 
@@ -65,7 +62,9 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
 - `docs/design/FRAMES.md` — the supertype → stylesheet table.
 - `docs/ADR/accepted/0006-mse-frame-mapping.md` — frame mapping evidence; add a line, do
   not rewrite it.
-- **From Depends:** T11, as listed above.
+- **From Depends:** T11 measured Graff ratio `0.9702`, Dante ratio `0.9723`; both are
+  below threshold `1.30`. Execute verdict B: install staged 2× art and rescale all four
+  styles to 750×1046 coordinate space. T11 commit: `4559015`.
 
 ## TDD
 

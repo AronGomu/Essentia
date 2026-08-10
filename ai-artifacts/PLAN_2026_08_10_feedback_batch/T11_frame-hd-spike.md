@@ -97,9 +97,10 @@ and ADR 0030 records the verdict that T12 executes.
       sizes), the two candidate strategies, the measurement table, the verdict rule above,
       and the decision the numbers select.
 - [x] 7. Link the ADR from `docs/ADR/README.md` under `## Proposed`.
-- [ ] 8. Write the verdict into this plan's T12 file — one line at the top of its
+- [x] 8. Write the verdict into this plan's T12 file — one line at the top of its
       `## Requirements`, so the T12 worker does not have to re-read the ADR.
-      Parent-owned dependency wiring: worker read scope forbids reading or editing T12.
+      Parent-owned dependency wiring completed: T12 says `rescale-to-750-space`, ratios
+      0.9702 / 0.9723 against threshold 1.30 — validate: T12 `## Verdict from T11`.
 - [x] 9. `python launcher/setup_mse.py --verify` again → the vendored tree must be
       byte-identical to before the spike.
 
