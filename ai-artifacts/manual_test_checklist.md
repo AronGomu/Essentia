@@ -157,7 +157,7 @@ regressions they exist to catch are reintroduced.
 
 ## T1 hd-input-handoff
 
-- [ ] Run `python .script/verify_hd_inputs.py` before staging anything: it prints exactly 5 lines, all four frame packs `present=no`, and the `hd.art` line shows `sd=223 hd=50 missing=173` with 5 example filenames.
+- [ ] Run `python .script/verify_hd_inputs.py`: the `hd.art` line shows `sd=223 hd=223 missing=0`. Frame-pack lines compare against already-installed HD targets and are not a T13 gate.
 - [ ] Create `hd_inputs/frames/magic-sevenhalf.mse-style/` and drop in one PNG that is exactly 2× the size of the matching file under `MSE/data/magic-sevenhalf.mse-style/`. Re-run the script: that pack now reports `present=yes files=1 double=1 wrong-size=0`.
 - [ ] Rename or resize that same PNG to a size that is not exactly 2×. Re-run the script: `double=0 wrong-size=1`.
 - [ ] Run `git status`: files under `hd_inputs/frames/<pack>/` do not show up as trackable/stageable (they stay ignored), but `hd_inputs/frames/.gitkeep` is trackable.
@@ -261,3 +261,9 @@ regressions they exist to catch are reintroduced.
 - [ ] At equal display size, compare `Book of Moon` (sevenhalf), `Bagooska` (spellbook), `Herald of the Arc Light` (sketch), `Nekroz - Brionac` (praetor), `Cross-Sheep` (Capenna), and `Elder Entity N'tss` (Fusion control) against their pre-change renders. Title bars, art boxes, type lines, rules boxes, and P/T boxes do not move.
 - [ ] Inspect a 50% overlay plus amplified pixel diff for all six representatives. Frame detail may sharpen; duplicated/ghosted bars or text indicate bad coordinate scaling and must fail this check.
 - [ ] Confirm Capenna scratch output is 750×1046 even though its uniformly scaled source bitmaps are 750×1047; only the final source row is clipped by the render canvas.
+
+## T13 hd-card-art
+
+- [ ] Open one regenerated card from each non-empty draft project and the open alpha package in MSE; confirm the illustration is visibly sharper and the saved `image:` path is unchanged.
+- [ ] Compare `Mathematician`, `Raigeki`, and `Maxx “C”` before/after at equal display size; confirm centre framing matches with no stretched or clipped subject.
+- [ ] Confirm `Absolute King Back Jack`, `Crane Crane`, `Fiend Griefing`, and `Fiendish Rhino Warrior` retain their prior art pending canonical HD sources.

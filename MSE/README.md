@@ -75,7 +75,14 @@ Run `python .script/verify_hd_inputs.py` to see, per pack, whether it's staged, 
 file count, how many images pass the 2× check, and how many card arts in
 `original_images/` still have no `original_images_hd/` counterpart.
 
-`TODO(user)`: record which upscaler tool produced `original_images_hd/` (the 50
-existing HD arts). Nothing in the repo names it — ADR 0018 only says "manual,
-outside the repository" — and the same tool/settings are needed to process the
-remaining 173 files.
+`TODO(user)`: record which upscaler tool and settings produced the 223 files in
+`original_images_hd/`. Nothing in the repo names them — ADR 0018 only says
+"manual, outside the repository".
+
+T13 skipped four cards because no matching canonical HD source exists. Their current
+MSE art remains unchanged:
+
+- `Absolute King Back Jack`
+- `Crane Crane`
+- `Fiend Griefing`
+- `Fiendish Rhino Warrior`

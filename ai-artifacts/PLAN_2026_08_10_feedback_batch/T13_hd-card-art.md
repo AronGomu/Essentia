@@ -88,19 +88,19 @@ reports every card it had to skip.
 
 ## Impl steps
 
-- [ ] 1. `python .script/verify_hd_inputs.py` → note the `hd.art:` numbers before the run.
-- [ ] 2. Create `.script/refresh_mse_card_art.py` with the four functions and the CLI.
-- [ ] 3. Write `tests/test_refresh_mse_card_art.py` per the test plan.
-- [ ] 4. Dry-run every project:
+- [x] 1. `python .script/verify_hd_inputs.py` → note the `hd.art:` numbers before the run.
+- [x] 2. Create `.script/refresh_mse_card_art.py` with the four functions and the CLI.
+- [x] 3. Write `tests/test_refresh_mse_card_art.py` per the test plan.
+- [x] 4. Dry-run every project:
       `for p in cards_mse/00_drafts/*/*.mse-set cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set; do python .script/refresh_mse_card_art.py "$p" --dry-run; done`
       Record the totals.
-- [ ] 5. Run for real on the same list.
-- [ ] 6. Spot-check three regenerated PNGs: dimensions are 4× and the crop framing matches
+- [x] 5. Run for real on the same list.
+- [x] 6. Spot-check three regenerated PNGs: dimensions are 4× and the crop framing matches
       the old file (open both, compare the centre 20% visually).
-- [ ] 7. `python .script/lint_mse_card_style.py` → no new findings.
-- [ ] 8. Rebuild the open package so the aggregate and hashes follow the new art:
+- [x] 7. `python .script/lint_mse_card_style.py` → no new findings.
+- [x] 8. Rebuild the open package so the aggregate and hashes follow the new art:
       `cd website && npm run cards:rebuild`.
-- [ ] 9. Record the skipped list in `MSE/README.md` under the existing `TODO(user)`: those
+- [x] 9. Record the skipped list in `MSE/README.md` under the existing `TODO(user)`: those
       are exactly the cards the user still owes an upscale for.
 
 ## Outputs
@@ -113,10 +113,10 @@ reports every card it had to skip.
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_refresh_mse_card_art -v` → OK
-- [ ] `python -m unittest discover -s tests` → OK
-- [ ] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid:`
-- [ ] `python .script/check_immutable_stages.py` → no locked package touched
-- [ ] `cd website && npm run ci` → pass
+- [x] `python -m unittest tests.test_refresh_mse_card_art -v` → OK
+- [x] `python -m unittest discover -s tests` → OK
+- [x] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid:`
+- [x] `python .script/check_immutable_stages.py` → no locked package touched
+- [x] `cd website && npm run ci` → pass
 - [ ] manual check: open one card in MSE, the illustration is visibly sharper
-- [ ] commit msg draft: `feat(cards): regenerate MSE card art from the HD originals at 4×`
+- [x] commit msg draft: `feat(cards): regenerate MSE card art from the HD originals at 4×`
