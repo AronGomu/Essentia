@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia — related cards derivation</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      ul, ol { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .22rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      pre { background: #0f0f13; border: 1px solid var(--line); padding: .8rem 1rem;
+            overflow-x: auto; font-family: var(--mono); font-size: .82rem; }
+      a { color: var(--accent-2); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 40rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.mono { font-family: var(--mono); }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p, .card li { font-size: .87rem; color: var(--muted); }
+      .card code { color: var(--ink); }
+      figure { margin: 1.2rem 0; border: 1px solid var(--line); background: var(--panel); padding: 1rem; }
+      figcaption { color: var(--muted); font-size: .85rem; margin-bottom: .7rem; }
+      svg { display: block; width: 100%; height: auto; }
+      svg text { font-family: system-ui, sans-serif; }
+      .n { fill: var(--panel-2); stroke: var(--line); stroke-width: 2; }
+      .n.ok { stroke: var(--ok); } .n.warn { stroke: var(--warn); }
+      .l { fill: none; stroke: var(--line); stroke-width: 2; }
+      .lab { fill: var(--ink); font-size: 12px; } .note { fill: var(--muted); font-size: 10px; }
+      .fail { color: var(--warn); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Related cards derivation</h1>
+      <p class="sub">
+        How <code>website/scripts/content/related.mjs</code> turns rule text into two
+        related-card lists at build time. Companion to
+        <a href="ADR/proposed/0032-derived-related-cards.md">ADR 0032</a>.
+      </p>
+
+      <h2>Worked example</h2>
+      <pre>Tour Guide From the Underworld — Fiend, MV 1
+
+(1 - Triggered Hard) On Enter — Summon 1 Fiend MV 1 Creature from Hand or Deck.
+It loses its abilities on Field.</pre>
+      <figure>
+        <figcaption>One card's rule text, clause by clause, to a list of ids.</figcaption>
+        <svg viewBox="0 0 900 210" role="img" aria-labelledby="t1 d1">
+          <title id="t1">Derivation pipeline for one card</title>
+          <desc id="d1">Rule text is split into clauses; a clause is kept only when it names an action keyword; constraints are read from the kept clause; candidate cards must satisfy every constraint kind present; the surviving ids become the interaction list.</desc>
+          <rect class="n" x="6" y="70" width="150" height="60" rx="8" />
+          <text class="lab" x="18" y="94">ruleTextPlain</text>
+          <text class="note" x="18" y="110">split on . ; —</text>
+          <path class="l" d="M156 100 H206" />
+          <rect class="n" x="206" y="40" width="160" height="52" rx="8" />
+          <text class="lab" x="218" y="62">clause 1 ✓</text>
+          <text class="note" x="218" y="78">holds action “Summon”</text>
+          <rect class="n warn" x="206" y="108" width="160" height="52" rx="8" />
+          <text class="lab" x="218" y="130">clause 2 ✗</text>
+          <text class="note" x="218" y="146">no action keyword → dropped</text>
+          <path class="l" d="M366 66 H416" />
+          <rect class="n" x="416" y="40" width="170" height="60" rx="8" />
+          <text class="lab" x="428" y="62">constraints</text>
+          <text class="note" x="428" y="78">subtype = Fiend</text>
+          <text class="note" x="428" y="92">mv = 1</text>
+          <path class="l" d="M586 70 H636" />
+          <rect class="n" x="636" y="40" width="160" height="60" rx="8" />
+          <text class="lab" x="648" y="62">match all kinds</text>
+          <text class="note" x="648" y="78">candidate.subType ∋ Fiend</text>
+          <text class="note" x="648" y="92">candidate.manaValue = 1</text>
+          <path class="l" d="M716 100 V140 H796" />
+          <rect class="n ok" x="600" y="140" width="290" height="52" rx="8" />
+          <text class="lab" x="614" y="162">related.interaction</text>
+          <text class="note" x="614" y="178">burning-abyss-graff, -cir, -scarm, …</text>
+        </svg>
+      </figure>
+
+      <h2>The two categories</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>1 · Same archetype</h4>
+          <p>Every other card whose <code>name</code> contains the archetype's
+          <code>namePattern</code> from <code>website/content/sections.json</code>,
+          quote-normalised and case-insensitive.</p>
+          <p>Printed name, not the <code>archetype</code> field — a support card that
+          does not print the name is not in this list, even though it carries the
+          field.</p>
+        </div>
+        <div class="card">
+          <h4>2 · Interacts with this card</h4>
+          <p>Union over clauses that name one of the card's own <code>action</code> or
+          <code>cost-procedure</code> keywords. A candidate must satisfy every
+          constraint kind present in the clause.</p>
+          <p>The action-keyword gate is what keeps <code>2 Creatures MV 1</code> —
+          an Xyz material line — from relating every MV-1 creature to every Xyz
+          card.</p>
+        </div>
+      </div>
+
+      <h2>Closed vocabularies</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Kind</th><th>Vocabulary source</th><th>Matched against</th></tr></thead>
+          <tbody>
+            <tr><td>subtype</td><td class="mono">every card's own <code>subType</code></td><td class="mono">candidate.subType</td></tr>
+            <tr><td>name</td><td class="mono">any <code>“…”</code> run in the clause</td><td class="mono">candidate.name (substring) or section namePattern</td></tr>
+            <tr><td>color</td><td class="mono">white blue black red green</td><td class="mono">candidate.colors</td></tr>
+            <tr><td>supertype</td><td class="mono">Ritual Xyz Fusion Synchro Link Trap</td><td class="mono">candidate.supertypes</td></tr>
+            <tr><td>mv</td><td class="mono">MV &lt;int&gt; | MV X, ± “or less” / “or more”</td><td class="mono">candidate.manaValue</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The subtype vocabulary is read from the catalog, never hardcoded: the cube
+      currently prints <code>Aqua, Bird, Dragon, Fairy, Fiend, Human, Insect, Machine,
+      Psychic, Rock, Warrior, Wizard, Wyrm, Zombie</code>, and a fifteenth race must
+      not need a code change to be seen.</p>
+
+      <h2>What fails the build</h2>
+      <ul>
+        <li class="fail">A quoted run matching neither a section
+          <code>namePattern</code> nor any card <code>name</code> as a substring.
+          Today's quoted runs include archetype names (<code>“Burning Abyss”</code>,
+          <code>“Nekroz”</code>) and card-name fragments (<code>“Dante”</code>,
+          <code>“Barbar”</code>, <code>“Maxx”</code>) — both resolve.</li>
+        <li class="fail">An <code>MV</code> token followed by anything other than an
+          integer, <code>X</code>, or the word <code>meets</code>.
+          <code>whose MV meets its Ritual cost</code> is prose in three Nekroz ritual
+          cards and stays legal.</li>
+      </ul>
+      <p>A reference that resolves to <em>zero cards</em> does not fail: an archetype
+      may have no printed member yet.</p>
+
+      <h2>Where it lives</h2>
+      <ol>
+        <li><code>website/scripts/content/related.mjs</code> — <code>extractClauses</code>,
+          <code>parseConstraints</code>, <code>buildRelatedGraph</code>.</li>
+        <li><code>website/scripts/content/orchestrator.mjs</code> attaches
+          <code>related</code> to every card before writing
+          <code>src/generated/catalog.ts</code>. Schema version 11.</li>
+        <li><code>website/src/pages/cards/[id].astro</code> renders two
+          <code>CardGallery</code> grids, 12 cards each.</li>
+      </ol>
+      <p>There is no separate cache file and nothing is computed at runtime: the site
+      is statically built, so the content build <em>is</em> the cache, invalidated by
+      the same card source hashes as everything else in the catalog.</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback batch — 13 items, open decisions</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .why code, .detail code, .facts code { background:#100d08; border:1px solid var(--line); border-radius:5px; padding:0 4px; font-size:.9em; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    .facts { margin:0 0 32px; padding:18px 20px; border:1px solid var(--line); border-radius:14px; background:var(--panel); color:var(--muted); font-size:.9rem; }
+    .facts h2 { color:var(--accent); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; margin-bottom:10px; }
+    .facts ul { margin:0; padding-left:18px; display:grid; gap:6px; }
+    .facts b { color:var(--text); }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 1 · Whole frontier</span>
+    <h1>Feedback batch — 13 items, open decisions</h1>
+    <p class="lede">Repo already read. Everything lookup-able is settled below under <b>Facts</b>. What is left is 15 decisions only you can make — surface targeting, HD asset strategy, keyword-rules presentation, related-card semantics. Answer, hit <b>Copy answer summary</b>, paste back. Then the plan gets written.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress">
+    <span class="node"><b>Feedback batch (13)</b></span>
+    <span class="arrow">→</span>
+    <span class="node active">Site chrome &amp; layout (1,3,4,9-13)</span>
+    <span class="arrow">·</span>
+    <span class="node active">Dev tooling (2)</span>
+    <span class="arrow">·</span>
+    <span class="node active">HD assets (5,6)</span>
+    <span class="arrow">·</span>
+    <span class="node active">Card page data (7,8)</span>
+    <span class="arrow">→</span>
+    <span class="node">Ticket split &amp; order</span>
+  </nav>
+
+  <section class="visuals" aria-label="Technical context">
+    <figure>
+      <figcaption><b>Resolution chain today</b>MSE style px → render px → web/print px. Fusion frame is the only HD link.</figcaption>
+      <svg viewBox="0 0 420 260" role="img" aria-labelledby="t1 d1">
+        <title id="t1">Current resolution chain per frame family</title>
+        <desc id="d1">Fusion frame renders at 750 by 1046; the other five frames render at 375 by 523, then get upscaled for the 750 wide website tier and the 1500 wide print master.</desc>
+        <rect class="svg-node active" x="4" y="12" width="120" height="46" rx="8"/>
+        <text class="svg-label" x="16" y="32">genevensis (Fusion)</text>
+        <text class="svg-note" x="16" y="48">style 750 × 1046</text>
+        <rect class="svg-node" x="4" y="70" width="120" height="46" rx="8"/>
+        <text class="svg-label" x="16" y="90">capenna (Link)</text>
+        <text class="svg-note" x="16" y="106">style 744 × 1039</text>
+        <rect class="svg-node" x="4" y="128" width="120" height="60" rx="8"/>
+        <text class="svg-label" x="16" y="148">sevenhalf, spellbook,</text>
+        <text class="svg-label" x="16" y="163">sketch, praetor</text>
+        <text class="svg-note" x="16" y="179">style 375 × 523</text>
+        <path class="svg-line" d="M124 35 H170 V100 H196"/>
+        <path class="svg-line" d="M124 93 H196"/>
+        <path class="svg-line" d="M124 158 H170 V100 H196"/>
+        <rect class="svg-node" x="196" y="76" width="100" height="46" rx="8"/>
+        <text class="svg-label" x="208" y="96">renders/</text>
+        <text class="svg-note" x="208" y="112">= style size</text>
+        <path class="svg-line" d="M296 88 H336"/>
+        <path class="svg-line" d="M296 110 H320 V172 H336"/>
+        <rect class="svg-node" x="336" y="66" width="80" height="44" rx="8"/>
+        <text class="svg-label" x="346" y="86">web 750w</text>
+        <text class="svg-note" x="346" y="101">capped 375</text>
+        <rect class="svg-node" x="336" y="150" width="80" height="44" rx="8"/>
+        <text class="svg-label" x="346" y="170">print 1500w</text>
+        <text class="svg-note" x="346" y="185">upscaled draft</text>
+        <text class="svg-accent" x="4" y="228" font-size="11">50 cards · 0 print masters on disk · draftResolution = true</text>
+        <text class="svg-note" x="4" y="246">art in mse_images: ~316 × 231 px, from 624² sources</text>
+      </svg>
+    </figure>
+    <figure>
+      <figcaption><b>Card page, item 7 + 8</b>What renders today vs what the feedback asks for.</figcaption>
+      <svg viewBox="0 0 420 260" role="img" aria-labelledby="t2 d2">
+        <title id="t2">Card page rule text and related cards, current versus requested</title>
+        <desc id="d2">Today rule text carries inline reminder parentheses and related cards is one flat list. The request is bare MSE text, a rules block listing every keyword ruling, and related cards split into archetype and interaction categories.</desc>
+        <text class="svg-note" x="6" y="14">TODAY</text>
+        <rect class="svg-node" x="6" y="22" width="190" height="52" rx="8"/>
+        <text class="svg-label" x="16" y="42">rule text</text>
+        <text class="svg-note" x="16" y="58">+ inline (ruling) reminders</text>
+        <rect class="svg-node" x="6" y="84" width="190" height="46" rx="8"/>
+        <text class="svg-label" x="16" y="104">Related cards</text>
+        <text class="svg-note" x="16" y="120">1 flat list, ≤24, name links</text>
+        <text class="svg-accent" x="212" y="14">REQUESTED</text>
+        <rect class="svg-node active" x="212" y="22" width="200" height="40" rx="8"/>
+        <text class="svg-label" x="222" y="42">rule text = MSE render, verbatim</text>
+        <text class="svg-note" x="222" y="56">no inline parentheses</text>
+        <rect class="svg-node active" x="212" y="70" width="200" height="46" rx="8"/>
+        <text class="svg-label" x="222" y="90">Rules block</text>
+        <text class="svg-note" x="222" y="106">every keyword on card + ruling</text>
+        <rect class="svg-node active" x="212" y="124" width="200" height="60" rx="8"/>
+        <text class="svg-label" x="222" y="144">Related, 2 categories</text>
+        <text class="svg-note" x="222" y="160">1· name contains archetype</text>
+        <text class="svg-note" x="222" y="174">2· interacts with a characteristic</text>
+        <path class="svg-line" d="M196 48 H212"/>
+        <path class="svg-line" d="M196 107 H204 V150 H212"/>
+        <text class="svg-note" x="6" y="152">source of truth both ways:</text>
+        <text class="svg-note" x="6" y="168">docs/keywords/{id}.md front matter</text>
+        <text class="svg-note" x="6" y="184">card.keywords already holds</text>
+        <text class="svg-note" x="6" y="198">Static / Activated / Hard / Linked</text>
+        <text class="svg-note" x="6" y="222">Tour Guide rule text names “Fiend MV 1”</text>
+        <text class="svg-note" x="6" y="238">→ the hook item 8 category 2 needs</text>
+      </svg>
+    </figure>
+  </section>
+
+  <section class="facts">
+    <h2>Facts — already resolved, do not answer these</h2>
+    <ul>
+      <li>Noisy dev output = <code>.script/export_mse_renders.py:498</code>, event <code>mse.render.plan</code>, <code>json.dumps(..., indent=2)</code> with one row per card.</li>
+      <li>Header at 400px currently spends <b>173.8px of 368px</b>. Three inline links cost roughly <b>+167px</b> → ~341px. It fits, with ~27px slack.</li>
+      <li>Third header link is labelled <b>Decks</b>, not “Dex”. Popover <code>⋯</code> only appears below 44rem.</li>
+      <li><code>.card-grid</code> (archetype + non-archetype pages) is <b>already 1 card per row at 400px</b>. <code>.new-card-grid</code> is 2-up below 40rem — that is the 2-by-2 you saw.</li>
+      <li>Homepage has <b>no per-archetype card list</b> — the Archetypes block is 3 image tiles (title + count). Item 10 has no literal target on that page.</li>
+      <li>Card art in MSE: <code>mse_images/*.png</code> at ~316×231. <code>original_images/</code> 223 files at 624². <code>original_images_hd/</code> <b>50 files at 1920²</b> — exactly the alpha package, 173 SD-only remain (all Fusion + Link folders missing).</li>
+      <li>MSE tree is untracked and hash-pinned by <code>MSE/manifest.json</code>; <code>launcher/setup_mse.py --verify</code> fails on any byte change. Swapping frame art means re-pinning.</li>
+      <li><code>card.keywords</code> in the catalog already includes ability-metadata (<code>Static</code>, <code>Activated</code>, <code>Hard</code>, <code>Linked</code>, <code>Triggered</code>, <code>Soft</code>, <code>Resolution</code>) and super-type terms.</li>
+      <li>Keyword rulings come only from <code>docs/keywords/{id}.md</code>. <code>preview: true</code> = hover box; <code>reminder: true</code> = inline parentheses. 84 keywords, 20 are <code>preview: false</code>.</li>
+      <li>Only <b>one</b> package is open (<code>cards_mse/01_alpha/LOTA-0001-Alpha_0.1</code>, 50 cards). Locked packages are immutable by policy.</li>
+    </ul>
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="Item 1 — which surface gets the semi-transparent panel behind title + description?">
+      <legend>1. Item 1 — which surface gets the panel?</legend>
+      <p class="why">“Archetype page” maps to two candidates: the per-archetype page hero (<code>/archetypes/{slug}</code>, h1 + intro), and the homepage tiles that list archetypes over artwork.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Both: /archetypes/{slug} hero block and the homepage archetype tiles"><span><b>Both surfaces</b><span class="rank">Recommended</span><span class="detail">Same treatment wherever an archetype name sits over art; one shared CSS rule.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Only the /archetypes/{slug} hero (h1 + intro markdown + stats)"><span><b>Archetype page hero only</b><span class="rank">Second</span><span class="detail">Smallest change; homepage tiles keep the current flat caption.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Both, plus the non-archetype section pages so all section pages match"><span><b>Both + non-archetype sections</b><span class="rank">Third</span><span class="detail">Full consistency, touches one more template.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Only the homepage archetype tiles"><span><b>Homepage tiles only</b><span class="rank">Fourth</span><span class="detail">If the complaint was purely about text over the tile art.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. panel = rgba black 55% + 1px --ruleline + 10px radius + 1rem padding; or 'use the same look as .card-caption'"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 2 — exact one-line format for the render step during npm run dev">
+      <legend>2. Item 2 — what the dev render step prints</legend>
+      <p class="why">Today it dumps a JSON array with one object per card before every dev server start. Need a replacement line and a decision on whether the JSON survives anywhere.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One line per project: 'mse.render LOTA-0001-Alpha_0.1: 50 cards loaded, 50 checked' and keep full JSON behind --verbose"><span><b>One line per set, JSON behind <code>--verbose</code></b><span class="rank">Recommended</span><span class="detail">Quiet by default, full record still reachable when a render misbehaves.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One line per project, drop the per-card JSON entirely"><span><b>One line, delete the JSON</b><span class="rank">Second</span><span class="detail">Least code. Loses the plan record used when debugging exports.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One line per project plus one final total line across all sets"><span><b>Per-set lines + grand total</b><span class="rank">Third</span><span class="detail">Useful once more than one package is open; today it is one line either way.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Paste the exact wording you want, e.g. 'LOTA-0001-Alpha_0.1 — 50 cards · 50 checked · 0 changed'"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 3 — keep or delete the ⋯ popover, and which labels at 400px">
+      <legend>3. Item 3 — header links at 400px</legend>
+      <p class="why">Budget says three inline links fit with ~27px slack — thin. Label length is the whole margin, and you wrote “Dex”, which is not the current label.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Delete the ⋯ popover at all widths; keep labels Learn / Blog / Decks"><span><b>Delete <code>⋯</code>, keep Learn / Blog / Decks</b><span class="rank">Recommended</span><span class="detail">Fits the budget; removes a whole popover branch from CSS and e2e.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Delete the ⋯ popover; rename the third link to Dex below 44rem to buy width"><span><b>Delete <code>⋯</code>, shorten to Dex</b><span class="rank">Second</span><span class="detail">~15px more slack. “Dex” is a new word in the site vocabulary though.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep the popover markup but only below 360px as a fallback"><span><b>Keep as sub-360px fallback</b><span class="rank">Third</span><span class="detail">Safety net under the supported floor; keeps the complexity you asked to remove.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Also: should the failing-budget check stay a warning, or become a hard build failure now that the row is tighter?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 4 — scope and breakpoint for one card per row">
+      <legend>4. Item 4 — one card per row: where, and up to what width?</legend>
+      <p class="why">Gallery grids are already 1-up at 400px. The 2-up offender is the homepage new-cards grid, whose 2-column rule spans everything below 640px, not just 400px.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="New-cards grid: 1 column below 30rem (480px), keep 2 columns from 480 to 640px"><span><b>1-up below 480px, 2-up 480–640px</b><span class="rank">Recommended</span><span class="detail">Fixes the 400px case without wasting a whole column on a 600px phone.</span></span></label>
+        <label class="choice"><input type="checkbox" value="New-cards grid: 1 column for the entire below-640px range"><span><b>1-up for all of ≤640px</b><span class="rank">Second</span><span class="detail">Simplest rule; big cards on mid-size phones, more scrolling.</span></span></label>
+        <label class="choice"><input type="checkbox" value="1 column below 400px only, exactly at the stated minimum width"><span><b>1-up only at ≤400px</b><span class="rank">Third</span><span class="detail">Literal reading; 410px still shows two cropped cards.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Any other card list to cover? decks page, updates page, search results, related-cards block…"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 5 — HD frame strategy: art swap only, or full 2x stylesheet rewrite">
+      <legend>5. Item 5 — how the frames become HD</legend>
+      <p class="why">A 375×523 stylesheet has every element coordinate expressed in that space. Two ways up, with very different cost and risk.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Spike first: swap 2x frame art into a 375-space style, export a print master, compare sharpness; only rewrite coordinates if MSE proves to resample from the style-space bitmap"><span><b>Spike, then decide</b><span class="rank">Recommended</span><span class="detail">One throwaway export answers it. If MSE resamples from the source file, art swap alone gets HD for free and no coordinate math is needed.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Commit to the full rewrite: card width/height 750x1046 and every coordinate in the style doubled, per stylesheet"><span><b>Full 2× rewrite up front</b><span class="rank">Second</span><span class="detail">Guaranteed result, matches Fusion exactly. Four stylesheets × hundreds of coordinates; scripted, then eyeballed per frame.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Do not touch stylesheets; rely on the 1500x2092 print export template for resolution and leave the 375 style geometry"><span><b>Print template only</b><span class="rank">Third</span><span class="detail">Text comes out crisp already; frame art stays a 4× upscale. Cheapest, least faithful.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Is 750×1046 the target, or do you want 1500×2092 native styles?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 5 — which frames you will supply HD art for, and what happens to the Link frame's odd size">
+      <legend>6. Item 5 — frame inventory and supply</legend>
+      <p class="why">Four stylesheets are SD. The Link frame is 744×1039 — close to Fusion but not equal, so “same size as Fusion” has to resolve one way or another.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="I supply 2x art for sevenhalf, m15-spellbook, m15-sketch, m15-showcase-praetor; leave capenna at 744x1039 as already-HD"><span><b>Four packs from you, Link left alone</b><span class="rank">Recommended</span><span class="detail">744 vs 750 is a 0.8% difference, invisible after export scaling.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Four packs from me, and also rescale capenna to exactly 750x1046 so every frame matches Fusion"><span><b>Four packs + normalise Link to 750</b><span class="rank">Second</span><span class="detail">Uniform numbers everywhere; a rescale of art that is already fine.</span></span></label>
+        <label class="choice"><input type="checkbox" value="I supply nothing yet — plan the pipeline and the acceptance test, upscale the existing art in-repo as a placeholder"><span><b>Pipeline first, art later</b><span class="rank">Third</span><span class="detail">Unblocks tooling; placeholder frames are an upscale of an upscale.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Format and drop location for the HD packs, e.g. a folder of full .mse-style packages vs loose PNG/JPG per frame"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 5 — output sizes after the frames go HD, and what to do with already-exported renders">
+      <legend>7. Item 5 — new output sizes + re-render policy</legend>
+      <p class="why">Renders feed the website tiers and print. Doubling the frames changes every render hash and every <code>package-sha256.json</code>.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="renders/ become 750x1046, and turn on print masters at 1500x2092 so draftResolution goes false"><span><b>750 renders + real 1500 print masters</b><span class="rank">Recommended</span><span class="detail">Website <code>display</code> tier finally gets its authored 750px, print stops being flagged draft.</span></span></label>
+        <label class="choice"><input type="checkbox" value="renders/ become 750x1046; skip print masters for now"><span><b>750 renders only</b><span class="rank">Second</span><span class="detail">Half the export time; print stays a draft-flagged upscale.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep renders at 375 for the web and use HD only for the print path"><span><b>HD for print only</b><span class="rank">Third</span><span class="detail">Website gains nothing, which is half of what item 5 asked for.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Locked packages: leave frozen at SD forever, or re-render on a version bump?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 6 — target art resolution in mse_images, and the 173 cards with no HD source">
+      <legend>8. Item 6 — HD art swap into MSE</legend>
+      <p class="why">HD sources exist for the 50 alpha cards only. Draft projects hold 173 more whose only source is 624². Art box is ~316×231 in style space.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Regenerate mse_images at 4x the art box (about 1264x924) for the 50 cards with HD sources; leave the other 173 on their current SD art and report them"><span><b>4× art box, only where HD exists</b><span class="rank">Recommended</span><span class="detail">Enough pixels for a 1500px print master; no invented detail anywhere.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Regenerate at 4x where HD exists, and upscale the remaining 173 from 624 sources with the same tool that produced original_images_hd"><span><b>4× everywhere, upscale the rest</b><span class="rank">Second</span><span class="detail">Uniform pipeline. The 173 gain sharpness that is model-invented, not photographic.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Regenerate at 2x (about 632x462) to keep MSE project size down"><span><b>2× only</b><span class="rank">Third</span><span class="detail">Smaller repo, still visibly soft at print size.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Which tool made original_images_hd? Should the same script fetch HD for the 173 (Fusion + Link folders are entirely missing)?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 7 — which keywords the card page Rules block lists">
+      <legend>9. Item 7 — Rules block contents</legend>
+      <p class="why">The hover preview filters to <code>preview: true</code>. 20 keywords are <code>preview: false</code> — mostly plain Magic evergreens like Flying, Trample, Destroy, Target.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="List every keyword on the card, ignoring the preview flag, so Flying and Trample also get a ruling row"><span><b>Every keyword on the card</b><span class="rank">Recommended</span><span class="detail">A card page is the reference surface; hiding Trample there is arbitrary.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Only preview:true keywords, byte-identical to the hover box"><span><b>Exactly the hover set</b><span class="rank">Second</span><span class="detail">Literally “same as the preview”. Some printed bold terms then have no row.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Every keyword, but split into two groups: Essentia terms first, unchanged Magic evergreens after"><span><b>Every keyword, grouped by origin</b><span class="rank">Third</span><span class="detail">The <code>origin</code> field already carries magic vs essentia. More structure to keep consistent.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Should the archetype keyword (Abyssal Curse, Descent…) and the super-type keyword (Trap) sit in the same list?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 7 — inline reminder parentheses in the card page rule text">
+      <legend>10. Item 7 — do the inline <code>(rulings)</code> go away?</legend>
+      <p class="why">“Exactly the same as in the card image from Magic Set Editor” implies the parentheses that the site appends after every bold term must go, since MSE does not print them.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Remove inline reminders from the card page rule text; the Rules block below is the only ruling surface there"><span><b>Remove them on the card page</b><span class="rank">Recommended</span><span class="detail">Rule text matches the render one-to-one. Rulings move down, not away.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Remove inline reminders everywhere on the site, not just the card page"><span><b>Remove site-wide</b><span class="rank">Second</span><span class="detail">One rendering path instead of two. Other pages lose their inline explainers.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep inline reminders and add the Rules block on top"><span><b>Keep both</b><span class="rank">Third</span><span class="detail">Every ruling printed twice on the same screen.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Also: keep the mana symbols, italics and line breaks exactly as the MSE source? (they already render)"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 8 — how category 2 (direct interaction) is computed">
+      <legend>11. Item 8 — “interacts with a characteristic”, mechanically</legend>
+      <p class="why">Tour Guide’s text says “<code>Summon 1 Fiend MV 1 Creature from Hand or Deck</code>”. Something has to turn that sentence into the set of cards it can actually fetch. That inference rule is the entire feature.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Derive at build time: scan rule text for tokens that match known characteristic vocabularies (subtypes, quoted archetype names, colors, card types, MV numbers), then match candidate cards on those exact fields, and fail the build on a token that resolves to nothing"><span><b>Token scan against closed vocabularies</b><span class="rank">Recommended</span><span class="detail">Deterministic and testable, reuses the same closed-taxonomy discipline as the keyword build. Misses interactions the text phrases unusually.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Curate by hand: an authored interactions list in website/content/, one entry per card, validated against catalog ids"><span><b>Hand-authored per card</b><span class="rank">Second</span><span class="detail">Perfect accuracy, full control. Manual work on every new card, forever.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Hybrid: derive automatically, plus an authored override file for additions and exclusions"><span><b>Derived + override file</b><span class="rank">Third</span><span class="detail">Best output, two mechanisms to keep in sync.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Which characteristics count? subtype/race, archetype name, MV, color, card type, zone (Deck/Grave/Hand), Tuner-ness… and should the relation be shown from both sides?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 8 — where the related-cards cache lives and when it invalidates">
+      <legend>12. Item 8 — caching and invalidation</legend>
+      <p class="why">The site is fully static: every page is already built once per <code>npm run build</code>. “Cache so it is not rebuilt each time” can mean build-time memoisation or a committed artifact.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Compute once per content build into src/generated/related.json, keyed by the catalog's card source hashes; rebuild automatically when any hash changes"><span><b>Generated file, hash-keyed</b><span class="rank">Recommended</span><span class="detail">Fits the existing generated-catalog pipeline; new MSE cards invalidate it by construction.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Compute in memory during the content build and embed the result in catalog.ts, no separate file"><span><b>Inline into the catalog</b><span class="rank">Second</span><span class="detail">Fewest moving parts. Grows the one file every page imports.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Commit the related-cards graph as a reviewable artifact so a diff shows exactly which relations changed"><span><b>Committed graph artifact</b><span class="rank">Third</span><span class="detail">Relation changes become reviewable in git; another generated file to keep from drifting.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Should a stale cache fail the build (like content:check) or silently regenerate?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Item 8 — how the two related categories are presented">
+      <legend>13. Item 8 — related-cards presentation</legend>
+      <p class="why">Today it is one bullet list of names with a hover preview. Two categories need headings, ordering and caps.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Two headed subsections, card thumbnails in the same grid style as the galleries, cap 12 per category with a link to the full section"><span><b>Headed thumbnail grids, cap 12</b><span class="rank">Recommended</span><span class="detail">Reads like the rest of the site; keeps the page from turning into a wall of 40 renders.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Two headed lists of names with hover previews, exactly the current style, no caps"><span><b>Name lists, uncapped</b><span class="rank">Second</span><span class="detail">Minimal change, complete information, long tail on popular subtypes like Fiend.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Two categories, plus a per-entry reason chip such as 'Fiend' or 'archetype name'"><span><b>With reason chips</b><span class="rank">Third</span><span class="detail">Explains why each card is there; most work, and the reason text needs its own vocabulary.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Category labels? e.g. 'Same archetype' / 'Interacts with this card'"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Items 9-13 — homepage confirmations and the HD-screen test">
+      <legend>14. Items 9–13 — homepage details</legend>
+      <p class="why">These are small and mostly unambiguous; confirm the readings so the tickets can state exact values. Item 10 is the exception — the homepage has no per-archetype card list.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Confirmed: show 10 new cards; make the 'View all 50 new cards' link a primary-link sized button; delete the 'Latest cards from alpha/beta/release packages' paragraph; tighten hero-to-New-cards and heading-to-first-card margins; rename 'See what changed' to 'View new cards'; item 10 means the /archetypes/{slug} page hero-to-gallery gap"><span><b>All as read, item 10 = archetype page gap</b><span class="rank">Recommended</span><span class="detail">Every item lands somewhere real; item 10 becomes the hero→gallery spacing on the archetype pages.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Same, except item 10 means the homepage Archetypes heading to the tile row gap"><span><b>Item 10 = homepage heading→tiles</b><span class="rank">Second</span><span class="detail">Literal “on the homepage”, applied to the only archetype block that exists there.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Same, except item 10 asks for a new homepage layout that lists cards under each archetype title"><span><b>Item 10 = new per-archetype card rows</b><span class="rank">Third</span><span class="detail">A feature, not a spacing fix — a whole homepage section to design.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Item 12: is 'HD screen' 1920×1080 at default zoom? Assert the New cards heading is inside the viewport on load, before any scroll — Playwright, all three browsers?"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Delivery — how the 13 items split into plans and tickets">
+      <legend>15. Delivery shape</legend>
+      <p class="why">Items 5 and 6 are an asset/render pipeline with a hardware-ish dependency (your HD packs) and a full re-render of every card. The other eleven are site work that can ship today.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One plan, two phases: phase A = the 11 site/tooling items, phase B = HD assets (items 5, 6) gated on the supplied frame packs"><span><b>One plan, two phases</b><span class="rank">Recommended</span><span class="detail">Single index and flowchart; phase B tickets start with the hand-off step for your packs.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Two separate plans: one for the website/tooling batch, one for the HD asset pipeline"><span><b>Two plans</b><span class="rank">Second</span><span class="detail">Cleaner separation, two indexes to track.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One plan, strict feedback order 1 through 13"><span><b>One plan, literal order</b><span class="rank">Third</span><span class="detail">Easy to check off; interleaves a multi-day asset job between two CSS tweaks.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="Want ADRs for the HD-frame decision, related-cards derivation and keyword-rules presentation? Architecture HTML doc for the resolution pipeline?"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 1 · Whole frontier — Feedback batch, 13 items\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

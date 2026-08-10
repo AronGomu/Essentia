@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia — render resolution pipeline</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .22rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      a { color: var(--accent-2); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 40rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.mono, .mono { font-family: var(--mono); }
+      .sd { color: var(--warn); } .hd { color: var(--ok); }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p, .card li { font-size: .87rem; color: var(--muted); }
+      .card code { color: var(--ink); }
+      figure { margin: 1.2rem 0; border: 1px solid var(--line); background: var(--panel); padding: 1rem; }
+      figcaption { color: var(--muted); font-size: .85rem; margin-bottom: .7rem; }
+      svg { display: block; width: 100%; height: auto; }
+      svg text { font-family: system-ui, sans-serif; }
+      .n { fill: var(--panel-2); stroke: var(--line); stroke-width: 2; }
+      .n.warn { stroke: var(--warn); } .n.ok { stroke: var(--ok); }
+      .l { fill: none; stroke: var(--line); stroke-width: 2; }
+      .lab { fill: var(--ink); font-size: 12px; } .note { fill: var(--muted); font-size: 10px; }
+      .tag { display: inline-block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+             border: 1px solid var(--line); border-radius: 999px; padding: .1rem .5rem; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Render resolution pipeline</h1>
+      <p class="sub">
+        Art → frame → render → website tier / print master. Where the pixels come
+        from, where they are lost, and what changes when every frame reaches
+        750 × 1046. Companion to
+        <a href="ADR/proposed/0030-hd-frames-at-750.md">ADR 0030</a>.
+      </p>
+
+      <h2>The chain</h2>
+      <figure>
+        <figcaption>Two inputs meet in MSE; two outputs leave it.</figcaption>
+        <svg viewBox="0 0 900 250" role="img" aria-labelledby="t1 d1">
+          <title id="t1">Resolution chain from source art and frame art to renders and print masters</title>
+          <desc id="d1">Original illustration and MSE stylesheet art both feed the Magic Set Editor renderer, which emits a one-times render and, through the print export template, a fifteen-hundred pixel master. The website derives thumb, display and print tiers from whichever of those exists.</desc>
+          <rect class="n" x="6" y="20" width="150" height="52" rx="8" />
+          <text class="lab" x="18" y="42">original_images_hd/</text>
+          <text class="note" x="18" y="58">1920 × 1920 JPEG</text>
+          <rect class="n" x="6" y="96" width="150" height="52" rx="8" />
+          <text class="lab" x="18" y="118">mse_images/*.png</text>
+          <text class="note" x="18" y="134">cover-cropped to the art box</text>
+          <rect class="n" x="6" y="172" width="150" height="52" rx="8" />
+          <text class="lab" x="18" y="194">MSE/data/*.mse-style</text>
+          <text class="note" x="18" y="210">frame art + coordinates</text>
+          <path class="l" d="M156 46 H196 V122 H236" />
+          <path class="l" d="M156 122 H236" />
+          <path class="l" d="M156 198 H196 V122 H236" />
+          <rect class="n ok" x="236" y="88" width="150" height="70" rx="8" />
+          <text class="lab" x="250" y="112">magicseteditor</text>
+          <text class="note" x="250" y="128">draws text, rasterises art</text>
+          <text class="note" x="250" y="144">write_image_file(w:, h:)</text>
+          <path class="l" d="M386 110 H436" />
+          <path class="l" d="M386 140 H416 V196 H436" />
+          <rect class="n" x="436" y="86" width="160" height="52" rx="8" />
+          <text class="lab" x="448" y="108">renders/*.png</text>
+          <text class="note" x="448" y="124">= stylesheet native size</text>
+          <rect class="n" x="436" y="170" width="160" height="52" rx="8" />
+          <text class="lab" x="448" y="192">renders_print/*.png</text>
+          <text class="note" x="448" y="208">1500 × 2092, 600 dpi</text>
+          <path class="l" d="M596 112 H646 V140 H696" />
+          <path class="l" d="M596 196 H646 V140 H696" />
+          <rect class="n" x="696" y="60" width="190" height="52" rx="8" />
+          <text class="lab" x="708" y="82">thumb 240 · display 750</text>
+          <text class="note" x="708" y="98">sharp, withoutEnlargement</text>
+          <rect class="n" x="696" y="150" width="190" height="52" rx="8" />
+          <text class="lab" x="708" y="172">images.print</text>
+          <text class="note" x="708" y="188">draftResolution = !master</text>
+        </svg>
+      </figure>
+
+      <h2>Where the resolution is decided</h2>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Stage</th><th>Owner</th><th>Today</th><th>After ADR 0030</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Illustration</td>
+              <td class="mono">original_images_hd/ → mse_images/</td>
+              <td class="sd">624² source, ~316 × 231 in project</td>
+              <td class="hd">1920² source, 4× art box (≈1264 × 924)</td>
+            </tr>
+            <tr>
+              <td>Frame art + geometry</td>
+              <td class="mono">MSE/data/*.mse-style/style</td>
+              <td class="sd">375 × 523 for 4 of 6 stylesheets</td>
+              <td class="hd">750 × 1046 for all 6</td>
+            </tr>
+            <tr>
+              <td>1× render</td>
+              <td class="mono">.script/export_mse_renders.py</td>
+              <td class="sd">inherits stylesheet size</td>
+              <td class="hd">750 × 1046</td>
+            </tr>
+            <tr>
+              <td>Print master</td>
+              <td class="mono">essentia-print.mse-export-template</td>
+              <td class="sd">supported, none on disk</td>
+              <td class="hd">1500 × 2092, exported by every rebuild</td>
+            </tr>
+            <tr>
+              <td>Website display tier</td>
+              <td class="mono">website/scripts/content/images.mjs</td>
+              <td class="sd">asks 750, capped at 375</td>
+              <td class="hd">750, 1:1 from the render</td>
+            </tr>
+            <tr>
+              <td>Website print tier</td>
+              <td class="mono">images.print</td>
+              <td class="sd">upscaled, <code>draftResolution: true</code></td>
+              <td class="hd">master, <code>draftResolution: false</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Stylesheet inventory</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Stylesheet</th><th>Supertype</th><th>Declared size</th><th>Work</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">genevensis-00-main</td><td>Fusion</td><td class="hd">750 × 1046</td><td>none — this is the target</td></tr>
+            <tr><td class="mono">m15-showcase-capenna-art-deco</td><td>Link</td><td>744 × 1039</td><td>resample art and coordinates ×750/744</td></tr>
+            <tr><td class="mono">sevenhalf</td><td>normal / other</td><td class="sd">375 × 523</td><td>2× art, coordinates only if the probe says so</td></tr>
+            <tr><td class="mono">m15-spellbook</td><td>Xyz</td><td class="sd">375 × 523</td><td>same</td></tr>
+            <tr><td class="mono">m15-sketch</td><td>Synchro</td><td class="sd">375 × 523</td><td>same</td></tr>
+            <tr><td class="mono">m15-showcase-praetor</td><td>Ritual</td><td class="sd">375 × 523</td><td>same</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>The open question the probe answers</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>If MSE resamples from the file <span class="tag">ratio ≥ 1.30</span></h4>
+          <p>Frame art is loaded, then scaled to the element rect <em>at output
+          resolution</em>. Dropping 750 px art into a 375-space stylesheet is
+          enough: the print master resamples 2×, not 4×.</p>
+          <p><strong>Work:</strong> copy images, re-pin the manifest. No coordinate
+          maths.</p>
+        </div>
+        <div class="card">
+          <h4>If MSE rasterises in style space <span class="tag">ratio &lt; 1.30</span></h4>
+          <p>The card is drawn once at <code>card width × card height</code>, then
+          that bitmap is scaled. Bigger source art buys nothing.</p>
+          <p><strong>Work:</strong> <code>card width: 750</code>,
+          <code>card height: 1046</code>, and every geometric coordinate doubled by
+          <code>.script/scale_mse_style.py</code>.</p>
+        </div>
+      </div>
+
+      <h2>Invariants</h2>
+      <ul>
+        <li>The vendored tree stays hash-pinned. Any frame swap re-pins
+          <code>MSE/manifest.json</code> and must leave
+          <code>python launcher/setup_mse.py --verify</code> clean.</li>
+        <li>Locked packages are immutable (ADR 0008). They keep their SD renders;
+          only open packages gain HD output.</li>
+        <li>A print master is exported, never upscaled — the template re-renders at
+          1500 × 2092 so text stays vector-crisp regardless of frame resolution.</li>
+        <li>Every render size change rewrites every render hash and
+          <code>package-sha256.json</code>. That is expected, not drift.</li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -36,6 +36,9 @@ Decision evidence lives here after rule/design review.
 - [0024 — Section intro prose is authored, not scraped](proposed/0024-section-intro-prose-in-content.md)
 - [0025 — The catalog rail owns reading navigation; the brand belongs to the header](proposed/0025-catalog-rail-owns-reading-navigation.md)
 - [0026 — Docs and blog ordering is configuration, not code](proposed/0026-reading-order-config.md)
+- [0030 — Every frame renders at 750 × 1046](proposed/0030-hd-frames-at-750.md)
+- [0031 — The card page prints MSE text verbatim; rulings live in a Rules block](proposed/0031-card-page-prints-mse-text.md)
+- [0032 — Related cards are derived at build time, in two categories](proposed/0032-derived-related-cards.md)
 
 ## Workflow
 

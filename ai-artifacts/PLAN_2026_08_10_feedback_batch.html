@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plan — feedback batch (13 items)</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a; --ember: #e08a4a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 82rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 .3rem; letter-spacing: -.025em; }
+      .sub { color: var(--muted); margin: 0 0 .4rem; max-width: 70ch; }
+      .path { font-family: var(--mono); font-size: .8rem; color: var(--accent); margin: 0 0 1.8rem; }
+      h2 { margin: 2.8rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.5rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      ul { margin: .5rem 0; padding-left: 1.15rem; } li { margin: .22rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      a { color: var(--accent-2); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 52rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.id { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+      td.dep { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p, .card li { font-size: .87rem; color: var(--muted); }
+      .card code { color: var(--ink); }
+      figure { margin: 1.2rem 0; border: 1px solid var(--line); background: var(--panel); padding: 1rem; }
+      figcaption { color: var(--muted); font-size: .85rem; margin-bottom: .7rem; }
+      svg { display: block; width: 100%; height: auto; } svg text { font-family: system-ui, sans-serif; }
+      .n { fill: var(--panel-2); stroke: var(--line); stroke-width: 2; }
+      .n.a { stroke: var(--accent-2); } .n.b { stroke: var(--ember); } .n.gate { stroke: var(--warn); }
+      .l { fill: none; stroke: var(--line); stroke-width: 2; }
+      .lab { fill: var(--ink); font-size: 11px; } .note { fill: var(--muted); font-size: 9.5px; }
+      .phase { fill: var(--muted); font-size: 11px; letter-spacing: .12em; }
+      .pill { display: inline-block; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase;
+              border: 1px solid var(--line); border-radius: 999px; padding: .12rem .55rem; color: var(--muted); }
+      .pill.a { border-color: var(--accent-2); color: var(--accent-2); }
+      .pill.b { border-color: var(--ember); color: var(--ember); }
+      .pill.todo { border-color: var(--warn); color: var(--warn); }
+      .lede-row { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0 0; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Plan — feedback batch, 13 items</h1>
+      <p class="sub">
+        Two phases, 14 tickets, each one commit that leaves the app functional.
+        Phase A ships the eleven site and tooling items today. Phase B raises every
+        frame and every card art to HD and turns on real print masters; it is gated
+        on assets only the owner can supply.
+      </p>
+      <p class="path">ai-artifacts/PLAN_2026_08_10_feedback_batch.md</p>
+      <div class="lede-row">
+        <span class="pill a">Phase A · 10 tickets · no blockers</span>
+        <span class="pill b">Phase B · 4 tickets · gated on T1</span>
+        <span class="pill todo">1 TODO(user): which upscaler made original_images_hd/</span>
+      </div>
+
+      <h2>Dependency graph</h2>
+      <figure>
+        <figcaption>Arrows are hard dependencies. Everything unconnected can run in any order.</figcaption>
+        <svg viewBox="0 0 900 330" role="img" aria-labelledby="t1 d1">
+          <title id="t1">Ticket dependency graph</title>
+          <desc id="d1">Phase A holds T2 through T10; only T4 to T6 and T9 to T10 are ordered. Phase B chains T1 to T11 to T12, T1 to T13, and T2, T12 and T13 into T14.</desc>
+          <text class="phase" x="6" y="18">PHASE A — SITE + TOOLING</text>
+          <rect class="n a" x="6" y="30" width="120" height="40" rx="8" />
+          <text class="lab" x="18" y="48">T2 dev log</text>
+          <text class="note" x="18" y="62">item 2</text>
+          <rect class="n a" x="140" y="30" width="120" height="40" rx="8" />
+          <text class="lab" x="152" y="48">T3 header</text>
+          <text class="note" x="152" y="62">item 3</text>
+          <rect class="n a" x="274" y="30" width="120" height="40" rx="8" />
+          <text class="lab" x="286" y="48">T4 new-cards</text>
+          <text class="note" x="286" y="62">items 9, 11, 13</text>
+          <rect class="n a" x="408" y="30" width="120" height="40" rx="8" />
+          <text class="lab" x="420" y="48">T5 one per row</text>
+          <text class="note" x="420" y="62">item 4</text>
+          <rect class="n a" x="274" y="96" width="120" height="40" rx="8" />
+          <text class="lab" x="286" y="114">T6 spacing</text>
+          <text class="note" x="286" y="128">items 10, 11, 12</text>
+          <path class="l" d="M334 70 V96" />
+          <rect class="n a" x="542" y="30" width="120" height="40" rx="8" />
+          <text class="lab" x="554" y="48">T7 archetype</text>
+          <text class="note" x="554" y="62">item 1</text>
+          <rect class="n a" x="676" y="30" width="120" height="40" rx="8" />
+          <text class="lab" x="688" y="48">T8 rules block</text>
+          <text class="note" x="688" y="62">item 7</text>
+          <rect class="n a" x="542" y="96" width="120" height="40" rx="8" />
+          <text class="lab" x="554" y="114">T9 related data</text>
+          <text class="note" x="554" y="128">item 8</text>
+          <rect class="n a" x="676" y="96" width="120" height="40" rx="8" />
+          <text class="lab" x="688" y="114">T10 related UI</text>
+          <text class="note" x="688" y="128">item 8</text>
+          <path class="l" d="M662 116 H676" />
+          <text class="phase" x="6" y="186">PHASE B — HD ASSETS</text>
+          <rect class="n gate" x="6" y="198" width="150" height="46" rx="8" />
+          <text class="lab" x="18" y="218">T1 input hand-off</text>
+          <text class="note" x="18" y="233">frontloads every user step</text>
+          <rect class="n b" x="196" y="176" width="140" height="46" rx="8" />
+          <text class="lab" x="208" y="196">T11 frame spike</text>
+          <text class="note" x="208" y="211">measures, decides T12</text>
+          <rect class="n b" x="196" y="248" width="140" height="46" rx="8" />
+          <text class="lab" x="208" y="268">T13 card art 4×</text>
+          <text class="note" x="208" y="283">item 6</text>
+          <path class="l" d="M156 214 H176 V199 H196" />
+          <path class="l" d="M156 224 H176 V271 H196" />
+          <rect class="n b" x="380" y="176" width="160" height="46" rx="8" />
+          <text class="lab" x="392" y="196">T12 install frames</text>
+          <text class="note" x="392" y="211">4 packs + capenna rescale</text>
+          <path class="l" d="M336 199 H380" />
+          <rect class="n b" x="600" y="212" width="180" height="46" rx="8" />
+          <text class="lab" x="612" y="232">T14 renders + print</text>
+          <text class="note" x="612" y="247">750 × 1046 · 1500 × 2092</text>
+          <path class="l" d="M540 199 H570 V235 H600" />
+          <path class="l" d="M336 271 H570 V235 H600" />
+          <path class="l" d="M66 70 V160 H570 V212" />
+          <text class="note" x="76" y="158">T2 → T14 (verbose flag)</text>
+        </svg>
+      </figure>
+
+      <h2>Tickets</h2>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Title</th><th>Dep</th><th>Commit outcome</th><th>Items</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T1_hd-input-handoff.md">T1</a></td>
+              <td>HD input hand-off + verifier</td><td class="dep">—</td>
+              <td>a report says which HD packs and arts are staged, and which are missing</td><td>5, 6</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T2_quiet-render-log.md">T2</a></td>
+              <td>Quiet render log + <code>--verbose</code></td><td class="dep">—</td>
+              <td><code>npm run dev</code> prints one line per package</td><td>2</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T3_header-inline-links.md">T3</a></td>
+              <td>Header: 3 inline links, no <code>⋯</code></td><td class="dep">—</td>
+              <td>Learn / Blog / Decks inline at 400px, popover deleted</td><td>3</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T4_home-new-cards-content.md">T4</a></td>
+              <td>Homepage new-cards content</td><td class="dep">—</td>
+              <td>10 cards, no blurb, button-sized CTA, renamed hero button</td><td>9, 11, 13</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T5_one-card-per-row.md">T5</a></td>
+              <td>One card per row under 480px</td><td class="dep">—</td>
+              <td>new-cards grid is 1-up at 400px, 2-up at 560px</td><td>4</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T6_home-spacing-first-paint.md">T6</a></td>
+              <td>Homepage spacing + first-paint test</td><td class="dep">T4</td>
+              <td><code>New cards</code> visible at 1920×1080 without scrolling</td><td>10, 11, 12</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T7_archetype-hero-panel.md">T7</a></td>
+              <td>Archetype hero panel</td><td class="dep">—</td>
+              <td>archetype title + intro on a translucent bordered panel</td><td>1</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T8_card-rules-block.md">T8</a></td>
+              <td>Card page rules block</td><td class="dep">—</td>
+              <td>rule text verbatim, rulings in their own <code>Rules</code> block</td><td>7</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T9_related-graph.md">T9</a></td>
+              <td>Related graph in the catalog</td><td class="dep">—</td>
+              <td>every card carries archetype + interaction id lists</td><td>8</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T10_related-cards-ui.md">T10</a></td>
+              <td>Related cards UI</td><td class="dep">T9</td>
+              <td>two headed thumbnail grids, capped at 12</td><td>8</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T11_frame-hd-spike.md">T11</a></td>
+              <td>Frame HD spike</td><td class="dep">T1</td>
+              <td>a measured verdict, written into ADR 0030</td><td>5</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T12_install-hd-frames.md">T12</a></td>
+              <td>Install 4 HD packs + capenna rescale</td><td class="dep">T11</td>
+              <td>every stylesheet 750 × 1046, manifest re-pinned</td><td>5</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T13_hd-card-art.md">T13</a></td>
+              <td>Card art 4× into <code>mse_images/</code></td><td class="dep">T1</td>
+              <td>every card with an HD source carries 4× art</td><td>6</td></tr>
+            <tr><td class="id"><a href="PLAN_2026_08_10_feedback_batch/T14_hd-renders-and-print.md">T14</a></td>
+              <td>Renders 750 + print masters on</td><td class="dep">T2, T12, T13</td>
+              <td><code>draftResolution</code> false, display tier really 750px</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Decisions taken while planning</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Capenna is normalised, not exempted</h4>
+          <p>744 × 1039 → 750 × 1046: art resampled and every style coordinate scaled
+          by the same 750/744. Acceptance is a side-by-side render check — a shifted
+          title bar means the scale is wrong.</p>
+        </div>
+        <div class="card">
+          <h4>Interaction clauses need an action keyword</h4>
+          <p>Without it, the Xyz material line <code>2 Creatures MV 1</code> would
+          relate every MV-1 creature to every Xyz card. The gate is the card's own
+          <code>action</code> / <code>cost-procedure</code> keywords.</p>
+        </div>
+        <div class="card">
+          <h4>Build failure is narrow, on purpose</h4>
+          <p>Only an unresolvable quoted run and a malformed <code>MV</code> token
+          fail the build. <code>whose MV meets its Ritual cost</code> is prose in
+          three Nekroz cards and stays legal; a reference matching zero cards is legal
+          too.</p>
+        </div>
+        <div class="card">
+          <h4>The version route keeps its inline rulings</h4>
+          <p>Only <code>/cards/{id}</code> drops them. The divergence is deliberate
+          and asserted, because a previous accidental divergence is exactly what the
+          old test was guarding against.</p>
+        </div>
+        <div class="card">
+          <h4>Locked packages stay SD</h4>
+          <p>ADR 0008 makes them immutable. Only the one open alpha package gains HD
+          renders and print masters.</p>
+        </div>
+        <div class="card">
+          <h4>Item 10 lands on the homepage</h4>
+          <p>There is no per-archetype card list on the homepage, so "archetype title
+          to cards" is read as the <code>Archetypes</code> heading → tile row gap.</p>
+        </div>
+      </div>
+
+      <h2>Risks</h2>
+      <ul>
+        <li><strong>The spike may say "rewrite every coordinate".</strong> T12 then
+          grows by four <code>style</code> files. <code>.script/scale_mse_style.py</code>
+          and the side-by-side render check are specified either way.</li>
+        <li><strong>173 cards have no HD source.</strong> T13 skips and reports them;
+          the upscaler is a <code>TODO(user)</code> recorded in <code>MSE/README.md</code>.</li>
+        <li><strong>Header slack at 400px is ~27px.</strong> The budget module is
+          updated with measured widths and the e2e overflow assertion is the real
+          gate.</li>
+        <li><strong>Every HD step rewrites render hashes.</strong> Expected;
+          <code>package-sha256.json</code> and <code>render-provenance.json</code>
+          churn on T12, T13 and T14.</li>
+      </ul>
+
+      <h2>Companion documents</h2>
+      <ul>
+        <li><a href="../docs/render-resolution-pipeline.html">Render resolution pipeline</a> — art, frames, renders, tiers</li>
+        <li><a href="../docs/related-cards-derivation.html">Related cards derivation</a> — clauses, vocabularies, failures</li>
+        <li><a href="../docs/ADR/proposed/0030-hd-frames-at-750.md">ADR 0030</a> · <a href="../docs/ADR/proposed/0031-card-page-prints-mse-text.md">ADR 0031</a> · <a href="../docs/ADR/proposed/0032-derived-related-cards.md">ADR 0032</a></li>
+        <li><a href="GRILL_2026_08_10_feedback_batch/ANSWERS.md">Grill answers and shared understanding</a></li>
+      </ul>
+    </div>
+  </body>
+</html>
