@@ -419,7 +419,7 @@ function reminderIssues(file, html, keywords) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const dist = path.resolve('dist');
+  const dist = path.resolve(process.env.OUT_DIR ?? 'dist');
   const base = process.env.BASE_PATH ?? '/';
 
   const walk = async (dir) => {
