@@ -278,6 +278,7 @@ export function chromeIssues(file, html, base, keywords = null) {
 
   problems.push(...keywordRulingIssues(file, html, keywords));
   problems.push(...reminderIssues(file, html, keywords));
+  problems.push(...cardRouteRulesIssues(file, html));
 
   return problems;
 }
@@ -374,7 +375,7 @@ function keywordRulingIssues(file, html, keywords) {
  * routes of the same card must agree.
  */
 function reminderIssues(file, html, keywords) {
-  if (!/^cards\//.test(file)) return [];
+  if (!/^cards\/[^/]+\/versions\//.test(file)) return [];
 
   const rulesMatch = html.match(/<div class="rules-text"[^>]*>[\s\S]*?<\/div>/);
   if (!rulesMatch) return [`${file}: card page is missing its rules text`];
@@ -416,6 +417,23 @@ function reminderIssues(file, html, keywords) {
     }
   }
   return issues;
+}
+
+/**
+ * ADR 0031: `/cards/{id}` prints rule text with no `definitions` map, so its
+ * `.rules-text` must never carry a `.reminder` span — the keyword
+ * explanations for that card live only in the `.keyword-rules` block
+ * beside it.
+ */
+function cardRouteRulesIssues(file, html) {
+  if (!/^cards\/[^/]+\/index\.html$/.test(file)) return [];
+
+  const rulesMatch = html.match(/<div class="rules-text"[^>]*>[\s\S]*?<\/div>/);
+  if (!rulesMatch) return [`${file}: card page is missing its rules text`];
+  if (/class="reminder"/.test(rulesMatch[0])) {
+    return [`${file}: card route rule text must not carry an inline reminder`];
+  }
+  return [];
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

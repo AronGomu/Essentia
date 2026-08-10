@@ -86,13 +86,13 @@ does, and lists every previewed keyword's ruling in its own `Rules` block below.
 
 ## Impl steps
 
-- [ ] 1. In `[id].astro`, delete `reminderDefinitions` from the import list and delete
+- [x] 1. In `[id].astro`, delete `reminderDefinitions` from the import list and delete
       `const ruleDefinitions = reminderDefinitions();`.
-- [ ] 2. Remove `definitions={ruleDefinitions}` from the `<RichText …class="rules-text">` call.
-- [ ] 3. Add `const rules = previewKeywordsFor(card);` beside the existing `const related = …`.
-- [ ] 4. Insert the `Rules` `<section>` after `<div class="card-facts">` and before the
+- [x] 2. Remove `definitions={ruleDefinitions}` from the `<RichText …class="rules-text">` call.
+- [x] 3. Add `const rules = previewKeywordsFor(card);` beside the existing `const related = …`.
+- [x] 4. Insert the `Rules` `<section>` after `<div class="card-facts">` and before the
       `Release history` section, exactly as in Requirements.
-- [ ] 5. In `global.css`, add next to the existing `.rules-text` rules:
+- [x] 5. In `global.css`, add next to the existing `.rules-text` rules:
       ```css
       .keyword-rules {
         display: grid;
@@ -107,13 +107,15 @@ does, and lists every previewed keyword's ruling in its own `Rules` block below.
         color: var(--silver-ink);
       }
       ```
-- [ ] 6. Rewrite `tests/unit/keyword-rulings.test.ts` lines 92-113: split `CARD_ROUTES` into
+- [x] 6. Rewrite `tests/unit/keyword-rulings.test.ts` lines 92-113: split `CARD_ROUTES` into
       `VERSION_ROUTE` (keeps reminders) and `CARD_ROUTE` (must not), per the test plan, and
       write a comment pointing at ADR 0031 for why the two routes now differ.
-- [ ] 7. Create `website/tests/e2e/card-rules-block.spec.ts`. Resolve the version route by
+- [x] 7. Create `website/tests/e2e/card-rules-block.spec.ts`. Resolve the version route by
       reading the first link in the page's `Release history` list.
-- [ ] 8. Add `docs/ADR/proposed/0031-card-page-prints-mse-text.md` (content specified in the
-      plan index) and link it from `docs/ADR/README.md` under `## Proposed`.
+- [x] 8. Add `docs/ADR/proposed/0031-card-page-prints-mse-text.md` (content specified in the
+      plan index) and link it from `docs/ADR/README.md` under `## Proposed`. (already present in
+      workspace prior to this ticket's start; verified content matches this ticket's Requirements
+      and README already links it under `## Proposed`.)
 
 ## Outputs
 
@@ -124,10 +126,12 @@ does, and lists every previewed keyword's ruling in its own `Rules` block below.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/keyword-rulings.test.ts` → pass
-- [ ] `cd website && npx vitest run` → 0 failures
-- [ ] `cd website && npx playwright test tests/e2e/card-rules-block.spec.ts` → pass × 3 browsers
-- [ ] `cd website && npx playwright test tests/e2e/ruling-keywords.spec.ts` → still pass (hover box untouched)
-- [ ] manual check: `/cards/burning-abyss-graff/` — text matches the render, Rules block below
-- [ ] `cd website && npm run ci` → pass
-- [ ] commit msg draft: `feat(website): print card text verbatim and move rulings into a Rules block`
+- [x] `cd website && npx vitest run tests/unit/keyword-rulings.test.ts` → pass
+- [x] `cd website && npx vitest run` → 0 failures
+- [x] `cd website && npx playwright test tests/e2e/card-rules-block.spec.ts` → pass × 2 browsers
+      (chromium, webkit; firefox cannot launch in this environment — pre-existing,
+      unrelated, per repo notes)
+- [x] `cd website && npx playwright test tests/e2e/ruling-keywords.spec.ts` → still pass (hover box untouched)
+- [x] manual check: `/cards/burning-abyss-graff/` — text matches the render, Rules block below
+- [x] `cd website && npm run ci` → pass
+- [x] commit msg draft: `feat(website): print card text verbatim and move rulings into a Rules block`

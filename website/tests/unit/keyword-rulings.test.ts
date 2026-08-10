@@ -8,11 +8,16 @@ import {
   reminderDefinitions,
 } from '../../src/lib/catalog';
 
-/** Every route that renders card rule text through `<RichText definitions=…>`. */
-const CARD_ROUTES = [
-  '../../src/pages/cards/[id].astro',
-  '../../src/pages/cards/[id]/versions/[package].astro',
-] as const;
+// ADR 0031: the two routes deliberately diverge. The version route is a
+// historical record of one printing, read on its own, so it keeps inline
+// reminders. The card route sits beside a Rules block built from
+// `previewKeywordsFor`, so its rule text prints verbatim, with no
+// `definitions` map.
+/** The route that keeps inline reminders. */
+const VERSION_ROUTE = '../../src/pages/cards/[id]/versions/[package].astro';
+/** The route that prints rule text verbatim, with a Rules block instead. */
+const CARD_ROUTE = '../../src/pages/cards/[id].astro';
+const CARD_ROUTES = [VERSION_ROUTE, CARD_ROUTE] as const;
 
 const EXPECTED: Record<string, string> = {
   'Mill N':
@@ -89,26 +94,31 @@ describe('reminderDefinitions', () => {
   });
 });
 
-describe('every card route resolves reminders the same way', () => {
-  // The card route and the version route render the *same* card. Building the
-  // version route's definitions from the whole keyword list made
-  // `/cards/effect-veiler/` print `Counter` bare while
-  // `/cards/effect-veiler/versions/…/` appended a reminder to it.
-  it.each(CARD_ROUTES)('%s uses reminderDefinitions()', (route) => {
-    const source = readFileSync(new URL(route, import.meta.url), 'utf-8');
+describe('the version route still resolves reminders', () => {
+  it('contains the reminderDefinitions setup', () => {
+    const source = readFileSync(
+      new URL(VERSION_ROUTE, import.meta.url),
+      'utf-8',
+    );
     expect(source).toContain('const ruleDefinitions = reminderDefinitions();');
+    expect(source).toMatch(/definitions=\{ruleDefinitions\}/);
   });
+});
 
+describe('the card route prints MSE text verbatim', () => {
+  it('does not resolve reminders', () => {
+    const source = readFileSync(new URL(CARD_ROUTE, import.meta.url), 'utf-8');
+    expect(source).not.toMatch(/definitions=\{ruleDefinitions\}/);
+    expect(source).not.toContain('reminderDefinitions');
+  });
+});
+
+describe('neither route builds a map of its own', () => {
+  // The exact shape that regressed: `new Map(catalog.keywords.map(…))`.
   it.each(CARD_ROUTES)('%s builds no map of its own', (route) => {
     const source = readFileSync(new URL(route, import.meta.url), 'utf-8');
-    // The exact shape that regressed: `new Map(catalog.keywords.map(…))`.
     expect(source).not.toMatch(/new Map\(\s*catalog\.keywords/);
     expect(source).not.toMatch(/catalog\.keywords[\s\S]{0,80}definition/);
-  });
-
-  it.each(CARD_ROUTES)('%s passes that map to RichText', (route) => {
-    const source = readFileSync(new URL(route, import.meta.url), 'utf-8');
-    expect(source).toMatch(/definitions=\{ruleDefinitions\}/);
   });
 });
 

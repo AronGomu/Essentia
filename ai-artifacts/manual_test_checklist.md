@@ -218,3 +218,12 @@ regressions they exist to catch are reintroduced.
 - [ ] Narrow the viewport to ~400px wide: the panel padding shrinks slightly (no squeezed/clipped intro text).
 - [ ] Open `/sections/non-archetype/non-archetype/`: confirm there is no bordered panel around its hero text (out of scope for this change).
 - [ ] Open `/archetypes/nekroz/` and confirm the same panel treatment applies there too.
+
+## T8 card-rules-block
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/burning-abyss-graff/`.
+- [ ] Confirm the rule text under the card render prints no `(ruling)` parentheses next to bold keyword phrases — only the printed numbered ability prefixes like `(1 - Static)` remain, because those are on the card face.
+- [ ] Below the card facts (`Current: …`, `Published …`, `Rarity: …`, `Collection: …`), confirm a `Rules` heading appears with 9 rows (one per keyword bold or italic on the card: Abyssal Curse, Activated, Descent, Hard, Linked, On Send Grave, Static, Summon, Triggered), each with a bold term and an indented definition below it.
+- [ ] Confirm that `Rules` block sits above `Release history`.
+- [ ] Hover a burning-abyss-graff gallery tile at `/archetypes/burning-abyss/`: the hover preview's keyword rulings still match the ones on the card page.
+- [ ] Click into `Release history` → the alpha version link, e.g. `/cards/burning-abyss-graff/versions/alpha-LOTA-0001-Alpha-0-1/`: confirm that page still prints inline `(ruling)` reminders in its rule text, unlike the card page.

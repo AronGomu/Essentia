@@ -1006,6 +1006,18 @@
   .rules-text em {
     color: var(--silver-ink);
   }
+  .keyword-rules {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+  }
+  .keyword-rules dt {
+    font-weight: 700;
+  }
+  .keyword-rules dd {
+    margin-inline-start: 0;
+    color: var(--silver-ink);
+  }
   .reminder {
     display: inline;
     font-style: italic;

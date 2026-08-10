@@ -12,7 +12,6 @@ import {
   previewImage,
   relatedCards,
   previewKeywordsFor,
-  reminderDefinitions,
 } from '../../lib/catalog';
 import { truncateAtWordBoundary } from '../../lib/text';
 
@@ -32,9 +31,9 @@ const previous =
   sectionCards[(index - 1 + sectionCards.length) % sectionCards.length]!;
 const next = sectionCards[(index + 1) % sectionCards.length]!;
 const related = relatedCards(card, catalog.cards, catalog.keywords);
+const rules = previewKeywordsFor(card);
 const base = import.meta.env.BASE_URL;
 const explanation = catalog.explanations[card.id];
-const ruleDefinitions = reminderDefinitions();
 // Same cut as the docs descriptions: a bare slice() lands mid-word, and 35 of
 // the 50 cards have rule text longer than the excerpt.
 const description = [
@@ -84,11 +83,7 @@ const versions = catalog.cardVersions
       <p class="type-line">
         {card.superType}{card.subType && ` — ${card.subType}`}
       </p>
-      <RichText
-        value={card.ruleText}
-        class="rules-text"
-        definitions={ruleDefinitions}
-      />
+      <RichText value={card.ruleText} class="rules-text" />
       {
         card.flavorTextPlain && (
           <RichText value={card.flavorText} class="flavor-text" />
@@ -118,6 +113,21 @@ const versions = catalog.cardVersions
         <span>Collection: {card.collectionNumber}</span>
         {card.support && <span>Support card</span>}
       </div>
+      {
+        rules.length > 0 && (
+          <section>
+            <h2>Rules</h2>
+            <dl class="keyword-rules">
+              {rules.map((rule) => (
+                <>
+                  <dt>{rule.term}</dt>
+                  <dd>{rule.definition}</dd>
+                </>
+              ))}
+            </dl>
+          </section>
+        )
+      }
       <section>
         <h2>Release history</h2>
         <ul>

@@ -497,6 +497,9 @@ describe('card preview triggers must carry keyword data', () => {
 });
 
 describe('R7 card pages must emit inline keyword reminders', () => {
+  // ADR 0031: the reminder gate now applies only to the version route
+  // (`cards/{id}/versions/{package}/`), so these fixtures use that path
+  // shape rather than the plain card route.
   const cardPage = (reminder: boolean) => `
 ${railChrome}
 <nav class="utility-nav" aria-label="Sections">
@@ -517,13 +520,18 @@ ${siteFooter}
 
   it('accepts a card page whose keyword carries its reminder', () => {
     expect(
-      chromeIssues('cards/x/index.html', cardPage(true), '/', keywordRegistry),
+      chromeIssues(
+        'cards/x/versions/y/index.html',
+        cardPage(true),
+        '/',
+        keywordRegistry,
+      ),
     ).toEqual([]);
   });
 
   it('flags a card page whose keyword lost its reminder', () => {
     const issues = chromeIssues(
-      'cards/x/index.html',
+      'cards/x/versions/y/index.html',
       cardPage(false),
       '/',
       keywordRegistry,
@@ -541,7 +549,7 @@ ${siteFooter}
       '',
     );
     const issues = chromeIssues(
-      'cards/x/index.html',
+      'cards/x/versions/y/index.html',
       html,
       '/',
       keywordRegistry,
@@ -559,7 +567,7 @@ ${siteFooter}
       '',
     );
     const issues = chromeIssues(
-      'cards/x/index.html',
+      'cards/x/versions/y/index.html',
       html,
       '/',
       keywordRegistry,
@@ -575,7 +583,7 @@ ${siteFooter}
       '$1{}$2',
     );
     const issues = chromeIssues(
-      'cards/x/index.html',
+      'cards/x/versions/y/index.html',
       html,
       '/',
       keywordRegistry,
@@ -594,7 +602,7 @@ ${siteFooter}
       '<strong>Cost:</strong>',
     );
     expect(
-      chromeIssues('cards/x/index.html', html, '/', keywordRegistry),
+      chromeIssues('cards/x/versions/y/index.html', html, '/', keywordRegistry),
     ).toEqual([]);
   });
 
@@ -607,9 +615,9 @@ ${siteFooter}
       '<strong>Detach 2</strong>',
     );
     expect(
-      chromeIssues('cards/x/index.html', html, '/', keywordRegistry),
+      chromeIssues('cards/x/versions/y/index.html', html, '/', keywordRegistry),
     ).toContain(
-      'cards/x/index.html: keyword "Detach 2" must carry an inline reminder',
+      'cards/x/versions/y/index.html: keyword "Detach 2" must carry an inline reminder',
     );
   });
 
@@ -622,28 +630,30 @@ ${siteFooter}
       '<strong>Counter</strong><span class="reminder">(Cancel a spell.)</span>',
     );
     expect(
-      chromeIssues('cards/x/index.html', html, '/', keywordRegistry),
+      chromeIssues('cards/x/versions/y/index.html', html, '/', keywordRegistry),
     ).toContain(
-      'cards/x/index.html: keyword "Counter" prints no reminder and must not carry one',
+      'cards/x/versions/y/index.html: keyword "Counter" prints no reminder and must not carry one',
     );
   });
 
   it('refuses to judge a card page without the keyword registry', () => {
     // Fail closed: a caller that forgets the registry must not be told the page
     // is fine.
-    expect(chromeIssues('cards/x/index.html', cardPage(true), '/')).toContain(
-      'cards/x/index.html: the chrome gate ran without the keyword registry',
+    expect(
+      chromeIssues('cards/x/versions/y/index.html', cardPage(true), '/'),
+    ).toContain(
+      'cards/x/versions/y/index.html: the chrome gate ran without the keyword registry',
     );
   });
 
   it('flags a registry that declares no reminder terms at all', () => {
     expect(
-      chromeIssues('cards/x/index.html', cardPage(true), '/', {
+      chromeIssues('cards/x/versions/y/index.html', cardPage(true), '/', {
         preview: ['Mill N'],
         reminder: [],
       }),
     ).toContain(
-      'cards/x/index.html: the keyword registry declares no reminder terms',
+      'cards/x/versions/y/index.html: the keyword registry declares no reminder terms',
     );
   });
 });
