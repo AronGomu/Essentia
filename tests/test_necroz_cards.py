@@ -71,7 +71,7 @@ class NecrozCardTests(unittest.TestCase):
     def test_key_mechanics_present(self) -> None:
         brionac = (PROJECT / "card nekroz - brionac").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Shuffle</b> it", brionac)
-        self.assertIn("<b>Discard</b> Brionac", brionac)
+        self.assertIn("<b>Discard</b> <i-auto>“Brionac”</i-auto>", brionac)
 
         catastor = (PROJECT / "card nekroz - catastor").read_text(encoding="utf-8-sig")
         self.assertIn("<b>Reanimate</b>", catastor)
@@ -103,7 +103,7 @@ class NecrozCardTests(unittest.TestCase):
         self.assertIn("cards_mse/00_drafts/03_nekroz/03_YGO_Nekroz.mse-set", context)
         self.assertIn("01_alpha", context)
         self.assertIn("**Nekroz Recovery**", keywords)
-        self.assertIn("non-Creature **Ritual Summon** *“Nekroz”*", keywords)
+        self.assertIn("non-Creature *“Nekroz”* **Ritual Summon**", keywords)
 
 
 if __name__ == "__main__":

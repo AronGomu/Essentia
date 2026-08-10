@@ -11,11 +11,11 @@ UPDATED_CARDS = {
         "super_type: <word-list-type-en>Link Lvl 4 Creature</word-list-type-en>",
         "Haste",
         "<b>On Link Summon</b>",
-        "power: 4",
+        "power: 5",
         "toughness: 4",
     ),
     "card apollousa bow of the goddess": (
-        "casting_cost: UUGG",
+        "casting_cost: GGUU",
         "super_type: <word-list-type-en>Legendary Link Lvl 4 Creature</word-list-type-en>",
         "<b>On Link Summon</b>",
         "power: 0",
@@ -25,10 +25,12 @@ UPDATED_CARDS = {
         "casting_cost: RRWW",
         "super_type: <word-list-type-en>Link Lvl 4 Creature</word-list-type-en>",
         "<b>On Blocked</b>",
-        "power: 6",
+        "power: 7",
         "toughness: 6",
     ),
 }
+# Design content only. Collector codes (card_code_text*) are set-position
+# metadata, like the image reference, and stay on the stripped shells.
 CARD_CONTENT_FIELDS = (
     "casting_cost:",
     "super_type:",
@@ -38,9 +40,6 @@ CARD_CONTENT_FIELDS = (
     "flavor_text:",
     "power:",
     "toughness:",
-    "card_code_text:",
-    "card_code_text_2:",
-    "card_code_text_3:",
 )
 
 

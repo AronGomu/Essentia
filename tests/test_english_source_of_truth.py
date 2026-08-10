@@ -233,8 +233,13 @@ class EnglishSourceOfTruthTests(unittest.TestCase):
         )
 
     def test_identity_metadata_does_not_duplicate_card_fields(self) -> None:
+        script = ROOT / ".script" / "release_package.py"
+        spec = importlib.util.spec_from_file_location("release_package", script)
+        assert spec and spec.loader
+        release_package = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(release_package)
         data = json.loads((ROOT / "website/content/identities.json").read_text())
-        self.assertEqual(data["schemaVersion"], 2)
+        self.assertIn(data["schemaVersion"], release_package.IDENTITY_SCHEMA_VERSIONS)
         for identity in data["cards"]:
             self.assertNotIn("currentName", identity)
             self.assertNotIn("formerNames", identity)

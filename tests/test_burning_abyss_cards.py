@@ -102,7 +102,7 @@ class BurningAbyssCardTests(unittest.TestCase):
             "\t\t<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>",
             "\t\t<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>",
             "\t\t<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — "
-            "<b>Discard</b> <sym-auto>1</sym-auto>, then <b>Draw</b> 1.",
+            "<b>Discard</b> 1 then <b>Draw</b> 1.",
         )
         last_index = -1
         for line in expected_lines:

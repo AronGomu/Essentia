@@ -137,7 +137,9 @@ class WhiteCornerTransparencyTests(unittest.TestCase):
                 self.assertEqual(rendered.mode, "RGBA")
                 self.assertEqual(rendered.getpixel((0, 0))[3], 0)
                 self.assertEqual(rendered.getpixel((10, 14))[3], 255)
-            self.assertEqual(provenance["schemaVersion"], 2)
+            self.assertEqual(
+                provenance["schemaVersion"], export_mse_renders.PROVENANCE_SCHEMA
+            )
             self.assertEqual(
                 provenance["renderTransform"],
                 {"id": "transparent-white-corners", "version": 1},
@@ -197,7 +199,7 @@ class WhiteCornerTransparencyTests(unittest.TestCase):
             export_mse_renders.make_white_corners_transparent(render)
             card = export_mse_renders.load_manifest(project)[0]
             provenance = {
-                "schemaVersion": 2,
+                "schemaVersion": export_mse_renders.PROVENANCE_SCHEMA,
                 "project": project.name,
                 "renderTransform": {
                     "id": "transparent-white-corners",

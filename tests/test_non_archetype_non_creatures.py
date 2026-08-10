@@ -30,7 +30,7 @@ DRAFT_EXPECTED = {
 ACTIVE_EXPECTED = {
     "card book of moon": (
         "<b>Alternative Cost</b>",
-        "If you control no Creature: you may <b>Cast</b> Book of Moon for free.",
+        "If you control no Creature: You may <b>Cast</b> <i-auto>Book of Moon</i-auto> for free.",
         "<b>Target</b> 1 Creature; turn it face down.",
     ),
     "card dark hole": ("<b>Destroy</b> all Creatures",),

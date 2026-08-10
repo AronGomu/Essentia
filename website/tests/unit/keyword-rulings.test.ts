@@ -31,8 +31,10 @@ const EXPECTED: Record<string, string> = {
     'Put a Ritual creature onto the Field, paying the ritual cost stated by the Ritual Summon effect.',
   'Nekroz Recovery':
     'Activated Sorcery: if you control no creatures, Exile this card and 1 other “Nekroz” from the Grave; Search 1 non-Creature “Nekroz” Ritual Summon.',
-  'After Attack or Block':
-    'Event: the next time you gain priority after combat damage resolves.',
+  'After Attack':
+    'Event: this creature attacked; the next time you gain priority after combat damage resolves.',
+  'After Block':
+    'Event: this creature blocked; the next time you gain priority after combat damage resolves.',
   Attach:
     'Move the indicated card from the stated zone to become material of the named Xyz creature, without destroying it.',
   Release:
