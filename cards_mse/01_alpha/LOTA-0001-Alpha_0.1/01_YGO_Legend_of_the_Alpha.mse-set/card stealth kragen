@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-race-en>Aqua</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i>2 Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
+		<i>2 Creatures MV 1</i>
 		<i-auto>(1 - Static)</i-auto> All Creatures on Field are also blue.
 		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Target</b> 1 blue Creature; <b>Destroy</b> it and deal damage to its controller equal to half its power, rounded down.
 	flavor_text: <i-flavor></i-flavor>

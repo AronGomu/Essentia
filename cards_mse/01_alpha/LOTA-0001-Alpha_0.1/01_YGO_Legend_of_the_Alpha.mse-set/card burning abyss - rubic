@@ -24,7 +24,7 @@ card:
 	rule_text:
 		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
 		<i-auto>(2 - Activated Hard)</i-auto> <b>Descent</b>
-		<i-auto>(3 - Static)</i-auto> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Rubic”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words> cannot be used to <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Synchro</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Summon non-”<i-auto>“Burning Abyss”</i-auto>” <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Synchro</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Creatures.
+		<i-auto>(3 - Static)</i-auto> <i-auto>“Rubic”</i-auto> cannot be used to Synchro Summon non-”<i-auto>“Burning Abyss”</i-auto>” Synchro Creatures.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 5

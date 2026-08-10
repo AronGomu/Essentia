@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Sorcery</word-list-type-en>
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Search</b> 1 Ritual Creature <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 2 or less. You may <b>Salvage</b> 1 non-Creature <b>Ritual Summon</b>.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Search</b> 1 Ritual Creature MV 2 or less. You may <b>Salvage</b> 1 non-Creature <b>Ritual Summon</b>.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 045/050 C
 	card_code_text_2: 045/050 C

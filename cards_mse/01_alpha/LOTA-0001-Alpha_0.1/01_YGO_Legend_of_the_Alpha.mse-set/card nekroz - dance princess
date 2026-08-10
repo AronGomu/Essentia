@@ -16,9 +16,9 @@ card:
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Static)</i-auto> Opponents cannot respond to your effects that <b>Ritual Summon</b> <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> Creature.
-		<i-auto>(2 - Static)</i-auto> <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> Ritual Creatures you control have <b>Hexproof</b>.
-		<i-auto>(3 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Target</b> 1 other <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> from Exile; <b>Reclaim</b> it.
+		<i-auto>(1 - Static)</i-auto> Opponents cannot respond to your effects that <b>Ritual Summon</b> <i-auto>“Nekroz”</i-auto> Creature.
+		<i-auto>(2 - Static)</i-auto> <i-auto>“Nekroz”</i-auto> Ritual Creatures you control have <b>Hexproof</b>.
+		<i-auto>(3 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Target</b> 1 other <i-auto>“Nekroz”</i-auto> from Exile; <b>Reclaim</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 4
 	toughness: 2

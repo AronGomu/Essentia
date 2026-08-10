@@ -18,7 +18,7 @@ card:
 	rule_text:
 		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
 		<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>
-		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>On End Step</b>, <b>Search</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature except <i-auto>Burning Abyss - <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Scarm</error-spelling:en_US:/magic.mse-game/dictionary/magic-words></i-auto>.
+		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>On End Step</b>, <b>Search</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature except <i-auto>Burning Abyss - Scarm</i-auto>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 2
 	toughness: 5

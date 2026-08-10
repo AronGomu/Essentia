@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Insect</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Maxx”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words> <i-auto>“C”</i-auto>; if 1 Creature has already entered Field under the control of an opponent this turn, to end turn <b>Draw</b> 1 <b>On Opponent Creature Enter</b>.
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Discard</b> <i-auto>“Maxx”</i-auto> <i-auto>“C”</i-auto>; if 1 Creature has already entered Field under the control of an opponent this turn, to end turn <b>Draw</b> 1 <b>On Opponent Creature Enter</b>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 1
 	toughness: 1
