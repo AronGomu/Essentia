@@ -8,6 +8,7 @@ immutable and are skipped.
 
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -41,15 +42,25 @@ def open_packages(cards_root: Path = CARDS_ROOT) -> list[Path]:
     return found
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--verbose", action="store_true", help="print the full per-card render plan and completion JSON")
+    return parser.parse_args()
+
+
 def main() -> int:
+    args = parse_args()
     packages = open_packages()
     if not packages:
         print("no open packages to rebuild")
         return 0
     for package in packages:
-        print(f"rebuilding: {package}")
-        rebuild(package)
-        print(f"rebuilt: {package}")
+        rebuild(package, verbose=args.verbose)
+    print(
+        f"rebuild: {len(packages)} package rebuilt"
+        if len(packages) == 1
+        else f"rebuild: {len(packages)} packages rebuilt"
+    )
     return 0
 
 

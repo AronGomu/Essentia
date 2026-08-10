@@ -63,7 +63,7 @@ per-card JSON dump; `--verbose` still prints the full JSON.
 
 ## Impl steps
 
-- [ ] 1. In `.script/export_mse_renders.py`, add above `parse_args`:
+- [x] 1. In `.script/export_mse_renders.py`, add above `parse_args`:
       ```python
       def summary_line(project: Path, loaded: int, checked: int, rendered: int, print_masters: int) -> str:
           stem = project.name.removesuffix(".mse-set").removesuffix("_all_cards")
@@ -72,31 +72,31 @@ per-card JSON dump; `--verbose` still prints the full JSON.
               f"{rendered} rendered, {print_masters} print masters"
           )
       ```
-- [ ] 2. In `parse_args()`, add
+- [x] 2. In `parse_args()`, add
       `parser.add_argument("--verbose", action="store_true", help="print the full per-card render plan and completion JSON")`.
-- [ ] 3. In `main()`, guard line 498: keep the `json.dumps(... "mse.render.plan" ..., indent=2)`
+- [x] 3. In `main()`, guard line 498: keep the `json.dumps(... "mse.render.plan" ..., indent=2)`
       print only `if args.verbose`.
-- [ ] 4. Compute `checked = sum(1 for row in rows if not row["stale"])` right after
+- [x] 4. Compute `checked = sum(1 for row in rows if not row["stale"])` right after
       `cards, rows = inspect_project(project)`.
-- [ ] 5. In the `--dry-run` branch, before `return 0`, print
+- [x] 5. In the `--dry-run` branch, before `return 0`, print
       `summary_line(project, len(cards), checked, 0, 0)` when `not args.verbose`.
-- [ ] 6. Guard line 582: keep the `mse.render.complete` JSON only `if args.verbose`;
+- [x] 6. Guard line 582: keep the `mse.render.complete` JSON only `if args.verbose`;
       otherwise print `summary_line(project, len(cards), checked, len(cards), print_count)`.
-- [ ] 7. Leave the `--attest-canonical` branch's own print as is, but wrap it in
+- [x] 7. Leave the `--attest-canonical` branch's own print as is, but wrap it in
       `if args.verbose`, else print `summary_line(project, len(cards), checked, 0, 0)`.
-- [ ] 8. In `.script/release_package.py`, change the signature to
+- [x] 8. In `.script/release_package.py`, change the signature to
       `build_artifacts(package: Path, aggregate: Path, *, print_masters: bool = False, verbose: bool = False)`
       and append `"--verbose"` to `command` when `verbose`.
-- [ ] 9. Change `rebuild(package, *, identities_path=IDENTITIES_PATH, artifact_builder=build_artifacts, verbose: bool = False)`
+- [x] 9. Change `rebuild(package, *, identities_path=IDENTITIES_PATH, artifact_builder=build_artifacts, verbose: bool = False)`
       and call `artifact_builder(package, aggregate, verbose=verbose)`.
       Keep the default `artifact_builder` contract: it must accept `verbose` as keyword.
       Update the `lock()` call site the same way (pass `verbose=False`).
-- [ ] 10. In `.script/rebuild_open_packages.py`, add `argparse` with `--verbose`, delete
+- [x] 10. In `.script/rebuild_open_packages.py`, add `argparse` with `--verbose`, delete
       the two per-package prints, call `rebuild(package, verbose=args.verbose)`, and end
       `main()` with `print(f"rebuild: {len(packages)} package rebuilt" if len(packages) == 1 else f"rebuild: {len(packages)} packages rebuilt")`.
-- [ ] 11. Update `docs/MSE.md` where it documents the exporter CLI: add `--verbose`, state
+- [x] 11. Update `docs/MSE.md` where it documents the exporter CLI: add `--verbose`, state
       that default output is one line per project.
-- [ ] 12. Add the five tests from the test plan to `tests/test_export_mse_renders.py`.
+- [x] 12. Add the five tests from the test plan to `tests/test_export_mse_renders.py`.
 
 ## Outputs
 
@@ -108,10 +108,10 @@ per-card JSON dump; `--verbose` still prints the full JSON.
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_export_mse_renders -v` → OK
-- [ ] `python -m unittest discover -s tests` → OK
-- [ ] `cd website && npm run cards:rebuild` → stdout is 2 lines total
+- [x] `python -m unittest tests.test_export_mse_renders -v` → OK
+- [x] `python -m unittest discover -s tests` → OK
+- [x] `cd website && npm run cards:rebuild` → stdout is 2 lines total
       (`mse.render LOTA-0001-Alpha_0.1: …` + `rebuild: 1 package rebuilt`), exit 0
-- [ ] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid: …`
-- [ ] app functional — `npm run dev` still starts and serves
-- [ ] commit msg draft: `chore(script): print one render line per package instead of the plan JSON`
+- [x] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid: …`
+- [x] app functional — `npm run dev` still starts and serves
+- [x] commit msg draft: `chore(script): print one render line per package instead of the plan JSON`

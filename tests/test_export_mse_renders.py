@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import io
 import json
 import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
@@ -263,6 +265,87 @@ class WhiteCornerTransparencyTests(unittest.TestCase):
             _, rows = export_mse_renders.inspect_project(project)
 
             self.assertTrue(rows[0]["stale"])
+
+
+class SummaryLineTests(unittest.TestCase):
+    def test_summary_line_names_the_package_not_the_aggregate(self) -> None:
+        result = export_mse_renders.summary_line(
+            Path("LOTA-0001-Alpha_0.1_all_cards.mse-set"), 50, 50, 50, 0
+        )
+        self.assertEqual(
+            result,
+            "mse.render LOTA-0001-Alpha_0.1: 50 cards loaded, 50 checked, 50 rendered, 0 print masters",
+        )
+
+    def test_summary_line_is_single_line(self) -> None:
+        result = export_mse_renders.summary_line(
+            Path("LOTA-0001-Alpha_0.1_all_cards.mse-set"), 50, 50, 50, 0
+        )
+        self.assertNotIn("\n", result)
+
+    def test_summary_line_keeps_a_plain_project_name(self) -> None:
+        result = export_mse_renders.summary_line(Path("demo.mse-set"), 1, 0, 1, 0)
+        self.assertTrue(result.startswith("mse.render demo: "))
+
+
+class QuietMainTests(unittest.TestCase):
+    make_project = WhiteCornerTransparencyTests.make_project
+    make_config = staticmethod(WhiteCornerTransparencyTests.make_config)
+    make_opaque_render = staticmethod(WhiteCornerTransparencyTests.make_opaque_render)
+
+    def run_main(self, extra_args: list[str]) -> tuple[str, Path]:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project = self.make_project(root)
+            out = root / "renders"
+            config = self.make_config(root)
+            cards = export_mse_renders.load_manifest(project)
+            rows = [
+                {
+                    "index": card.index,
+                    "source": card.source_name,
+                    "name": card.name,
+                    "created": card.created,
+                    "modified": card.modified,
+                    "artwork": None,
+                    "render": str(project / "render" / export_mse_renders.render_filename(card.name)),
+                    "missing": False,
+                    "stale": False,
+                }
+                for card in cards
+            ]
+            provenance = {
+                "schemaVersion": export_mse_renders.PROVENANCE_SCHEMA,
+                "project": project.name,
+                "cards": [],
+            }
+
+            def fake_export(project_arg, output_arg, config_arg):
+                out.mkdir(parents=True, exist_ok=True)
+                self.make_opaque_render(out / "Card One.png")
+                export_mse_renders.make_white_corners_transparent(out / "Card One.png")
+                return provenance
+
+            argv = ["x", str(project), "--output", str(out)] + extra_args
+            capture = io.StringIO()
+            with patch.object(export_mse_renders.MSEConfig, "load", return_value=config), \
+                patch.object(export_mse_renders, "inspect_project", return_value=(cards, rows)), \
+                patch.object(export_mse_renders, "export", side_effect=fake_export), \
+                patch.object(sys, "argv", argv), \
+                redirect_stdout(capture):
+                export_mse_renders.main()
+            return capture.getvalue(), project
+
+    def test_quiet_main_prints_exactly_one_line(self) -> None:
+        output, _ = self.run_main([])
+        lines = [line for line in output.splitlines() if line.strip()]
+        self.assertEqual(len(lines), 1)
+        self.assertRegex(lines[0], r"^mse\.render ")
+
+    def test_verbose_main_prints_plan_and_complete_json(self) -> None:
+        output, _ = self.run_main(["--verbose"])
+        self.assertIn('"event": "mse.render.plan"', output)
+        self.assertIn('"event": "mse.render.complete"', output)
 
 
 if __name__ == "__main__":

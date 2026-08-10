@@ -657,7 +657,7 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
             )
 
 
-def build_artifacts(package: Path, aggregate: Path, *, print_masters: bool = False) -> None:
+def build_artifacts(package: Path, aggregate: Path, *, print_masters: bool = False, verbose: bool = False) -> None:
     """
     Export renders and provenance.
 
@@ -675,6 +675,8 @@ def build_artifacts(package: Path, aggregate: Path, *, print_masters: bool = Fal
     ]
     if print_masters:
         command.append("--print-masters")
+    if verbose:
+        command.append("--verbose")
     subprocess.run(command, cwd=REPO_ROOT, check=True)
     generated_provenance = renders / "render-provenance.json"
     if not generated_provenance.is_file():
@@ -687,6 +689,7 @@ def rebuild(
     *,
     identities_path: Path = IDENTITIES_PATH,
     artifact_builder: Callable[[Path, Path], None] = build_artifacts,
+    verbose: bool = False,
 ) -> Path:
     """Regenerate aggregate/artifacts/hashes for an open package."""
     package = package.resolve()
@@ -694,7 +697,7 @@ def rebuild(
     if metadata["status"] != "open":
         raise LifecycleError(f"rebuild requires open package: {package}")
     aggregate = generate_aggregate(package, identities_path)
-    artifact_builder(package, aggregate)
+    artifact_builder(package, aggregate, verbose=verbose)
     write_package_hashes(package)
     validate_package(package, require_artifacts=True)
     return package
@@ -718,7 +721,7 @@ def lock(
         except ValueError as exc:
             raise LifecycleError(f"invalid releasedOn date: {released_on}") from exc
         metadata["releasedOn"] = released_on
-    rebuild(package, identities_path=identities_path, artifact_builder=artifact_builder)
+    rebuild(package, identities_path=identities_path, artifact_builder=artifact_builder, verbose=False)
     metadata = release_metadata(package)
     metadata["status"] = "locked"
     json_write(package / "release.json", metadata)

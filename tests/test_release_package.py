@@ -115,7 +115,7 @@ class ReleasePackageTests(unittest.TestCase):
         )
         return package, identity_path
 
-    def fake_artifacts(self, package: Path, _aggregate: Path) -> None:
+    def fake_artifacts(self, package: Path, _aggregate: Path, *, verbose: bool = False) -> None:
         (package / "renders").mkdir(exist_ok=True)
         (package / "renders" / "Card One.png").write_bytes(b"png")
         (package / "render-provenance.json").write_text("{}\n", encoding="utf-8")

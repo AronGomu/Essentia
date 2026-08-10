@@ -457,6 +457,14 @@ def export(project: Path, output: Path, config: MSEConfig) -> dict[str, object]:
     return provenance
 
 
+def summary_line(project: Path, loaded: int, checked: int, rendered: int, print_masters: int) -> str:
+    stem = project.name.removesuffix(".mse-set").removesuffix("_all_cards")
+    return (
+        f"mse.render {stem}: {loaded} cards loaded, {checked} checked, "
+        f"{rendered} rendered, {print_masters} print masters"
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("project", type=Path, help="one folder-form .mse-set below configured projects root")
@@ -469,6 +477,7 @@ def parse_args() -> argparse.Namespace:
         help="fresh-export to a temporary directory, verify pixel equality, then write canonical provenance",
     )
     parser.add_argument("--dry-run", action="store_true", help="validate sources and print planned JSON without exporting")
+    parser.add_argument("--verbose", action="store_true", help="print the full per-card render plan and completion JSON")
     parser.add_argument(
         "--print-masters",
         action="store_true",
@@ -492,11 +501,15 @@ def main() -> int:
     if project.is_symlink() or (hasattr(os.path, "isjunction") and os.path.isjunction(project)):
         raise MSESourceError("project links are forbidden")
     cards, rows = inspect_project(project)
+    checked = sum(1 for row in rows if not row["stale"])
     output = project / "render" if args.canonical else args.output
     if output is not None and not output.is_absolute():
         output = (ROOT / output).resolve()
-    print(json.dumps({"event": "mse.render.plan", "project": project.name, "count": len(cards), "output": str(output) if output else None, "cards": rows}, indent=2))
+    if args.verbose:
+        print(json.dumps({"event": "mse.render.plan", "project": project.name, "count": len(cards), "output": str(output) if output else None, "cards": rows}, indent=2))
     if args.dry_run:
+        if not args.verbose:
+            print(summary_line(project, len(cards), checked, 0, 0))
         return 0
     if args.attest_canonical:
         with tempfile.TemporaryDirectory(prefix="mse-canonical-attestation-") as temporary:
@@ -513,15 +526,18 @@ def main() -> int:
             provenance_path.write_text(
                 json.dumps(canonical, indent=2) + "\n", encoding="utf-8"
             )
-        print(
-            json.dumps(
-                {
-                    "event": "mse.render.attested",
-                    "project": project.name,
-                    "count": len(cards),
-                }
+        if args.verbose:
+            print(
+                json.dumps(
+                    {
+                        "event": "mse.render.attested",
+                        "project": project.name,
+                        "count": len(cards),
+                    }
+                )
             )
-        )
+        else:
+            print(summary_line(project, len(cards), checked, 0, 0))
         return 0
     if output is None:
         raise MSESourceError("choose --output or --canonical unless using --dry-run")
@@ -579,7 +595,10 @@ def main() -> int:
         provenance_path.write_text(
             json.dumps(provenance, indent=2) + "\n", encoding="utf-8"
         )
-    print(json.dumps({"event": "mse.render.complete", "project": project.name, "count": len(cards), "output": str(output), "printMasters": print_count, "timestampUpdates": timestamp_updates}))
+    if args.verbose:
+        print(json.dumps({"event": "mse.render.complete", "project": project.name, "count": len(cards), "output": str(output), "printMasters": print_count, "timestampUpdates": timestamp_updates}))
+    else:
+        print(summary_line(project, len(cards), checked, len(cards), print_count))
     return 0
 
 

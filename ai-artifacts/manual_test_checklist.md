@@ -162,3 +162,11 @@ regressions they exist to catch are reintroduced.
 - [ ] Rename or resize that same PNG to a size that is not exactly 2×. Re-run the script: `double=0 wrong-size=1`.
 - [ ] Run `git status`: files under `hd_inputs/frames/<pack>/` do not show up as trackable/stageable (they stay ignored), but `hd_inputs/frames/.gitkeep` is trackable.
 - [ ] Open `MSE/README.md`, `## HD inputs` section: confirms the four pack names, the 2× rule, and the `TODO(user)` line naming the missing upscaler-tool fact.
+
+## T2 quiet-render-log
+
+- [ ] Run `python .script/export_mse_renders.py cards_mse/01_alpha/LOTA-0001-Alpha_0.1/LOTA-0001-Alpha_0.1_all_cards.mse-set --output /tmp/render-check`: stdout is exactly one line, `mse.render LOTA-0001-Alpha_0.1: 50 cards loaded, … checked, 50 rendered, 0 print masters` — no per-card JSON dump.
+- [ ] Re-run the same command with `--verbose` appended: stdout is the old-style indented `mse.render.plan` JSON followed by the `mse.render.complete` JSON, one card entry per card.
+- [ ] Run `cd website && npm run cards:rebuild`: stdout is exactly two lines — one `mse.render …` summary line per open package, then `rebuild: N package(s) rebuilt`. No `rebuilding: …` / `rebuilt: …` pair per package.
+- [ ] Run `cd website && npm run dev`: it still starts cleanly and the site loads at `http://localhost:4201/` (the `cards:rebuild` step in `predev` prints only the quiet summary line, not a JSON dump).
+- [ ] Skim `docs/MSE.md`'s exporter CLI section: it documents `--verbose` and states default output is one summary line per project.

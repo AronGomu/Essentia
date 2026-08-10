@@ -90,6 +90,8 @@ Requires an MSE build whose `write_image_file` accepts `width:`/`height:` — th
 python .script/export_mse_renders.py <project> --output <dir> --print-masters
 ```
 
+By default the exporter prints one summary line per project (`mse.render <project>: N cards loaded, N checked, N rendered, N print masters`). Pass `--verbose` to restore the full per-card `mse.render.plan` / `mse.render.complete` JSON.
+
 Masters land in `renders_print/` beside `renders/` and their hashes are recorded in the provenance `print` block (schema 3). Masters are optional: until a package has `renders_print/`, the website upscales the 1× render and marks it draft resolution.
 
 MSE export must be followed by real Save/Save As verification when source structure changes. If save fails, check missing includes, unresolved images/symbols, stale backup files, nested `.mse-set` projects, and generated files inside active projects.
