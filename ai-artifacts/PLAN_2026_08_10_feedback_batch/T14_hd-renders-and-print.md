@@ -22,9 +22,11 @@ false for every card.
   `--verbose`; `release_package.build_artifacts(package, aggregate, *, print_masters=False, verbose=False)`
   and `release_package.rebuild(package, *, identities_path=…, artifact_builder=…, verbose=False)`
   forward it; `.script/rebuild_open_packages.py` takes `--verbose`.
-- T12: every stylesheet declares `card width: 750` / `card height: 1046`;
-  `MSE/manifest.json` is re-pinned; `launcher/setup_mse.py --verify` passes.
-- T13: `mse_images/*.png` are 4× and `.script/refresh_mse_card_art.py` exists.
+- T12: all six mapped styles declare and render 750×1046; `MSE/manifest.json` pins 560
+  files; `launcher/setup_mse.py --verify` passes. User frame payload stays local/ignored.
+- T13: `.script/refresh_mse_card_art.py` updated 177 card-art PNGs across six editable
+  projects to 4×; all 50 open-alpha cards have HD-backed art. Four draft cards without
+  any canonical source were skipped unchanged. Commit `b32fcc4`.
 
 ## Requirements
 
@@ -60,7 +62,10 @@ false for every card.
 - `website/scripts/render-provenance.mjs`, `website/tests/unit/render-provenance.test.ts`.
 - `mse_packages/essentia-print.mse-export-template` — the template whose script calls
   `write_image_file(card, file:, width:, height:)`.
-- **From Depends:** T2, T12, T13, as listed above.
+- **From Depends:** T2 `b43a09d` added quiet/verbose render flow. T12 `0647c4f`
+  installed/scaled local frame payload; six styles render 750×1046; MSE verify covers
+  560 files. T13 `b32fcc4` rebuilt open-alpha art/renders from HD inputs; 177 updated,
+  4 draft-only no-HD skips, 0 no-image. Open alpha is ready for 750px + print rebuild.
 
 ## TDD
 
