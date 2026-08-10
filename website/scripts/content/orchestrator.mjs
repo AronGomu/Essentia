@@ -3,6 +3,7 @@ import {
   mkdir,
   readFile,
   readdir,
+  rename,
   rm,
   writeFile,
 } from 'node:fs/promises';
@@ -30,6 +31,12 @@ import { loadReadingOrder, postGroups } from './reading-order.mjs';
 import { discover } from './packages.mjs';
 
 export const CATALOG_SCHEMA_VERSION = 10;
+
+export async function writeAtomic(target, content) {
+  const temporary = `${target}.${process.pid}.tmp`;
+  await writeFile(temporary, content, 'utf8');
+  await rename(temporary, target);
+}
 
 async function loadExplanations(knownIds) {
   const output = {};
@@ -76,7 +83,9 @@ export async function build({ checkOnly }) {
     await rm(GENERATED_PUBLIC, { recursive: true, force: true });
     await mkdir(GENERATED_PUBLIC, { recursive: true });
   }
-  await rm(GENERATED_SOURCE, { recursive: true, force: true });
+  // Keep generated modules importable while Astro/Vite watches this directory.
+  // Removing it first creates a window where SSR imports fail, then Vite caches
+  // the missing-module error until its dev server restarts.
   await mkdir(GENERATED_SOURCE, { recursive: true });
 
   const { packages, versions, rights, seenIds, draftResolutionCount } =
@@ -218,20 +227,17 @@ export async function build({ checkOnly }) {
   };
 
   await Promise.all([
-    writeFile(
+    writeAtomic(
       path.join(GENERATED_SOURCE, 'catalog.ts'),
       `const catalog = ${JSON.stringify(catalog, null, 2)} as const;\nexport default catalog;\n`,
-      'utf8',
     ),
-    writeFile(
+    writeAtomic(
       path.join(GENERATED_SOURCE, 'explanations.json'),
       `${JSON.stringify(explanations, null, 2)}\n`,
-      'utf8',
     ),
-    writeFile(
+    writeAtomic(
       path.join(GENERATED_SOURCE, 'rights-inventory.json'),
       `${JSON.stringify({ schemaVersion: 1, generatedAt, assets: rights.sort((a, b) => a.key.localeCompare(b.key)) }, null, 2)}\n`,
-      'utf8',
     ),
   ]);
 
