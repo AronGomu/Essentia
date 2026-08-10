@@ -18,7 +18,7 @@ card:
 	rule_text:
 		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
 		<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>
-		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Discard</b> <sym-auto>1</sym-auto> then <b>Draw</b> 1.
+		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Discard</b> 1 then <b>Draw</b> 1.
 	flavor_text: <i-flavor></i-flavor>
 	power: 2
 	toughness: 2

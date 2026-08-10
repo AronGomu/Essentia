@@ -18,6 +18,7 @@ export function normalizeQuotes(value) {
  */
 export function normalizeKeyword(phrase) {
   return normalizeQuotes(phrase)
+    .replace(/\b(?:\d+|X)\s?[-–]\s?(?:\d+|X)\b/g, 'N')
     .split(/\s+/)
     .map((token) => (/^(?:\d+|X)$/.test(token) ? 'N' : token))
     .join(' ')
