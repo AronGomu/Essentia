@@ -583,7 +583,7 @@
   }
   .hero {
     position: relative;
-    min-height: min(52rem, calc(100svh - var(--header)));
+    min-height: min(40rem, calc(74svh - var(--header)));
     display: grid;
     align-items: end;
     overflow: hidden;
@@ -615,7 +615,7 @@
     z-index: 1;
     width: min(100% - 2rem, 78rem);
     margin: 0 auto;
-    padding: clamp(4rem, 12vw, 9rem) 0;
+    padding: clamp(2.5rem, 8vw, 6rem) 0;
   }
   .hero-content p {
     max-width: 50ch;

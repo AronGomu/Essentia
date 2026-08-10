@@ -75,29 +75,18 @@ its tiles.
 
 ## Impl steps
 
-- [ ] 1. `grep -rn 'class="hero"' website/src` — confirm only `index.astro` uses `.hero`.
-- [ ] 2. In `global.css`, change `.hero` `min-height` to `min(40rem, calc(74svh - var(--header)))`.
-- [ ] 3. In `global.css`, change `.hero-content` `padding` to `clamp(2.5rem, 8vw, 6rem) 0`.
-- [ ] 4. In `index.astro`, add `new-cards-shell` to the new-cards section class list:
+- [x] 1. `grep -rn 'class="hero"' website/src` — confirm only `index.astro` uses `.hero`.
+- [x] 2. In `global.css`, change `.hero` `min-height` to `min(40rem, calc(74svh - var(--header)))`.
+- [x] 3. In `global.css`, change `.hero-content` `padding` to `clamp(2.5rem, 8vw, 6rem) 0`.
+- [x] 4. In `index.astro`, add `new-cards-shell` to the new-cards section class list:
       `<section class="page-shell new-cards-shell" aria-labelledby="new-cards-heading">`.
-- [ ] 5. In `index.astro`, add `catalog-shell` to the archetypes heading wrapper:
+- [x] 5. In `index.astro`, add `catalog-shell` to the archetypes heading wrapper:
       `<div class="page-shell section-heading catalog-shell">`.
-- [ ] 6. In the `index.astro` `<style>` block, append:
-      ```css
-      .new-cards-shell {
-        padding-block-start: var(--space-5);
-      }
-      .new-cards-shell .section-heading {
-        margin-bottom: var(--space-2);
-      }
-      .catalog-shell.section-heading {
-        margin-bottom: var(--space-2);
-      }
-      ```
-- [ ] 7. Create `website/tests/e2e/home-first-paint.spec.ts` with the four tests, using
+- [x] 6. In the `index.astro` `<style>` block, append the three rules from the ticket, **plus two more** discovered necessary in testing (see report): a `padding-block-end: 0` on `.catalog-shell.section-heading` (that div also carries `.page-shell`, whose `padding-block: var(--space-6)` added up to 7rem *below* the heading too), and `margin: 0` on the headings inside both wrappers (h2's UA default margin doesn't collapse through a flex item, so it was adding ~34px on top of the wrapper's own `margin-bottom`). Without both, the pixel targets in Test plan are not reachable by the three rules as literally specified.
+- [x] 7. Create `website/tests/e2e/home-first-paint.spec.ts` with the four tests, using
       `test.use({ viewport: { width: 1920, height: 1080 } })` and the `urlFor` idiom from
       `tests/e2e/header-row.spec.ts`.
-- [ ] 8. Re-run `tests/e2e/card-lists-400.spec.ts` (T5) if it already exists — the hero
+- [x] 8. Re-run `tests/e2e/card-lists-400.spec.ts` (T5) if it already exists — the hero
       change must not reintroduce two-up cards at 400px.
 
 ## Outputs
@@ -108,8 +97,8 @@ its tiles.
 
 ## Validation
 
-- [ ] `cd website && npx playwright test tests/e2e/home-first-paint.spec.ts` → 4 passed × 3 browsers
-- [ ] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → still green
-- [ ] `cd website && npm run ci` → pass
-- [ ] manual check: 1920×1080 window, load `/`, `New cards` heading visible without scrolling
+- [x] `cd website && npx playwright test tests/e2e/home-first-paint.spec.ts` → 4 passed × 3 browsers (chromium + webkit here; firefox cannot launch in this env, pre-existing/unrelated — 8 passed across the 2 runnable browsers)
+- [x] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → still green
+- [x] `cd website && npm run ci` → pass
+- [x] manual check: 1920×1080 window, load `/`, `New cards` heading visible without scrolling — verified via Playwright at that exact viewport (`boundingBox().y + height <= 1080` and `scrollY === 0`), see `home-first-paint.spec.ts`
 - [ ] commit msg draft: `fix(website): pull the homepage sections up so New cards is above the fold`

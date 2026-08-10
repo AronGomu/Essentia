@@ -66,7 +66,10 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
           </div>
         </section>
 
-        <section class="page-shell" aria-labelledby="new-cards-heading">
+        <section
+          class="page-shell new-cards-shell"
+          aria-labelledby="new-cards-heading"
+        >
           <div class="section-heading">
             <div>
               <h2 id="new-cards-heading">New cards</h2>
@@ -102,7 +105,7 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
         </section>
 
         <section aria-labelledby="catalog-heading">
-          <div class="page-shell section-heading">
+          <div class="page-shell section-heading catalog-shell">
             <div>
               <h2 id="catalog-heading">Archetypes</h2>
             </div>
@@ -173,5 +176,26 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
   .empty-publication > p:not(.eyebrow) {
     max-width: 44rem;
     color: var(--muted);
+  }
+  .new-cards-shell {
+    padding-block-start: var(--space-5);
+  }
+  .new-cards-shell .section-heading {
+    margin-bottom: var(--space-2);
+  }
+  .catalog-shell.section-heading {
+    margin-bottom: var(--space-2);
+    /* This div also carries `.page-shell`, whose padding-block puts up to
+       7rem of padding below the heading too — kill only that half so the
+       tiles sit close, keeping the top half for separation from New cards. */
+    padding-block-end: 0;
+  }
+  /* h2's UA default margin sits inside the flex item's own block formatting
+     context (a flex item does not let its child's margin collapse through),
+     so it was adding to these wrappers' height on top of the margin-bottom
+     above. Zero it so the wrapper's own margin-bottom is the whole gap. */
+  .new-cards-shell .section-heading h2,
+  .catalog-shell.section-heading h2 {
+    margin: 0;
   }
 </style>

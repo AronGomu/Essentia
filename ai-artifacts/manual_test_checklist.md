@@ -199,3 +199,13 @@ regressions they exist to catch are reintroduced.
 - [ ] Widen further to **900 × 800**: the grid shows three cards per row; widen to **1200 × 800**: five per row.
 - [ ] Open `/archetypes/burning-abyss/` at **400 × 800**: the archetype gallery also shows exactly one card per row.
 - [ ] Narrow slowly from 560px down to 400px: the new-cards grid drops from two columns to one somewhere around 480px, with no card ever clipped or overlapping another.
+
+## T6 home-spacing-first-paint
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/` in a browser window sized to exactly **1920 × 1080** (no browser chrome eating extra vertical space, or use DevTools device toolbar at that size).
+- [ ] Confirm the "New cards" heading is fully visible without scrolling — the whole heading text sits above the bottom edge of the viewport on first load.
+- [ ] Confirm the page has not auto-scrolled: the very top of the hero (the "The Yu-Gi-Oh! Feel. With Magic Rules." headline) is also visible at the top of the viewport.
+- [ ] Confirm the gap between the "New cards" heading and the first card tile below it reads visually tight, not the large airy gap from before.
+- [ ] Scroll down to the "Archetypes" heading: confirm it also sits close to the row of archetype tiles beneath it, not floating far above them.
+- [ ] Resize the window narrower (down to ~400px): the hero still displays correctly (no clipped text, no overlap) — the shorter hero height does not break small-screen layout.
+- [ ] Open the browser devtools console while loading `/` at 1920×1080: no console errors.
