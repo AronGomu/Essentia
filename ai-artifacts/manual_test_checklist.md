@@ -209,3 +209,12 @@ regressions they exist to catch are reintroduced.
 - [ ] Scroll down to the "Archetypes" heading: confirm it also sits close to the row of archetype tiles beneath it, not floating far above them.
 - [ ] Resize the window narrower (down to ~400px): the hero still displays correctly (no clipped text, no overlap) — the shorter hero height does not break small-screen layout.
 - [ ] Open the browser devtools console while loading `/` at 1920×1080: no console errors.
+
+## T7 archetype-hero-panel
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/burning-abyss/`.
+- [ ] Confirm the title, intro paragraph, and stats row (published card count / latest release) sit inside a single bordered, translucent panel, visually lifted off the background art.
+- [ ] Confirm the panel does not shift the two-column hero layout: the archetype art still sits to the right, same as before.
+- [ ] Narrow the viewport to ~400px wide: the panel padding shrinks slightly (no squeezed/clipped intro text).
+- [ ] Open `/sections/non-archetype/non-archetype/`: confirm there is no bordered panel around its hero text (out of scope for this change).
+- [ ] Open `/archetypes/nekroz/` and confirm the same panel treatment applies there too.

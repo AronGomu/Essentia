@@ -845,6 +845,17 @@
     border-bottom: 1px solid var(--ruleline);
     padding-block: var(--space-2) var(--space-4);
   }
+  .catalog-hero-panel {
+    background: color-mix(in oklab, var(--blackfoil) 68%, transparent);
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+  }
+  @media (max-width: 48rem) {
+    .catalog-hero-panel {
+      padding: var(--space-3);
+    }
+  }
   .catalog-hero p {
     max-width: 65ch;
     color: var(--silver-ink);

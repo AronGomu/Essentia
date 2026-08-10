@@ -66,15 +66,15 @@ and stats sit on a translucent bordered panel that lifts them off the background
 
 ## Impl steps
 
-- [ ] 1. In `website/src/pages/archetypes/[slug].astro`, change the first grid child from
+- [x] 1. In `website/src/pages/archetypes/[slug].astro`, change the first grid child from
       `<div>` to `<div class="catalog-hero-panel">`. Nothing inside it moves.
-- [ ] 2. In `global.css`, add the `.catalog-hero-panel` rule immediately after
+- [x] 2. In `global.css`, add the `.catalog-hero-panel` rule immediately after
       `.catalog-hero { … }` so the cascade order reads top-down.
-- [ ] 3. Add `@media (max-width: 48rem) { .catalog-hero-panel { padding: var(--space-3); } }`
+- [x] 3. Add `@media (max-width: 48rem) { .catalog-hero-panel { padding: var(--space-3); } }`
       so the panel does not squeeze the intro on a phone.
-- [ ] 4. Create `website/tests/unit/catalog-hero-panel.test.ts`, reusing the comment-stripping
+- [x] 4. Create `website/tests/unit/catalog-hero-panel.test.ts`, reusing the comment-stripping
       `ruleFor` idiom from `tests/unit/new-card-grid.test.ts`.
-- [ ] 5. Create `website/tests/e2e/archetype-hero-panel.spec.ts`. Read the non-archetype
+- [x] 5. Create `website/tests/e2e/archetype-hero-panel.spec.ts`. Read the non-archetype
       route from the built site: it is `/sections/non-archetype/<slug>/`; resolve the slug by
       visiting `/` and following the first non-archetype tile, or hardcode the known slug
       `non-archetype` after checking `website/content/sections.json`.
@@ -88,9 +88,9 @@ and stats sit on a translucent bordered panel that lifts them off the background
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/catalog-hero-panel.test.ts` → pass
-- [ ] `cd website && npx playwright test tests/e2e/archetype-hero-panel.spec.ts` → pass × 3 browsers
-- [ ] `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts` → still pass
-- [ ] manual check: `/archetypes/burning-abyss/` — title and intro on a bordered panel
-- [ ] `cd website && npm run ci` → pass
+- [x] `cd website && npx vitest run tests/unit/catalog-hero-panel.test.ts` → pass
+- [x] `cd website && npx playwright test tests/e2e/archetype-hero-panel.spec.ts` → pass × 2 browsers (chromium, webkit); firefox cannot launch in this env, pre-existing/unrelated per repo notes
+- [x] `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts` → still pass
+- [x] manual check: `/archetypes/burning-abyss/` — title and intro on a bordered panel
+- [x] `cd website && npm run ci` → pass
 - [ ] commit msg draft: `feat(website): lift the archetype hero text onto a translucent panel`
