@@ -97,8 +97,8 @@ its tiles.
 
 ## Validation
 
-- [x] `cd website && npx playwright test tests/e2e/home-first-paint.spec.ts` → 4 passed × 3 browsers (chromium + webkit here; firefox cannot launch in this env, pre-existing/unrelated — 8 passed across the 2 runnable browsers)
+- [x] `cd website && npx playwright test tests/e2e/home-first-paint.spec.ts` → 8 passed across 2 browsers (Chromium + WebKit; Firefox cannot launch in this env, pre-existing/unrelated)
 - [x] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → still green
 - [x] `cd website && npm run ci` → pass
 - [x] manual check: 1920×1080 window, load `/`, `New cards` heading visible without scrolling — verified via Playwright at that exact viewport (`boundingBox().y + height <= 1080` and `scrollY === 0`), see `home-first-paint.spec.ts`
-- [ ] commit msg draft: `fix(website): pull the homepage sections up so New cards is above the fold`
+- [x] commit msg draft: `fix(website): pull the homepage sections up so New cards is above the fold` — landed as `ad51f6b`

@@ -10,10 +10,16 @@ pins every file by sha256; the payload is untracked because it is a GPLv2 binary
 third-party frame art and fonts this CC0 repository cannot redistribute.
 
 ```bash
-python launcher/setup_mse.py --source "/path/to/Full-Magic-Pack"   # first time
-python launcher/setup_mse.py                                       # re-verify and re-wire
-python launcher/setup_mse.py --verify                              # hashes only, no writes
+# Fresh clone: Full Magic Pack at manifest commit + four local packs in hd_inputs/frames
+python launcher/setup_mse.py --source "/path/to/Full-Magic-Pack" --hd-frames hd_inputs/frames
+python launcher/setup_mse.py          # re-verify final 560 hashes and re-wire
+python launcher/setup_mse.py --verify # final hashes only, no writes
 ```
+
+Manifest schema v2 separates 529 upstream hashes, 77 local staged-overlay hashes,
+and 560 final hashes. Proprietary frame/font payload remains ignored. Installer is
+idempotent; Capenna bitmaps resize to 750 × 1047 then lose only bottom row, producing
+exact 750 × 1046 files and preserving existing render geometry.
 
 Setup writes ignored `launcher/.env` keys `MSE_ROOT`, `MSE_EXECUTABLE`, `MSE_CLI`,
 `MSE_DATA_DIR`, `MSE_FONTS_DIR`, and `MSE_PROJECTS_DIR`. A populated `MSE/` also works

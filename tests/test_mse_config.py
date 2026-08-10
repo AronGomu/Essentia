@@ -144,8 +144,36 @@ class VendorTests(unittest.TestCase):
             loaded = load_manifest(path)
 
             self.assertEqual(loaded.entries, manifest.entries)
+            self.assertEqual(loaded.source_entries, manifest.entries)
             self.assertEqual(loaded.source, manifest.source)
             self.assertEqual(json.loads(path.read_text())["manifestVersion"], MANIFEST_VERSION)
+
+    def test_install_uses_source_hashes_then_final_verify_requires_overlay(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            base = Path(temporary_directory)
+            source = base / "source"
+            vendor = base / "MSE"
+            (source / DATA_DIR).mkdir(parents=True)
+            source_file = source / DATA_DIR / "base"
+            source_file.write_text("source", encoding="utf-8")
+            source_hash = build_manifest(
+                source, [f"{DATA_DIR}/base"], {"name": "test"}
+            ).entries[f"{DATA_DIR}/base"]
+            manifest = Manifest(
+                source={"name": "test"},
+                entries={
+                    f"{DATA_DIR}/base": "f" * 64,
+                    f"{DATA_DIR}/overlay-only": "e" * 64,
+                },
+                source_entries={f"{DATA_DIR}/base": source_hash},
+                hd_frames={"packs": [], "inputs": {}},
+            )
+
+            self.assertEqual(install_tree(source, vendor, manifest), [f"{DATA_DIR}/base"])
+            self.assertEqual(
+                verify_tree(vendor, manifest),
+                [f"modified: {DATA_DIR}/base", f"missing: {DATA_DIR}/overlay-only"],
+            )
 
     def test_link_refuses_to_replace_a_real_directory(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:

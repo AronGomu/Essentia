@@ -7,6 +7,7 @@ Run it any time to see how close `hd_inputs/` is to complete before phase B
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 from PIL import Image
@@ -27,16 +28,32 @@ PACKS = (
 IMAGE_SUFFIXES = (".png", ".jpg")
 
 
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 def frame_report(pack: str, staging: Path, vendored: Path) -> dict:
-    """Compare a staged frame pack to its vendored SD counterpart."""
+    """Report staged source state or exact installed/matching state."""
     pack_dir = staging / pack
     if not pack_dir.is_dir():
-        return {"pack": pack, "present": False, "files": 0, "double": 0, "wrong_size": []}
+        return {
+            "pack": pack,
+            "present": False,
+            "files": 0,
+            "double": 0,
+            "installed": 0,
+            "wrong_size": [],
+        }
 
     files = sorted(
         p for p in pack_dir.rglob("*") if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES
     )
     double = 0
+    installed = 0
     wrong_size = []
     for path in files:
         rel = path.relative_to(pack_dir)
@@ -46,8 +63,9 @@ def frame_report(pack: str, staging: Path, vendored: Path) -> dict:
         if vendored_path.is_file():
             with Image.open(vendored_path) as vendored_image:
                 vendored_size = vendored_image.size
-            expected = (vendored_size[0] * 2, vendored_size[1] * 2)
-            if staged_size == expected:
+            if staged_size == vendored_size and _sha256(path) == _sha256(vendored_path):
+                installed += 1
+            elif staged_size == (vendored_size[0] * 2, vendored_size[1] * 2):
                 double += 1
             else:
                 wrong_size.append(str(rel))
@@ -59,6 +77,7 @@ def frame_report(pack: str, staging: Path, vendored: Path) -> dict:
         "present": True,
         "files": len(files),
         "double": double,
+        "installed": installed,
         "wrong_size": wrong_size,
     }
 
@@ -89,7 +108,8 @@ def main() -> int:
         present = "yes" if report["present"] else "no"
         print(
             f"hd.frames {report['pack']}: present={present} files={report['files']} "
-            f"double={report['double']} wrong-size={len(report['wrong_size'])}"
+            f"double={report['double']} installed={report['installed']} "
+            f"wrong-size={len(report['wrong_size'])}"
         )
 
     art = art_report(ORIGINAL_IMAGES_ROOT, ORIGINAL_IMAGES_HD_ROOT)

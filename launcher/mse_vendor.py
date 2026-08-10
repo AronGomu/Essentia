@@ -1,10 +1,9 @@
 """Vendored Magic Set Editor tree under ``MSE/``.
 
-Essentia owns the exact Magic Set Editor payload it renders with. ``MSE/manifest.json``
-is tracked and pins every vendored file by sha256; the payload itself is untracked
-because it contains Wizards of the Coast frame art and proprietary fonts that this
-CC0 repository has no right to redistribute. Populate the tree once from a local
-Full Magic Pack checkout, and the manifest guarantees it stays byte-identical.
+Essentia pins upstream inputs, local HD overlay inputs, and exact final MSE files in
+tracked ``MSE/manifest.json`` schema v2. Payload stays untracked because it contains
+Wizards of the Coast frame art and proprietary fonts this CC0 repository cannot
+redistribute. Deterministic installer reconstructs final tree without bundling assets.
 """
 
 from __future__ import annotations
@@ -12,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 from dataclasses import dataclass
@@ -20,7 +20,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VENDOR_ROOT = REPO_ROOT / "MSE"
 MANIFEST_PATH = VENDOR_ROOT / "manifest.json"
-MANIFEST_VERSION = 1
+MANIFEST_VERSION = 2
 
 # Layout inside MSE/. `data` and `resource` are what MSE itself loads; `bin` holds
 # the executable and `fonts` the typefaces the frames call for by family name.
@@ -72,9 +72,14 @@ class VendorError(RuntimeError):
 class Manifest:
     source: dict[str, str]
     entries: dict[str, str]
+    source_entries: dict[str, str] | None = None
+    hd_frames: dict | None = None
 
     def paths(self) -> list[str]:
         return sorted(self.entries)
+
+    def source_paths(self) -> list[str]:
+        return sorted(self.source_entries if self.source_entries is not None else self.entries)
 
 
 def sha256_file(path: Path) -> str:
@@ -100,6 +105,24 @@ def source_path(source_root: Path, relative: str) -> Path | None:
     return origin if origin.is_file() else None
 
 
+def _validate_hash_map(value: object, label: str, path: Path, *, allow_empty: bool = False) -> dict[str, str]:
+    if not isinstance(value, dict) or (not value and not allow_empty):
+        raise VendorError(f"MSE manifest lists no {label}: {path}")
+    entries: dict[str, str] = {}
+    for relative, digest in value.items():
+        if (
+            not isinstance(relative, str)
+            or not relative
+            or Path(relative).is_absolute()
+            or ".." in Path(relative).parts
+            or not isinstance(digest, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", digest)
+        ):
+            raise VendorError(f"MSE manifest has invalid {label} entry {relative!r}: {path}")
+        entries[relative] = digest
+    return entries
+
+
 def load_manifest(path: Path = MANIFEST_PATH) -> Manifest:
     if not path.is_file():
         raise VendorError(f"MSE manifest missing: {path}")
@@ -112,17 +135,37 @@ def load_manifest(path: Path = MANIFEST_PATH) -> Manifest:
         raise VendorError(
             f"Unsupported MSE manifest version {version!r} (expected {MANIFEST_VERSION}): {path}"
         )
-    entries = payload.get("files")
-    if not isinstance(entries, dict) or not entries:
-        raise VendorError(f"MSE manifest lists no files: {path}")
-    return Manifest(source=dict(payload.get("source", {})), entries=dict(entries))
+    entries = _validate_hash_map(payload.get("files"), "final files", path)
+    source_entries = _validate_hash_map(payload.get("sourceFiles"), "source files", path)
+    if not source_entries.keys() <= entries.keys():
+        raise VendorError(f"MSE manifest source files are not a subset of final files: {path}")
+    hd_frames = payload.get("hdFrames")
+    if not isinstance(hd_frames, dict):
+        raise VendorError(f"MSE manifest has no HD frame overlay contract: {path}")
+    packs = hd_frames.get("packs")
+    inputs = _validate_hash_map(hd_frames.get("inputs"), "HD frame inputs", path, allow_empty=True)
+    if not isinstance(packs, list) or any(not isinstance(pack, str) for pack in packs):
+        raise VendorError(f"MSE manifest has invalid HD frame pack list: {path}")
+    return Manifest(
+        source=dict(payload.get("source", {})),
+        entries=entries,
+        source_entries=source_entries,
+        hd_frames={"packs": packs, "inputs": inputs},
+    )
 
 
 def write_manifest(manifest: Manifest, path: Path = MANIFEST_PATH) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    source_entries = manifest.source_entries if manifest.source_entries is not None else manifest.entries
+    hd_frames = manifest.hd_frames or {"packs": [], "inputs": {}}
     payload = {
         "manifestVersion": MANIFEST_VERSION,
         "source": manifest.source,
+        "sourceFiles": {key: source_entries[key] for key in sorted(source_entries)},
+        "hdFrames": {
+            "packs": list(hd_frames.get("packs", [])),
+            "inputs": {key: hd_frames.get("inputs", {})[key] for key in sorted(hd_frames.get("inputs", {}))},
+        },
         "files": {key: manifest.entries[key] for key in manifest.paths()},
     }
     path.write_text(json.dumps(payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
@@ -140,7 +183,12 @@ def build_manifest(source_root: Path, relative_paths: list[str], source: dict[st
         entries[relative] = sha256_file(candidate)
     if missing:
         raise VendorError("Source files missing:\n  - " + "\n  - ".join(missing))
-    return Manifest(source=source, entries=entries)
+    return Manifest(
+        source=source,
+        entries=entries,
+        source_entries=dict(entries),
+        hd_frames={"packs": [], "inputs": {}},
+    )
 
 
 def verify_tree(vendor_root: Path = VENDOR_ROOT, manifest: Manifest | None = None) -> list[str]:
@@ -176,7 +224,8 @@ def install_tree(
 
     copied: list[str] = []
     missing: list[str] = []
-    for relative, expected in sorted(manifest.entries.items()):
+    source_entries = manifest.source_entries if manifest.source_entries is not None else manifest.entries
+    for relative, expected in sorted(source_entries.items()):
         origin = source_path(source_root, relative)
         if origin is None:
             missing.append(relative)

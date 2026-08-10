@@ -93,4 +93,4 @@ and stats sit on a translucent bordered panel that lifts them off the background
 - [x] `cd website && npx vitest run tests/unit/catalog-hero-layout.test.ts` → still pass
 - [x] manual check: `/archetypes/burning-abyss/` — title and intro on a bordered panel
 - [x] `cd website && npm run ci` → pass
-- [ ] commit msg draft: `feat(website): lift the archetype hero text onto a translucent panel`
+- [x] commit msg draft: `feat(website): lift the archetype hero text onto a translucent panel` — landed as `e0de827`

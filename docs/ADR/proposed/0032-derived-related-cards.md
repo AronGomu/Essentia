@@ -24,9 +24,9 @@ The site is statically built: `npm run build` runs `scripts/build-content.mjs` o
 
 **2. Category 1 — archetype — is the printed name, not the field.** For a card whose `archetype` is `a`, every other card whose `name` contains section `a`'s `namePattern` (`website/content/sections.json`), quote-normalised, case-insensitive. This is the rule the feedback states: "every card whose name contains the same archetype name".
 
-**3. Category 2 — interaction — is derived from rule text against closed vocabularies.** For each clause (`ruleTextPlain` split on `.`, `;`, `—`):
+**3. Category 2 — interaction — is derived from rule text against closed vocabularies.** For each independent raw-rule-text line/clause (split on newline, `.`, `;`, `—`, then strip MSE markup):
 
-- The clause counts **only** if it contains one of the card's own keywords whose registry `category` is `action` or `cost-procedure`. This is what stops an Xyz material line (`2 Creatures MV 1`) from relating every MV-1 creature to every Xyz card: a material line names no action.
+- The clause counts **only** if it contains one of the card's own keywords whose canonical loaded-registry `category` is `action` or `cost-procedure`. Builder accepts that registry; no hardcoded action snapshot exists, so new action/cost-procedure docs work automatically. Newline separation prevents an Xyz material line (`2 Creatures MV 1`) from attaching its constraints to a later `Detach` action; Gagaga Cowboy therefore has zero derived interactions.
 - Constraints read from the clause: `subtype` (from the catalog's own `subType` vocabulary, never a hardcoded race list), `name` (any `“…”` run), `color` (`white|blue|black|red|green`), `supertype` (`Ritual|Xyz|Fusion|Synchro|Link|Trap`), `mv` (`MV <int>`, `MV X`, with optional `or less` / `or more`).
 - A candidate matches a clause when it satisfies **every** constraint kind present in that clause. The union over clauses, minus the card itself, is the list.
 

@@ -31,6 +31,10 @@ from pathlib import Path
 from PIL import Image, ImageFilter, ImageStat
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from launcher.mse_hd_frames import HD_PACKS
 VENDOR_ROOT = REPO_ROOT / "MSE"
 VENDOR_DATA = VENDOR_ROOT / "data"
 VENDOR_RESOURCE = VENDOR_ROOT / "resource"
@@ -185,8 +189,22 @@ def export_print_master(set_dir: Path, data_dir: Path, workdir: Path) -> Path:
     return master
 
 
+def validated_pack_path(pack: str, data_root: Path = VENDOR_DATA) -> Path:
+    """Resolve one known pack below `data_root`; reject traversal before mutation."""
+    if pack not in HD_PACKS:
+        raise RuntimeError(f"unsupported frame pack: {pack}")
+    root = data_root.resolve()
+    path = (root / pack).resolve()
+    if root not in path.parents:
+        raise RuntimeError(f"frame pack escapes MSE data: {pack}")
+    if not path.is_dir():
+        raise RuntimeError(f"frame pack is not installed: {pack}")
+    return path
+
+
 def probe(pack: str, card_name: str, control_card: str = CONTROL_CARD) -> dict:
     """Export the card with the vendored pack and with a 2x copy; measure both."""
+    source_pack = validated_pack_path(pack)
     assert_clean_vendored_tree()
     _, card_file = find_card(card_name)
     _, control_file = find_card(control_card)
@@ -196,8 +214,9 @@ def probe(pack: str, card_name: str, control_card: str = CONTROL_CARD) -> dict:
         shutil.copytree(VENDOR_DATA, vendored_data, symlinks=True)
         upscaled_data = root / "data-hd"
         shutil.copytree(VENDOR_DATA, upscaled_data, symlinks=True)
-        shutil.rmtree(upscaled_data / pack)
-        upscale_pack(VENDOR_DATA / pack, upscaled_data / pack)
+        destination_pack = validated_pack_path(pack, upscaled_data)
+        shutil.rmtree(destination_pack)
+        upscale_pack(source_pack, destination_pack)
 
         card_set = single_card_set(card_file, root / "card.mse-set")
         control_set = single_card_set(control_file, root / "control.mse-set")
@@ -225,7 +244,12 @@ def verdict(ratio: float) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--pack", required=True, help="style package under MSE/data")
+    parser.add_argument(
+        "--pack",
+        required=True,
+        choices=HD_PACKS,
+        help="allowlisted style package under MSE/data",
+    )
     parser.add_argument("--card", required=True, help="card name to export, e.g. 'Burning Abyss - Graff'")
     parser.add_argument("--control-card", default=CONTROL_CARD, help="Fusion-frame control card")
     args = parser.parse_args()

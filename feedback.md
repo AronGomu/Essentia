@@ -1,5 +1,17 @@
 # Feedback
 
+## Batch status — shipped
+
+All 13 items landed on `plan/feedback-batch` through ticket commits
+`39f3530..4e6cc10` plus final review repair `fix(review): close feedback-batch
+verification gaps`. HD art result is **177 updated + 4 user-accepted skips**:
+`Absolute King Back Jack`, `Crane Crane`, `Fiend Griefing`, and
+`Fiendish Rhino Warrior`. Their current MSE art intentionally remains unchanged;
+this batch does not claim every card art is HD. AronGomu approved exact publication
+rights for 50 display renders plus 50 print masters on 2026-08-10. Automated checks
+cover Chromium and WebKit; Firefox cannot launch in current NixOS environment.
+Manual MSE/browser 1920px sharpness checks remain pending.
+
 1. On the archetype page, for every archetype, the title and the description should have a semi‑transparent background and a border to make them pop out.
 
 2. Update the script when starting npm run dev to not show the entire content of the JSON file. Instead, just show all the sets and the number of cards within the sets that are loaded and checked. So it should hold currently on a single line.

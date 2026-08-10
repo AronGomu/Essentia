@@ -8,17 +8,19 @@ Card fields live only in folder-form MSE projects under [`cards_mse/`](cards_mse
 
 ## First-time MSE setup
 
-Magic Set Editor lives in this repository, under [`MSE/`](MSE/). Only its
-`manifest.json` is tracked; populate the payload once from a Full Magic Pack checkout:
+Magic Set Editor lives under [`MSE/`](MSE/). Payload is local-only; schema-v2
+`manifest.json` separately pins upstream, staged HD overlay, and final hashes. Fresh
+setup needs Full Magic Pack commit `71b382d5da74efd533ae25a23ac324a80c3dfeb4` plus
+the four owner-supplied packs staged under ignored `hd_inputs/frames/`:
 
 ```bash
-python launcher/setup_mse.py --source "/path/to/Full-Magic-Pack"
+python launcher/setup_mse.py --source "/path/to/Full-Magic-Pack" --hd-frames hd_inputs/frames
 ```
 
-Setup copies every manifest file, verifies each by sha256, installs the repo-owned
-export template, points `~/.magicseteditor` and fontconfig at `MSE/`, and writes
-ignored `launcher/.env`. Afterwards re-run it without `--source` to re-verify and
-re-wire; `--verify` checks hashes and changes nothing.
+One command validates/copies upstream files, installs deterministic HD transforms,
+verifies all 560 final hashes, installs repo-owned packages, wires MSE/fontconfig,
+and writes ignored `launcher/.env`. Afterwards run setup without inputs to re-wire;
+`--verify` checks final hashes without writes. See [`MSE/README.md`](MSE/README.md).
 
 Browse projects by lifecycle/group/set:
 

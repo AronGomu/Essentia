@@ -34,8 +34,32 @@ class FrameReportTests(unittest.TestCase):
 
             self.assertEqual(
                 result,
-                {"pack": pack, "present": True, "files": 1, "double": 1, "wrong_size": []},
+                {
+                    "pack": pack,
+                    "present": True,
+                    "files": 1,
+                    "double": 1,
+                    "installed": 0,
+                    "wrong_size": [],
+                },
             )
+
+    def test_frame_report_counts_installed_matching_images(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            staging = root / "staging"
+            vendored = root / "vendored"
+            pack = "magic-sevenhalf.mse-style"
+            (staging / pack).mkdir(parents=True)
+            (vendored / pack).mkdir(parents=True)
+            Image.new("RGB", (20, 40), "red").save(staging / pack / "a.png")
+            Image.new("RGB", (20, 40), "red").save(vendored / pack / "a.png")
+
+            result = verify_hd_inputs.frame_report(pack, staging, vendored)
+
+            self.assertEqual(result["installed"], 1)
+            self.assertEqual(result["double"], 0)
+            self.assertEqual(result["wrong_size"], [])
 
     def test_frame_report_flags_wrong_size(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -66,7 +90,14 @@ class FrameReportTests(unittest.TestCase):
 
             self.assertEqual(
                 result,
-                {"pack": pack, "present": False, "files": 0, "double": 0, "wrong_size": []},
+                {
+                    "pack": pack,
+                    "present": False,
+                    "files": 0,
+                    "double": 0,
+                    "installed": 0,
+                    "wrong_size": [],
+                },
             )
 
 

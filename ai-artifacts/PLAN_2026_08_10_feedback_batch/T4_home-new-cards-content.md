@@ -77,12 +77,11 @@ button-sized "View all N new cards" link, and a hero button reading "View new ca
 
 ## Validation
 
-- [x] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → 4 passed × 3 browsers
-      (chromium+webkit passed via nix-provided browser binaries; firefox cannot
-      launch in this environment — pre-existing, confirmed against untouched
-      `header-row.spec.ts` too)
+- [x] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → 8 passed across 2 browsers
+      (Chromium + WebKit via Nix-provided binaries; Firefox cannot launch in this
+      environment — pre-existing, confirmed against untouched `header-row.spec.ts`)
 - [x] `cd website && npm run ci` → pass
 - [x] manual check: `/` shows 10 renders, one accent button under them, hero says
       `View new cards`
 - [x] app functional — `/updates/` still lists all 50
-- [ ] commit msg draft: `fix(website): trim the homepage new-cards block to ten cards and one CTA`
+- [x] commit msg draft: `fix(website): trim the homepage new-cards block to ten cards and one CTA` — landed as `8b3db83`

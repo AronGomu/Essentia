@@ -16,6 +16,10 @@
 /hd_inputs/frames/*
 !/hd_inputs/frames/.gitkeep
 
+# Future HD source art requires explicit force-add plus publication-rights review.
+# Existing tracked inputs remain tracked; new/untracked original_images_hd files stay local.
+/original_images_hd/**
+
 # Local Playwright config pointing at a system browser build (NixOS workaround)
 /website/playwright.config.local.ts
 

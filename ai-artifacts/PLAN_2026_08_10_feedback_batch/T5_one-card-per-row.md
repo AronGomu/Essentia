@@ -81,8 +81,8 @@ homepage new-cards grid keeps two columns between 480px and 640px.
 ## Validation
 
 - [x] `cd website && npx vitest run tests/unit/new-card-grid.test.ts` → pass
-- [x] `cd website && npx playwright test tests/e2e/card-lists-400.spec.ts` → pass × 3 browsers
-      (chromium + webkit pass via a local, uncommitted `playwright.config.local.ts`
+- [x] `cd website && npx playwright test tests/e2e/card-lists-400.spec.ts` → pass across 2 browsers
+      (Chromium + WebKit pass via a local, uncommitted `playwright.config.local.ts`
       that points `executablePath` at the nix-store playwright-driver browsers, since
       the npm-downloaded ones fail to launch on NixOS; firefox fails to launch here —
       pre-existing, unrelated, per the repo notes)

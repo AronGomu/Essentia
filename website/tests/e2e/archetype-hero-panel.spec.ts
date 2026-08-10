@@ -7,8 +7,19 @@ test('panel exists on an archetype page', async ({ page }) => {
   await page.goto(urlFor('/archetypes/burning-abyss/'));
   const panel = page.locator('.catalog-hero-panel');
   await expect(panel).toBeVisible();
-  await expect(panel.locator('h1')).toBeVisible();
-  await expect(panel.locator('.catalog-stats')).toBeVisible();
+  await expect(panel.locator(':scope > h1')).toBeVisible();
+  await expect(panel.locator(':scope > .catalog-hero-intro')).toBeVisible();
+  await expect(panel.locator(':scope > .catalog-stats')).toBeVisible();
+  expect(
+    await panel.evaluate((element) => {
+      const hero = element.parentElement;
+      return (
+        hero?.classList.contains('catalog-hero') === true &&
+        hero.firstElementChild === element &&
+        hero.querySelector(':scope > .catalog-hero-art') !== null
+      );
+    }),
+  ).toBe(true);
 });
 
 test('panel background is translucent', async ({ page }) => {

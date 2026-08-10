@@ -3,9 +3,19 @@
 ## Goal
 
 Execute `feedback.md` items 1-13. Phase A: 11 site + tooling items, ships now.
-Phase B: every MSE frame and every card art to HD, renders 750×1046, real print
-masters at 1500×2092. Success = 13 items done, `npm run ci` + `npm run test:e2e` +
+Phase B: every MSE frame plus 177 card-art updates (four user-accepted skips),
+renders 750×1046, real print masters at 1500×2092. Success = 13 items done,
+`npm run ci` + `npm run test:e2e` +
 `python -m unittest discover -s tests` green, `draftResolution` false.
+
+## Final status
+
+Shipped on `plan/feedback-batch`: 13 items landed. Art scope is 177 updated + four
+user-accepted permanent skips (`Absolute King Back Jack`, `Crane Crane`, `Fiend
+Griefing`, `Fiendish Rhino Warrior`). AronGomu approved exact 50 display-render +
+50 print-master hashes on 2026-08-10. Manual MSE/browser 1920px sharpness checks
+remain pending. Automated E2E covers Chromium + WebKit; Firefox cannot launch in
+current NixOS environment.
 
 ## Scope
 
@@ -20,7 +30,8 @@ masters at 1500×2092. Success = 13 items done, `npm run ci` + `npm run test:e2e
 - Item 11 = delete paragraph `Latest cards from alpha/beta/release packages.`
 - "Dex" = existing `Decks` link. Label unchanged.
 - "HD screen" = 1920×1080, default zoom.
-- Capenna 744→750 rescale scales art **and** every style coordinate by 750/744.
+- Capenna 744→750 rescale scales style coordinates by 750/744; bitmaps resize to
+  750×1047 then crop only bottom row, ending exact 750×1046.
 - Category-2 build failure fires on 2 tokens only: quoted archetype name matching no
   `namePattern`, and `MV` not followed by integer or `X`. Zero-match reference = legal.
 - Rules block sits after card facts, before `Design notes`.

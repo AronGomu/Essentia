@@ -17,10 +17,17 @@ const noRelationsCard = catalog.cards.find(
     card.related.interaction.length === 0,
 );
 
-test('both categories render with headings', async ({ page }) => {
+test('both categories render linked thumbnail card galleries', async ({
+  page,
+}) => {
   await page.goto(urlFor('/cards/burning-abyss-graff/'));
-  await expect(page.locator('#related-archetype')).toBeVisible();
-  await expect(page.locator('#related-interaction')).toBeVisible();
+  for (const heading of ['related-archetype', 'related-interaction']) {
+    const section = page.locator(`section:has(#${heading})`);
+    await expect(section.locator(`#${heading}`)).toBeVisible();
+    const cards = section.locator('a.gallery-card[href*="/cards/"]:has(img)');
+    expect(await cards.count()).toBeGreaterThan(0);
+    await expect(cards.first()).toBeVisible();
+  }
 });
 
 test('each category shows at most 12 cards', async ({ page }) => {

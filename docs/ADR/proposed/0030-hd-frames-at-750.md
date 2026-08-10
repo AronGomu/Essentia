@@ -29,7 +29,7 @@ The vendored tree is untracked and hash-pinned (`MSE/manifest.json`), because it
 
 **1. The target is 750 × 1046 for every stylesheet — the Fusion frame's size.** It is the size the project already ships, it is exactly half the print master, and it makes `display` (750) a 1:1 tier instead of an upscale.
 
-**2. `m15-showcase-capenna-art-deco` is normalised, not exempted.** 744 × 1039 is within 1% of the target, and leaving it out would keep "the frame sizes differ" true forever for no gain. Its art is resampled by 750/744 and every coordinate in its `style` scaled by the same factor.
+**2. `m15-showcase-capenna-art-deco` is normalised, not exempted.** 744 × 1039 is within 1% of target. Every bitmap is uniformly resized with LANCZOS to 750 × 1047, then only last/bottom row is cropped, yielding exact 750 × 1046 source files while preserving prior render-canvas geometry. Every `style` coordinate scales by 750/744; declared canvas is 750 × 1046.
 
 **3. Which work the other four packs need is measured, not assumed.** MSE draws each frame image into an element rect at the output resolution. If it resamples from the source file, dropping 2× art into a 375-space stylesheet is enough and no coordinate changes. If it rasterises in style space first, the 2× art buys nothing and the stylesheet must be rewritten to 750-space.
 
@@ -66,4 +66,5 @@ Verdict: both ratios are below 1.30, so T12 must use `rescale-to-750-space`: swa
 - Every open-package render changes size, so every render hash and `package-sha256.json` changes. Expected, and covered by the rebuild.
 - `docs/MSE.md` currently states the print master is "exactly 4× the stylesheet's native 375 × 523". After this it is 2× of 750 × 1046.
 - `docs/design/FRAMES.md` gains a resolution column.
+- Manifest schema v2 separates upstream/source, user-staged overlay, and exact final hashes; local-rights payload remains untracked.
 - The website stops flagging `draftResolution` once `renders_print/` exists.

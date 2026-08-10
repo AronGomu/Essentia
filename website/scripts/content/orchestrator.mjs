@@ -161,7 +161,7 @@ export async function build({ checkOnly }) {
     });
   }
 
-  const related = buildRelatedGraph(cards, sections);
+  const related = buildRelatedGraph(cards, sections, keywordRegistry);
   for (const card of cards)
     card.related = related.get(card.id) ?? { archetype: [], interaction: [] };
 
@@ -242,7 +242,7 @@ export async function build({ checkOnly }) {
     ),
     writeAtomic(
       path.join(GENERATED_SOURCE, 'rights-inventory.json'),
-      `${JSON.stringify({ schemaVersion: 1, generatedAt, assets: rights.sort((a, b) => a.key.localeCompare(b.key)) }, null, 2)}\n`,
+      `${JSON.stringify({ schemaVersion: 2, scope: 'Canonical standard renders and print masters underlying public card-image publication', generatedAt, assets: rights.sort((a, b) => a.key.localeCompare(b.key)) }, null, 2)}\n`,
     ),
   ]);
 

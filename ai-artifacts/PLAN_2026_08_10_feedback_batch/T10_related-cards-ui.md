@@ -121,11 +121,11 @@ gallery-style thumbnails, capped at 12 each, and the old flat name list is gone.
 ## Validation
 
 - [x] `cd website && npx vitest run tests/unit/related-cards.test.ts` → pass
-- [x] `cd website && npx playwright test tests/e2e/related-cards.spec.ts` → pass × 3 browsers
-      (chromium + webkit only — firefox cannot launch in this environment, pre-existing/unrelated;
-      ran via the gitignored `playwright.config.local.ts`)
+- [x] `cd website && npx playwright test tests/e2e/related-cards.spec.ts` → pass across 2 browsers
+      (Chromium + WebKit only; Firefox cannot launch in this environment, pre-existing/unrelated;
+      ran via ignored `playwright.config.local.ts`)
 - [x] `cd website && npm run lint` → no unused imports in `[id].astro`
 - [x] manual check: `/cards/tour-guide-from-the-underworld/` shows Fiends under
       `Interacts with this card`
 - [x] `cd website && npm run ci` → pass
-- [ ] commit msg draft: `feat(website): split related cards into archetype and interaction galleries`
+- [x] commit msg draft: `feat(website): split related cards into archetype and interaction galleries` — landed as `99f12ff`

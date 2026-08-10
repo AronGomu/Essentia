@@ -20,17 +20,17 @@ build, and the build fails on an unresolvable characteristic token.
 ## Requirements
 
 - New module `website/scripts/content/related.mjs`, exporting:
-  - `buildRelatedGraph(cards, sections)` → `Map<cardId, { archetype: string[], interaction: string[] }>`
-  - `extractClauses(ruleTextPlain)` → `string[]`, split on `.`, `;`, `—`
+  - `buildRelatedGraph(cards, sections, keywordRegistry)` → `Map<cardId, { archetype: string[], interaction: string[] }>`; pure, no filesystem
+  - `extractClauses(ruleText)` → `string[]`, split on newlines, `.`, `;`, `—`, then strip MSE markup
   - `parseConstraints(clause, vocab)` → `{ subtypes, names, colors, supertypes, mv }`
 - **Category 1 — archetype.** For a card whose `archetype` is `a`, every other card whose
   `name` contains the `namePattern` of section `a`, case-insensitive, quote-normalised.
   A card with `archetype === null` gets `[]`.
-- **Category 2 — interaction.** For each clause of `ruleTextPlain`:
-  - the clause is considered **only** when it contains at least one of the card's own
-    action keywords (`card.keywords` ∩ registry entries with `category === 'action'` or
-    `'cost-procedure'`). This is what keeps Xyz material lines (`2 Creatures MV 1`) from
-    relating every MV-1 creature to every Xyz card.
+- **Category 2 — interaction.** For each independent raw `ruleText` line/clause:
+  - clause considered **only** when it contains one of card's own action/cost-procedure
+    keywords from canonical loaded registry. No hardcoded action snapshot. New registry
+    docs work automatically. Newline split keeps Xyz material constraints from attaching
+    to later `Detach` action (Gagaga Cowboy interaction count stays 0).
   - constraints collected from the clause: `subtype` (one of the 14 race words in the
     catalog's `subType` vocabulary), `name` (any `“…”` quoted run), `color`
     (`white|blue|black|red|green`), `supertype` (`Ritual|Xyz|Fusion|Synchro|Link|Trap`),
@@ -96,8 +96,8 @@ build, and the build fails on an unresolvable characteristic token.
       `parseConstraints`, `buildRelatedGraph`, and module-level constants
       `COLOR_WORDS = { white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G' }` and
       `SUPERTYPE_WORDS = ['Ritual','Xyz','Fusion','Synchro','Link','Trap']`.
-- [x] 2. Build the subtype vocabulary inside `buildRelatedGraph` from the cards' own
-      `subType` fields — never a hardcoded race list, so a new race cannot silently miss.
+- [x] 2. Build subtype vocabulary from cards; accept canonical keyword registry from
+      orchestrator and derive action/cost-procedure set dynamically — no snapshots.
 - [x] 3. Implement the two failure paths through `fail()` from `./shared.mjs`.
 - [x] 4. In `orchestrator.mjs`, after `cards` and `sections` are final and before the
       `catalog` literal, add
@@ -108,7 +108,9 @@ build, and the build fails on an unresolvable characteristic token.
       `shared.mjs`, but the constant lives in `orchestrator.mjs`; bumped there).
 - [x] 6. In `src/lib/catalog.ts`, add `related: { archetype: string[]; interaction: string[] }`
       to `CatalogCard` and change `schemaVersion: 10` to `11` on the `Catalog` interface.
-- [x] 7. Create `website/tests/unit/related-graph.test.ts` per the test plan. Import the
+- [x] 7. Create `website/tests/unit/related-graph.test.ts` per test plan. Regressions
+      cover dynamic new action, Gagaga Cowboy material newline, and full 11-card eligible
+      Fiend MV-1 Tour Guide target set. Import the
       module under test with `await import('../../scripts/content/related.mjs')`, matching
       how `tests/unit/content-orchestrator.test.ts` loads build modules.
 - [x] 8. Run `npm run content` and eyeball the two lists for `tour-guide-from-the-underworld`

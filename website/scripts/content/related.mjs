@@ -18,53 +18,6 @@ export const SUPERTYPE_WORDS = [
   'Trap',
 ];
 
-/**
- * Card text refers to a keyword by its printed phrase, but the closed
- * registry (`docs/keywords/*.md`) normalises a parameterised keyword like
- * `Detach 1` / `Detach N` to one term. `buildRelatedGraph` only receives
- * `cards` and `sections`, not the keyword registry, so this is a snapshot of
- * every registry entry whose `category` is `action` or `cost-procedure` at
- * time of writing. A new action/cost-procedure keyword doc needs a matching
- * entry added here — it does not fail loudly like the subtype vocabulary
- * does, because deriving it from `cards` alone is not possible.
- */
-const ACTION_KEYWORDS = new Set([
-  'Alternative Cost',
-  'Attach',
-  'Bounce',
-  'Cast',
-  'Counter',
-  'Destroy',
-  'Detach N',
-  'Discard',
-  'Draw',
-  'Exile from Grave',
-  'Exile N Plant from Grave',
-  'Exile',
-  'Flip',
-  'Fusion Alternative Cost',
-  'Fusion Summon',
-  'Hand Summon',
-  'Mill N',
-  'Negate',
-  'Reanimate',
-  'Reclaim',
-  'Release',
-  'Return',
-  'Reveal',
-  'Ritual Summon',
-  'Sacrifice',
-  'Salvage',
-  'Scry N',
-  'Search',
-  'Send',
-  'Set',
-  'Shuffle',
-  'Summon',
-  'Target',
-  'Xyz Alternative Cost',
-]);
-
 /** A phrase with an `N` parameter is printed with a literal digit or `X`. */
 function keywordOccursIn(term, clause) {
   const pattern = term
@@ -74,11 +27,16 @@ function keywordOccursIn(term, clause) {
   return new RegExp(`\\b${pattern}\\b`).test(clause);
 }
 
-/** Split rule text into independent statements on sentence-level punctuation. */
+/** Split MSE rule text into independent ability lines/statements. */
 export function extractClauses(text) {
   return (text ?? '')
-    .split(/[.;—]/)
-    .map((clause) => clause.trim())
+    .split(/[\n.;—]/)
+    .map((clause) =>
+      clause
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim(),
+    )
     .filter(Boolean);
 }
 
@@ -196,7 +154,12 @@ function assertKnownNames(names, card, cards, sections) {
  * printed name carries the same archetype's name pattern — and
  * `interaction` — cards this card's own rule text can act on directly.
  */
-export function buildRelatedGraph(cards, sections) {
+export function buildRelatedGraph(cards, sections, keywordRegistry) {
+  const actionKeywords = new Set(
+    [...keywordRegistry.values()]
+      .filter((entry) => ['action', 'cost-procedure'].includes(entry.category))
+      .map((entry) => entry.term),
+  );
   const subtypeVocab = new Set();
   for (const card of cards)
     for (const token of (card.subType ?? '').split(/\s+/).filter(Boolean))
@@ -227,14 +190,14 @@ export function buildRelatedGraph(cards, sections) {
   }
 
   for (const card of cards) {
-    const actionKeywords = (card.keywords ?? []).filter((term) =>
-      ACTION_KEYWORDS.has(term),
+    const cardActionKeywords = (card.keywords ?? []).filter((term) =>
+      actionKeywords.has(term),
     );
-    if (!actionKeywords.length) continue;
+    if (!cardActionKeywords.length) continue;
 
     const relatedIds = new Set();
-    for (const clause of extractClauses(card.ruleTextPlain)) {
-      const hasAction = actionKeywords.some((term) =>
+    for (const clause of extractClauses(card.ruleText ?? card.ruleTextPlain)) {
+      const hasAction = cardActionKeywords.some((term) =>
         keywordOccursIn(term, clause),
       );
       if (!hasAction) continue;

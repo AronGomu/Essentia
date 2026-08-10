@@ -16,6 +16,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from launcher.mse_config import DEFAULT_ENV_PATH, MSEConfig, write_env_file
+from launcher.mse_hd_frames import install_hd_frames
 from launcher.mse_vendor import (
     FONT_FILES,
     VENDOR_ROOT,
@@ -113,18 +114,6 @@ def repo_package_status(data_dir: Path, packages_dir: Path = MSE_PACKAGES_DIR) -
             if not target.is_file() or not filecmp.cmp(path, target, shallow=False):
                 problems.append(f"stale in MSE data directory: {name}/{relative}")
     return problems
-
-
-def repo_package_overrides(packages_dir: Path = MSE_PACKAGES_DIR) -> set[str]:
-    """Manifest-relative paths a repo-owned package deliberately overwrites."""
-    overrides: set[str] = set()
-    for name in REPO_PACKAGES:
-        source = packages_dir / name
-        if not source.is_dir():
-            continue
-        for path in _package_files(source):
-            overrides.add(f"data/{name}/{path.relative_to(source).as_posix()}")
-    return overrides
 
 
 def install_repo_packages(data_dir: Path, packages_dir: Path = MSE_PACKAGES_DIR) -> list[str]:
@@ -266,37 +255,44 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--hd-frames",
+        type=Path,
+        help="Install four user-staged HD frame packs after copying the upstream source.",
+    )
+    parser.add_argument(
         "--verify",
         action="store_true",
         help="Only check MSE/ against MSE/manifest.json; change nothing.",
     )
     parser.add_argument("--env-file", type=Path, default=DEFAULT_ENV_PATH, help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if args.verify and (args.source is not None or args.hd_frames is not None):
+        parser.error("--verify cannot be combined with --source or --hd-frames")
+    if args.source is not None and args.hd_frames is None:
+        parser.error("--source requires --hd-frames for the reproducible final HD tree")
 
     try:
         manifest = load_manifest()
         if args.source is not None:
             copied = install_tree(args.source, manifest=manifest)
             print(f"event=config.mse.vendored files={len(copied)} source={args.source}")
+        if args.hd_frames is not None:
+            installed = install_hd_frames(args.hd_frames, VENDOR_ROOT, manifest)
+            print(f"event=config.mse.hd-frames files={len(installed)} source={args.hd_frames}")
+        if not args.verify:
+            for entry in install_repo_packages(VENDOR_ROOT / "data"):
+                print(f"event=config.mse.package.installed file={entry}")
         problems = verify_tree(manifest=manifest)
     except VendorError as exc:
         parser.error(str(exc))
-
-    # A repo-owned package that overwrites a pinned file will always read as
-    # "modified"; that is the point of the override, so drop those reports.
-    overrides = repo_package_overrides()
-    problems = [
-        problem
-        for problem in problems
-        if not (problem.startswith("modified: ") and problem[len("modified: ") :] in overrides)
-    ]
 
     if problems:
         detail = "\n  - ".join(problems[:20])
         extra = "" if len(problems) <= 20 else f"\n  ... and {len(problems) - 20} more"
         parser.error(
             f"Vendored MSE tree does not match MSE/manifest.json:\n  - {detail}{extra}\n"
-            "Re-run with --source /path/to/Full-Magic-Pack to repopulate it."
+            "Re-run with --source /path/to/Full-Magic-Pack --hd-frames hd_inputs/frames "
+            "to reproduce the final tree."
         )
 
     if args.verify:

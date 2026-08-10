@@ -61,6 +61,35 @@ class EdgeEnergyTests(unittest.TestCase):
         self.assertGreater(top, bottom)
 
 
+class PackPathSafetyTests(unittest.TestCase):
+    def test_api_rejects_absolute_pack_without_external_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            external = Path(temporary) / "external"
+            external.mkdir()
+            marker = external / "keep"
+            marker.write_text("safe", encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "unsupported frame pack"):
+                probe_module.probe(str(external), "Burning Abyss - Graff")
+            self.assertEqual(marker.read_text(encoding="utf-8"), "safe")
+
+    def test_api_rejects_parent_traversal_without_external_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            marker = Path(temporary) / "keep"
+            marker.write_text("safe", encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "unsupported frame pack"):
+                probe_module.probe("../outside", "Burning Abyss - Graff")
+            self.assertEqual(marker.read_text(encoding="utf-8"), "safe")
+
+    def test_cli_rejects_non_allowlisted_pack_before_probe(self) -> None:
+        with mock.patch.object(sys, "argv", ["probe", "--pack", "../outside", "--card", "x"]), mock.patch.object(
+            probe_module, "probe"
+        ) as probe:
+            with self.assertRaises(SystemExit) as raised:
+                probe_module.main()
+        self.assertEqual(raised.exception.code, 2)
+        probe.assert_not_called()
+
+
 class DirtyTreeGuardTests(unittest.TestCase):
     def test_probe_refuses_a_dirty_vendored_tree(self) -> None:
         completed = subprocess.CompletedProcess(

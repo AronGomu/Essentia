@@ -14,15 +14,16 @@ reports every card it had to skip.
 - Out of scope here: frames (T11, T12), render/print sizes (T14), the website, locked
   packages (immutable — `cards_mse/02_beta`, `cards_mse/03_release`, any package whose
   `release.json` says `locked`).
-- Assumptions in force: 4× the current art dimensions; cards without an HD source are
-  left untouched and reported, pending the user-supplied upscales.
+- Assumptions in force: 4× current art dimensions. Result is 177 updated. AronGomu
+  accepted four permanent batch skips left untouched: `Absolute King Back Jack`,
+  `Crane Crane`, `Fiend Griefing`, `Fiendish Rhino Warrior`.
 
 ## What T1 already produced (do not redo)
 
 - `python .script/verify_hd_inputs.py` prints an `hd.art:` line with
   `sd=<n> hd=<n> missing=<n>` and the first five missing relative paths.
-- `MSE/README.md` carries the `TODO(user)` asking which tool produced
-  `original_images_hd/` — needed before the 173 missing files can be produced.
+- `MSE/README.md` carries `TODO(user)` for unknown upscaler tool/settings. The 173
+  local/untracked source inputs now exist but remain ignored; generated MSE art is tracked.
 
 ## Requirements
 
@@ -100,8 +101,10 @@ reports every card it had to skip.
 - [x] 7. `python .script/lint_mse_card_style.py` → no new findings.
 - [x] 8. Rebuild the open package so the aggregate and hashes follow the new art:
       `cd website && npm run cards:rebuild`.
-- [x] 9. Record the skipped list in `MSE/README.md` under the existing `TODO(user)`: those
-      are exactly the cards the user still owes an upscale for.
+- [x] 9. Record 177 updated + four named user-accepted permanent skips in
+      `MSE/README.md`. Do not fetch, fabricate, or upscale those four.
+- [x] 10. Ignore future/untracked `original_images_hd/**`; existing tracked 50 remain
+      tracked. Future publication requires force-add plus rights review.
 
 ## Outputs
 
@@ -118,5 +121,6 @@ reports every card it had to skip.
 - [x] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid:`
 - [x] `python .script/check_immutable_stages.py` → no locked package touched
 - [x] `cd website && npm run ci` → pass
-- [ ] manual check: open one card in MSE, the illustration is visibly sharper
+- [ ] manual check: open one updated card in MSE, illustration visibly sharper
+- [x] scope exception: four named cards retain prior MSE art by explicit user approval
 - [x] commit msg draft: `feat(cards): regenerate MSE card art from the HD originals at 4×`

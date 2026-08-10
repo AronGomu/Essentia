@@ -4,9 +4,13 @@ import { catalog, cardsById } from '../../src/lib/catalog';
 const { extractClauses, parseConstraints, buildRelatedGraph } =
   await import('../../scripts/content/related.mjs');
 
+const keywordRegistry = new Map(
+  catalog.keywords.map((entry) => [entry.term, entry]),
+);
+
 describe('extractClauses', () => {
-  it('splits on sentence punctuation', () => {
-    expect(extractClauses('A — b. c; d')).toEqual(['A', 'b', 'c', 'd']);
+  it('splits on sentence punctuation and ability newlines', () => {
+    expect(extractClauses('A — b. c; d\ne')).toEqual(['A', 'b', 'c', 'd', 'e']);
   });
 });
 
@@ -75,12 +79,52 @@ describe('buildRelatedGraph — fixtures', () => {
         ruleTextPlain: '',
       },
     ];
-    expect(() => buildRelatedGraph(cards, [])).toThrow(/Zorblax/);
+    expect(() => buildRelatedGraph(cards, [], keywordRegistry)).toThrow(
+      /Zorblax/,
+    );
+  });
+
+  it('automatically uses a new action from the supplied registry', () => {
+    const cards = [
+      {
+        id: 'source',
+        name: 'Source',
+        archetype: null,
+        subType: 'Wizard',
+        colors: [],
+        supertypes: [],
+        manaValue: 2,
+        keywords: ['Befriend'],
+        ruleTextPlain: 'Befriend 1 Fiend MV 1 Creature.',
+      },
+      {
+        id: 'target',
+        name: 'Target',
+        archetype: null,
+        subType: 'Fiend',
+        colors: [],
+        supertypes: [],
+        manaValue: 1,
+        keywords: [],
+        ruleTextPlain: '',
+      },
+    ];
+    const registry = new Map([
+      ['Befriend', { term: 'Befriend', category: 'action' }],
+    ]);
+
+    expect(
+      buildRelatedGraph(cards, [], registry).get('source')!.interaction,
+    ).toEqual(['target']);
   });
 });
 
 describe('buildRelatedGraph — real catalog', () => {
-  const related = buildRelatedGraph(catalog.cards, catalog.sections);
+  const related = buildRelatedGraph(
+    catalog.cards,
+    catalog.sections,
+    keywordRegistry,
+  );
 
   it('relates archetype members by printed name', () => {
     const graff = related.get('burning-abyss-graff')!;
@@ -92,10 +136,26 @@ describe('buildRelatedGraph — real catalog', () => {
     expect(graff.archetype).not.toContain('burning-abyss-graff');
   });
 
-  it('relates Tour Guide to every Fiend it can summon', () => {
-    const tourGuide = related.get('tour-guide-from-the-underworld')!;
-    expect(tourGuide.interaction).toContain('burning-abyss-graff');
-    expect(tourGuide.interaction).toContain('burning-abyss-cir');
+  it('relates Tour Guide to the full eligible Fiend MV-1 target set', () => {
+    const expected = catalog.cards
+      .filter(
+        (card) =>
+          card.id !== 'tour-guide-from-the-underworld' &&
+          card.manaValue === 1 &&
+          card.subType.split(/\s+/).includes('Fiend'),
+      )
+      .map((card) => card.id)
+      .sort((a, b) =>
+        cardsById.get(a)!.name.localeCompare(cardsById.get(b)!.name),
+      );
+    expect(related.get('tour-guide-from-the-underworld')!.interaction).toEqual(
+      expected,
+    );
+    expect(expected.length).toBeGreaterThan(2);
+  });
+
+  it('does not attach Gagaga Cowboy material constraints to Detach', () => {
+    expect(related.get('gagaga-cowboy')!.interaction).toEqual([]);
   });
 
   it('does not relate a material line to every MV-1 creature', () => {

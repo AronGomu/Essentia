@@ -520,9 +520,18 @@ export async function discover(registry, options) {
           releaseRoute: packageRecord.route,
         });
         rights.push({
-          key: `release:${packageId}:${id}:render`,
+          key: `release:${packageId}:${id}:display-source`,
+          tier: 'display',
+          source: 'canonical-render',
           sha256: renderHash,
         });
+        if (printMaster)
+          rights.push({
+            key: `release:${packageId}:${id}:print-source`,
+            tier: 'print',
+            source: 'print-master',
+            sha256: sha(await readFile(printMaster)),
+          });
       }
       if (
         aggregateById.size !== componentIds.size ||

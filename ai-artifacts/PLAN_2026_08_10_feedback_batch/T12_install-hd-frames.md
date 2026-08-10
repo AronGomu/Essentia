@@ -2,8 +2,9 @@
 
 **Plan:** `./ai-artifacts/PLAN_2026_08_10_feedback_batch.md`
 **Depends:** T11
-**Commit outcome:** every stylesheet the cube uses renders at 750×1046, the vendored
-tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` passes.
+**Commit outcome:** every stylesheet the cube uses renders at 750×1046. Manifest
+schema v2 separates 529 upstream, 77 staged-overlay, and 560 exact final hashes;
+one setup command reproduces final tree without publishing payload.
 
 ## Context (self-contained)
 
@@ -37,8 +38,9 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
 - Under verdict B only: each of those four `style` files gets `card width: 750`,
   `card height: 1046`, and every numeric coordinate scaled by 2.
 - `magic-m15-showcase-capenna-art-deco.mse-style` is rescaled from 744×1039 to 750×1046:
-  every image resampled by 750/744 (LANCZOS), `card width` / `card height` set to
-  750 / 1046, and every numeric coordinate in its `style` scaled by the same factor.
+  every image is resized uniformly to 750×1047 with LANCZOS then its last/bottom row
+  is cropped, `card width` / `card height` are 750 / 1046, and every numeric coordinate
+  in `style` is scaled by 750/744. Crop preserves prior 750×1046 render geometry.
 - New script `.script/scale_mse_style.py`:
   - `scale_style_text(text: str, factor: float) -> str` — scales `card width:`,
     `card height:`, and every numeric literal on lines whose key ends in
@@ -47,8 +49,12 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
   - It must **not** touch `version:`, `depends on:`, `card dpi:`, script blocks, or any
     line inside an `init script:` / `script:` indented body.
   - CLI: `python .script/scale_mse_style.py MSE/data/<pack>/style --factor 2`.
-- `MSE/manifest.json` is regenerated for every changed file (same sha256 shape, same key
-  order) and `python launcher/setup_mse.py --verify` passes afterwards.
+- `MSE/manifest.json` schema v2 keeps `sourceFiles` (original 529 upstream hashes),
+  `hdFrames` (strict four-pack allowlist plus 77 staged hashes), and `files` (560 final
+  hashes). Overlay-only additions are supported. `install_tree()` copies source hashes;
+  tracked `launcher/mse_hd_frames.py` applies deterministic transforms; final verify passes.
+- Fresh-clone command:
+  `python launcher/setup_mse.py --source /path/to/Full-Magic-Pack --hd-frames hd_inputs/frames`.
 - `docs/design/FRAMES.md` gains a resolution column: every stylesheet 750×1046.
 
 ## Inputs
@@ -93,12 +99,12 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
       names and formats. Do not delete vendored files the staging tree lacks.
 - [x] 4. Under verdict B only: run
       `python .script/scale_mse_style.py MSE/data/<pack>/style --factor 2` for the four packs.
-- [x] 5. Rescale capenna: for every image under
-      `MSE/data/magic-m15-showcase-capenna-art-deco.mse-style/`, resample by 750/744 with
-      LANCZOS (round to nearest integer pixel), then
-      `python .script/scale_mse_style.py MSE/data/magic-m15-showcase-capenna-art-deco.mse-style/style --factor 1.008064516`.
-- [x] 6. Regenerate `MSE/manifest.json`: re-hash every file listed under `files`, keeping
-      the JSON key order stable so the diff shows only changed hashes.
+- [x] 5. Rescale Capenna: every image → 750×1047 LANCZOS, crop bottom row → exact
+      750×1046; style geometry ×750/744 with declared canvas forced to 750×1046.
+- [x] 6. Upgrade `MSE/manifest.json` to schema v2: reconstruct `sourceFiles` from
+      `origin/main:MSE/manifest.json`; record 77 local input hashes; re-hash 560 finals.
+- [x] 6a. Add tracked `launcher/mse_hd_frames.py`; strict pack/path/hash allowlist,
+      overlay additions, one-time style scaling, Capenna crop, idempotence.
 - [x] 7. `python launcher/setup_mse.py --verify` → clean.
 - [x] 8. Render one card per changed stylesheet into a scratch directory
       (`python .script/export_mse_renders.py <aggregate> --output /tmp/frame-check`) and
@@ -122,7 +128,10 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
 
 - [x] `python -m unittest tests.test_scale_mse_style -v` → OK
 - [x] `python -m unittest discover -s tests` → OK
-- [x] `python launcher/setup_mse.py --verify` → clean
+- [x] `python launcher/setup_mse.py --verify` → `event=config.mse.verified files=560`
+- [x] simulated clean 529-file source + 77 staged inputs + repo packages in temp dir
+      → exact 560 final hashes, 0 problems; second HD install changes 0 files
+- [x] focused vendor/installer/verifier tests → 32 passed
 - [x] scratch renders are exactly 750×1046 for all six stylesheets
 - [x] side-by-side check: no element moved
 - [x] commit msg draft: `feat(mse): raise every vendored frame to the 750×1046 fusion size`

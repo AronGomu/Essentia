@@ -59,13 +59,13 @@ npm run test:e2e
 
 ## Asset rights
 
-`content/asset-rights.json` records approval for every published package render hash. Empty publication has no assets to approve. Any non-empty inventory remains deployment-blocked until owner approval matches generated `src/generated/rights-inventory.json`.
+`content/asset-rights.json` independently binds each canonical 750×1046 standard render and each 1500×2092 print master underlying card-image publication. Web display/print derivatives currently derive from the print master; canonical standard render remains independently attested, so drift in either tier blocks publication. Empty publication has no assets to approve; non-empty deployment stays blocked until owner approval exactly matches generated `src/generated/rights-inventory.json`.
 
 ## Build output
 
 - `src/generated/catalog.ts`: releases, exact card versions, current cards, sections, updates.
 - `src/generated/explanations.json`: optional authored design notes.
-- `src/generated/rights-inventory.json`: package-scoped render hashes.
+- `src/generated/rights-inventory.json`: package-scoped display-source and print-source hashes.
 - `public/generated/releases/`: deterministic web derivatives grouped by package.
 
 Generated files are build products. Do not hand-edit them.

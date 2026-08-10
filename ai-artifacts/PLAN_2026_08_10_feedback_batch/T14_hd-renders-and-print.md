@@ -36,9 +36,12 @@ false for every card.
 - `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/renders/*.png` are 750×1046.
 - `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/renders_print/*.png` exist, 50 files, 1500×2092,
   hashes recorded in the provenance `print` block.
-- The website catalog reports, for every card: `images.width === 750`,
-  `images.display.width === 750`, `images.print.width === 1500`,
-  `images.print.draftResolution === false`.
+- Website catalog reports every card at display 750×1046, print 1500×2092,
+  `draftResolution === false`. Binary tests inspect all 100 source assets, dimensions,
+  card-id sets, and provenance hashes.
+- Rights schema v2 independently binds 50 canonical display renders plus 50 print
+  masters used for derivatives. AronGomu approved exact hashes on 2026-08-10;
+  display approval cannot mask print drift.
 - `npm run content` no longer prints the `WARNING … no print master in renders_print/` line.
 - `docs/MSE.md` is corrected: the print master is now 2× the stylesheet's native
   750×1046, not 4× of 375×523.
@@ -101,7 +104,10 @@ false for every card.
       `python -c "import pathlib; from PIL import Image; print({Image.open(p).size for p in pathlib.Path('cards_mse/01_alpha/LOTA-0001-Alpha_0.1/renders').glob('*.png')})"`
       → `{(750, 1046)}`; same over `renders_print` → `{(1500, 2092)}`.
 - [x] 6. `cd website && npm run content` → no `WARNING` line about draft resolution.
-- [x] 7. Create `website/tests/unit/card-images.test.ts` with the three catalog assertions.
+- [x] 7. Create `website/tests/unit/card-images.test.ts`; inspect real 50 display + 50
+      print binaries, dimensions, stable-id sets, and provenance hashes.
+- [x] 7a. Generate independent display/print rights inventory; update approved 100-asset
+      record (`approvedBy: AronGomu`, `approvedAt: 2026-08-10`) and drift tests.
 - [x] 8. `cd website && npm run budgets:check`. If it fails, raise the specific budget in
       `website/scripts/check-budgets.mjs` and write the measured value in the comment.
 - [x] 9. Update `docs/MSE.md`: print masters are 2× the 750×1046 native size; correct the
@@ -124,6 +130,8 @@ false for every card.
 - [x] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid:`
 - [x] `python .script/check_immutable_stages.py` → OK
 - [x] `cd website && npx vitest run tests/unit/card-images.test.ts` → pass
+- [x] `cd website && npm run rights:check` → `rights: 100 approved assets`
+- [x] focused card-image/rights tests → real 100 binaries and independent drift guards pass
 - [x] `cd website && npm run ci` → pass
 - [ ] `cd website && npm run test:e2e` → pass — npm-cache browsers fail to launch on NixOS (`libatk-1.0.so.0` missing); prescribed `npx playwright test --config=playwright.config.local.ts` passed 107 tests on Chromium + WebKit with 1 expected skip.
 - [ ] manual check: a card page render is visibly sharper at 100% zoom on a 1920 screen

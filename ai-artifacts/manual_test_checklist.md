@@ -41,7 +41,9 @@
 - [ ] Open the browser devtools console while loading the page: no CSP violation reports and no other console errors.
 - [ ] `cd website && npm run dev` (unhardened dev CSP), open at 1400px: the same tints render correctly (the dev-mode CSP still allows the plain inline `style=""` attribute, so this should look identical to the production build).
 
-## T5 compact-header-overflow-menu
+## OBSOLETE — T5 compact-header-overflow-menu
+
+Superseded by feedback-batch T3. **Do not run this section:** `.utility-more` and `⋯` popover were deleted; three links now stay inline through 400px.
 
 - [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site at 1400px: the header shows the brand, the hamburger drawer trigger, and the utility nav as a plain inline row of three text links — "Learn about Essentia", "Blog", "Decks" — exactly as before this change; no `⋯` button is visible.
 - [ ] Narrow the browser to 400px width: the utility nav collapses to a single small square `⋯` button (labelled "More sections"); the "Learn about Essentia" text link is not visible anywhere in the header.
@@ -52,7 +54,9 @@
 - [ ] Resize the browser slowly from 1400px to 390px and back: the switch between the inline row and the `⋯` button still happens exactly at 44rem (704px) with no layout jump or flash of unstyled content. (Amended by T11: this is now the *third* of three changes you will pass on the way down — the labels shorten at 1024px and Find squares off at 896px first. Only the `⋯` switch is at 704px.)
 - [ ] Open the browser devtools console at 400px while opening/closing the popover: no console errors.
 
-## T6 header-single-row-guard
+## OBSOLETE — T6 header-single-row-guard
+
+Superseded by feedback-batch T3 header checks below. **Do not run this section:** any instruction expecting `.utility-more`/`⋯` is invalid.
 
 - [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open DevTools at exactly 400×800 on `/cards/ash-blossom-and-joyous-spring/`: the header stays one row (brand, hamburger icon, breadcrumb, `⋯` button, Find icon all sit on the same line — no wrap).
 - [ ] At 400×800, the breadcrumb's last crumb ("Ash Blossom & Joyous Spring") is truncated with an ellipsis rather than wrapping the header to a second line.
@@ -110,7 +114,9 @@
 - [ ] DevTools **Network** tab, reload `/archetypes/nekroz/` at 900px and filter by image: the hero WebP **is still downloaded** even though it is hidden. This is a known, accepted cost recorded in T10's Outputs, not a bug to file — see the follow-up note there.
 - [ ] DevTools **Console** on `/archetypes/nekroz/` at 1440px, 900px and 390px: completely empty, no CSP violation and no error.
 
-## T11 staged-header-degradation
+## OBSOLETE — T11 staged-header-degradation
+
+Superseded by feedback-batch T3. **Do not run this section:** utility-link collapse into `⋯` no longer exists.
 
 - [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site at 1400px on `/archetypes/burning-abyss/`: nothing has changed from T5 — brand, breadcrumb, the three full text links "Learn about Essentia" / "Blog" / "Decks", and a wide `⌕ Find ⌘ K` box. No `⋯` button.
 - [ ] Narrow to exactly 1024px: the three links now read "Learn", "Blog", "Decks" **inline in the header row** (not in a popover), the hamburger and Find lose their "Catalog"/"Find" text, and the Find box is still wide with its `⌘ K` hint. Still no `⋯` button. This is the change T11 exists for — before it, "Learn" could only be seen inside the `⋯` popover.
@@ -138,12 +144,9 @@
 - [ ] Open `/docs/keywords/` and `/docs/rules/templating/`: the keyword index now lists ability metadata and super-type keywords as classes 5 and 6, and its links to `rules/TEMPLATING.md` and `rules/CARD_TYPES.md` resolve to real pages (no 404).
 - [ ] Judgement call to confirm or reject: the hover box on a three-ability Burning Abyss card now lists up to nine rulings and is noticeably taller. If that is too much at once, say so — the fix is to flip `preview: false` on some of the eight in `docs/keywords/*.md`, which needs no code change.
 
-## T13 give-the-guards-teeth
+## OBSOLETE — T13 give-the-guards-teeth
 
-T13 changes only tests and test infrastructure — no site CSS, no runtime
-behaviour. So these steps verify two things: that the corrected width constants
-match what the browser actually draws, and that the guards now scream when the
-regressions they exist to catch are reintroduced.
+Superseded by feedback-batch T3. **Do not run this section:** it targets deleted `.utility-more` markup and stale width constants.
 
 - [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open the served site at `/cards/ash-blossom-and-joyous-spring/` and set the viewport to exactly **400 × 800**.
 - [ ] In DevTools, run `['.compact-brand img','.drawer-trigger','.utility-more','.search-trigger'].map(s => [s, document.querySelector(s).getBoundingClientRect().width])`. Expect roughly `32`, `34`, `39.2`, `39.8` — these are the numbers `website/shared/header-row.mjs` now claims. Before T13 it claimed `36` for the hamburger and `48` for Find, which is the drift this ticket removed. A deviation of more than ~1px is a real disagreement: report the measured values rather than editing the constants.
@@ -157,11 +160,9 @@ regressions they exist to catch are reintroduced.
 
 ## T1 hd-input-handoff
 
-- [ ] Run `python .script/verify_hd_inputs.py`: the `hd.art` line shows `sd=223 hd=223 missing=0`. Frame-pack lines compare against already-installed HD targets and are not a T13 gate.
-- [ ] Create `hd_inputs/frames/magic-sevenhalf.mse-style/` and drop in one PNG that is exactly 2× the size of the matching file under `MSE/data/magic-sevenhalf.mse-style/`. Re-run the script: that pack now reports `present=yes files=1 double=1 wrong-size=0`.
-- [ ] Rename or resize that same PNG to a size that is not exactly 2×. Re-run the script: `double=0 wrong-size=1`.
-- [ ] Run `git status`: files under `hd_inputs/frames/<pack>/` do not show up as trackable/stageable (they stay ignored), but `hd_inputs/frames/.gitkeep` is trackable.
-- [ ] Open `MSE/README.md`, `## HD inputs` section: confirms the four pack names, the 2× rule, and the `TODO(user)` line naming the missing upscaler-tool fact.
+- [ ] Run `python .script/verify_hd_inputs.py`: exactly five lines, exit 0. On current installed tree, four frame lines show `installed=15/9/18/35`, `wrong-size=0`; art line shows `sd=223 hd=223 missing=0`.
+- [ ] Run `git status --ignored --short hd_inputs original_images_hd`: local source payload remains ignored. Do not resize, rename, or stage current approved inputs.
+- [ ] Open `MSE/README.md`, `## HD inputs`: four pack names, pre-install `double` vs post-install `installed` states, local-rights restriction, upscaler `TODO(user)`.
 
 ## T2 quiet-render-log
 
@@ -256,18 +257,20 @@ regressions they exist to catch are reintroduced.
 
 ## T12 install-hd-frames
 
-- [ ] Run `python launcher/setup_mse.py --verify`: it prints `event=config.mse.verified files=560` with no missing or modified paths. (`verify_hd_inputs.py` is the pre-install gate; after installation its 2× comparison against the now-HD target is intentionally no longer a post-install check.)
+- [ ] From a fresh clone with Full Magic Pack at declared commit plus four exact local packs, run one command: `python launcher/setup_mse.py --source /path/to/Full-Magic-Pack --hd-frames hd_inputs/frames`. It completes deterministic install plus final verification.
+- [ ] Run `python launcher/setup_mse.py --verify`: `event=config.mse.verified files=560`, no missing/modified paths. Re-run installer; HD event reports `files=0` (idempotent).
 - [ ] Export `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set` and `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set` to separate scratch dirs with `.script/export_mse_renders.py --output`; every PNG is 750×1046.
 - [ ] At equal display size, compare `Book of Moon` (sevenhalf), `Bagooska` (spellbook), `Herald of the Arc Light` (sketch), `Nekroz - Brionac` (praetor), `Cross-Sheep` (Capenna), and `Elder Entity N'tss` (Fusion control) against their pre-change renders. Title bars, art boxes, type lines, rules boxes, and P/T boxes do not move.
 - [ ] Inspect a 50% overlay plus amplified pixel diff for all six representatives. Frame detail may sharpen; duplicated/ghosted bars or text indicate bad coordinate scaling and must fail this check.
-- [ ] Confirm Capenna scratch output is 750×1046 even though its uniformly scaled source bitmaps are 750×1047; only the final source row is clipped by the render canvas.
+- [ ] Confirm every installed Capenna bitmap and its style canvas is exactly 750×1046. Installer resized to 750×1047 then cropped last/bottom source row; scratch geometry remains unchanged.
 
 ## T13 hd-card-art
 
 - [ ] Open one regenerated card from each non-empty draft project and the open alpha package in MSE; confirm the illustration is visibly sharper and the saved `image:` path is unchanged.
 - [ ] Compare `Mathematician`, `Raigeki`, and `Maxx “C”` before/after at equal display size; confirm centre framing matches with no stretched or clipped subject.
-- [ ] Confirm `Absolute King Back Jack`, `Crane Crane`, `Fiend Griefing`, and `Fiendish Rhino Warrior` retain their prior art pending canonical HD sources.
+- [ ] Confirm 177 art files were updated; user-accepted permanent skips `Absolute King Back Jack`, `Crane Crane`, `Fiend Griefing`, and `Fiendish Rhino Warrior` retain prior art. Do not fetch/fabricate/upscale them.
 
 ## T14 hd-renders-and-print
 
-- [ ] At 1920px viewport width and 100% browser zoom, compare a card page against its pre-HD screenshot and confirm the render is visibly sharper.
+- [ ] Run `cd website && npm run rights:check`: `rights: 100 approved assets` (50 independent display sources + 50 print masters), approved by AronGomu on 2026-08-10.
+- [ ] At 1920px viewport width and 100% browser zoom, compare a card page against its pre-HD screenshot and confirm the render is visibly sharper. This manual visual check remains pending until performed.

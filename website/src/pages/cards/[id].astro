@@ -102,16 +102,6 @@ const versions = catalog.cardVersions
           </p>
         )
       }
-      {
-        explanation && (
-          <section>
-            <>
-              <h2>Design notes</h2>
-              <Markdown value={explanation} class="authored-explanation" />
-            </>
-          </section>
-        )
-      }
       <div class="card-facts">
         <span>Current: {card.stageLabel} {card.version}</span>
         <span>Published {formatDate(card.releasedOn)}</span>
@@ -131,6 +121,14 @@ const versions = catalog.cardVersions
                 </>
               ))}
             </dl>
+          </section>
+        )
+      }
+      {
+        explanation && (
+          <section>
+            <h2>Design notes</h2>
+            <Markdown value={explanation} class="authored-explanation" />
           </section>
         )
       }
