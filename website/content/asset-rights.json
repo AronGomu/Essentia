@@ -1,9 +1,210 @@
 {
   "schemaVersion": 1,
-  "publicationStatus": "pending-owner-approval",
+  "publicationStatus": "approved",
   "scope": "Immutable cards_mse release-package renders",
   "policy": "Empty publication builds need no asset approval. Non-empty public deployment remains blocked until owner approval and per-release render hashes are recorded.",
-  "approvedAt": null,
-  "approvedBy": null,
-  "assets": []
+  "approvedAt": "2026-08-10",
+  "approvedBy": "AronGomu",
+  "assets": [
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:ash-blossom-and-joyous-spring:render",
+      "sha256": "c05fde10d94f6d9d032295a765b34c9e0b2cf6e50536c4c70f40b7885be2f6e9"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:bagooska:render",
+      "sha256": "fb0455e6f0596ec872a115c50bcd2e400eca175c27c40e5f660ba328615438bd"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:book-of-moon:render",
+      "sha256": "2eebf85d22e3d3fe0d5cfb5b51b3e8e34bedf7679f855f601f5d58b30dbafb78"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-alich:render",
+      "sha256": "89681bcc0f4407ff883f310510ef1cd99a5221f55a40f3f4a0a7ad2f2a473d86"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-barbar:render",
+      "sha256": "b0c3b63240f03ee58f8c6e635c4e06be40a6da533ce77b72dacceebdafd3e380"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-calcab:render",
+      "sha256": "7a427dc9fcf221b3e48a882065f475087acdf8c2a04e124f6a2d6e0e2ce1b95c"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-cir:render",
+      "sha256": "b546490acf13e58f175d32880b31c99a23323f027fef93744ad5c67ba665727f"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-dante:render",
+      "sha256": "634f7d0b34934d7979a21a2b52eb6ed7a6bfe9e65f9933269619edd9e953ab6d"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-draghig:render",
+      "sha256": "34b95d79d0505aa94e3964f7cd0352c236b410e53f9a581161f6715c63969e9c"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-farfa:render",
+      "sha256": "dbe95f1a8cfcccfd6dcbc957766bb6adef287a8ec79e569cfca2acf6a0b135dc"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-fire-lake:render",
+      "sha256": "7d4516d9f1165d52e587635ec8789db55a5fc4fe5b3d3640844f7f51393ad9dd"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-graff:render",
+      "sha256": "2b095851f2d9cdba4f152b4ec343b132ebd7d22386c744b87a4361d4aa926897"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-rubic:render",
+      "sha256": "491dfaa5004fb7167cf6f51ab25711f1f9d166ffc1bfc1ec15e26f67f7a6d68e"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-scarm:render",
+      "sha256": "e571710ab5676db67f1a428ab9ff57729037aefb060a266970cdff2266d136d4"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-traveler:render",
+      "sha256": "9554a00d1dc805032d6d094b224019c6f6a8aa81c8c5e50ce436b4ccbd48441e"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-virgil:render",
+      "sha256": "f7059db49e1691ace061f88875e17b40c2d923159786f91d2f74ea104f72a33a"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:d-d-crow:render",
+      "sha256": "103b30a7f2d1efd300a7ce3d154b7d06b47d49cdbf7cbd125fd638a71259616c"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:daigusto-emeral:render",
+      "sha256": "919d38db246fa214f5cb81fd6133a077d49eff20ef3955df779c351fd04871e7"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:dark-hole:render",
+      "sha256": "05148b5c7c134c918b740effb0673ce188af301154f7574fba6564be3ea4bb3e"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:downerd-magician:render",
+      "sha256": "292ab0a8413aaf3d4933daf870666cf04085d5d5837a831a2880ca52ff02c796"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:effect-veiler:render",
+      "sha256": "e26205335575e93b7ba5a8d8c34a10da672a7b6026fcda93f33faba858cf82d4"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:evilswarm-exciton-knight:render",
+      "sha256": "9ad13dc5aaf8f72bbf2c0efd340712701fe9f27d7d3da66ad0e9c7187956feeb"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:foolish-burial:render",
+      "sha256": "e3307629ef7473e8e1f0010084da4235495a514d4246b98101523fef7d3a2cc3"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:gagaga-cowboy:render",
+      "sha256": "2916aab60b26d3eca8ef2f5a5e35ac1aedf20c375cf552026e2e0960cfc76014"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:herald-of-the-arc-light:render",
+      "sha256": "6b529ff41f63ad9fdd29c58ada36307bfa014e7aa43131894f3d71f8a9e74657"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:karma-cut:render",
+      "sha256": "8c6df5e1ff822db5501b62636ba6bbbaddfd8a994e32e1e75f2a72e17f9637d2"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:leviair-the-sea-dragon:render",
+      "sha256": "1031346429e97b1d87caadcfad1ed9b42430cbd653fe82e05b68f8f895b27e19"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:manju-of-the-ten-thousand-hands:render",
+      "sha256": "5b1116eb5bc3259ecbe6f067472559a0b215207229d43699645f7d65cedd80dd"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:maxx-c:render",
+      "sha256": "b39519172e0837c13a1a5262d873d6059d9724d51367cc5a1a0f64fff8684400"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-brionac:render",
+      "sha256": "7ca6527437792779ed75789ca7cbb8a27259fd26d97220ed117d60ae8c008b4a"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-catastor:render",
+      "sha256": "89738b1ffed9a3c3587a9e35ca851035756a533fa8e809e0f03a2a5ca11ab1b2"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-clausolas:render",
+      "sha256": "31da8b075d618dace0006524faaf54e7fe134af4bda6cbdb09a26c9aa8c13426"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-cycle:render",
+      "sha256": "e44651acd68971ce6e49707586313161f70009493cf741c46f6564e8da367834"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-dance-princess:render",
+      "sha256": "0ff3dde24853dbc7e82e83ddbc86cffad68bcc4dfb7c568c79e2d7dbdeb797bc"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-decisive-armor:render",
+      "sha256": "88849292e0b69a86c57a9288d7abcf90a83131a13448ec9c6c446c9f5e043936"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-exa:render",
+      "sha256": "90b2c8d2aca1c92b3c7047e4d720e4f3d6052dec36682dd8d05e56d7678197e3"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-great-sorcerer:render",
+      "sha256": "a2a30a446ad94288863cfe5966e4318c32f247eaf6bf6972fdd6ca7e3cb3bc08"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-gungnir:render",
+      "sha256": "357d3ec7c464fab7702708e6dbe94477377ac98644a3c85f676475fa14ab9db9"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-kaleidoscope:render",
+      "sha256": "abf2f15a31a4da5f7179299db392c1b8d1f2cc3fa947abc7a833866663753fd9"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-mirror:render",
+      "sha256": "fed770613e66233c0ea1919aec50231e2dff75885182feab8bd06e75f998bd2b"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-shurit:render",
+      "sha256": "f0b9126560479f14efbad920583ed1dce49220f86e1d1a58425412965dfa5c28"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-trishula:render",
+      "sha256": "0fec87e6789471e22adf1a6478731f06e9a69a3f1189257166088028e90a3f32"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-unicore:render",
+      "sha256": "c68090a6d0f302cbcd84c15f71f69f178836a24f5415c9160ff588915b52b05a"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-valkyrus:render",
+      "sha256": "c21c86aca4272a3cd99a4b552b1bd2a99d6d5eb6748153700dc8f9a5ce37a4ce"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:preparation-of-rites:render",
+      "sha256": "7bd3206fcd689688b85101487a900869a4a45bf62437f802042be80960839443"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:senju-of-the-thousand-hands:render",
+      "sha256": "85126f8e7d7d1f0a3a71800ecc9b281958e640d5eea869c1838b9efd9f04c5b0"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:silent-honor-ark:render",
+      "sha256": "123762b4ac42130ac093fcd815159c15627650fdf33416706bac41205926344e"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:stealth-kragen:render",
+      "sha256": "4428ef772e3292b28cb5940358a263d7191e8c87ceadb041724fd512c0ab3f04"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:tornado-dragon:render",
+      "sha256": "81286da9bad8280d2de3634b7e2ef0214b07e197aaebe67a8c9ceb1e5607e1c6"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:tour-guide-from-the-underworld:render",
+      "sha256": "0a886f3255cdfc750f779e6fe2a5d3e79ff54736e924ff055e8a6fc66a8f7d3a"
+    }
+  ]
 }
