@@ -235,4 +235,15 @@ regressions they exist to catch are reintroduced.
 - [ ] In the same file, search for `"id": "burning-abyss-graff"`, confirm its `related.archetype` array lists every other `burning-abyss-*` card id and does not include `burning-abyss-graff` itself.
 - [ ] Search for `"id": "downerd-magician"`, confirm its `related.interaction` array does not include every card at MV 1 — only Xyz MV 1 creatures (e.g. `bagooska`, `tornado-dragon`), not `ash-blossom-and-joyous-spring` (MV 1, non-Xyz).
 - [ ] Confirm `"schemaVersion": 11` near the top of `catalog.ts`.
-- [ ] Confirm the card page at `/cards/tour-guide-from-the-underworld/` still renders its current related-cards list unchanged in the browser — this ticket only adds the data field, the page UI is unchanged until a later ticket consumes it.
+- [ ] Confirm the card page at `/cards/tour-guide-from-the-underworld/` still built with the old flat related-cards list at the time this ticket shipped — this ticket only added the data field; see T10 for the UI that consumes it (superseded, T10 shipped after).
+
+## T10 related-cards-ui
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/burning-abyss-graff/`.
+- [ ] Confirm two headed sections appear after the card pager: `Same archetype` and `Interacts with this card`, each showing a gallery grid of card tiles (thumbnail + name), not bare text links.
+- [ ] Confirm the old flat `Related cards` bullet list is gone.
+- [ ] Hover a tile in either gallery: confirm the shared hover-preview card render/rulings pop up, same as any other gallery tile on the site.
+- [ ] Open `/cards/tour-guide-from-the-underworld/`: confirm `Interacts with this card` includes Fiend MV-1 creatures such as `Burning Abyss - Graff`.
+- [ ] Find (or temporarily note) a card whose `Same archetype` list exceeds 12 — e.g. any Burning Abyss card given the archetype currently has more than 12 same-name relations plus the non-archetype pool card `burning-abyss-fire-lake`/`burning-abyss-traveler` fallback: confirm the gallery caps at 12 tiles and a trailing `View all N … cards` link appears, pointing at that archetype's section page.
+- [ ] For a card whose `Interacts with this card` list exceeds 12 (if any exists in the current catalog), confirm the trailing text reads `N more` with no link.
+- [ ] Open a card whose both related lists are empty, if one exists in the current catalog (check `card.related` in `src/generated/catalog.ts`): confirm neither related section renders at all.

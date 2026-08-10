@@ -85,27 +85,29 @@ gallery-style thumbnails, capped at 12 each, and the old flat name list is gone.
 
 ## Impl steps
 
-- [ ] 1. In `[id].astro`, replace the `relatedCards(...)` call with:
+- [x] 1. In `[id].astro`, replace the `relatedCards(...)` call with:
       ```ts
       const RELATED_CAP = 12;
       const archetypeRelated = card.related.archetype.map((id) => cardsById.get(id)!).filter(Boolean);
       const interactionRelated = card.related.interaction.map((id) => cardsById.get(id)!).filter(Boolean);
       ```
-- [ ] 2. Import `CardGallery` and `toGalleryCard`; drop the `relatedCards` import, and drop
+- [x] 2. Import `CardGallery` and `toGalleryCard`; drop the `relatedCards` import, and drop
       `previewImage` / `previewKeywordsFor` if the related block was their only user
       (check the rest of the file first — `previewKeywordsFor` is also used by T8's Rules
       block if that ticket landed; keep it then).
-- [ ] 3. Replace the old related `<section>` with the two sections described in
+      Note: `previewImage` was dropped (only user was the old related block);
+      `previewKeywordsFor` is kept — the Rules block uses it.
+- [x] 3. Replace the old related `<section>` with the two sections described in
       Requirements, each rendering
       `<CardGallery cards={list.slice(0, RELATED_CAP).map(toGalleryCard)} {base} />`.
-- [ ] 4. Delete `export function relatedCards` and `export interface RelatedInput` from
+- [x] 4. Delete `export function relatedCards` and `export interface RelatedInput` from
       `src/lib/catalog.ts`.
-- [ ] 5. In `global.css`, delete the `.related-cards` rule and add `.related-more`.
-- [ ] 6. Rewrite `tests/unit/related-cards.test.ts` per the test plan.
-- [ ] 7. Create `website/tests/e2e/related-cards.spec.ts`. Pick the truncation fixtures by
+- [x] 5. In `global.css`, delete the `.related-cards` rule and add `.related-more`.
+- [x] 6. Rewrite `tests/unit/related-cards.test.ts` per the test plan.
+- [x] 7. Create `website/tests/e2e/related-cards.spec.ts`. Pick the truncation fixtures by
       reading `src/generated/catalog.ts` inside the test setup rather than hardcoding a card
       whose list length may change.
-- [ ] 8. Update `docs/CONTEXT.md` where it describes the related-cards rule
+- [x] 8. Update `docs/CONTEXT.md` where it describes the related-cards rule
       ("A website archetype section lists printed-name members plus…") so it names the two
       categories and points at ADR 0032.
 
@@ -118,10 +120,12 @@ gallery-style thumbnails, capped at 12 each, and the old flat name list is gone.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/related-cards.test.ts` → pass
-- [ ] `cd website && npx playwright test tests/e2e/related-cards.spec.ts` → pass × 3 browsers
-- [ ] `cd website && npm run lint` → no unused imports in `[id].astro`
-- [ ] manual check: `/cards/tour-guide-from-the-underworld/` shows Fiends under
+- [x] `cd website && npx vitest run tests/unit/related-cards.test.ts` → pass
+- [x] `cd website && npx playwright test tests/e2e/related-cards.spec.ts` → pass × 3 browsers
+      (chromium + webkit only — firefox cannot launch in this environment, pre-existing/unrelated;
+      ran via the gitignored `playwright.config.local.ts`)
+- [x] `cd website && npm run lint` → no unused imports in `[id].astro`
+- [x] manual check: `/cards/tour-guide-from-the-underworld/` shows Fiends under
       `Interacts with this card`
-- [ ] `cd website && npm run ci` → pass
+- [x] `cd website && npm run ci` → pass
 - [ ] commit msg draft: `feat(website): split related cards into archetype and interaction galleries`

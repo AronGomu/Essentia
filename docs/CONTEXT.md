@@ -50,7 +50,7 @@
 
 Non-archetype groups are storage/type buckets. Shared Fusion, Synchro, Xyz, Link, Ritual, and Trap rules remain global.
 
-A website archetype section lists printed-name members plus any support card explicitly marked `linked: true` in `website/content/identities.json`. Support cards without an explicit link live in the non-archetype section instead, but they keep their `archetype`/`role` fields so the related-cards rule can still surface their archetype affinity.
+A website archetype section lists printed-name members plus any support card explicitly marked `linked: true` in `website/content/identities.json`. Support cards without an explicit link live in the non-archetype section instead, but they keep their `archetype`/`role` fields so each card's related-cards data (a "same archetype" category by printed name, and an "interacts with this card" category derived from rule text against closed vocabularies — ADR 0032) can still surface their archetype affinity.
 
 ## Language
 

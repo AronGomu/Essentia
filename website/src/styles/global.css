@@ -1047,12 +1047,8 @@
   .card-pager a:last-child {
     text-align: right;
   }
-  .related-cards {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: 0.3rem 1rem;
+  .related-more {
+    margin-top: var(--space-3);
   }
   .legal-copy {
     max-width: 72ch;
