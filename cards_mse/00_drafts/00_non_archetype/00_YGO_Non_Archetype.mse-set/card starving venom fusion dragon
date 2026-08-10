@@ -21,7 +21,7 @@ card:
 	rule_text:
 		<i>2 black Creatures on Field except tokens.</i>
 		<i-auto>(1 - Triggered)</i-auto> <b>On Fusion Summon</b> — It gains +X/+0, where X is the power of a targeted opposing Creature.
-		<i-auto>(2 - Activated Sorcery Soft)</i-auto> <b>Target</b> 1 opposing Creature MV 2+: “Venom”’s name becomes that of the target and it gains its abilities.
+		<i-auto>(2 - Activated Sorcery Soft)</i-auto> <b>Target</b> 1 opposing Creature MV 2+: <i-auto>“Venom”</i-auto>’s name becomes that of the target and it gains its abilities.
 		<i-auto>(3 - Triggered)</i-auto> <b>On Destroy</b> — <b>Destroy</b> all opposing Creatures.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7

@@ -16,7 +16,7 @@ card:
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
 	rule_text:
-		<b>Alternative Cost</b> — If you control no Creature: You may <b>Cast</b> Book of Moon for free.
+		<b>Alternative Cost</b> — If you control no Creature: You may <b>Cast</b> <i-auto>Book of Moon</i-auto> for free.
 		<i-auto>(1 - Resolution)</i-auto> <b>Target</b> 1 Creature; turn it face down.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 003/050 C

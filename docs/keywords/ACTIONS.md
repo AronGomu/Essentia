@@ -14,7 +14,7 @@ Search Deck for indicated object, reveal when required, put into Hand, shuffle. 
 
 ### Mill N
 
-Send N cards from top of Deck to Grave. Quantity is mandatory: **Mill 1**, **Mill 2**, **Mill 3**, or **Mill 0–3**; never bare **Mill**.
+Send N cards from top of Deck to Grave. Quantity is mandatory: **Mill 1**, **Mill 2**, **Mill 3**, or a range such as **Mill 0–3** or **Mill 1-4**; never bare **Mill**.
 
 ### Summon / Hand Summon
 

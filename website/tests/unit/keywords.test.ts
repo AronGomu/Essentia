@@ -157,7 +157,7 @@ function fixture(
 describe('keyword registry rulings', () => {
   it('loads every keyword file', async () => {
     const registry = await loadKeywordRegistry();
-    expect(registry.size).toBe(73);
+    expect(registry.size).toBe(81);
   });
 
   it('reads the definition from the file body', async () => {
@@ -338,19 +338,19 @@ describe('catalog keyword rulings', () => {
     ).toHaveLength(22);
     expect(
       catalog.keywords.filter((keyword) => keyword.origin === 'essentia'),
-    ).toHaveLength(51);
-    expect(catalog.keywords).toHaveLength(73);
+    ).toHaveLength(59);
+    expect(catalog.keywords).toHaveLength(81);
   });
 
   it('counts the preview keywords', () => {
     expect(catalog.keywords.filter((keyword) => keyword.preview)).toHaveLength(
-      52,
+      60,
     );
   });
 
   it('counts the reminder keywords', () => {
     expect(catalog.keywords.filter((keyword) => keyword.reminder)).toHaveLength(
-      72,
+      80,
     );
   });
 });

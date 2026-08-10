@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia website — shell chrome</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a; --ember: #e08a4a; --ice: #6fb3d2;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .22rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      a { color: var(--accent-2); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 44rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.sel { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+      td.src { font-family: var(--mono); color: var(--muted); font-size: .8rem; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p { margin: .25rem 0; font-size: .87rem; color: var(--muted); }
+      .card p code, .card li code { color: var(--ink); }
+      .card ul { font-size: .87rem; color: var(--muted); }
+
+      /* Shell diagram — a scale model of the real geometry. */
+      .shell { border: 1px solid var(--line); background: var(--panel); padding: .6rem;
+               display: grid; gap: .4rem; margin: 1rem 0; }
+      .shell .bar { border: 1px dashed var(--accent); color: var(--accent);
+                    font-family: var(--mono); font-size: .74rem; padding: .55rem .7rem; }
+      .shell .body { display: grid; grid-template-columns: 9rem 1fr; gap: .4rem; }
+      .shell .rail { border: 1px dashed var(--accent-2); color: var(--accent-2);
+                     font-family: var(--mono); font-size: .74rem; padding: .55rem .7rem;
+                     display: grid; align-content: space-between; min-height: 9rem; }
+      .shell .rail .sq { justify-self: end; border: 1px solid var(--accent-2);
+                         width: 1.6rem; height: 1.6rem; display: grid; place-items: center; }
+      .shell .main { border: 1px dashed var(--line); color: var(--muted);
+                     font-family: var(--mono); font-size: .74rem; padding: .55rem .7rem; }
+
+      .rail-demo { display: grid; gap: .25rem; max-width: 17rem; border: 1px solid var(--line);
+                   background: var(--panel); padding: .5rem; }
+      .rail-demo span { padding: .4rem .55rem; border-radius: 5px; font-size: .85rem;
+                        display: flex; justify-content: space-between; }
+      .rail-demo small { color: var(--muted); }
+      .t-none { background: transparent; }
+      .t-ember { background: color-mix(in oklch, var(--ember) 14%, transparent); }
+      .t-ember-hot { background: color-mix(in oklch, var(--ember) 32%, #202028); }
+      .t-ice { background: color-mix(in oklch, var(--ice) 14%, transparent); }
+
+      .note { border-left: 3px solid var(--warn); background: var(--panel);
+              padding: .6rem .9rem; margin: 1rem 0; font-size: .88rem; color: var(--muted); }
+      .note b { color: var(--ink); }
+      footer { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1rem;
+               color: var(--muted); font-size: .8rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Shell chrome</h1>
+      <p class="sub">The header, the catalog rail, the mobile drawer, and the rules that keep them from fighting each other. Companion to <a href="website-information-architecture.html">information architecture</a>.</p>
+
+      <h2>Geometry</h2>
+      <div class="shell">
+        <div class="bar">.site-header — full viewport width · sticky top:0 · z-index: calc(var(--z-sticky) + 2) · min-height: var(--header)</div>
+        <div class="body">
+          <div class="rail">
+            <div>.desktop-catalog<br />inset: var(--header) auto 0 0<br />width: var(--sidebar)</div>
+            <div class="sq">⟨</div>
+          </div>
+          <div class="main">main, .site-footer — margin-left: var(--sidebar)</div>
+        </div>
+      </div>
+      <ul>
+        <li>The header is a menubar, not a column neighbour: it spans the viewport and outranks the rail.</li>
+        <li>The rail begins at the header's bottom border. <code>--header: 4.5rem</code>, <code>--sidebar: 17rem</code> (<code>3.25rem</code> collapsed).</li>
+        <li>The content column, not the header, is what clears the rail.</li>
+        <li>Below <code>64rem</code> the rail is <code>display: none</code> and the modal drawer takes over; <code>main</code> and the footer lose their inset.</li>
+      </ul>
+
+      <div class="note">
+        <b>Do not add <code>transform</code>, <code>filter</code>, <code>backdrop-filter</code> or <code>will-change</code> to <code>.site-header</code>.</b>
+        The <code>&lt;Navigation&gt;</code> island renders inside it, and the rail inside that island is <code>position: fixed</code>. Any of those
+        properties would make the header the rail's containing block and pin the rail to the header instead of the viewport.
+        A unit test asserts none of them is declared, at every measured width. See ADR 0027.
+      </div>
+
+      <h2>Header children</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Selector</th><th>What</th><th>≥44rem</th><th>≤44rem</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td class="sel">.compact-brand</td><td>Wordmark / letter mark, links home</td><td>320×74 raster drawn at 160px wide</td><td>2rem square letter mark</td><td class="src">BaseLayout.astro</td></tr>
+            <tr><td class="sel">.drawer-trigger</td><td>Opens the modal catalog drawer</td><td><code>display: none</code> above 64rem</td><td>Icon only, <code>aria-label</code> carries the name</td><td class="src">Navigation.svelte</td></tr>
+            <tr><td class="sel">.breadcrumb</td><td>Trail, omitted on <code>/</code></td><td>Full trail, wraps</td><td>Last crumb only, shrinks and ellipsises</td><td class="src">Breadcrumb.astro</td></tr>
+            <tr><td class="sel">.utility-nav</td><td><code>margin-left: auto</code> — the right group starts here</td><td>Holds <code>.utility-menu</code> as an inline row</td><td>Holds only the <code>⋯</code> trigger; the menu is a popover</td><td class="src">BaseLayout.astro</td></tr>
+            <tr><td class="sel">.search-trigger</td><td>Find palette, <code>⌘K</code></td><td>Icon + “Find” + <code>&lt;kbd&gt;</code></td><td>Icon only</td><td class="src">FindPalette.svelte</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Why the island lives inside the header</h3>
+      <p>The hamburger used to be <code>position: fixed; top: 0.8rem; left: 1rem</code>, floating over the brand, with the header reserving <code>padding-left: 8.8rem</code> to clear it. Moving <code>&lt;Navigation client:load&gt;</code> inside <code>&lt;header&gt;</code>, directly after the brand, makes it an ordinary flex item. Astro ships <code>astro-island { display: contents }</code>, so the island wrapper generates no box and is invisible to the flex row — <code>&lt;FindPalette&gt;</code> has always worked this way.</p>
+
+      <h2>Compact header, ≤44rem</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Labels hide, names persist</h4>
+          <p>Text ships as <code>&lt;span class="label-full"&gt;</code>, with a <code>&lt;span class="label-short"&gt;</code> where a shorter word exists (“Learn about Essentia” → “Learn”). CSS swaps which one is <code>display: none</code>; an explicit <code>aria-label</code> on the control keeps the accessible name viewport-independent.</p>
+        </div>
+        <div class="card">
+          <h4>Destinations behind <code>⋯</code></h4>
+          <p><code>&lt;div class="utility-menu" popover&gt;</code> + <code>&lt;button popovertarget&gt;</code>. No island, no script, no CSP change. Above 44rem the author <code>display: flex</code> beats the UA's <code>[popover]:not(:popover-open) { display: none }</code>, so the three links are just an inline row and the trigger is hidden.</p>
+        </div>
+        <div class="card">
+          <h4>Never remove the strings</h4>
+          <p><code>scripts/check-chrome.mjs</code> fails the build when a built page's <code>.utility-nav</code> block lacks the literal <code>&gt;Learn about Essentia&lt;</code>, <code>&gt;Blog&lt;</code> or <code>&gt;Decks&lt;</code>, or when the page lacks <code>&gt;Find&lt;/span&gt;</code>. Shorten with CSS, never with markup.</p>
+        </div>
+        <div class="card">
+          <h4>One row at 400px</h4>
+          <p>400px is the narrowest supported width. <code>shared/header-row.mjs</code> holds the budget; <code>scripts/check-header-row.mjs</code> warns and exits 0; an inline page script <code>console.warn</code>s a real wrap. The red bar comes from the Playwright single-row test, not from either warning. See ADR 0029.</p>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Item</th><th>Width at 400px</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="sel">.compact-brand</td><td>32px</td><td><code>.compact-brand img { width: 2rem; height: 2rem }</code></td></tr>
+            <tr><td class="sel">.drawer-trigger</td><td>≈36px</td><td>Icon, <code>padding: 0.5rem</code>, 1px border</td></tr>
+            <tr><td class="sel">.utility-nav</td><td>39.2px</td><td>Only <code>.utility-more</code>, a 2.45rem square; the popover is out of flow</td></tr>
+            <tr><td class="sel">.search-trigger</td><td>≈48px</td><td>Icon, base <code>button</code> padding <code>0.65rem 0.9rem</code>, <code>&lt;kbd&gt;</code> hidden</td></tr>
+            <tr><td class="sel">.breadcrumb</td><td>flexible, ≥64px</td><td><code>flex: 1 1 auto; min-width: 0</code>, list <code>nowrap</code>, item ellipsised</td></tr>
+            <tr><td class="sel">gaps + padding</td><td>28.8px + 32px</td><td><code>gap: 0.45rem</code> ×4, <code>clamp(1rem, 3vw, 3rem)</code> floor ×2</td></tr>
+            <tr><td class="sel">total</td><td>248px of 368px</td><td>120px of slack on an inner page</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Catalog rail</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>One flat list</h4>
+          <p>Catalog mode renders one <code>&lt;ul&gt;</code> over <code>sections</code>, in the order authored in <code>website/content/sections.json</code> — Non-archetype first, then the archetypes. No group heading, no disclosure. The mobile drawer renders the same list.</p>
+        </div>
+        <div class="card">
+          <h4>Tint by <code>kind</code></h4>
+          <p>Each archetype <code>&lt;li&gt;</code> gets <code>--nav-tint: var(--{accent})</code> — set through the CSSOM by <code>Navigation.svelte</code>'s <code>onMount</code> pass, not as a <code>style</code> attribute. The built site runs a hashed <code>style-src</code> with no <code>'unsafe-hashes'</code>, so a per-element <code>style=""</code> is blocked and logs a CSP error; <code>li.style.setProperty()</code> is not policed. <code>non-archetype</code> is not an archetype and stays untinted — its authored <code>relic</code> accent is a page theme, not a section identity.</p>
+          <ul>
+            <li>rest: <code>color-mix(in oklch, var(--nav-tint, transparent) 14%, transparent)</code></li>
+            <li>hover / focus / current: <code>color-mix(in oklch, var(--nav-tint, var(--sleeve)) 32%, var(--sleeve))</code></li>
+            <li><strong>hydration-gated:</strong> with JavaScript off the tint never lands and both fallbacks above apply — the rail's pre-tint look.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>One square toggle</h4>
+          <p>A single 2.25rem <code>.rail-toggle</code>, the last child of <code>&lt;nav id="desktop-catalog"&gt;</code>, <code>align-self: flex-end</code> and <code>margin-top: auto</code>. Same footprint in the 17rem rail and the 3.25rem collapsed strip, so it never moves or resizes when the rail toggles. State: <code>html[data-catalog]</code>, persisted at <code>essentia.v1.catalog-rail</code>.</p>
+        </div>
+        <div class="card">
+          <h4>Reading mode is unchanged</h4>
+          <p>On <code>/docs/…</code> and <code>/blog/…</code> the same component renders the <code>Docs | Blog</code> switcher and the authored article groups, each under its own <code>.nav-label</code>. <code>check-chrome.mjs</code> requires the switcher and every rail destination to appear in the mobile drawer too.</p>
+        </div>
+      </div>
+
+      <h3>Tint, rendered</h3>
+      <div class="rail-demo">
+        <span class="t-none">Non-archetype <small>22</small></span>
+        <span class="t-ember">Burning Abyss <small>12</small></span>
+        <span class="t-ember-hot">Burning Abyss <small>hover</small></span>
+        <span class="t-ice">Nekroz <small>9</small></span>
+      </div>
+
+      <h2>Enforcement</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Gate</th><th>Runs in</th><th>Protects</th></tr></thead>
+          <tbody>
+            <tr><td class="src">scripts/check-chrome.mjs</td><td><code>npm run build</code></td><td>Utility links + labels, Find trigger, breadcrumb, rail state, rail toggle, reading switcher, drawer parity. <b>Fails</b> the build.</td></tr>
+            <tr><td class="src">scripts/check-header-row.mjs</td><td><code>npm run build</code></td><td>400px width budget. <b>Warns</b>, exits 0.</td></tr>
+            <tr><td class="src">inline guard in BaseLayout.astro</td><td>browser, ≤400px</td><td>Real measured wrap. <b>Warns</b> in the console.</td></tr>
+            <tr><td class="src">tests/unit/header-priority.test.ts</td><td><code>npm test</code></td><td>Header width, stacking, rail dock, the no-transform ban, island placement.</td></tr>
+            <tr><td class="src">tests/unit/header-brand.test.ts</td><td><code>npm test</code></td><td>The brand holds the left edge at every width, with and without a breadcrumb.</td></tr>
+            <tr><td class="src">tests/unit/compact-header.test.ts</td><td><code>npm test</code></td><td>Label swapping, popover wiring, stable accessible names.</td></tr>
+            <tr><td class="src">tests/unit/rail-toggle.test.ts</td><td><code>npm test</code></td><td>Exactly one toggle, square, bottom-right, inside the nav.</td></tr>
+            <tr><td class="src">tests/unit/catalog-nav-flat.test.ts</td><td><code>npm test</code></td><td>No groups in catalog mode; groups intact in reading mode.</td></tr>
+            <tr><td class="src">tests/unit/nav-accent.test.ts</td><td><code>npm test</code></td><td>Accent threading, tint only for archetypes, hover strictly stronger than rest.</td></tr>
+            <tr><td class="src">tests/e2e/header-row.spec.ts</td><td><code>npm run test:e2e</code></td><td>One header row at 400×800, home and inner page; no console error.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer>
+        Decisions: <code>docs/ADR/proposed/0027-header-owns-the-top-row.md</code>,
+        <code>0028-flat-accent-tinted-catalog-rail.md</code>,
+        <code>0029-compact-header-at-phone-widths.md</code>.
+        Design system: <code>website/DESIGN.md</code>. Routes: <a href="website-information-architecture.html">information architecture</a>.
+      </footer>
+    </div>
+  </body>
+</html>

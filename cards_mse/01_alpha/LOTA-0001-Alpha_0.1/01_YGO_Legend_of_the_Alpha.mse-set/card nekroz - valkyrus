@@ -1,11 +1,11 @@
 ﻿mse_version: 2.1.2
 card:
-	stylesheet: sevenhalf
-	stylesheet_version: 2024-05-30
+	stylesheet: m15-showcase-praetor
+	stylesheet_version: 2024-09-01
 	has_styling: false
 	notes: Source: docs/03_nekroz/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-03 00:12:30
+	time_modified: 2026-08-09 20:29:32
 	name: Nekroz - Valkyrus
 	casting_cost: 2U
 	image: mse_images/nekroz-valkyrus-image.png
@@ -16,8 +16,8 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> If you control no Creatures: <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Valkyrus</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>; prevent all combat damage that would be dealt to you this turn.
-		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Sacrifice</b> 0–2 Creatures from Hand or Field; <b>Draw</b> 1 for each sacrificed Creature.
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> If you control no Creatures: <b>Discard</b> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Valkyrus”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words>; prevent all combat damage that would be dealt to you this turn.
+		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Sacrifice</b> 1–2 Creatures from Hand or Field then <b>Draw</b> 1 for each sacrificed Creature.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7
 	toughness: 4

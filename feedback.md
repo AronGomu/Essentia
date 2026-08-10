@@ -1,77 +1,50 @@
 # Feedback Website
 
-## Global
+> **Status: done.** Every item below shipped through `plan/website-header-and-rail-pass`
+> (`ai-artifacts/archive/PLAN_2026_08_09_website-header-and-rail-pass.md`, tickets T1–T13, merged
+> through `ff25c2c`). Confirmed by a deep read-only reviewer walking all four sections against
+> the built output. Kept as a historical record of the request, not open work.
 
-1. Map out all key words that show in hover previews to corresponding files in "docs/keywords/{keyword}.md".
-   Website build take those as source of truth and use those text for preview text box and card text keywords description.
-   Goal :
-   1. Allow editing directly into docs/ file to update the website on rebuild.
-   2. Allow creating manually new keyword file and automatically add them to website on rebuild
+## "New" Badge
 
-## "/sections/non-archetype/non-archetype/" page
+Set css "top" property for tile-badge to "2rem".
+Context : Current position hide manacost of cards which is essential information. This lower position to be on artwork only.
 
-1. Resize "catalog-hero-art" to be same ratio as original card image.
-   Unzoom animation is too fast. Make it smooth and slower.
-   Copy "section-tile" work. This is perfect implementation for zoom animation and ratio. (but keep unzoom)
-   Make image bigger. Reduce margins top and bottom to allow increase in high. Overall height of "catalog-hero" should not change, only image size and margins/paddings.
-   Apply to all archetype page.
+## Card preview ruling text
 
-2. Ash Blossom & Joyous Spring miss "Mill N" card preview hover ruling.
-   Apply to all page where ash blossom "gallery-card" appear and all other "gallery-card" that have Mill X.
+Must add keywords to docs and show them in card preview for :
 
-3. Update "Ash Blossom & Joyous Spring" car text in MSE and website.
-   "1 Spell or ability whose effect interacts with Deck (draw, Mill X, search, etc.)" =>"1 Spell or ability whose effect interacts with Deck (Draw, Mill X, Search, etc.)"
-   Draw and Search become bold Action keyword
-   Add Search as text box hover preview.
+- Resolution : Effect when non-permanent (instant, sorcery) card is resolving on the stack.
+- Static : Passive ability. Do not use the stack. Active as soon card enter required zone to take effect. Default zone is Field.
+- Triggered : Ability is activated anytime the condition is fulfilled after resolution of the trigger effect.
+- Activated [[Sorcery/Flash]] : Ability that you activate yourself when you have priority and timing. Sorcery means only activable any time you can play a sorcery. Flash is MTG keyword : any time you have priority (even in opponent turn).
+- Soft : You can only use this ability once per turn on the field. Other copies or new instance of the card (dies and reanimated) can activate or trigger same ability.
+- Hard : You can only use this ability of {Name of the Card} only once per turn. All other copies of the same card cannot activate or trigger their effect.
+- Linked : All *soft * abilities are grouped together. Same independantly for _hard_ abilities. If one the linked abilities is activated or triggered, all other other abilities cannot be used this turn following same *Soft * or _Hard_ rulling.
+- Trap (in card super type) : Cannot be cast from hand. Can only be set face down.
 
-4. Replace :
-   "Create original Yu-Gi-Oh!-inspired cards playable under Magic: The Gathering rules. Adapt role, pace, and gameplay identity rather than translating literally." => "All cards not part of any defined archetype. Collection of classic Yu-Gi-Oh! Staples"
+## Header Menubar and Header
 
-## http://localhost:4201/archetypes/nekroz/
+1. I want the site-header menubar to take priority and take the whole width over the nav drawer "desktop-catalog". Brand logo must always be top left corner of the website
+2. From nav drawer, remove top button to collapse
+3. Make nav drawer start (vertically) at header menubar border (all pages)
+4. Make nav drawer bottom collapse button not take whole width of nav drawer. Instead, make it small square size justified right to right border nav drawer and website content. It must be same size as when collapse.
+5. Remove non-archetype and Archetype bav group from nav drawer.
+6. Add faint background color for each item in the list of nav items. Nackground color must match the archetype color (Burning abyss = orange, nekroz = blue, non-archetype = no color attributed so keep black)
+7. On hover : faint background color become more intense to show selection
+8. For responsiveness of header menubar :
+   1. regroup "learn about essentia", "blog" and "deck" into a 3 dot dropdown menu on mobile size (400px lowest).
+   2. "Learn about Essentia" text can be shorten to "Learn".
+   3. "icon + Catalog" => can remove "Catalog text and only keep hamburger icon"
+   4. "icon + Find" => you can remove "find" text to only keep icon
+   5. add test to make sure everything hold on 1 row for 400px res. That specific do not error but show warning i app compilation and web console
+   6. When reducing width to gain space :
+      - first remove "about Essentia"
+      - second reduce width of "Find" input up until becoming only a square icon button
+      - regroup buttons into 3 dot dropdown menu
+      - All all other same on a single row
 
-1. Replace :
-   "Nekroz is blue Ritual / Toolbox / Anti-Extra Deck."
-   =>
-   "Nekroz is Blue Archetype based on Ritual Creatures and Ritual Summon. Every Ritual creature . Nekroz concentrate an extreme amount of Search effect making it a extremely consistent in games. You have 3 category of cards :
+## http://localhost:4201/archetypes
 
-- Ritual Creature that each can be discarded for an effect and have a on-field effect
-- Non-Ritual Creatures aimed to be tributed for value. They all have On Sacrifice effect Triggered by Ritual Sacrifices.
-- Non-Creature Ritual Summon Spell that allow to perform the Ritual Summon.
-  This archetype is aimed for midrange grindy games using the power of Trishula to exile opponents resources and Valkyrus to prevent lethal damages.
-  "
-
-## http://localhost:4201/archetypes/burning-abyss/
-
-1. Replace :
-   "Burning Abyss is black Aristocrats / Graveyard / Value."
-   =>
-   "Burning Abyss is a black aristocrats based archetype. Send Burning Abyss creatures to the Grave by any means and get rewarded with free effects. Once per turn, you can play once for free 1 Burning Abyss creature from your hand. Quickly swarm your opponent with cheap and dispensable creatures."
-
-## Cards Page
-
-1. For http://localhost:4201/cards/ash-blossom-and-joyous-spring/
-   I see in card text : "Counter(Cancel a spell or ability on the Stack; it resolves for no effect and goes to the Grave.)"
-   Counter is native MTG keyword and does not need explanation text. Remove and update tests accordingly
-
-## Nav
-
-1. Replace "Essentia" brand text by wordmark logo
-
-2. Move "rail-toggle" for nav collapse inside nav. duplicate to add same button to bottom of nav
-   When collapse, show current top and bottom
-
-3. When nav is collapsed, brand should still be visible.
-   Best is probably to give top part of nav to header and integrate brand directly into header
-
-## Docs & Blog
-
-1. On enter Docs & Blog pages, migrate "reading-rail docs-rail" content to nav.
-   Remove archetype redirections to put instead menu to select docs / blog.
-   Delete current "reading-rail docs-rail" section.
-   Keep current nav style for migration.
-   Extends "reading-body docs-body" to take new free space left.
-
-2. Add return to top page button feature at bottom of the page when able to scroll up.
-   Must be bottom right of page,
-
-3. Generate config file that i can manually edit to define order and sections of docs and blog articles in reading-rail docs-rail
+1. I want the text and image in catalog-hero section to be a bit more centered on the row. Either add padding for each or a justify something that help reducing a bit the space between the 2. Keep their current size.
+2. Remove Hero image on mobile size (when everything is placed on 1 column and Title on page + description is placed before hero-image)

@@ -23,7 +23,7 @@ card:
 	rarity: common
 	rule_text:
 		<i-auto>(1 - Triggered Hard Linked)</i-auto> <b>Flip</b> — <b>Target</b> 1 <i-auto>“Shaddoll”</i-auto> Creature in Grave; <b>Reanimate</b> the target face down.
-		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Reanimate</b> Falco face down.
+		<i-auto>(2 - Triggered Hard Linked)</i-auto> <b>On Send Grave by Effect</b> — <b>Reanimate</b> <i-auto>“Falco”</i-auto> face down.
 	flavor_text: <i-flavor></i-flavor>
 	power: 1
 	toughness: 3

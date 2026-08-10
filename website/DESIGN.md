@@ -99,7 +99,10 @@ navigation is rendered by the same left rail that carries the catalog
 everywhere else, which switches to a `Docs | Blog` switcher plus the article
 list (`docs/ADR/proposed/0025-catalog-rail-owns-reading-navigation.md`). The
 prose panel therefore spans the full reading column, and the reading surface
-never touches chrome.
+never touches chrome. The rail carries a single collapse control: a 2.25rem
+square at its bottom-right corner, identical expanded or collapsed.
+
+**Rail tint.** Each archetype entry in the rail wears a 14% wash of its own accent, lifting to 32% over `--sleeve` on hover, focus and current page. Non-archetype has no section colour and stays on the rail's black.
 
 ## Logo
 
@@ -120,7 +123,15 @@ header, in-page badge. They are never used together in one region.
 **The One Home Rule.** The mark lives in the site header (`.compact-brand`
 inside `.site-header`) and nowhere else in the shell. The left rail carries no
 brand of any kind, so collapsing or hiding the rail can never take the
-identity off the page; the header is always present, at every width.
+identity off the page; the header is always present, at every width. The
+header is the full width of the viewport and paints above the rail; the rail
+starts at the header's bottom border. The header sheds width in three ordered
+stages rather than all at once (ADR 0029): at `64rem` the labels shorten —
+`Learn` / `Blog` / `Decks` read inline in the row — at `56rem` Find gives up its
+reserved width and becomes a square icon button, and only at `44rem` do the
+section links fold into the `⋯` popover, leaving the mark and three icon
+controls — Catalog, ⋯ sections, Find — with every label hidden by CSS and
+preserved as an `aria-label`.
 
 **The Untouched Mark Rule.** The mark is never recoloured, tinted, outlined,
 rotated, stretched, given a drop shadow, or placed on an archetype accent

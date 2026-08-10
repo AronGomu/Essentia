@@ -1,7 +1,7 @@
 # ADR 0015 — Keyword ruling text lives in the website registry
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md` (T18)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass.md` (T18)
 - Scope: keyword taxonomy, website content build, card page rendering
 
 ## Context

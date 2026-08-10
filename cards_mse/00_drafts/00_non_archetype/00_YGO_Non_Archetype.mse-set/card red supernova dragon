@@ -18,7 +18,7 @@ card:
 	rule_text:
 		<i>3 Tuner + 1+ non-Tuner Synchro</i>
 		<b><kw-a>Indestructible</kw-a></b>, <b>Flying</b>
-		<i-auto>(1 - Static)</i-auto> Red Supernova Dragon gains +1/+0 for each Tuner in Grave.
+		<i-auto>(1 - Static)</i-auto> <i-auto>Red Supernova Dragon</i-auto> gains +1/+0 for each Tuner in Grave.
 		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>On Opponent Activation or Attack</b> — You may <b>Exile</b> this card, and if you do, <b>Exile</b> all nonland permanents from your opponents’ Fields. At your next end step, <b>Summon</b> this card from Exile.
 	flavor_text: <i-flavor></i-flavor>
 	power: 10

@@ -1,7 +1,7 @@
 # ADR 0025 — The catalog rail owns reading navigation; the brand belongs to the header
 
 - Date: 2026-08-08
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2.md` (T7, T8, T10)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_08_website-feedback-pass-2.md` (T7, T8, T10)
 - Scope: site chrome, navigation, docs and blog page shells
 - Related: [0020 — Reading surfaces for docs and blog](0020-reading-surfaces-for-docs-and-blog.md), [0022 — Essentia logo and icon set](0022-essentia-logo-and-icon-set.md)
 

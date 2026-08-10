@@ -7,8 +7,9 @@
     "node": ">=24 <25"
   },
   "scripts": {
-    "dev": "node scripts/build-content.mjs && astro dev",
-    "build": "node scripts/build-content.mjs && astro build && node scripts/harden-csp.mjs && node scripts/scan-dist.mjs && node scripts/check-404.mjs && node scripts/check-chrome.mjs",
+    "dev": "npm run cards:rebuild && node scripts/build-content.mjs && astro dev",
+    "cards:rebuild": "\"${PYTHON:-python}\" ../.script/rebuild_open_packages.py",
+    "build": "node scripts/build-content.mjs && astro build && node scripts/harden-csp.mjs && node scripts/scan-dist.mjs && node scripts/check-404.mjs && node scripts/check-chrome.mjs && node scripts/check-header-row.mjs",
     "preview": "astro preview",
     "check": "node scripts/build-content.mjs && astro check",
     "lint": "eslint .",

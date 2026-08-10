@@ -31,8 +31,22 @@ for (const file of files) {
       "style-src 'self' 'unsafe-inline'",
       `style-src 'self' ${[...new Set(styles)].join(' ')}`.trim(),
     );
-  if (html.includes("'unsafe-inline'"))
-    throw new Error(`${file}: CSP hardening incomplete`);
+  // The rewrites above only consume `'unsafe-inline'`, so guarding on that
+  // keyword alone left an opening: authoring
+  // `style-src 'self' 'unsafe-inline' 'unsafe-hashes'` hardens to
+  // `style-src 'self' 'sha256-…' 'unsafe-hashes'` and passes. That is exactly
+  // the tempting way to "fix" a blocked per-element `style` attribute, and it
+  // re-opens the attribute channel this hardening exists to close.
+  // `'unsafe-eval'` is the script-src equivalent. Name all three.
+  const weakened = [
+    "'unsafe-inline'",
+    "'unsafe-hashes'",
+    "'unsafe-eval'",
+  ].filter((keyword) => html.includes(keyword));
+  if (weakened.length)
+    throw new Error(
+      `${file}: CSP hardening incomplete — ${weakened.join(', ')}`,
+    );
   await writeFile(file, html);
 }
 process.stdout.write(

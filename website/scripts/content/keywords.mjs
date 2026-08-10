@@ -17,7 +17,14 @@ const CATEGORIES = new Set([
   'action',
   'event',
   'ability',
+  // Rides in the numbered italic ability prefix, never in bold. Its own
+  // category because `extractAbilityMetadata` may only resolve prefix tokens
+  // against these entries.
+  'ability-metadata',
   'cost-procedure',
+  // Printed in the card's super type line. Own category for the same reason:
+  // `Ritual Summon Sorcery` must not resolve the `Summon` action keyword.
+  'super-type',
   'archetype',
 ]);
 
@@ -170,4 +177,72 @@ export function extractKeywords(ruleText, registry, source) {
     }
   }
   return [...found].sort((a, b) => a.localeCompare(b));
+}
+
+/**
+ * The numbered italic ability prefix — `<i-auto>(1 - Activated <kw-a>Flash</kw-a>
+ * Soft)</i-auto>`. `docs/rules/TEMPLATING.md` defines the shape and
+ * `.script/lint_mse_card_style.py` (MSE003/MSE015) enforces it: metadata is
+ * never bold, so `extractKeywords` cannot see it. `(no target)` and other
+ * italic asides carry no `N - ` head and are not prefixes.
+ */
+const ABILITY_PREFIX_RE = /<i-auto>\(\s*\d+\s*-\s*([\s\S]*?)\)<\/i-auto>/g;
+
+/** Registry terms of `category`, resolved from whitespace-separated tokens. */
+function resolveTokens(tokens, registry, category) {
+  const found = new Set();
+  for (const token of tokens) {
+    const term = normalizeKeyword(token);
+    if (!term) continue;
+    const entry = registry.get(term);
+    // Lenient on purpose, unlike the bold taxonomy: `Flash`, `Sorcery` and
+    // `Ritual` are documented metadata with no ruling file, and `Instant`,
+    // `Creature` and friends are super types with none either. Failing here
+    // would make every card in the set unbuildable for a missing hover ruling.
+    if (entry?.category === category) found.add(term);
+  }
+  return found;
+}
+
+/**
+ * Ability metadata invoked by this card's rule text, deduped and sorted.
+ * `Hard Linked` is two registry terms; the linter keeps it as one printed
+ * token, but the user authored `Hard` and `Linked` as separate rulings.
+ */
+export function extractAbilityMetadata(ruleText, registry) {
+  const found = new Set();
+  for (const match of (ruleText ?? '').matchAll(ABILITY_PREFIX_RE)) {
+    const tokens = match[1]
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ');
+    for (const term of resolveTokens(tokens, registry, 'ability-metadata'))
+      found.add(term);
+  }
+  return [...found].sort((a, b) => a.localeCompare(b));
+}
+
+/**
+ * Super-type keywords printed on this card, deduped and sorted. `supertypes`
+ * is the closed token list `fields.mjs parseSupertypes()` already produced.
+ */
+export function extractSupertypeKeywords(supertypes, registry) {
+  return [...resolveTokens(supertypes ?? [], registry, 'super-type')].sort(
+    (a, b) => a.localeCompare(b),
+  );
+}
+
+/**
+ * Every keyword one card version invokes, from all three printed sites: bold
+ * rule text, the italic ability prefix, and the super type line. One list, so
+ * `previewKeywordsFor()` and the hover box need no new wiring.
+ */
+export function cardKeywords({ ruleText, supertypes }, registry, source) {
+  const terms = new Set([
+    ...extractKeywords(ruleText, registry, source),
+    ...extractAbilityMetadata(ruleText, registry),
+    ...extractSupertypeKeywords(supertypes, registry),
+  ]);
+  return [...terms].sort((a, b) => a.localeCompare(b));
 }

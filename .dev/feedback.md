@@ -8,7 +8,10 @@ Status: open | done
 -->
 
 ## 2026-08-07 — website feedback batch 2
-Status: open
+Status: done — all 23 items (Home 1-12, Cards 1-3, Archetype 1-5, Footer, Card Hover, Page
+Transition) landed through `PLAN_2026_08_07_website-feedback-pass` and
+`PLAN_2026_08_07_website-feedback-pass-2`/`PLAN_2026_08_08_website-feedback-pass-2`. A deep
+scope-drift reviewer walked all 23 against the built output and confirmed 0 silently missing.
 
 # HOME PAGE UPDATES
 

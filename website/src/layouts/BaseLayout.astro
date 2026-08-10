@@ -29,10 +29,11 @@ const {
 } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const navSections = catalog.sections.map(
-  ({ slug, label, kind, route, count }) => ({
+  ({ slug, label, kind, accent, route, count }) => ({
     slug,
     label,
     kind,
+    accent,
     route,
     count,
   }),
@@ -131,15 +132,6 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <Navigation
-      client:load
-      sections={navSections}
-      currentPath={Astro.url.pathname}
-      {base}
-      mode={readingKind ? 'reading' : 'catalog'}
-      {readingKind}
-      {readingGroups}
-    />
     <header class="site-header">
       <a class="compact-brand" href={base}>
         <picture>
@@ -157,21 +149,51 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
           />
         </picture>
       </a>
+      <!-- The hamburger is a header item, not a floating button: the brand must own the top-left corner at every width. Astro's astro-island is display:contents, so the island is transparent to this flex row. -->
+      <Navigation
+        client:load
+        sections={navSections}
+        currentPath={Astro.url.pathname}
+        {base}
+        mode={readingKind ? 'reading' : 'catalog'}
+        {readingKind}
+        {readingGroups}
+      />
       {breadcrumb && <Breadcrumb items={breadcrumb} />}
       <nav class="utility-nav" aria-label="Sections">
-        <a
-          href={`${base}docs/`}
-          aria-current={section === 'docs/' ? 'page' : undefined}
-          >Learn about Essentia</a
+        <!-- Native popover: no island, no script, and it survives the page CSP.
+             Above 44rem the author `display` on `.utility-menu` beats the UA
+             `[popover]:not(:popover-open) { display: none }`, so the three
+             links simply lay out inline and the ⋯ trigger is hidden. -->
+        <button
+          class="utility-more"
+          popovertarget="utility-menu"
+          aria-label="More sections"><span aria-hidden="true">⋯</span></button
         >
-        <a
-          href={`${base}blog/`}
-          aria-current={section === 'blog/' ? 'page' : undefined}>Blog</a
-        >
-        <a
-          href={`${base}decks/`}
-          aria-current={section === 'decks/' ? 'page' : undefined}>Decks</a
-        >
+        <div class="utility-menu" id="utility-menu" popover>
+          <a
+            href={`${base}docs/`}
+            aria-label="Learn about Essentia"
+            aria-current={section === 'docs/' ? 'page' : undefined}
+            ><span class="label-full">Learn about Essentia</span><span
+              class="label-short">Learn</span
+            ></a
+          >
+          <a
+            href={`${base}blog/`}
+            aria-current={section === 'blog/' ? 'page' : undefined}
+            ><span class="label-full">Blog</span><span class="label-short"
+              >Blog</span
+            ></a
+          >
+          <a
+            href={`${base}decks/`}
+            aria-current={section === 'decks/' ? 'page' : undefined}
+            ><span class="label-full">Decks</span><span class="label-short"
+              >Decks</span
+            ></a
+          >
+        </div>
       </nav>
       <FindPalette client:load entries={findEntries} {base} />
     </header>
@@ -199,5 +221,44 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       </p>
       <CardQualityUpgrade />
     </footer>
+    <script is:inline>
+      // 400px is the narrowest supported width and the header must hold one
+      // row there. A wrap is reported, never thrown: the page stays usable,
+      // the regression is visible in the console and in `npm run build`.
+      (() => {
+        const check = () => {
+          if (window.innerWidth > 400) return;
+          const header = document.querySelector('.site-header');
+          if (!header) return;
+          const items = header.querySelectorAll(
+            '.compact-brand, .drawer-trigger, .breadcrumb, .utility-nav, .search-trigger',
+          );
+          // The compact header's controls have different authored heights
+          // (T5: 32px brand, ~36-44px drawer trigger, ~39px utility-more,
+          // ~48-49px search trigger) and are vertically centered, so their
+          // `top` differs by up to ~17px even on one visual row. Cluster
+          // sorted tops instead of comparing exact rounded values: a gap
+          // bigger than one row's own height variance means a real wrap.
+          const tops = [];
+          for (const item of items) {
+            if (!item.getClientRects().length) continue;
+            tops.push(item.getBoundingClientRect().top);
+          }
+          tops.sort((a, b) => a - b);
+          let rowCount = tops.length ? 1 : 0;
+          for (let i = 1; i < tops.length; i++) {
+            if (tops[i] - tops[i - 1] > 20) rowCount++;
+          }
+          const rows = { size: rowCount };
+          if (rows.size > 1) {
+            console.warn(
+              `[essentia] site-header wraps to ${rows.size} rows at ${window.innerWidth}px`,
+            );
+          }
+        };
+        addEventListener('load', check);
+        addEventListener('resize', check);
+      })();
+    </script>
   </body>
 </html>

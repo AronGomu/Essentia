@@ -1,2 +1,0 @@
-## Review
-- **High:** `.agents/skills/update-rules/SKILL.md:18,55,73` — `apply_ready=true` declared but unused. Caller-supplied HTML always reaches “Open via `artifact`… Stop,” despite `.agents/skills/fix-mse-cards/SKILL.md:141` passing completed summary for immediate apply. Literal flow never validates decisions, applies rules, writes final ADR. Add explicit `apply_ready=true` → skip Phase 2 stop, enter Phase 3. Tests lack this dispatch assertion (`tests/test_update_rules_skill.py:99-111`).

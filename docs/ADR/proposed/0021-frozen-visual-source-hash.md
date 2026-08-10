@@ -1,7 +1,7 @@
 # ADR 0021 — Correct the MSE field parser, freeze the render-provenance hash input
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md` (T2)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass-2.md` (T2)
 - Scope: website content build, MSE source parsing, render provenance
 
 ## Context

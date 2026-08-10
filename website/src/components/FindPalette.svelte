@@ -123,8 +123,11 @@
   bind:this={trigger}
   on:click={open}
   aria-haspopup="dialog"
+  aria-label="Find"
 >
-  <span aria-hidden="true">⌕</span><span>Find</span><kbd>⌘ K</kbd>
+  <span aria-hidden="true">⌕</span><span class="label-full">Find</span><kbd
+    >⌘ K</kbd
+  >
 </button>
 
 <dialog

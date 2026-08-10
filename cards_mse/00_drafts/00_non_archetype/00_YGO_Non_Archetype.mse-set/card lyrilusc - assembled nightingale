@@ -17,9 +17,9 @@ card:
 	rarity: rare
 	rule_text:
 		<i>2 Creatures MV 0</i>
-		<i-auto>(1 - Static)</i-auto> “Lyrilusc” can attack 1 additional time each combat for each material attached to it.
-		<i-auto>(2 - Static)</i-auto> “Lyrilusc” gets +1/+1 for each material attached to it.
-		<i-auto>(3 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Detach 1</b>; “Lyrilusc” Creatures you control gain <b><kw-a>Indestructible</kw-a></b> to end turn.
+		<i-auto>(1 - Static)</i-auto> <i-auto>“Lyrilusc”</i-auto> can attack 1 additional time each combat for each material attached to it.
+		<i-auto>(2 - Static)</i-auto> <i-auto>“Lyrilusc”</i-auto> gets +1/+1 for each material attached to it.
+		<i-auto>(3 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Detach 1</b>; <i-auto>“Lyrilusc”</i-auto> Creatures you control gain <b><kw-a>Indestructible</kw-a></b> to end turn.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 1

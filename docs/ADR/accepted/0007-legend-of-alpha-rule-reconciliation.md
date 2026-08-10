@@ -57,6 +57,7 @@ Two HTML decision rounds resolved exact semantics. No MSE normalization was requ
   - It does not occur if this Creature leaves combat before dealing or receiving combat damage.
 - Rationale: `After` marks post-resolution timing, distinct from declaration-time `On Attack or Block`.
 - Impact: Downerd Magician detaches after combat damage, not when attack/block is declared.
+- Later amendment: the single `After Attack or Block` token was split into the separately documented `After Attack` and `After Block`. The timing above is unchanged; the printed form is now `**After Attack** or **After Block**`, with the connector plain.
 
 ### D8 — Optional owner Sideboard replacement
 

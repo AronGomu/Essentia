@@ -29,7 +29,7 @@ ACTIVE_EXPECTED_CARDS = {
         "casting_cost: B",
         "sub_type: <word-list-race-en>Bird</word-list-race-en>",
         "(1 - Activated",
-        "<b>Target</b> 1 card in Grave; <b>Exile</b> it",
+        "<b>Target</b> 1 card in any Grave; <b>Exile</b> it",
     ),
     "card effect veiler": (
         "name: Effect Veiler",

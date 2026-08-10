@@ -55,7 +55,9 @@ Timing may be omitted when defined keyword fixes it.
 
 Complete documented invocation is bold. Unknown bold phrase is invalid. Evergreen Magic abilities appear bold on own line, not numbered passive ability, after cost/casting lines before numbered abilities.
 
-Bold atomic compounds including arguments/connectors: **Detach 1 and Mill 3**, **Exile 1 Plant from Grave**, **Protection from Creatures**, **Ward 2**.
+Bold atomic compounds including arguments: **Exile 1 Plant from Grave**, **Protection from Creatures**, **Ward 2**. Two keywords joined by a connector stay separately bold, connector plain: **Detach 1** and **Mill 1-4**.
+
+A keyword quantity is a single value or an inclusive range. Both dash forms stand — **Mill 0–3** and **Mill 1-4** — and either bound may be X: **Detach X-2**.
 
 A numbered ability may consist solely of a documented archetype custom keyword when that keyword defines the complete effect. Bodyless base actions and event keywords remain invalid. Cards outside the owning archetype print the full effect.
 

@@ -1,7 +1,7 @@
 # ADR 0024 — Section intro prose is authored, not scraped
 
 - Date: 2026-08-08
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2.md` (T5)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_08_website-feedback-pass-2.md` (T5)
 - Scope: website content build, section hero pages, SEO description
 
 ## Context

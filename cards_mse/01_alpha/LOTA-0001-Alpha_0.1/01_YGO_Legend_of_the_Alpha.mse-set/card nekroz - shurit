@@ -5,7 +5,7 @@ card:
 	has_styling: false
 	notes: Source: docs/03_nekroz/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-03 00:13:02
+	time_modified: 2026-08-09 20:28:51
 	name: Nekroz - Shurit
 	casting_cost: U
 	image: mse_images/nekroz-shurit-image.png
@@ -16,8 +16,8 @@ card:
 	sub_type: <word-list-race-en>Warrior</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Static)</i-auto> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Shurit</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> can satisfy Ritual sacrifice of “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” alone.
-		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 “<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>” Creature.
+		<i-auto>(1 - Static)</i-auto> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words><i-auto>“Shurit”</i-auto></error-spelling:en_US:/magic.mse-game/dictionary/magic-words> satisfy Ritual cost of <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> alone.
+		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Sacrifice</b> — <b>Search</b> 1 <i-auto>“<error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Nekroz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words>”</i-auto> Creature.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 4

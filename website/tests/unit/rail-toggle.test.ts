@@ -14,12 +14,12 @@ const globalCss = readFileSync(
 );
 
 describe('rail toggle', () => {
-  it('renders two toggles', () => {
+  it('renders exactly one toggle', () => {
     const matches = navigationSource.match(/class="rail-toggle/g) ?? [];
-    expect(matches.length).toBe(2);
+    expect(matches.length).toBe(1);
   });
 
-  it('both toggles live inside the nav', () => {
+  it('the toggle lives inside the nav', () => {
     const navStart = navigationSource.indexOf('<nav id="desktop-catalog"');
     const navEnd = navigationSource.indexOf('</nav>');
     expect(navStart).toBeGreaterThan(-1);
@@ -31,11 +31,30 @@ describe('rail toggle', () => {
     while ((match = re.exec(navigationSource)) !== null) {
       toggleIndexes.push(match.index);
     }
-    expect(toggleIndexes.length).toBe(2);
+    expect(toggleIndexes.length).toBe(1);
     for (const index of toggleIndexes) {
       expect(index).toBeGreaterThan(navStart);
       expect(index).toBeLessThan(navEnd);
     }
+  });
+
+  it('the top toggle is gone', () => {
+    expect(navigationSource).not.toMatch(/rail-toggle--top/);
+    expect(globalCss).not.toMatch(/rail-toggle--top/);
+  });
+
+  it('the toggle is a small square at the rail edge', () => {
+    const block = globalCss.match(/\.rail-toggle\s*\{[^}]*\}/)?.[0] ?? '';
+    expect(block).toMatch(/width:\s*2\.25rem/);
+    expect(block).toMatch(/height:\s*2\.25rem/);
+    expect(block).toMatch(/align-self:\s*flex-end/);
+    expect(block).not.toMatch(/align-self:\s*stretch/);
+  });
+
+  it('the toggle sits at the bottom of the rail', () => {
+    const block =
+      globalCss.match(/\.rail-toggle--bottom\s*\{[^}]*\}/)?.[0] ?? '';
+    expect(block).toMatch(/margin-top:\s*auto/);
   });
 
   it('the collapsed rail keeps a visible strip', () => {

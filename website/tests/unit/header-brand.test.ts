@@ -27,25 +27,48 @@ const START_LIKE = new Set([
   'start',
   'left',
   'normal',
+  // `space-between` puts the *first* item at the start edge, so it belongs
+  // here — and only here. It also puts the **last** item at the end edge,
+  // which is why it is no longer in `END_LIKE`: the last header child is
+  // `.search-trigger`, not `.utility-nav`, so `space-between` would leave the
+  // utility nav floating mid-row while that test stayed green.
   'space-between',
 ]);
 /** …and those that pack the last child against the end. */
-const END_LIKE = new Set(['flex-end', 'end', 'right', 'space-between']);
+const END_LIKE = new Set(['flex-end', 'end', 'right']);
 
 const justify = (width: number) =>
   resolve(globalCss, '.site-header', 'justify-content', width) ?? 'normal';
 
+/** A flex item's `order`, which decides visual position before DOM order does. */
+const order = (selector: string, width: number) =>
+  Number.parseInt(resolve(globalCss, selector, 'order', width) ?? '0', 10);
+
 /**
- * Is the first child of `.site-header` pinned to the left at `width`, given
- * that the header renders exactly `children` in that order? A flex container
- * anchors its first child left when it packs from the start, when the first
- * child pushes everything away with `margin-right: auto`, or when some *later*
- * child pulls itself right with `margin-left: auto`.
+ * Is the wordmark — `children[0]` in DOM order — actually painted at the left
+ * edge of `.site-header` at `width`?
+ *
+ * The previous version returned `true` the moment `justify-content` was
+ * start-like, which `.site-header` is authored to be, so it never looked at
+ * the children at all: `.compact-brand { margin-left: auto }` (the documented
+ * flush-right-wordmark bug) and `.compact-brand { order: 9 }` both kept it
+ * green. Both of those are now caught, in this order:
+ *
+ * 1. `order` reshuffles flex items before anything else does, so a child with
+ *    a lower `order` paints first no matter what the DOM says.
+ * 2. An auto margin on the brand's own left edge absorbs the free space and
+ *    pushes it right, whatever the justification.
+ * 3. Only then does packing decide: start-like justification anchors it, and
+ *    otherwise it takes `margin-right: auto` on the brand, or
+ *    `margin-left: auto` on some later child, to hold it at the edge.
  */
 function brandHoldsTheLeftEdge(children: string[], width: number): boolean {
-  const [first, ...rest] = children;
+  const [brand, ...rest] = children;
+  const lowestOrder = Math.min(...children.map((child) => order(child, width)));
+  if (order(brand!, width) > lowestOrder) return false;
+  if (resolve(globalCss, brand!, 'margin-left', width) === 'auto') return false;
   if (START_LIKE.has(justify(width))) return true;
-  if (resolve(globalCss, first!, 'margin-right', width) === 'auto') return true;
+  if (resolve(globalCss, brand!, 'margin-right', width) === 'auto') return true;
   return rest.some(
     (child) => resolve(globalCss, child, 'margin-left', width) === 'auto',
   );
@@ -93,12 +116,20 @@ describe('header brand', () => {
   });
 
   it('the brand holds the left edge on the home page, at every width', () => {
-    // The home page header renders brand → utility nav → Find, with no
-    // breadcrumb between them. An auto margin parked on `.breadcrumb` does
-    // nothing here, which is the exact shape of the bug.
+    // The home page header renders brand → hamburger → utility nav → Find,
+    // with no breadcrumb between them. An auto margin parked on `.breadcrumb`
+    // does nothing here, which is the exact shape of the bug.
     for (const width of WIDTHS) {
       expect(
-        brandHoldsTheLeftEdge(['.compact-brand', '.utility-nav'], width),
+        brandHoldsTheLeftEdge(
+          [
+            '.compact-brand',
+            '.drawer-trigger',
+            '.utility-nav',
+            '.search-trigger',
+          ],
+          width,
+        ),
         `home page at ${width}px`,
       ).toBe(true);
     }
@@ -108,7 +139,13 @@ describe('header brand', () => {
     for (const width of WIDTHS) {
       expect(
         brandHoldsTheLeftEdge(
-          ['.compact-brand', '.breadcrumb', '.utility-nav'],
+          [
+            '.compact-brand',
+            '.drawer-trigger',
+            '.breadcrumb',
+            '.utility-nav',
+            '.search-trigger',
+          ],
           width,
         ),
         `inner page at ${width}px`,

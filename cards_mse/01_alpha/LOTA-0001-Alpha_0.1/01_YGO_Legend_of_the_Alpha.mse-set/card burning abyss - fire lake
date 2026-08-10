@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Trap Instant</word-list-type-en>
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Sacrifice</b> 2 “Burning Abyss” Creatures and <b>Target</b> 0–3 nonland permanents; <b>Destroy</b> them.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Sacrifice</b> 2 <i-auto>“Burning Abyss”</i-auto> Creatures and <b>Target</b> 0–3 nonland permanents; <b>Destroy</b> them.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 011/050 C
 	card_code_text_2: 011/050 C

@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Tuner Creature</word-list-type-en>
 	sub_type: <word-list-race-en>Wizard</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: common
-	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> Effect <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Veiler</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> and <b>Target</b> 1 Creature; to end turn, it loses all abilities, and <b>Counter</b> all its abilities on Stack.
+	rule_text: <i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Discard</b> <i-auto>Effect <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Veiler</error-spelling:en_US:/magic.mse-game/dictionary/magic-words></i-auto> and <b>Target</b> 1 Creature; to end turn, it loses all abilities, and <b>Counter</b> all its abilities on Stack.
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 1

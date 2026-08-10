@@ -1,7 +1,7 @@
 # ADR 0026 — Docs and blog ordering is configuration, not code
 
 - Date: 2026-08-08
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2.md` (T9)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_08_website-feedback-pass-2.md` (T9)
 - Scope: website content build, docs corpus, blog corpus, reading navigation
 - Related: [0025 — The catalog rail owns reading navigation](0025-catalog-rail-owns-reading-navigation.md)
 

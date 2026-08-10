@@ -1,7 +1,7 @@
 # ADR 0016 — Archetype sections hold members and linked support cards only
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass.md` (T15, T21)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass.md` (T15, T21)
 - Scope: identity registry, website section membership, card page relatedness
 
 ## Context

@@ -86,7 +86,7 @@ class BurningAbyssCardTests(unittest.TestCase):
             ROOT
             / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set"
             / "card aa zeus sky thunder": (
-                "<i>2 creatures MV 4</i>",
+                "<i>2 Creatures MV 4</i>",
                 "Xyz Alternative Cost",
             ),
         }

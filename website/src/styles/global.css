@@ -210,13 +210,12 @@
 }
 
 @layer layout {
+  /* Full-width menubar: it outranks the rail, so no transform/filter/will-change may be added here — the fixed rail is nested inside it. */
   .site-header {
     position: sticky;
     top: 0;
-    z-index: var(--z-sticky);
+    z-index: calc(var(--z-sticky) + 2);
     min-height: var(--header);
-    margin-left: var(--sidebar);
-    transition: margin-left 220ms var(--ease-out);
     display: flex;
     align-items: center;
     /* The wordmark is the first child and holds the left edge on every page.
@@ -252,7 +251,7 @@
     gap: 0.35rem;
     margin-left: auto;
   }
-  .utility-nav a {
+  .utility-menu a {
     min-height: 2.75rem;
     display: inline-flex;
     align-items: center;
@@ -261,10 +260,44 @@
     padding: 0.5rem 0.8rem;
     text-decoration: none;
   }
-  .utility-nav a:hover,
-  .utility-nav a[aria-current='page'] {
+  .utility-menu a:hover,
+  .utility-menu a[aria-current='page'] {
     border-color: var(--accent);
     background: var(--sleeve);
+  }
+  /* Author `display` beats the UA's `[popover]:not(:popover-open)` rule, so
+     above the phone breakpoint the menu is just a flex row of links and the
+     popover machinery is inert. */
+  .utility-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    position: static;
+    inset: auto;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    color: inherit;
+  }
+  .utility-more {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.45rem;
+    height: 2.45rem;
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+  }
+  .label-short {
+    display: none;
   }
   .breadcrumb ol {
     display: flex;
@@ -354,7 +387,7 @@
   }
   .desktop-catalog {
     position: fixed;
-    inset: 0 auto 0 0;
+    inset: var(--header) auto 0 0;
     z-index: var(--z-sticky);
     width: var(--sidebar);
     display: flex;
@@ -374,8 +407,14 @@
   .mobile-drawer li + li {
     margin-top: 0.2rem;
   }
+  /* --nav-tint is set per <li> by Navigation.svelte for archetype sections only; unset it falls back to transparent (rest) and --sleeve (hover), which is exactly the pre-tint look. */
   .desktop-catalog li a,
   .mobile-drawer li a {
+    background: color-mix(
+      in oklch,
+      var(--nav-tint, transparent) 14%,
+      transparent
+    );
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -385,9 +424,16 @@
     text-decoration: none;
   }
   .desktop-catalog li a:hover,
+  .desktop-catalog li a:focus-visible,
   .desktop-catalog li a[aria-current='page'],
-  .mobile-drawer li a:hover {
-    background: var(--sleeve);
+  .mobile-drawer li a:hover,
+  .mobile-drawer li a:focus-visible,
+  .mobile-drawer li a[aria-current='page'] {
+    background: color-mix(
+      in oklch,
+      var(--nav-tint, var(--sleeve)) 32%,
+      var(--sleeve)
+    );
     color: var(--cardstock);
   }
   .desktop-catalog li a[aria-current='page']::before {
@@ -399,15 +445,6 @@
   .desktop-catalog small,
   .mobile-drawer small {
     color: var(--silver-ink);
-  }
-  .nav-group {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border: 0;
-    background: transparent;
-    font-weight: 700;
-    padding-inline: 0.65rem;
   }
   .nav-label {
     color: var(--silver-ink);
@@ -438,6 +475,14 @@
   }
   .drawer-trigger {
     display: none;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+    padding: 0.5rem 0.8rem;
   }
   .mobile-drawer {
     width: min(92vw, 26rem);
@@ -650,7 +695,7 @@
   }
   .tile-badge {
     position: absolute;
-    top: 0.9rem;
+    top: 2rem;
     right: 0.9rem;
     z-index: 2;
     background: var(--accent);
@@ -787,10 +832,22 @@
     padding: 0.25rem 0.55rem;
     white-space: nowrap;
   }
+  /* The prose and the art meet nearer the middle of the row than they used to,
+     and they do it *without changing size*. Those two pull against each other:
+     the tracks are `fr`, so a smaller gap is handed straight back to them and
+     both columns grow. So the row goes on holding the gutter it held before —
+     `--hero-track-inset` is the old `clamp(2rem, 6vw, 7rem)` — and spends the
+     difference as symmetric padding instead. The tracks resolve against the
+     same width as before (656px + 393.6px at a 1440px viewport with the rail
+     expanded), the visible gutter more than halves, and the pair reads as
+     centred because the padding is what pushed them inwards. */
   .catalog-hero {
+    --hero-track-inset: clamp(2rem, 6vw, 7rem);
+    --hero-gutter: clamp(1.5rem, 2.5vw, 3rem);
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-    gap: clamp(2rem, 6vw, 7rem);
+    gap: var(--hero-gutter);
+    padding-inline: calc((var(--hero-track-inset) - var(--hero-gutter)) / 2);
     align-items: center;
     border-bottom: 1px solid var(--ruleline);
     padding-block: var(--space-2) var(--space-4);
@@ -1058,46 +1115,36 @@
     display: none;
   }
   .drawer-trigger {
-    position: fixed;
-    z-index: calc(var(--z-sticky) + 1);
-    top: 0.8rem;
-    left: 1rem;
     display: inline-flex;
-    gap: 0.4rem;
   }
-  .site-header,
   main,
   .site-footer {
     margin-left: 0;
   }
-  /* No `justify-content` override here: it used to be `space-between`, which
-     masked the flush-right wordmark below 64rem and hid the bug on phones. */
-  .site-header {
-    padding-left: 8.8rem;
-  }
   .catalog-hero {
     grid-template-columns: 1fr;
+    /* One column has no gutter to compensate for, so the hero returns to the
+       shell edges and lines up with the gallery underneath it. */
+    padding-inline: 0;
   }
+  /* The feedback stated this width as a layout condition — "when everything is
+     placed on 1 column and Title on page + description is placed before
+     hero-image". That is this breakpoint, not 44rem: from here down the prose
+     stacks above a square of art that costs a whole viewport of scrolling
+     before the first card. The stacked sizing below stays authored so the art
+     is laid out correctly the moment anything shows it again. */
   .catalog-hero-art {
+    display: none;
     max-width: 24rem;
     margin-inline: auto;
   }
 }
 
 @media (max-width: 44rem) {
-  .site-header {
-    padding-left: 7.8rem;
-  }
   /* The letter mark is square (64×64), so both axes are stated outright. */
   .compact-brand img {
     height: 2rem;
     width: 2rem;
-  }
-  .search-trigger {
-    min-width: 0;
-  }
-  .search-trigger kbd {
-    display: none;
   }
   .site-footer {
     flex-direction: column;
@@ -1617,6 +1664,52 @@ html {
   }
 }
 
+/* The header sheds width in three ordered stages, not one.
+   `feedback.md` 8.6: "first remove 'about Essentia'; second reduce width of
+   'Find' input up until becoming only a square icon button; regroup buttons
+   into 3 dot dropdown menu; all other same on a single row." Stated as an
+   ordering, so it has to be authored as one — a single breakpoint that fires
+   all three at once means the shortened `Learn` of 8.2 only ever paints inside
+   the already-collapsed `⋯` popover, where width is not scarce, and the header
+   never actually renders it.
+
+   Each stage only ever *adds* to the one above it, so the ≤44rem stage still
+   resolves to exactly what T5 shipped. */
+
+/* Stage 1 — short labels. This is the rail→drawer breakpoint on purpose: from
+   here down `.desktop-catalog` is replaced by a `.drawer-trigger`, so the
+   header gains a control at the same width it loses a column of room. Measured
+   before this stage existed, `Learn about Essentia` and `Catalog` wrapped to
+   two and three lines inside their own buttons, the 160px wordmark was crushed
+   to 0, and inner pages overflowed the document by up to 95px. */
+@media (max-width: 64rem) {
+  .label-full {
+    display: none;
+  }
+  .label-short {
+    display: inline;
+  }
+}
+
+/* Stage 2 — Find gives up its reserved width and becomes a square icon button.
+   The `⌘ K` hint goes with it: the shortcut still works, but the glyph has no
+   room once the control is square.
+
+   56rem, not the 50rem this stage was first cut at: with Find still holding
+   `min(22rem, 45vw)`, inner pages ran out of room at 801-870px — the header
+   went to three rows, the breadcrumb collapsed to its 75px min-content and the
+   wordmark to 11.9px. 56rem is the widest boundary that leaves no such band
+   between stages 1 and 2. */
+@media (max-width: 56rem) {
+  .search-trigger {
+    min-width: 0;
+  }
+  .search-trigger kbd {
+    display: none;
+  }
+}
+
+/* Stage 3 — the section links regroup into the `⋯` popover. */
 @media (max-width: 44rem) {
   .site-header {
     flex-wrap: wrap;
@@ -1634,8 +1727,45 @@ html {
   .breadcrumb li:not(:last-child) {
     display: none;
   }
+  /* The last crumb is the only variable-width thing in the compact header.
+     Let it shrink and ellipsise rather than wrap the whole row. */
+  .breadcrumb {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .breadcrumb ol {
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  .breadcrumb li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   html[data-theme='spellbook'] body::after {
     left: 1rem;
+  }
+  .utility-more {
+    display: inline-flex;
+  }
+  .utility-menu {
+    display: none;
+    position: fixed;
+    inset: auto;
+    top: var(--header);
+    right: 0.5rem;
+    left: auto;
+    border: 1px solid var(--ruleline);
+    border-radius: var(--radius-sm);
+    background: var(--blackfoil-raised);
+    padding: 0.4rem;
+  }
+  .utility-menu:popover-open {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .drawer-trigger {
+    padding: 0.5rem;
   }
 }
 
@@ -1653,10 +1783,22 @@ html[data-catalog='collapsed'] .desktop-catalog {
 .desktop-catalog {
   transition: width 220ms var(--ease-out);
 }
+/* One control, bottom-right of the rail. The square keeps the same
+   footprint in the 3.25rem collapsed strip as in the 17rem rail, so the
+   button never moves or resizes when the rail toggles. */
 .rail-toggle {
-  align-self: stretch;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
   min-height: 2.25rem;
-  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--ruleline);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--cardstock);
+  padding: 0;
 }
 .rail-toggle--bottom {
   margin-top: auto;

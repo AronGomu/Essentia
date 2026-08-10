@@ -19,8 +19,8 @@ card:
 		<i>2+ Creatures <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1</i>
 		<b><error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Xyz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Alternative Cost</b> — 1 <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Xyz</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Creature <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>MV</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> 1. Its materials are transferred.
 		<b><kw-a>Trample</kw-a></b>
-		<i-auto>(1 - Static)</i-auto> <error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Downerd</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Magician gets +1/+0 for each material attached to it.
-		<i-auto>(2 - Triggered)</i-auto> <b>After Attack or Block</b> — <b>Detach 1</b>.
+		<i-auto>(1 - Static)</i-auto> <i-auto><error-spelling:en_US:/magic.mse-game/dictionary/magic-words>Downerd</error-spelling:en_US:/magic.mse-game/dictionary/magic-words> Magician</i-auto> gets +1/+0 for each material attached to it.
+		<i-auto>(2 - Triggered)</i-auto> <b>After Attack</b> or <b>After Block</b> — <b>Detach 1</b>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5
 	toughness: 1

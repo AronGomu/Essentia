@@ -29,6 +29,13 @@ const forbidden = [
   ['editor notes field', /\t+notes:\s/i],
   ['source map reference', /sourceMappingURL=/],
   ['unsafe inline CSP', /(?:script|style)-src[^;]*'unsafe-inline'/i],
+  // `'unsafe-hashes'` re-enables the per-element `style=""` attribute that the
+  // sha256 allowlist is there to block, and survives harden-csp.mjs's rewrite
+  // untouched; `'unsafe-eval'` is its script-src counterpart.
+  [
+    'unsafe-hashes or unsafe-eval CSP',
+    /(?:script|style)-src[^;]*'unsafe-(?:hashes|eval)'/i,
+  ],
 ];
 const issues = [];
 async function walk(directory) {

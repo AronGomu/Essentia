@@ -17,7 +17,7 @@ card:
 	rarity: rare
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
-		<i-auto>(1 - Triggered)</i-auto> If Goyo Guardian destroys 1 Creature an opponent controls, <b>Reanimate</b> that Creature tapped.
+		<i-auto>(1 - Triggered)</i-auto> If <i-auto>Goyo Guardian</i-auto> destroys 1 Creature an opponent controls, <b>Reanimate</b> that Creature tapped.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7
 	toughness: 5
