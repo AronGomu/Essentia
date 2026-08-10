@@ -4,7 +4,7 @@ const basePath = process.env.E2E_BASE_PATH?.replace(/\/$/, '') ?? '';
 const urlFor = (path: string) => `${basePath}${path}`;
 
 // The compact header's controls carry different authored heights (T5: 32px
-// brand, ~36-44px drawer trigger, ~39px utility-more, ~48-49px search
+// brand, ~36-44px drawer trigger, ~44-49px utility links, ~48-49px search
 // trigger) and are vertically centered, so `top` differs by up to ~17px
 // even within one visual row. Cluster sorted tops instead of an exact
 // rounded match, matching the tolerance used by BaseLayout's runtime guard.
@@ -69,22 +69,29 @@ test('the header holds one row at every stage boundary', async ({ page }) => {
   }
 });
 
-test('`Learn` renders inline in the header row above the `⋯` stage', async ({
-  page,
-}) => {
-  // Stage 1 and stage 2 both keep the links inline; only stage 3 folds them
-  // into the popover. This is the assertion T5 never had — it is why
-  // `feedback.md` 8.2's shortened label existed only inside the popover.
-  for (const width of [1024, 960, 896, 705]) {
+test('the three section links are inline at every width', async ({ page }) => {
+  // No stage folds the links into a popover any more — they stay inline in
+  // the header row from 1024px down to 400px.
+  for (const width of [1024, 960, 896, 705, 400]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(urlFor('/archetypes/burning-abyss/'));
     const learn = page.locator(
       '.utility-menu a[aria-label="Learn about Essentia"]',
     );
     await expect(learn, `@ ${width}px`).toBeVisible();
-    await expect(learn.locator('.label-short'), `@ ${width}px`).toBeVisible();
-    await expect(learn.locator('.label-full'), `@ ${width}px`).toBeHidden();
-    await expect(page.locator('.utility-more'), `@ ${width}px`).toBeHidden();
+    await expect(
+      page.locator('.utility-menu a[href$="/blog/"]'),
+      `@ ${width}px`,
+    ).toBeVisible();
+    await expect(
+      page.locator('.utility-menu a[href$="/decks/"]'),
+      `@ ${width}px`,
+    ).toBeVisible();
+    // Below 64rem `Learn` shows the short label; above it, the full one.
+    if (width < 1024) {
+      await expect(learn.locator('.label-short'), `@ ${width}px`).toBeVisible();
+      await expect(learn.locator('.label-full'), `@ ${width}px`).toBeHidden();
+    }
     // Inline in the header row, not floating in a popover over it.
     const boxes = await page.evaluate(() => {
       const header = document
@@ -101,6 +108,14 @@ test('`Learn` renders inline in the header row above the `⋯` stage', async ({
     expect(boxes.link.bottom, `@ ${width}px`).toBeLessThanOrEqual(
       boxes.header.bottom,
     );
+  }
+});
+
+test('no popover trigger exists', async ({ page }) => {
+  for (const width of [400, 705, 896, 1024]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(urlFor('/archetypes/burning-abyss/'));
+    expect(await page.locator('.utility-more').count(), `@ ${width}px`).toBe(0);
   }
 });
 
@@ -127,9 +142,8 @@ test('Find keeps its reserved width in stage 1 and squares off in stage 2', asyn
   expect(Math.abs(square.width - square.height)).toBeLessThanOrEqual(12);
   expect(square.width).toBeLessThan(wide.width / 4);
   await expect(page.locator('.search-trigger kbd')).toBeHidden();
-  // …and the section links have not folded away yet. That ordering is the
-  // whole point of 8.6.
-  await expect(page.locator('.utility-more')).toBeHidden();
+  // …and the section links stay inline — there is no fold-away stage any
+  // more. That ordering is the whole point of 8.6.
   await expect(
     page.locator('.utility-menu a[aria-label="Learn about Essentia"]'),
   ).toBeVisible();

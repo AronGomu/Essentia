@@ -79,6 +79,17 @@ describe('header-row constants track global.css', () => {
     },
   );
 
+  it('budget covers exactly the rendered controls', () => {
+    expect(HEADER_CONTROLS.map((control) => control.name)).toEqual([
+      'compact-brand',
+      'drawer-trigger',
+      'utility-learn',
+      'utility-blog',
+      'utility-decks',
+      'search-trigger',
+    ]);
+  });
+
   it('the budget is the sum of the CSS-derived widths, not of its own constants', () => {
     const controls = HEADER_CONTROLS.map(fromCss);
     const items = [...controls, fromCss(BREADCRUMB)];
@@ -110,13 +121,18 @@ describe('header-row', () => {
     const budget = headerRowBudget(400);
     expect(budget.fits).toBe(true);
     expect(budget.overflowPx).toBe(0);
-    expect(budget.contentPx).toBe(173.8);
+    expect(budget.contentPx).toBe(317.2);
+  });
+
+  it('fits at 400px with a breadcrumb', () => {
+    const budget = headerRowBudget(400, { withBreadcrumb: true });
+    expect(budget.fits).toBe(true);
   });
 
   it('the compact header fits 400px without one', () => {
     const budget = headerRowBudget(400, { withBreadcrumb: false });
     expect(budget.fits).toBe(true);
-    expect(budget.contentPx).toBe(166.6);
+    expect(budget.contentPx).toBe(310);
   });
 
   it('a fatter control is reported, not thrown', () => {

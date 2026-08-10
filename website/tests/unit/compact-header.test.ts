@@ -18,25 +18,13 @@ const navigation = readFileSync(
   'utf8',
 );
 
-describe('compact header overflow menu', () => {
-  it('the overflow trigger hides on desktop', () => {
-    expect(resolve(css, '.utility-more', 'display', 900)).toBe('none');
-  });
-
-  it('the overflow trigger shows on phones', () => {
-    expect(resolve(css, '.utility-more', 'display', 390)).toBe('inline-flex');
-  });
-
+describe('compact header utility links', () => {
   it('the menu is a plain row on desktop', () => {
     expect(resolve(css, '.utility-menu', 'display', 900)).toBe('flex');
   });
 
-  it('the menu is closed on phones', () => {
-    expect(resolve(css, '.utility-menu', 'display', 390)).toBe('none');
-  });
-
-  it('the open menu is a panel', () => {
-    expect(css).toMatch(/\.utility-menu:popover-open\s*\{[^}]*display:\s*grid/);
+  it('the menu is a plain row on phones too', () => {
+    expect(resolve(css, '.utility-menu', 'display', 390)).toBe('flex');
   });
 
   // 900px used to be "desktop" for the labels, back when the single 44rem
@@ -54,10 +42,11 @@ describe('compact header overflow menu', () => {
     expect(phone === undefined || phone !== 'none').toBe(true);
   });
 
-  it('the popover is wired', () => {
-    expect(baseLayout).toContain('popovertarget="utility-menu"');
+  it('no popover wiring remains', () => {
+    expect(baseLayout).not.toContain('popovertarget="utility-menu"');
     expect(baseLayout).toContain('id="utility-menu"');
-    expect(baseLayout).toContain(' popover');
+    expect(baseLayout).not.toMatch(/utility-menu"\s+popover/);
+    expect(baseLayout).not.toContain('class="utility-more"');
   });
 
   it('the docs link keeps a stable accessible name', () => {
@@ -97,36 +86,37 @@ describe('compact header overflow menu', () => {
 /**
  * `feedback.md` line 8.6 asks for an *ordered* width budget, not one step:
  * first drop "about Essentia", then shrink Find to a square icon button, then
- * regroup the links into the `⋯` menu. T5 collapsed all three into a single
- * `@media (max-width: 44rem)`, so the shortened `Learn` label only ever
- * rendered inside the already-collapsed popover — never in the header row it
- * was meant to save space in.
+ * (T3) keep the three links inline rather than fold them into a `⋯` menu.
+ * T5 collapsed all three into a single `@media (max-width: 44rem)`, so the
+ * shortened `Learn` label only ever rendered inside the popover; T3 removed
+ * the popover, so the short label and the links now share the same row at
+ * every stage below 64rem.
  *
  * The table below is the contract. Each row is a viewport width and the value
  * every staged declaration must resolve to there; `undefined` means nothing
- * declares it, which is how `.label-full` reads above stage 1.
+ * declares it, which is how `.label-full` reads above stage 1. `.utility-more`
+ * no longer exists and `.utility-menu` is `flex` at every width, so neither
+ * column varies by stage any more — they are asserted once, outside the loop.
  */
 const STAGES: Array<{
   width: number;
-  stage: 0 | 1 | 2 | 3;
+  stage: 0 | 1 | 2;
   labelFull: string | undefined;
   labelShort: string;
   searchMinWidth: string;
-  utilityMore: string;
-  utilityMenu: string;
 }> = [
   // Stage 0 — desktop: full labels, wide Find, links inline.
-  { width: 1440, stage: 0, labelFull: undefined, labelShort: 'none', searchMinWidth: 'min(22rem, 45vw)', utilityMore: 'none', utilityMenu: 'flex' }, // prettier-ignore
-  { width: 1025, stage: 0, labelFull: undefined, labelShort: 'none', searchMinWidth: 'min(22rem, 45vw)', utilityMore: 'none', utilityMenu: 'flex' }, // prettier-ignore
-  // Stage 1 — 64rem: short labels. `Learn` / `Blog` / `Decks` inline, no `⋯`.
-  { width: 1024, stage: 1, labelFull: 'none', labelShort: 'inline', searchMinWidth: 'min(22rem, 45vw)', utilityMore: 'none', utilityMenu: 'flex' }, // prettier-ignore
-  { width: 897, stage: 1, labelFull: 'none', labelShort: 'inline', searchMinWidth: 'min(22rem, 45vw)', utilityMore: 'none', utilityMenu: 'flex' }, // prettier-ignore
-  // Stage 2 — 56rem: Find collapses to a square, links still inline.
-  { width: 896, stage: 2, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0', utilityMore: 'none', utilityMenu: 'flex' }, // prettier-ignore
-  { width: 705, stage: 2, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0', utilityMore: 'none', utilityMenu: 'flex' }, // prettier-ignore
-  // Stage 3 — 44rem: exactly what T5 shipped, icons plus the `⋯` popover.
-  { width: 704, stage: 3, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0', utilityMore: 'inline-flex', utilityMenu: 'none' }, // prettier-ignore
-  { width: 400, stage: 3, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0', utilityMore: 'inline-flex', utilityMenu: 'none' }, // prettier-ignore
+  { width: 1440, stage: 0, labelFull: undefined, labelShort: 'none', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
+  { width: 1025, stage: 0, labelFull: undefined, labelShort: 'none', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
+  // Stage 1 — 64rem: short labels. `Learn` / `Blog` / `Decks` stay inline.
+  { width: 1024, stage: 1, labelFull: 'none', labelShort: 'inline', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
+  { width: 897, stage: 1, labelFull: 'none', labelShort: 'inline', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
+  // Stage 2 — 56rem: Find collapses to a square, links still inline, all the
+  // way down through 44rem (padding relief only) to 400px.
+  { width: 896, stage: 2, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0' }, // prettier-ignore
+  { width: 705, stage: 2, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0' }, // prettier-ignore
+  { width: 704, stage: 2, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0' }, // prettier-ignore
+  { width: 400, stage: 2, labelFull: 'none', labelShort: 'inline', searchMinWidth: '0' }, // prettier-ignore
 ];
 
 describe('staged header degradation', () => {
@@ -141,14 +131,21 @@ describe('staged header degradation', () => {
       expect(resolve(css, '.search-trigger', 'min-width', row.width)).toBe(
         row.searchMinWidth,
       );
-      expect(resolve(css, '.utility-more', 'display', row.width)).toBe(
-        row.utilityMore,
-      );
-      expect(resolve(css, '.utility-menu', 'display', row.width)).toBe(
-        row.utilityMenu,
-      );
     });
   }
+
+  it('`.utility-more` no longer exists and `.utility-menu` is always a row', () => {
+    for (const width of [1440, 1024, 896, 704, 400]) {
+      expect(
+        resolve(css, '.utility-more', 'display', width),
+        `@ ${width}px`,
+      ).toBeUndefined();
+      expect(
+        resolve(css, '.utility-menu', 'display', width),
+        `@ ${width}px`,
+      ).toBe('flex');
+    }
+  });
 
   it('the stages are ordered — each one only ever adds to the last', () => {
     const stageOf = (width: number) =>
@@ -166,9 +163,9 @@ describe('staged header degradation', () => {
     expect(resolve(css, '.search-trigger kbd', 'display', 400)).toBe('none');
   });
 
-  it('the `⋯` menu links keep the sizing `.utility-nav a` gives them', () => {
+  it('the utility menu links keep the sizing `.utility-nav a` gives them', () => {
     // Unlayered, so it beats `.utility-menu a` in `@layer layout`. Deleting it
-    // as "dead" would silently reflow the popover.
+    // as "dead" would silently reflow the inline links.
     expect(css).toMatch(
       /\.utility-nav a\s*\{[^}]*min-height:\s*2\.45rem[^}]*font-size:\s*0\.85rem/,
     );

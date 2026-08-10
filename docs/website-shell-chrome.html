@@ -108,7 +108,7 @@
             <tr><td class="sel">.compact-brand</td><td>Wordmark / letter mark, links home</td><td>320×74 raster drawn at 160px wide</td><td>2rem square letter mark</td><td class="src">BaseLayout.astro</td></tr>
             <tr><td class="sel">.drawer-trigger</td><td>Opens the modal catalog drawer</td><td><code>display: none</code> above 64rem</td><td>Icon only, <code>aria-label</code> carries the name</td><td class="src">Navigation.svelte</td></tr>
             <tr><td class="sel">.breadcrumb</td><td>Trail, omitted on <code>/</code></td><td>Full trail, wraps</td><td>Last crumb only, shrinks and ellipsises</td><td class="src">Breadcrumb.astro</td></tr>
-            <tr><td class="sel">.utility-nav</td><td><code>margin-left: auto</code> — the right group starts here</td><td>Holds <code>.utility-menu</code> as an inline row</td><td>Holds only the <code>⋯</code> trigger; the menu is a popover</td><td class="src">BaseLayout.astro</td></tr>
+            <tr><td class="sel">.utility-nav</td><td><code>margin-left: auto</code> — the right group starts here</td><td>Holds <code>.utility-menu</code> as an inline row</td><td>Same inline row, tighter padding — no popover</td><td class="src">BaseLayout.astro</td></tr>
             <tr><td class="sel">.search-trigger</td><td>Find palette, <code>⌘K</code></td><td>Icon + “Find” + <code>&lt;kbd&gt;</code></td><td>Icon only</td><td class="src">FindPalette.svelte</td></tr>
           </tbody>
         </table>
@@ -124,8 +124,8 @@
           <p>Text ships as <code>&lt;span class="label-full"&gt;</code>, with a <code>&lt;span class="label-short"&gt;</code> where a shorter word exists (“Learn about Essentia” → “Learn”). CSS swaps which one is <code>display: none</code>; an explicit <code>aria-label</code> on the control keeps the accessible name viewport-independent.</p>
         </div>
         <div class="card">
-          <h4>Destinations behind <code>⋯</code></h4>
-          <p><code>&lt;div class="utility-menu" popover&gt;</code> + <code>&lt;button popovertarget&gt;</code>. No island, no script, no CSP change. Above 44rem the author <code>display: flex</code> beats the UA's <code>[popover]:not(:popover-open) { display: none }</code>, so the three links are just an inline row and the trigger is hidden.</p>
+          <h4>Three links, always inline</h4>
+          <p><code>&lt;div class="utility-menu"&gt;</code>, a plain flex row at every width. No island, no script, no popover — <code>Learn</code>, <code>Blog</code> and <code>Decks</code> stay in the header row down to 400px; the <code>⋯</code> trigger and its popover panel were removed (T3).</p>
         </div>
         <div class="card">
           <h4>Never remove the strings</h4>
@@ -143,11 +143,11 @@
           <tbody>
             <tr><td class="sel">.compact-brand</td><td>32px</td><td><code>.compact-brand img { width: 2rem; height: 2rem }</code></td></tr>
             <tr><td class="sel">.drawer-trigger</td><td>≈36px</td><td>Icon, <code>padding: 0.5rem</code>, 1px border</td></tr>
-            <tr><td class="sel">.utility-nav</td><td>39.2px</td><td>Only <code>.utility-more</code>, a 2.45rem square; the popover is out of flow</td></tr>
+            <tr><td class="sel">.utility-nav</td><td>179.3px</td><td>Three inline links (<code>.utility-menu a</code>, <code>padding: 0.5rem 0.55rem</code>), no popover</td></tr>
             <tr><td class="sel">.search-trigger</td><td>≈48px</td><td>Icon, base <code>button</code> padding <code>0.65rem 0.9rem</code>, <code>&lt;kbd&gt;</code> hidden</td></tr>
             <tr><td class="sel">.breadcrumb</td><td>flexible, ≥64px</td><td><code>flex: 1 1 auto; min-width: 0</code>, list <code>nowrap</code>, item ellipsised</td></tr>
             <tr><td class="sel">gaps + padding</td><td>28.8px + 32px</td><td><code>gap: 0.45rem</code> ×4, <code>clamp(1rem, 3vw, 3rem)</code> floor ×2</td></tr>
-            <tr><td class="sel">total</td><td>248px of 368px</td><td>120px of slack on an inner page</td></tr>
+            <tr><td class="sel">total</td><td>317.2px of 368px</td><td>50.8px of slack on an inner page</td></tr>
           </tbody>
         </table>
       </div>
@@ -195,7 +195,7 @@
             <tr><td class="src">inline guard in BaseLayout.astro</td><td>browser, ≤400px</td><td>Real measured wrap. <b>Warns</b> in the console.</td></tr>
             <tr><td class="src">tests/unit/header-priority.test.ts</td><td><code>npm test</code></td><td>Header width, stacking, rail dock, the no-transform ban, island placement.</td></tr>
             <tr><td class="src">tests/unit/header-brand.test.ts</td><td><code>npm test</code></td><td>The brand holds the left edge at every width, with and without a breadcrumb.</td></tr>
-            <tr><td class="src">tests/unit/compact-header.test.ts</td><td><code>npm test</code></td><td>Label swapping, popover wiring, stable accessible names.</td></tr>
+            <tr><td class="src">tests/unit/compact-header.test.ts</td><td><code>npm test</code></td><td>Label swapping, no popover wiring, stable accessible names.</td></tr>
             <tr><td class="src">tests/unit/rail-toggle.test.ts</td><td><code>npm test</code></td><td>Exactly one toggle, square, bottom-right, inside the nav.</td></tr>
             <tr><td class="src">tests/unit/catalog-nav-flat.test.ts</td><td><code>npm test</code></td><td>No groups in catalog mode; groups intact in reading mode.</td></tr>
             <tr><td class="src">tests/unit/nav-accent.test.ts</td><td><code>npm test</code></td><td>Accent threading, tint only for archetypes, hover strictly stronger than rest.</td></tr>

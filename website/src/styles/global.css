@@ -265,9 +265,6 @@
     border-color: var(--accent);
     background: var(--sleeve);
   }
-  /* Author `display` beats the UA's `[popover]:not(:popover-open)` rule, so
-     above the phone breakpoint the menu is just a flex row of links and the
-     popover machinery is inert. */
   .utility-menu {
     display: flex;
     align-items: center;
@@ -283,17 +280,6 @@
     padding: 0;
     overflow: visible;
     background: none;
-    color: inherit;
-  }
-  .utility-more {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 2.45rem;
-    height: 2.45rem;
-    border: 1px solid var(--ruleline);
-    border-radius: var(--radius-sm);
-    background: transparent;
     color: inherit;
   }
   .label-short {
@@ -1730,7 +1716,7 @@ html {
   /* The last crumb is the only variable-width thing in the compact header.
      Let it shrink and ellipsise rather than wrap the whole row. */
   .breadcrumb {
-    flex: 1 1 auto;
+    flex: 1 1 0;
     min-width: 0;
   }
   .breadcrumb ol {
@@ -1745,24 +1731,8 @@ html {
   html[data-theme='spellbook'] body::after {
     left: 1rem;
   }
-  .utility-more {
-    display: inline-flex;
-  }
-  .utility-menu {
-    display: none;
-    position: fixed;
-    inset: auto;
-    top: var(--header);
-    right: 0.5rem;
-    left: auto;
-    border: 1px solid var(--ruleline);
-    border-radius: var(--radius-sm);
-    background: var(--blackfoil-raised);
-    padding: 0.4rem;
-  }
-  .utility-menu:popover-open {
-    display: grid;
-    gap: 0.25rem;
+  .utility-menu a {
+    padding: 0.5rem 0.55rem;
   }
   .drawer-trigger {
     padding: 0.5rem;

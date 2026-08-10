@@ -313,7 +313,9 @@ test('rail items carry their archetype colour', async ({ page }) => {
   await expect.poll(() => bg(abyss)).not.toBe(abyssRest);
 });
 
-test('header compacts to icons and a ⋯ menu at 400px', async ({ page }) => {
+test('header keeps its three section links inline at 400px', async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 400, height: 800 });
   await page.goto(urlFor('/'));
 
@@ -322,11 +324,8 @@ test('header compacts to icons and a ⋯ menu at 400px', async ({ page }) => {
   // the same accessible name, which an unscoped role locator would match too.
   const menu = page.locator('.utility-menu');
   const docs = menu.getByRole('link', { name: 'Learn about Essentia' });
-  await expect(docs).toBeHidden();
-  await expect(menu).toBeHidden();
-
-  await page.getByRole('button', { name: 'More sections' }).click();
   await expect(docs).toBeVisible();
+  await expect(menu).toBeVisible();
   await expect(menu.getByRole('link', { name: 'Blog' })).toBeVisible();
   await expect(menu.getByRole('link', { name: 'Decks' })).toBeVisible();
 

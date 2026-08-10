@@ -1,9 +1,10 @@
 /**
  * Width budget for the compact site header.
  *
- * 400px is the narrowest supported viewport. The header must hold one row
- * there; a wrap is a warning, never a build failure, so this module only
- * ever reports arithmetic — see scripts/check-header-row.mjs (build) and
+ * 400px is the narrowest supported viewport. The header holds one row
+ * there thanks to three inline links (`Learn`, `Blog`, `Decks`) in
+ * `.utility-menu`, not a `⋯` popover trigger; a wrap is a warning, never a
+ * build failure, so this module only ever reports arithmetic — see scripts/check-header-row.mjs (build) and
  * the inline guard in src/layouts/BaseLayout.astro (browser).
  *
  * ## Every number here is traceable, because hand-copied ones drifted
@@ -73,12 +74,39 @@ export const HEADER_CONTROLS = [
     intrinsicPx: 18,
   },
   {
-    name: 'utility-more',
-    // `.utility-more { width: 2.45rem }`. Below 44rem `.utility-menu` is a
-    // closed popover, so the `⋯` button is the whole of `.utility-nav`.
-    px: 39.2,
-    cssPx: [['.utility-more', 'width']],
-    intrinsicPx: 0,
+    name: 'utility-learn',
+    // `.utility-menu a { padding: 0.5rem 0.55rem }` = 17.6px of the 57.6px
+    // box. The remaining 40.0px is the `Learn` glyph run (the `.label-full`
+    // "Learn about Essentia" text is hidden below 64rem) plus the 2×1px
+    // `border`. Measured 57.6px at 400px.
+    px: 57.6,
+    cssPx: [
+      ['.utility-menu a', 'padding-left'],
+      ['.utility-menu a', 'padding-right'],
+    ],
+    intrinsicPx: 40.0,
+  },
+  {
+    name: 'utility-blog',
+    // Same 17.6px of padding; the `Blog` glyph run plus the 2×1px border is
+    // 32.1px. Measured 49.7px at 400px.
+    px: 49.7,
+    cssPx: [
+      ['.utility-menu a', 'padding-left'],
+      ['.utility-menu a', 'padding-right'],
+    ],
+    intrinsicPx: 32.1,
+  },
+  {
+    name: 'utility-decks',
+    // Same 17.6px of padding; the `Decks` glyph run plus the 2×1px border is
+    // 43.3px. Measured 60.9px at 400px.
+    px: 60.9,
+    cssPx: [
+      ['.utility-menu a', 'padding-left'],
+      ['.utility-menu a', 'padding-right'],
+    ],
+    intrinsicPx: 43.3,
   },
   {
     name: 'search-trigger',
@@ -108,12 +136,32 @@ export const BREADCRUMB = {
   intrinsicPx: 0,
 };
 
+/**
+ * `.utility-menu { gap: 0.35rem }` — the two gaps between the three inline
+ * links. This is not one of `HEADER_CONTROLS`: those items sit in the outer
+ * `.site-header` row, spaced by `HEADER_GAP` (7.2px), while the three links
+ * share one `.utility-nav` flex item there and are spaced by this smaller
+ * inner gap instead. It exists so the cross-check in
+ * `tests/unit/header-row.test.ts` still walks every authored length; it does
+ * not feed `headerRowBudget()`, which keeps treating the outer row's 7.2px
+ * gap as the (over-)conservative distance between every item.
+ */
+export const UTILITY_GAP = {
+  px: 11.2,
+  cssPx: [
+    ['.utility-menu', 'gap'],
+    ['.utility-menu', 'gap'],
+  ],
+  intrinsicPx: 0,
+};
+
 /** Every measurement in this module, for the cross-check to walk. */
 export const HEADER_MEASUREMENTS = [
   { name: 'header padding-inline', ...HEADER_PADDING_INLINE },
   { name: 'header gap', ...HEADER_GAP },
   ...HEADER_CONTROLS,
   BREADCRUMB,
+  { name: 'utility-menu gap', ...UTILITY_GAP },
 ];
 
 export function headerRowBudget(

@@ -170,3 +170,14 @@ regressions they exist to catch are reintroduced.
 - [ ] Run `cd website && npm run cards:rebuild`: stdout is exactly two lines — one `mse.render …` summary line per open package, then `rebuild: N package(s) rebuilt`. No `rebuilding: …` / `rebuilt: …` pair per package.
 - [ ] Run `cd website && npm run dev`: it still starts cleanly and the site loads at `http://localhost:4201/` (the `cards:rebuild` step in `predev` prints only the quiet summary line, not a JSON dump).
 - [ ] Skim `docs/MSE.md`'s exporter CLI section: it documents `--verbose` and states default output is one summary line per project.
+
+## T3 header-inline-links
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/burning-abyss/` and set the viewport to exactly **400 × 800**.
+- [ ] Confirm the header is one row: the brand mark, hamburger, breadcrumb, and the three links `Learn` / `Blog` / `Decks` all sit on the same visual line, with no wrapped second row.
+- [ ] Confirm there is no `⋯` button anywhere in the header at this width, and clicking near where it used to sit does nothing.
+- [ ] Confirm all three links (`Learn`, `Blog`, `Decks`) are visible inline (not hidden, not behind a click-to-open panel) and each is a working link.
+- [ ] Widen the window slowly from 400px to 1024px: the header never wraps to two rows at any point, and the three links stay inline the whole time (no popover ever appears).
+- [ ] At 400px, confirm the breadcrumb's last crumb (`Burning Abyss`) is visible, truncated with an ellipsis rather than missing or overflowing the header.
+- [ ] Widen to ~900px: the breadcrumb's last crumb now reads in full (`Burning Abyss`, not truncated), confirming the `flex: 1 1 0` breadcrumb change didn't collapse it at wider widths.
+- [ ] Load `/` (no breadcrumb) at 400px: header still holds one row with the three links inline.

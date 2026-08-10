@@ -73,38 +73,38 @@ every width down to 400px; the `⋯` popover is gone from markup, CSS and budget
 
 ## Impl steps
 
-- [ ] 1. In `BaseLayout.astro`, delete the `<button class="utility-more" …>` element and
+- [x] 1. In `BaseLayout.astro`, delete the `<button class="utility-more" …>` element and
       its explanatory comment.
-- [ ] 2. In the same file, change `<div class="utility-menu" id="utility-menu" popover>`
+- [x] 2. In the same file, change `<div class="utility-menu" id="utility-menu" popover>`
       to `<div class="utility-menu" id="utility-menu">`.
-- [ ] 3. In `global.css`, delete the whole `.utility-more { … }` rule (line ~288) and its
+- [x] 3. In `global.css`, delete the whole `.utility-more { … }` rule (line ~288) and its
       `:hover` / `:focus` siblings if they only serve that selector.
-- [ ] 4. In `global.css`, inside `@media (max-width: 44rem)`, delete
+- [x] 4. In `global.css`, inside `@media (max-width: 44rem)`, delete
       `.utility-more { display: inline-flex }`, the `.utility-menu { display: none; position: fixed; … }`
       override and `.utility-menu:popover-open { … }`.
-- [ ] 5. In the same media block, add `.utility-menu a { padding: 0.5rem 0.55rem; }`.
-- [ ] 6. In `global.css`, delete the comment above `.utility-menu` that explains the
+- [x] 5. In the same media block, add `.utility-menu a { padding: 0.5rem 0.55rem; }`.
+- [x] 6. In `global.css`, delete the comment above `.utility-menu` that explains the
       popover/UA-rule interaction — it is no longer true.
-- [ ] 7. Measure the three link widths on the built site at 400px:
+- [x] 7. Measure the three link widths on the built site at 400px:
       `npx playwright test tests/e2e/header-row.spec.ts --project=chromium --headed` is not
       needed — instead add a temporary `console.log` assertion, or run
       `node -e` against `npx playwright` in a scratch file. Record each width to one decimal.
-- [ ] 8. In `shared/header-row.mjs`, replace the `utility-more` record with three records
+- [x] 8. In `shared/header-row.mjs`, replace the `utility-more` record with three records
       named `utility-learn`, `utility-blog`, `utility-decks`. Each:
       `px: <measured>`, `cssPx: [['.utility-menu a','padding-left'], ['.utility-menu a','padding-right']]`,
       `intrinsicPx: <measured − 17.6>` with a comment stating the glyph run and the 2×1px border.
-- [ ] 9. In the same file, add `UTILITY_GAP` handling: `.utility-menu { gap: 0.35rem }`
+- [x] 9. In the same file, add `UTILITY_GAP` handling: `.utility-menu { gap: 0.35rem }`
       contributes `2 × 5.6px`. Fold it into the `utility-blog` record's `intrinsicPx` **or**
       add it as an explicit measurement entry — pick the explicit entry and add it to
       `HEADER_MEASUREMENTS` so the cross-check walks it.
-- [ ] 10. Update the module docstring: the compact header now carries three links, not a
+- [x] 10. Update the module docstring: the compact header now carries three links, not a
       `⋯` trigger.
-- [ ] 11. Update `tests/unit/header-row.test.ts` name list and add the `fits at 400px` test.
-- [ ] 12. Update `tests/e2e/header-row.spec.ts`: rewrite the
+- [x] 11. Update `tests/unit/header-row.test.ts` name list and add the `fits at 400px` test.
+- [x] 12. Update `tests/e2e/header-row.spec.ts`: rewrite the
       `` `Learn` renders inline … above the `⋯` stage `` test into
       `the three section links are inline at every width`, add the `no popover trigger`
       test, and drop every `.utility-more` visibility expectation from the Find test.
-- [ ] 13. Update `docs/website-shell-chrome.html` where it documents the `⋯` stage.
+- [x] 13. Update `docs/website-shell-chrome.html` where it documents the `⋯` stage.
 
 ## Outputs
 
@@ -115,9 +115,18 @@ every width down to 400px; the `⋯` popover is gone from markup, CSS and budget
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/header-row.test.ts` → pass
-- [ ] `cd website && npm run build` → `check-header-row.mjs` prints no `[warn] site-header may wrap`
-- [ ] `cd website && npx playwright test tests/e2e/header-row.spec.ts` → pass on all 3 browsers
-- [ ] manual check: 400px viewport, `/archetypes/burning-abyss/`, three links visible, one row
-- [ ] `cd website && npm run ci` → pass
-- [ ] commit msg draft: `fix(website): keep the three section links inline instead of a popover`
+- [x] `cd website && npx vitest run tests/unit/header-row.test.ts` → pass (25/25)
+- [x] `cd website && npm run build` → `check-header-row.mjs` prints no `[warn] site-header may wrap`
+- [x] `cd website && npx playwright test tests/e2e/header-row.spec.ts` → pass on chromium + webkit
+      (12/12 each, via the nix-provided browser binaries with `executablePath` overrides — the
+      sandboxed bundled Playwright browsers can't launch here, unrelated to this change). Firefox
+      could not be run: the nix `playwright-firefox` package's CDP protocol build predates this repo's
+      `@playwright/test@1.61.1`, so every e2e spec in the repo fails to launch it in this sandbox
+      (confirmed against an unrelated pre-existing spec, `showcase.spec.ts`, which fails identically).
+      Pre-existing environment gap, not introduced by this change.
+- [x] manual check: 400px viewport, `/archetypes/burning-abyss/`, three links visible, one row —
+      verified via Playwright DOM assertions (`the header holds one row at 400px`,
+      `the three section links are inline at every width`) rather than a human eyeball; logged as a
+      manual step in `ai-artifacts/manual_test_checklist.md` for human confirmation.
+- [x] `cd website && npm run ci` → pass (format:check, lint, check, test 729/729, build)
+- [x] commit msg draft: `fix(website): keep the three section links inline instead of a popover`

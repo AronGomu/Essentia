@@ -161,16 +161,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       />
       {breadcrumb && <Breadcrumb items={breadcrumb} />}
       <nav class="utility-nav" aria-label="Sections">
-        <!-- Native popover: no island, no script, and it survives the page CSP.
-             Above 44rem the author `display` on `.utility-menu` beats the UA
-             `[popover]:not(:popover-open) { display: none }`, so the three
-             links simply lay out inline and the ⋯ trigger is hidden. -->
-        <button
-          class="utility-more"
-          popovertarget="utility-menu"
-          aria-label="More sections"><span aria-hidden="true">⋯</span></button
-        >
-        <div class="utility-menu" id="utility-menu" popover>
+        <div class="utility-menu" id="utility-menu">
           <a
             href={`${base}docs/`}
             aria-label="Learn about Essentia"
