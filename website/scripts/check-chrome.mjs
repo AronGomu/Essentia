@@ -202,12 +202,12 @@ export function chromeIssues(file, html, base, keywords = null) {
       const cardCount = (
         newCardsBlock.match(/<li class="new-card-item"/g) ?? []
       ).length;
-      if (cardCount !== 15) {
-        problems.push(`${file}: new-cards section must show 15 cards`);
+      if (cardCount !== 10) {
+        problems.push(`${file}: new-cards section must show 10 cards`);
       }
 
       const updatesLinkRe = new RegExp(
-        `<a href="${base}updates/"[^>]*>View all \\d+ new cards<`,
+        `<a [^>]*href="${base}updates/"[^>]*>\\s*View all \\d+ new cards\\s*<`,
       );
       if (!updatesLinkRe.test(newCardsBlock)) {
         problems.push(

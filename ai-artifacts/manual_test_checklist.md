@@ -181,3 +181,12 @@ regressions they exist to catch are reintroduced.
 - [ ] At 400px, confirm the breadcrumb's last crumb (`Burning Abyss`) is visible, truncated with an ellipsis rather than missing or overflowing the header.
 - [ ] Widen to ~900px: the breadcrumb's last crumb now reads in full (`Burning Abyss`, not truncated), confirming the `flex: 1 1 0` breadcrumb change didn't collapse it at wider widths.
 - [ ] Load `/` (no breadcrumb) at 400px: header still holds one row with the three links inline.
+
+## T4 home-new-cards-content
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/` in a browser.
+- [ ] Count the card tiles under the "New cards" heading: exactly 10.
+- [ ] Confirm there is no paragraph/blurb text directly under the "New cards" heading (no "Latest cards from alpha/beta/release packages." line).
+- [ ] Confirm the "View all 50 new cards" link below the grid renders as a solid accent button (not a plain inline text link), centered under the grid.
+- [ ] Click that button: it lands on `/updates/` and that page lists all 50 cards.
+- [ ] In the hero section, confirm the secondary button reads "View new cards" (not "See what changed") and clicking it also lands on `/updates/`.

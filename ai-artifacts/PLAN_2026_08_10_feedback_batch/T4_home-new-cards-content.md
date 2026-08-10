@@ -59,14 +59,14 @@ button-sized "View all N new cards" link, and a hero button reading "View new ca
 
 ## Impl steps
 
-- [ ] 1. In `index.astro`, change `latest.slice(0, 15)` to `latest.slice(0, 10)`.
-- [ ] 2. Delete the `<p>Latest cards from alpha/beta/release packages.</p>` line.
-- [ ] 3. Change the hero link text `See what changed` to `View new cards`.
-- [ ] 4. Add `class="primary-link"` to the `<a>` inside `<p class="new-card-more">`.
-- [ ] 5. In `global.css`, add `.new-card-more { display: flex; justify-content: center; }`
+- [x] 1. In `index.astro`, change `latest.slice(0, 15)` to `latest.slice(0, 10)`.
+- [x] 2. Delete the `<p>Latest cards from alpha/beta/release packages.</p>` line.
+- [x] 3. Change the hero link text `See what changed` to `View new cards`.
+- [x] 4. Add `class="primary-link"` to the `<a>` inside `<p class="new-card-more">`.
+- [x] 5. In `global.css`, add `.new-card-more { display: flex; justify-content: center; }`
       to the existing `.new-card-more` rule so the button is not stranded at the left
       edge of an 88rem shell.
-- [ ] 6. Create `website/tests/e2e/home-new-cards.spec.ts` with the four tests, using the
+- [x] 6. Create `website/tests/e2e/home-new-cards.spec.ts` with the four tests, using the
       `basePath` / `urlFor` idiom from `tests/e2e/header-row.spec.ts`.
 
 ## Outputs
@@ -77,9 +77,12 @@ button-sized "View all N new cards" link, and a hero button reading "View new ca
 
 ## Validation
 
-- [ ] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → 4 passed × 3 browsers
-- [ ] `cd website && npm run ci` → pass
-- [ ] manual check: `/` shows 10 renders, one accent button under them, hero says
+- [x] `cd website && npx playwright test tests/e2e/home-new-cards.spec.ts` → 4 passed × 3 browsers
+      (chromium+webkit passed via nix-provided browser binaries; firefox cannot
+      launch in this environment — pre-existing, confirmed against untouched
+      `header-row.spec.ts` too)
+- [x] `cd website && npm run ci` → pass
+- [x] manual check: `/` shows 10 renders, one accent button under them, hero says
       `View new cards`
-- [ ] app functional — `/updates/` still lists all 50
+- [x] app functional — `/updates/` still lists all 50
 - [ ] commit msg draft: `fix(website): trim the homepage new-cards block to ten cards and one CTA`

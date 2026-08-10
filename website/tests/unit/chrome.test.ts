@@ -37,7 +37,7 @@ const sectionTile = (base = '/') => `
 
 const newCardsSection = (
   base = '/',
-  items = 15,
+  items = 10,
   linkText = 'View all 50 new cards',
 ) => `
 <section aria-labelledby="new-cards-heading">
@@ -230,7 +230,7 @@ describe('chromeIssues', () => {
     const issues = chromeIssues('index.html', html, '/');
     expect(
       issues.some((issue) =>
-        issue.includes('new-cards section must show 15 cards'),
+        issue.includes('new-cards section must show 10 cards'),
       ),
     ).toBe(true);
   });
