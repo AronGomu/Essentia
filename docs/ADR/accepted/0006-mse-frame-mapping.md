@@ -18,6 +18,8 @@ Ritual Creature -> Praetor / Phyrexian Showcase (`m15-showcase-praetor` / `magic
 non-Creature Fusion Summon / Ritual Summon -> 7.5th Edition (`sevenhalf`) — validated standard
 ```
 
+All validated mappings now render at 750 × 1046 following [ADR 0030](../proposed/0030-hd-frames-at-750.md).
+
 Synchro validation: **Sketch** style was selected for Synchro cards/projects and applied to `00_YGO_Non_Archetype.mse-set`.
 
 Note: `M15 big text` remains available for text-heavy cards.

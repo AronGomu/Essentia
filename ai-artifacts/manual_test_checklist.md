@@ -253,3 +253,11 @@ regressions they exist to catch are reintroduced.
 - [ ] Run both probe CLI commands from T11 and confirm each emits a 1500×2092 measurement with `verdict: rescale-to-750-space`.
 - [ ] Confirm ADR 0030 records both measured rows, MSE 2.1.2 build commit, 2026-08-10 date, and `rescale-to-750-space` verdict.
 - [ ] Run `git status --porcelain MSE/` after both probes and confirm output is empty.
+
+## T12 install-hd-frames
+
+- [ ] Run `python launcher/setup_mse.py --verify`: it prints `event=config.mse.verified files=560` with no missing or modified paths. (`verify_hd_inputs.py` is the pre-install gate; after installation its 2× comparison against the now-HD target is intentionally no longer a post-install check.)
+- [ ] Export `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set` and `cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set` to separate scratch dirs with `.script/export_mse_renders.py --output`; every PNG is 750×1046.
+- [ ] At equal display size, compare `Book of Moon` (sevenhalf), `Bagooska` (spellbook), `Herald of the Arc Light` (sketch), `Nekroz - Brionac` (praetor), `Cross-Sheep` (Capenna), and `Elder Entity N'tss` (Fusion control) against their pre-change renders. Title bars, art boxes, type lines, rules boxes, and P/T boxes do not move.
+- [ ] Inspect a 50% overlay plus amplified pixel diff for all six representatives. Frame detail may sharpen; duplicated/ghosted bars or text indicate bad coordinate scaling and must fail this check.
+- [ ] Confirm Capenna scratch output is 750×1046 even though its uniformly scaled source bitmaps are 750×1047; only the final source row is clipped by the render canvas.

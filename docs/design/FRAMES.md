@@ -2,15 +2,15 @@
 
 Frames follow card supertype, never archetype.
 
-| Card supertype | MSE stylesheet |
-| --- | --- |
-| Normal/other card | `sevenhalf` |
-| Fusion Creature | `genevensis-00-main` |
-| Xyz Creature | `m15-spellbook` |
-| Synchro Creature | `m15-sketch` |
-| Link Creature | `m15-showcase-capenna-art-deco` |
-| Ritual Creature | `m15-showcase-praetor` |
-| Non-creature Fusion Summon/Ritual Summon | `sevenhalf` |
+| Card supertype | MSE stylesheet | Render size |
+| --- | --- | --- |
+| Normal/other card | `sevenhalf` | 750 × 1046 |
+| Fusion Creature | `genevensis-00-main` | 750 × 1046 |
+| Xyz Creature | `m15-spellbook` | 750 × 1046 |
+| Synchro Creature | `m15-sketch` | 750 × 1046 |
+| Link Creature | `m15-showcase-capenna-art-deco` | 750 × 1046 |
+| Ritual Creature | `m15-showcase-praetor` | 750 × 1046 |
+| Non-creature Fusion Summon/Ritual Summon | `sevenhalf` | 750 × 1046 |
 
 Card-specific frame fields belong immediately after `card:`:
 

@@ -85,29 +85,29 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
 
 ## Impl steps
 
-- [ ] 1. `python .script/verify_hd_inputs.py` → all four packs `present=yes`, `wrong-size=0`.
+- [x] 1. `python .script/verify_hd_inputs.py` → all four packs `present=yes`, `wrong-size=0`.
       Stop and report if not; this ticket cannot proceed without the assets.
-- [ ] 2. Create `.script/scale_mse_style.py` with `scale_style_text` and a CLI; write
+- [x] 2. Create `.script/scale_mse_style.py` with `scale_style_text` and a CLI; write
       `tests/test_scale_mse_style.py` per the test plan.
-- [ ] 3. Copy each staged pack's images over the vendored pack, file by file, keeping
+- [x] 3. Copy each staged pack's images over the vendored pack, file by file, keeping
       names and formats. Do not delete vendored files the staging tree lacks.
-- [ ] 4. Under verdict B only: run
+- [x] 4. Under verdict B only: run
       `python .script/scale_mse_style.py MSE/data/<pack>/style --factor 2` for the four packs.
-- [ ] 5. Rescale capenna: for every image under
+- [x] 5. Rescale capenna: for every image under
       `MSE/data/magic-m15-showcase-capenna-art-deco.mse-style/`, resample by 750/744 with
       LANCZOS (round to nearest integer pixel), then
       `python .script/scale_mse_style.py MSE/data/magic-m15-showcase-capenna-art-deco.mse-style/style --factor 1.008064516`.
-- [ ] 6. Regenerate `MSE/manifest.json`: re-hash every file listed under `files`, keeping
+- [x] 6. Regenerate `MSE/manifest.json`: re-hash every file listed under `files`, keeping
       the JSON key order stable so the diff shows only changed hashes.
-- [ ] 7. `python launcher/setup_mse.py --verify` → clean.
-- [ ] 8. Render one card per changed stylesheet into a scratch directory
+- [x] 7. `python launcher/setup_mse.py --verify` → clean.
+- [x] 8. Render one card per changed stylesheet into a scratch directory
       (`python .script/export_mse_renders.py <aggregate> --output /tmp/frame-check`) and
       confirm each PNG is 750×1046 with `python -c "from PIL import Image; …"`.
-- [ ] 9. Visually compare each scratch render against the committed
+- [x] 9. Visually compare each scratch render against the committed
       `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/renders/<name>.png` at equal display size:
       no element may have moved. A shifted title bar means the coordinate scale is wrong.
-- [ ] 10. Update `docs/design/FRAMES.md` with a `Render size` column, all `750 × 1046`.
-- [ ] 11. Append one line to `docs/ADR/accepted/0006-mse-frame-mapping.md` noting the
+- [x] 10. Update `docs/design/FRAMES.md` with a `Render size` column, all `750 × 1046`.
+- [x] 11. Append one line to `docs/ADR/accepted/0006-mse-frame-mapping.md` noting the
       resolution change and pointing at ADR 0030.
 
 ## Outputs
@@ -120,9 +120,9 @@ tree is re-pinned in `MSE/manifest.json`, and `launcher/setup_mse.py --verify` p
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_scale_mse_style -v` → OK
-- [ ] `python -m unittest discover -s tests` → OK
-- [ ] `python launcher/setup_mse.py --verify` → clean
-- [ ] scratch renders are exactly 750×1046 for all six stylesheets
-- [ ] side-by-side check: no element moved
-- [ ] commit msg draft: `feat(mse): raise every vendored frame to the 750×1046 fusion size`
+- [x] `python -m unittest tests.test_scale_mse_style -v` → OK
+- [x] `python -m unittest discover -s tests` → OK
+- [x] `python launcher/setup_mse.py --verify` → clean
+- [x] scratch renders are exactly 750×1046 for all six stylesheets
+- [x] side-by-side check: no element moved
+- [x] commit msg draft: `feat(mse): raise every vendored frame to the 750×1046 fusion size`
