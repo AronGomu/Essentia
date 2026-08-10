@@ -56,7 +56,7 @@ homepage new-cards grid keeps two columns between 480px and 640px.
 
 ## Impl steps
 
-- [ ] 1. In `global.css`, directly after the `@media (max-width: 40rem)` block that holds
+- [x] 1. In `global.css`, directly after the `@media (max-width: 40rem)` block that holds
       `.new-card-grid`, add:
       ```css
       @media (max-width: 30rem) {
@@ -65,10 +65,10 @@ homepage new-cards grid keeps two columns between 480px and 640px.
         }
       }
       ```
-- [ ] 2. In `tests/unit/new-card-grid.test.ts`, add `rulesFor(selector)` returning all
+- [x] 2. In `tests/unit/new-card-grid.test.ts`, add `rulesFor(selector)` returning all
       matching rules; keep `ruleFor` as `rulesFor(...)` asserted to have length 1.
-- [ ] 3. Add the two unit tests from the test plan.
-- [ ] 4. Create `website/tests/e2e/card-lists-400.spec.ts` with the three viewport tests,
+- [x] 3. Add the two unit tests from the test plan.
+- [x] 4. Create `website/tests/e2e/card-lists-400.spec.ts` with the three viewport tests,
       reading boxes through `boundingBox()` and rounding to the nearest pixel before
       comparing.
 
@@ -80,8 +80,12 @@ homepage new-cards grid keeps two columns between 480px and 640px.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/new-card-grid.test.ts` → pass
-- [ ] `cd website && npx playwright test tests/e2e/card-lists-400.spec.ts` → pass × 3 browsers
+- [x] `cd website && npx vitest run tests/unit/new-card-grid.test.ts` → pass
+- [x] `cd website && npx playwright test tests/e2e/card-lists-400.spec.ts` → pass × 3 browsers
+      (chromium + webkit pass via a local, uncommitted `playwright.config.local.ts`
+      that points `executablePath` at the nix-store playwright-driver browsers, since
+      the npm-downloaded ones fail to launch on NixOS; firefox fails to launch here —
+      pre-existing, unrelated, per the repo notes)
 - [ ] manual check: 400px viewport on `/` shows one card per row; 560px shows two
-- [ ] `cd website && npm run ci` → pass
-- [ ] commit msg draft: `fix(website): show one card per row below 480px`
+- [x] `cd website && npm run ci` → pass
+- [x] commit msg draft: `fix(website): show one card per row below 480px`

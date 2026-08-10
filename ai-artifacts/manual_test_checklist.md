@@ -190,3 +190,12 @@ regressions they exist to catch are reintroduced.
 - [ ] Confirm the "View all 50 new cards" link below the grid renders as a solid accent button (not a plain inline text link), centered under the grid.
 - [ ] Click that button: it lands on `/updates/` and that page lists all 50 cards.
 - [ ] In the hero section, confirm the secondary button reads "View new cards" (not "See what changed") and clicking it also lands on `/updates/`.
+
+## T5 one-card-per-row
+
+- [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/` and set the viewport to exactly **400 × 800**.
+- [ ] Confirm the "New cards" grid on the homepage shows exactly one card per row — every tile's left edge lines up, none sit side by side.
+- [ ] Widen the viewport to **560 × 800**: the same grid now shows exactly two cards per row.
+- [ ] Widen further to **900 × 800**: the grid shows three cards per row; widen to **1200 × 800**: five per row.
+- [ ] Open `/archetypes/burning-abyss/` at **400 × 800**: the archetype gallery also shows exactly one card per row.
+- [ ] Narrow slowly from 560px down to 400px: the new-cards grid drops from two columns to one somewhere around 480px, with no card ever clipped or overlapping another.
