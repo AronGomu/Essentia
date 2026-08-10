@@ -85,21 +85,22 @@ and ADR 0030 records the verdict that T12 executes.
 
 ## Impl steps
 
-- [ ] 1. `python launcher/setup_mse.py --verify` → must pass before anything else.
-- [ ] 2. Create `.script/frame_resolution_probe.py` with `edge_energy`, `upscale_pack`,
+- [x] 1. `python launcher/setup_mse.py --verify` → must pass before anything else.
+- [x] 2. Create `.script/frame_resolution_probe.py` with `edge_energy`, `upscale_pack`,
       `probe`, `main`, and the dirty-tree guard.
-- [ ] 3. Write `tests/test_frame_resolution_probe.py` per the test plan.
-- [ ] 4. Run `python .script/frame_resolution_probe.py --pack magic-sevenhalf.mse-style --card "Burning Abyss - Graff"`.
+- [x] 3. Write `tests/test_frame_resolution_probe.py` per the test plan.
+- [x] 4. Run `python .script/frame_resolution_probe.py --pack magic-sevenhalf.mse-style --card "Burning Abyss - Graff"`.
       Record `sd`, `hd`, `ratio`, `control`.
-- [ ] 5. Repeat once for `magic-m15-spellbook.mse-style` with an Xyz card
+- [x] 5. Repeat once for `magic-m15-spellbook.mse-style` with an Xyz card
       (`Burning Abyss - Dante`) — two packs, so a single odd result cannot decide the plan.
-- [ ] 6. Create `docs/ADR/proposed/0030-hd-frames-at-750.md`: context (six stylesheets, two
+- [x] 6. Create `docs/ADR/proposed/0030-hd-frames-at-750.md`: context (six stylesheets, two
       sizes), the two candidate strategies, the measurement table, the verdict rule above,
       and the decision the numbers select.
-- [ ] 7. Link the ADR from `docs/ADR/README.md` under `## Proposed`.
+- [x] 7. Link the ADR from `docs/ADR/README.md` under `## Proposed`.
 - [ ] 8. Write the verdict into this plan's T12 file — one line at the top of its
       `## Requirements`, so the T12 worker does not have to re-read the ADR.
-- [ ] 9. `python launcher/setup_mse.py --verify` again → the vendored tree must be
+      Parent-owned dependency wiring: worker read scope forbids reading or editing T12.
+- [x] 9. `python launcher/setup_mse.py --verify` again → the vendored tree must be
       byte-identical to before the spike.
 
 ## Outputs
@@ -111,9 +112,9 @@ and ADR 0030 records the verdict that T12 executes.
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_frame_resolution_probe -v` → OK
-- [ ] `python -m unittest discover -s tests` → OK
-- [ ] `python launcher/setup_mse.py --verify` → clean, after the probe has run
-- [ ] `git status --porcelain MSE/` → empty
-- [ ] ADR 0030 `## Measurement` holds real numbers for two packs
-- [ ] commit msg draft: `docs(adr): measure whether 2× frame art sharpens a print master`
+- [x] `python -m unittest tests.test_frame_resolution_probe -v` → OK
+- [x] `python -m unittest discover -s tests` → OK
+- [x] `python launcher/setup_mse.py --verify` → clean, after the probe has run
+- [x] `git status --porcelain MSE/` → empty
+- [x] ADR 0030 `## Measurement` holds real numbers for two packs
+- [x] commit msg draft: `docs(adr): measure whether 2× frame art sharpens a print master`

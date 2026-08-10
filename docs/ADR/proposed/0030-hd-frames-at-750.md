@@ -42,16 +42,16 @@ The vendored tree is untracked and hash-pinned (`MSE/manifest.json`), because it
 
 ## Measurement
 
-Filled in by T11 before this ADR is accepted.
+Measured 2026-08-10 with the repeatable Pillow-upscaled vendored-copy probe.
 
 | Pack | Probe card | SD edge energy | HD edge energy | ratio | Fusion control |
 | --- | --- | --- | --- | --- | --- |
-| `magic-sevenhalf.mse-style` | Burning Abyss - Graff | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| `magic-m15-spellbook.mse-style` | Burning Abyss - Dante | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| `magic-sevenhalf.mse-style` | Burning Abyss - Graff | 9.9169 | 9.6212 | 0.9702 | 8.8331 |
+| `magic-m15-spellbook.mse-style` | Burning Abyss - Dante | 11.9125 | 11.5828 | 0.9723 | 8.8331 |
 
 MSE build: `MSE/manifest.json` → `source.mseVersion` 2.1.2, `source.commit` 71b382d5da74efd533ae25a23ac324a80c3dfeb4.
 
-Verdict: _TBD_.
+Verdict: both ratios are below 1.30, so T12 must use `rescale-to-750-space`: swap in 2× art, set `card width: 750` / `card height: 1046`, and scale every geometric coordinate by 2.
 
 ## Rejected
 

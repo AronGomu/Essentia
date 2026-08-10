@@ -247,3 +247,9 @@ regressions they exist to catch are reintroduced.
 - [ ] Find (or temporarily note) a card whose `Same archetype` list exceeds 12 — e.g. any Burning Abyss card given the archetype currently has more than 12 same-name relations plus the non-archetype pool card `burning-abyss-fire-lake`/`burning-abyss-traveler` fallback: confirm the gallery caps at 12 tiles and a trailing `View all N … cards` link appears, pointing at that archetype's section page.
 - [ ] For a card whose `Interacts with this card` list exceeds 12 (if any exists in the current catalog), confirm the trailing text reads `N more` with no link.
 - [ ] Open a card whose both related lists are empty, if one exists in the current catalog (check `card.related` in `src/generated/catalog.ts`): confirm neither related section renders at all.
+
+## T11 frame-hd-spike
+
+- [ ] Run both probe CLI commands from T11 and confirm each emits a 1500×2092 measurement with `verdict: rescale-to-750-space`.
+- [ ] Confirm ADR 0030 records both measured rows, MSE 2.1.2 build commit, 2026-08-10 date, and `rescale-to-750-space` verdict.
+- [ ] Run `git status --porcelain MSE/` after both probes and confirm output is empty.
