@@ -92,26 +92,28 @@ build, and the build fails on an unresolvable characteristic token.
 
 ## Impl steps
 
-- [ ] 1. Create `website/scripts/content/related.mjs` with `extractClauses`,
+- [x] 1. Create `website/scripts/content/related.mjs` with `extractClauses`,
       `parseConstraints`, `buildRelatedGraph`, and module-level constants
       `COLOR_WORDS = { white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G' }` and
       `SUPERTYPE_WORDS = ['Ritual','Xyz','Fusion','Synchro','Link','Trap']`.
-- [ ] 2. Build the subtype vocabulary inside `buildRelatedGraph` from the cards' own
+- [x] 2. Build the subtype vocabulary inside `buildRelatedGraph` from the cards' own
       `subType` fields — never a hardcoded race list, so a new race cannot silently miss.
-- [ ] 3. Implement the two failure paths through `fail()` from `./shared.mjs`.
-- [ ] 4. In `orchestrator.mjs`, after `cards` and `sections` are final and before the
+- [x] 3. Implement the two failure paths through `fail()` from `./shared.mjs`.
+- [x] 4. In `orchestrator.mjs`, after `cards` and `sections` are final and before the
       `catalog` literal, add
       `const related = buildRelatedGraph(cards, sections);` and attach it:
       `for (const card of cards) card.related = related.get(card.id) ?? { archetype: [], interaction: [] };`
-- [ ] 5. Bump `CATALOG_SCHEMA_VERSION` in `scripts/content/shared.mjs` from 10 to 11.
-- [ ] 6. In `src/lib/catalog.ts`, add `related: { archetype: string[]; interaction: string[] }`
+- [x] 5. Bump `CATALOG_SCHEMA_VERSION` from 10 to 11 (actual location:
+      `scripts/content/orchestrator.mjs` — the ticket's Inputs section named
+      `shared.mjs`, but the constant lives in `orchestrator.mjs`; bumped there).
+- [x] 6. In `src/lib/catalog.ts`, add `related: { archetype: string[]; interaction: string[] }`
       to `CatalogCard` and change `schemaVersion: 10` to `11` on the `Catalog` interface.
-- [ ] 7. Create `website/tests/unit/related-graph.test.ts` per the test plan. Import the
+- [x] 7. Create `website/tests/unit/related-graph.test.ts` per the test plan. Import the
       module under test with `await import('../../scripts/content/related.mjs')`, matching
       how `tests/unit/content-orchestrator.test.ts` loads build modules.
-- [ ] 8. Run `npm run content` and eyeball the two lists for `tour-guide-from-the-underworld`
+- [x] 8. Run `npm run content` and eyeball the two lists for `tour-guide-from-the-underworld`
       and `nekroz-cycle` before committing.
-- [ ] 9. Add `docs/ADR/proposed/0032-derived-related-cards.md` and link it from
+- [x] 9. Add `docs/ADR/proposed/0032-derived-related-cards.md` and link it from
       `docs/ADR/README.md`.
 
 ## Outputs
@@ -126,9 +128,9 @@ build, and the build fails on an unresolvable characteristic token.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/related-graph.test.ts` → pass
-- [ ] `cd website && npm run content` → exits 0, prints the one-line content summary
-- [ ] `cd website && npx vitest run` → 0 failures (existing `related-cards.test.ts` untouched)
-- [ ] `cd website && npm run ci` → pass
-- [ ] app functional — card pages still render their current related list
-- [ ] commit msg draft: `feat(website): derive archetype and interaction relations in the content build`
+- [x] `cd website && npx vitest run tests/unit/related-graph.test.ts` → pass
+- [x] `cd website && npm run content` → exits 0, prints the one-line content summary
+- [x] `cd website && npx vitest run` → 0 failures (existing `related-cards.test.ts` untouched)
+- [x] `cd website && npm run ci` → pass
+- [x] app functional — card pages still render their current related list
+- [x] commit msg draft: `feat(website): derive archetype and interaction relations in the content build`

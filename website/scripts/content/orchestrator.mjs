@@ -29,8 +29,9 @@ import { loadKeywordRegistry } from './keywords.mjs';
 import { loadSectionIntros, sectionIntroSummary } from './section-intros.mjs';
 import { loadReadingOrder, postGroups } from './reading-order.mjs';
 import { discover } from './packages.mjs';
+import { buildRelatedGraph } from './related.mjs';
 
-export const CATALOG_SCHEMA_VERSION = 10;
+export const CATALOG_SCHEMA_VERSION = 11;
 
 export async function writeAtomic(target, content) {
   const temporary = `${target}.${process.pid}.tmp`;
@@ -159,6 +160,10 @@ export async function build({ checkOnly }) {
       cardIds: sectionCards.map((card) => card.id),
     });
   }
+
+  const related = buildRelatedGraph(cards, sections);
+  for (const card of cards)
+    card.related = related.get(card.id) ?? { archetype: [], interaction: [] };
 
   const stageDateProblems = stageDateIssues(packages);
   if (stageDateProblems.length) fail(stageDateProblems.join('; '));

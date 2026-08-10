@@ -227,3 +227,12 @@ regressions they exist to catch are reintroduced.
 - [ ] Confirm that `Rules` block sits above `Release history`.
 - [ ] Hover a burning-abyss-graff gallery tile at `/archetypes/burning-abyss/`: the hover preview's keyword rulings still match the ones on the card page.
 - [ ] Click into `Release history` → the alpha version link, e.g. `/cards/burning-abyss-graff/versions/alpha-LOTA-0001-Alpha-0-1/`: confirm that page still prints inline `(ruling)` reminders in its rule text, unlike the card page.
+
+## T9 related-graph
+
+- [ ] Run `cd website && npm run content`, confirm it exits 0 and prints the one-line content summary with no errors.
+- [ ] Open `website/src/generated/catalog.ts`, search for `"id": "tour-guide-from-the-underworld"`, confirm its `related.interaction` array includes `burning-abyss-graff` and `burning-abyss-cir` (both Fiend, MV 1 — cards Tour Guide can Summon).
+- [ ] In the same file, search for `"id": "burning-abyss-graff"`, confirm its `related.archetype` array lists every other `burning-abyss-*` card id and does not include `burning-abyss-graff` itself.
+- [ ] Search for `"id": "downerd-magician"`, confirm its `related.interaction` array does not include every card at MV 1 — only Xyz MV 1 creatures (e.g. `bagooska`, `tornado-dragon`), not `ash-blossom-and-joyous-spring` (MV 1, non-Xyz).
+- [ ] Confirm `"schemaVersion": 11` near the top of `catalog.ts`.
+- [ ] Confirm the card page at `/cards/tour-guide-from-the-underworld/` still renders its current related-cards list unchanged in the browser — this ticket only adds the data field, the page UI is unchanged until a later ticket consumes it.

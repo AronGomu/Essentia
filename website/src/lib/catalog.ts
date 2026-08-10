@@ -109,6 +109,7 @@ export interface CatalogCard extends CardVersion {
   retired: boolean;
   route: string;
   versionIds: string[];
+  related: { archetype: string[]; interaction: string[] };
 }
 
 export type GalleryCard = Pick<
@@ -191,7 +192,7 @@ export interface CatalogPost {
 }
 
 export interface Catalog {
-  schemaVersion: 10;
+  schemaVersion: 11;
   generatedAt: string;
   heroSectionSlug: string;
   sections: CatalogSection[];
