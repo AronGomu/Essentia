@@ -186,7 +186,7 @@ KNOWN_KEYWORDS = {
     "Flash",
     "Flying",
     "Haste",
-    "Double Strike",
+    "Double strike",
     "Protection from everything",
     "Protection from Creatures",
     "Abyssal Curse",

@@ -21,7 +21,7 @@ EVERGREEN = {
     "Trample",
     "Vigilance",
     "Haste",
-    "Double Strike",
+    "Double strike",
     "Hexproof",
     "Indestructible",
     "Effect Indestructible",
