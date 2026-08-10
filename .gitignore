@@ -42,3 +42,8 @@ graphify-out/
 
 # Astro CLI run-state (background dev server log)
 .astro/
+
+# pi.dev / subagent tool run artifacts (debug transcripts, ad-hoc HTML views)
+.pi/artifacts/
+.pi-subagents/artifacts/
+**/.pi/artifacts/

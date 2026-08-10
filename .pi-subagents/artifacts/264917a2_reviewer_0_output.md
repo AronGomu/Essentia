@@ -1,9 +1,0 @@
-## Review
-
-- Correct: Shared template static CSS + clipboard listener match GrillMe Aaron ref. Both skills mandate shared shell. ADR contract records `ACCEPT`/`REVISE`/`REJECT`. Targeted 8 tests pass.
-- Blocker [High]: `.agents/skills/_shared/proposition-round.html` untracked. Commit omitting file → both skills reference missing template. Add file before commit.
-- Blocker [High]: Custom `REVISE` can lose stable ID. Template emits ID only from selected checkbox values; no-selection path emits generic text (`.agents/skills/_shared/proposition-round.html:72-80`). Skills require IDs only in checkbox values (`fix-mse-cards/SKILL.md:37`, `update-rules/SKILL.md:65`), yet validation requires each ID once (`fix-mse-cards/SKILL.md:102`, `update-rules/SKILL.md:77`). Require ID in `data-question`; validate exact header, question, full checkbox value against source HTML.
-- High: Dynamic evidence escaping unspecified (`fix-mse-cards/SKILL.md:28,37`; `update-rules/SKILL.md:63,67-69`). MSE text contains HTML-like tags. Raw insertion can hide syntax, break attrs, inject markup/JS → corrupted decision evidence. Require HTML escaping for all dynamic text/attrs; allow only generated structural markup/SVG.
-- Medium: `REVISE` items retain pre-answer `PATTERN_DESTROYER` classification blindly (`fix-mse-cards/SKILL.md:92,104`). Revision may restore canonical pattern; revision may introduce new contradiction. Reclassify final wording after answer validation.
-- Medium: `docs/design/*` declared general-rule source (`fix-mse-cards/SKILL.md:46`) but omitted from mandatory comparison reads (`fix-mse-cards/SKILL.md:81`). Frame/design checks can miss existing owners or generate duplicate proposals. Add relevant design modules.
-- Note [Low]: Tests use substring assertions only (`tests/test_update_rules_skill.py:23-57,89-100`). They do not verify exact template identity, escaping contract, summary-to-HTML binding, custom/multiple/missing-answer cases.

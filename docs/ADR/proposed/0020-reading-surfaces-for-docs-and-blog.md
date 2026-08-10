@@ -1,7 +1,7 @@
 # ADR 0020 — Docs and blog share one reading surface, lifted off the blackfoil
 
 - Date: 2026-08-07
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_07_website-feedback-pass-2.md` (T1 defines the tokens, T9 builds the surface)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass-2.md` (T1 defines the tokens, T9 builds the surface)
 - Scope: website design system, docs pages, blog pages
 
 ## Context

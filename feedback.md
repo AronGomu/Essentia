@@ -1,5 +1,10 @@
 # Feedback Website
 
+> **Status: done.** Every item below shipped through `plan/website-header-and-rail-pass`
+> (`ai-artifacts/archive/PLAN_2026_08_09_website-header-and-rail-pass.md`, tickets T1–T13, merged
+> through `ff25c2c`). Confirmed by a deep read-only reviewer walking all four sections against
+> the built output. Kept as a historical record of the request, not open work.
+
 ## "New" Badge
 
 Set css "top" property for tile-badge to "2rem".

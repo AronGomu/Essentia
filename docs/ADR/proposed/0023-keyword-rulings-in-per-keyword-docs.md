@@ -1,7 +1,7 @@
 # ADR 0023 — Keyword rulings live in one doc file per keyword
 
 - Date: 2026-08-08
-- Status: Proposed — accepted for implementation by `ai-artifacts/PLAN_2026_08_08_website-feedback-pass-2.md` (T2, T3)
+- Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_08_website-feedback-pass-2.md` (T2, T3)
 - Scope: keyword taxonomy, website content build, card page rendering, hover preview
 - Supersedes: [0015 — Keyword ruling text lives in the website registry](0015-keyword-definitions-in-registry.md)
 

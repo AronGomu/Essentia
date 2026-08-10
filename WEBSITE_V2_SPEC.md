@@ -1,5 +1,11 @@
 # Essentia website v2 — implementation spec
 
+> **Superseded.** This spec predates the `ai-artifacts/PLAN_*` planning convention and the three
+> feedback/header-and-rail plan cycles that shipped after it; several sections it describes were
+> never built or were built differently (see `docs/ADR/proposed/0015`, `0017`, `0019`, which cite
+> specific sections here as decisions overridden). Kept as decision-evidence for those ADRs, not
+> as a live roadmap — current work is planned under `ai-artifacts/PLAN_*`.
+
 Step-by-step technical specification for restructuring `website/`. Written to be executed by an
 implementing agent, phase by phase. Each phase is independently shippable and leaves `main` releasable.
 
