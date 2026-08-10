@@ -13,7 +13,11 @@
 # HD frame packs staged by hand; third-party art, never committed
 /hd_inputs/*
 !/hd_inputs/frames/
+/hd_inputs/frames/*
 !/hd_inputs/frames/.gitkeep
+
+# Local Playwright config pointing at a system browser build (NixOS workaround)
+/website/playwright.config.local.ts
 
 # Python bytecode
 __pycache__/
