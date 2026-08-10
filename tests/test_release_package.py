@@ -115,7 +115,14 @@ class ReleasePackageTests(unittest.TestCase):
         )
         return package, identity_path
 
-    def fake_artifacts(self, package: Path, _aggregate: Path, *, verbose: bool = False) -> None:
+    def fake_artifacts(
+        self,
+        package: Path,
+        _aggregate: Path,
+        *,
+        print_masters: bool = False,
+        verbose: bool = False,
+    ) -> None:
         (package / "renders").mkdir(exist_ok=True)
         (package / "renders" / "Card One.png").write_bytes(b"png")
         (package / "render-provenance.json").write_text("{}\n", encoding="utf-8")
@@ -192,6 +199,33 @@ class ReleasePackageTests(unittest.TestCase):
         (package / "render-provenance.json").write_text("changed\n", encoding="utf-8")
         with self.assertRaisesRegex(release.LifecycleError, "package hash mismatch"):
             release.validate_package_hashes(package)
+
+    def test_rebuild_requests_print_masters(self) -> None:
+        package, identities = self.open_package([("card one", "Card One")])
+        captured: dict[str, bool] = {}
+
+        def capture_artifacts(
+            package: Path,
+            aggregate: Path,
+            *,
+            print_masters: bool = False,
+            verbose: bool = False,
+        ) -> None:
+            captured["print_masters"] = print_masters
+            self.fake_artifacts(
+                package,
+                aggregate,
+                print_masters=print_masters,
+                verbose=verbose,
+            )
+
+        release.rebuild(
+            package,
+            identities_path=identities,
+            artifact_builder=capture_artifacts,
+        )
+
+        self.assertTrue(captured["print_masters"])
 
     def test_lock_and_advance_flow(self) -> None:
         package, identities = self.open_package([("card one", "Card One")])

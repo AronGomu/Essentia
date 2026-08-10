@@ -89,25 +89,25 @@ false for every card.
 
 ## Impl steps
 
-- [ ] 1. In `.script/release_package.py`, add `print_masters: bool = True` to `rebuild`'s
+- [x] 1. In `.script/release_package.py`, add `print_masters: bool = True` to `rebuild`'s
       keyword-only parameters and pass it into `artifact_builder(package, aggregate, print_masters=print_masters, verbose=verbose)`.
-- [ ] 2. Keep `lock()` explicit: pass `print_masters=True` there too, so a locked package
+- [x] 2. Keep `lock()` explicit: pass `print_masters=True` there too, so a locked package
       freezes with its masters.
-- [ ] 3. Add `test_rebuild_requests_print_masters` to `tests/test_release_package.py`,
+- [x] 3. Add `test_rebuild_requests_print_masters` to `tests/test_release_package.py`,
       following the existing fake-`artifact_builder` idiom in that file.
-- [ ] 4. `cd website && npm run cards:rebuild` — expect one `mse.render …` line reporting
+- [x] 4. `cd website && npm run cards:rebuild` — expect one `mse.render …` line reporting
       `50 rendered, 50 print masters`, then `rebuild: 1 package rebuilt`.
-- [ ] 5. Verify sizes:
+- [x] 5. Verify sizes:
       `python -c "import pathlib; from PIL import Image; print({Image.open(p).size for p in pathlib.Path('cards_mse/01_alpha/LOTA-0001-Alpha_0.1/renders').glob('*.png')})"`
       → `{(750, 1046)}`; same over `renders_print` → `{(1500, 2092)}`.
-- [ ] 6. `cd website && npm run content` → no `WARNING` line about draft resolution.
-- [ ] 7. Create `website/tests/unit/card-images.test.ts` with the three catalog assertions.
-- [ ] 8. `cd website && npm run budgets:check`. If it fails, raise the specific budget in
+- [x] 6. `cd website && npm run content` → no `WARNING` line about draft resolution.
+- [x] 7. Create `website/tests/unit/card-images.test.ts` with the three catalog assertions.
+- [x] 8. `cd website && npm run budgets:check`. If it fails, raise the specific budget in
       `website/scripts/check-budgets.mjs` and write the measured value in the comment.
-- [ ] 9. Update `docs/MSE.md`: print masters are 2× the 750×1046 native size; correct the
+- [x] 9. Update `docs/MSE.md`: print masters are 2× the 750×1046 native size; correct the
       "exactly 4× the stylesheet's native 375 × 523" sentence.
-- [ ] 10. Update `docs/RELEASES.md` if it states a render size.
-- [ ] 11. `python .script/check_immutable_stages.py` → locked stages untouched.
+- [x] 10. Update `docs/RELEASES.md` if it states a render size.
+- [x] 11. `python .script/check_immutable_stages.py` → locked stages untouched.
 
 ## Outputs
 
@@ -120,11 +120,11 @@ false for every card.
 
 ## Validation
 
-- [ ] `python -m unittest discover -s tests` → OK
-- [ ] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid:`
-- [ ] `python .script/check_immutable_stages.py` → OK
-- [ ] `cd website && npx vitest run tests/unit/card-images.test.ts` → pass
-- [ ] `cd website && npm run ci` → pass
-- [ ] `cd website && npm run test:e2e` → pass
+- [x] `python -m unittest discover -s tests` → OK
+- [x] `python .script/release_package.py validate cards_mse/01_alpha/LOTA-0001-Alpha_0.1` → `lifecycle valid:`
+- [x] `python .script/check_immutable_stages.py` → OK
+- [x] `cd website && npx vitest run tests/unit/card-images.test.ts` → pass
+- [x] `cd website && npm run ci` → pass
+- [ ] `cd website && npm run test:e2e` → pass — npm-cache browsers fail to launch on NixOS (`libatk-1.0.so.0` missing); prescribed `npx playwright test --config=playwright.config.local.ts` passed 107 tests on Chromium + WebKit with 1 expected skip.
 - [ ] manual check: a card page render is visibly sharper at 100% zoom on a 1920 screen
-- [ ] commit msg draft: `feat(cards): ship 750×1046 renders and 1500×2092 print masters`
+- [x] commit msg draft: `feat(cards): ship 750×1046 renders and 1500×2092 print masters`

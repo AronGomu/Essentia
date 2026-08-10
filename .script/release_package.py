@@ -689,6 +689,7 @@ def rebuild(
     *,
     identities_path: Path = IDENTITIES_PATH,
     artifact_builder: Callable[[Path, Path], None] = build_artifacts,
+    print_masters: bool = True,
     verbose: bool = False,
 ) -> Path:
     """Regenerate aggregate/artifacts/hashes for an open package."""
@@ -697,7 +698,12 @@ def rebuild(
     if metadata["status"] != "open":
         raise LifecycleError(f"rebuild requires open package: {package}")
     aggregate = generate_aggregate(package, identities_path)
-    artifact_builder(package, aggregate, verbose=verbose)
+    artifact_builder(
+        package,
+        aggregate,
+        print_masters=print_masters,
+        verbose=verbose,
+    )
     write_package_hashes(package)
     validate_package(package, require_artifacts=True)
     return package
@@ -721,7 +727,13 @@ def lock(
         except ValueError as exc:
             raise LifecycleError(f"invalid releasedOn date: {released_on}") from exc
         metadata["releasedOn"] = released_on
-    rebuild(package, identities_path=identities_path, artifact_builder=artifact_builder, verbose=False)
+    rebuild(
+        package,
+        identities_path=identities_path,
+        artifact_builder=artifact_builder,
+        print_masters=True,
+        verbose=False,
+    )
     metadata = release_metadata(package)
     metadata["status"] = "locked"
     json_write(package / "release.json", metadata)

@@ -63,7 +63,7 @@ Rules:
 
 - Draft → Alpha: **move** selected cards/projects into an `open` alpha package.
 - Edit while `status` is `open`.
-- `python .script/release_package.py rebuild <package>` regenerates aggregate/renders/hashes and stays `open`.
+- `python .script/release_package.py rebuild <package>` regenerates the aggregate, display renders, print masters, and hashes, then stays `open`.
 - `python .script/release_package.py lock <package> --released-on YYYY-MM-DD` rebuilds then sets `status` to `locked`.
 - Locked Alpha → Beta: `python .script/release_package.py advance <locked-package> --to-stage 02_beta --version Beta_X.Y` copies component source into a new open beta package. Never edit the locked alpha package.
 - Locked Beta → Release: same advance into `03_release` with `Release_X.Y`.
@@ -79,6 +79,7 @@ cards_mse/{01_alpha|02_beta|03_release}/{setId}-{version}/
   [...component .mse-set projects...]
   {setId}-{version}_all_cards.mse-set/
   renders/
+  renders_print/
   render-provenance.json
   package-sha256.json
 ```

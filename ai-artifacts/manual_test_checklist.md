@@ -267,3 +267,7 @@ regressions they exist to catch are reintroduced.
 - [ ] Open one regenerated card from each non-empty draft project and the open alpha package in MSE; confirm the illustration is visibly sharper and the saved `image:` path is unchanged.
 - [ ] Compare `Mathematician`, `Raigeki`, and `Maxx “C”` before/after at equal display size; confirm centre framing matches with no stretched or clipped subject.
 - [ ] Confirm `Absolute King Back Jack`, `Crane Crane`, `Fiend Griefing`, and `Fiendish Rhino Warrior` retain their prior art pending canonical HD sources.
+
+## T14 hd-renders-and-print
+
+- [ ] At 1920px viewport width and 100% browser zoom, compare a card page against its pre-HD screenshot and confirm the render is visibly sharper.

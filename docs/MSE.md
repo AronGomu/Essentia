@@ -72,11 +72,11 @@ python .script/lint_mse_card_style.py
 python .script/release_package.py validate
 ```
 
-A package build exports aggregate renders, records provenance, then hashes package files. Printing is not part of the build; see [Printing](#printing).
+A package build exports aggregate renders and print masters, records provenance, then hashes package files. Print-ready PDF generation remains separate; see [Printing](#printing).
 
 ### Print masters
 
-Print masters are exported through `mse_packages/essentia-print.mse-export-template`, whose script calls `write_image_file(card, file:, width:, height:)` so MSE re-renders each card at 1500 × 2092 instead of upscaling the 1× bitmap. That is 600 DPI at 63.5 × 88.9 mm, exactly 4× the stylesheet's native 375 × 523 declared by `magic-sevenhalf.mse-style`.
+Print masters are exported through `mse_packages/essentia-print.mse-export-template`, whose script calls `write_image_file(card, file:, width:, height:)` so MSE re-renders each card at 1500 × 2092 instead of upscaling the native bitmap. That is 600 DPI at 63.5 × 88.9 mm, exactly 2× the stylesheet's native 750 × 1046 declared by `magic-sevenhalf.mse-style`.
 
 **Masters come from the export template, never from Preferences → Export scale.** Export scale is a per-machine UI preference; using it would make output depend on who ran the export. The template pins the size in tracked source, so every machine produces identical masters.
 
