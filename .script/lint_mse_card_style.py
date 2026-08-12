@@ -10,6 +10,7 @@ import argparse
 import re
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Iterable
 
@@ -18,6 +19,30 @@ PROJECTS_ROOT = ROOT / "cards_mse"
 TAG_RE = re.compile(r"<[^>]+>")
 TOKEN_RE = re.compile(r"(<[^>]+>)")
 QUOTED_NAME_RE = re.compile(r"“[^“”]+”")
+
+
+@lru_cache(maxsize=None)
+def _boundary_pattern(needle: str, ignore_case: bool) -> re.Pattern[str]:
+    """Compile a word-boundary pattern once. The hot loops rebuilt these per line."""
+    return re.compile(rf"(?<![\w]){re.escape(needle)}(?![\w])", re.IGNORECASE if ignore_case else 0)
+
+
+def boundary_search(needle: str, text: str) -> re.Match[str] | None:
+    """Case-sensitive word-boundary search. The substring test is exact, so skipping
+    the regex on a miss cannot change a result — and it skips it ~99% of the time."""
+    if needle not in text:
+        return None
+    return _boundary_pattern(needle, False).search(text)
+
+
+def boundary_finditer(needle: str, text: str, lowered: str) -> list[re.Match[str]]:
+    """Case-insensitive word-boundary matches. `lowered` is `text.casefold()`, hoisted
+    by the caller so it is computed once per line instead of once per keyword."""
+    if needle.casefold() not in lowered:
+        return []
+    return list(_boundary_pattern(needle, True).finditer(text))
+
+
 NAME_FRAGMENTS = ("Burning Abyss", "Shaddoll", "Nekroz", "Spellbook", "Lyrilusc")
 CONJUGATED_ACTION_FORMS = {
     "Discarded": "discarded",
@@ -210,6 +235,12 @@ KEYWORD_PATTERNS = (
     re.compile(r"Protection from (?:everything|[A-Za-z][A-Za-z-]*)", re.I),
 )
 
+# Sorted by (-len, text) so the order is independent of set iteration, which
+# PYTHONHASHSEED randomises per process and which used to leak into finding order.
+REQUIRED_EXACT_KEYWORDS = tuple(
+    sorted(KNOWN_KEYWORDS - set(ACTION_WORDS) - ABILITY_METADATA, key=lambda word: (-len(word), word))
+)
+
 COMMON_NAME_WORDS = {
     "a",
     "an",
@@ -305,7 +336,8 @@ def extract_rule_lines(path: Path) -> tuple[str, list[tuple[int, str]]]:
     return name, result
 
 
-def name_aliases(name: str) -> list[str]:
+@lru_cache(maxsize=None)
+def name_aliases(name: str) -> tuple[str, ...]:
     """Return plausible self-name references, longest first."""
     tokens = re.findall(r"[A-Za-z0-9]+(?:[.:'’-][A-Za-z0-9]+)*|“[^”]+”", name)
     aliases = {name}
@@ -331,7 +363,7 @@ def name_aliases(name: str) -> list[str]:
         prefix = name.split(",", 1)[0]
         if any(word.casefold() not in COMMON_NAME_WORDS for word in prefix.split()):
             aliases.add(prefix)
-    return sorted(aliases, key=len, reverse=True)
+    return tuple(sorted(aliases, key=lambda alias: (-len(alias), alias)))
 
 
 def is_zone_exile(segment: str, start: int) -> bool:
@@ -423,6 +455,7 @@ def visible_text_and_format_ranges(text: str) -> tuple[str, list[tuple[int, int]
 def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]:
     findings: list[Finding] = []
     visible, bold_ranges, italic_ranges = visible_text_and_format_ranges(text)
+    lowered = visible.casefold()
 
     def containers(match: re.Match[str]) -> list[tuple[int, int]]:
         return [item for item in bold_ranges if item[0] <= match.start() and item[1] >= match.end()]
@@ -543,10 +576,9 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
                 continue
             findings.append(Finding(path, line_number, "MSE009", f"'{actual}' is not an action in this context", f"use plain {actual.casefold()}"))
 
-    required_exact = KNOWN_KEYWORDS - set(ACTION_WORDS) - ABILITY_METADATA
     checked_spans: set[tuple[int, int]] = set()
-    for keyword in sorted(required_exact, key=len, reverse=True):
-        for match in re.finditer(rf"(?<![\w]){re.escape(keyword)}(?![\w])", visible, re.I):
+    for keyword in REQUIRED_EXACT_KEYWORDS:
+        for match in boundary_finditer(keyword, visible, lowered):
             checked_spans.add((match.start(), match.end()))
             if not containers(match):
                 findings.append(Finding(path, line_number, "MSE014", f"keyword '{keyword}' is not bold", f"use <b>{keyword}</b>"))
@@ -564,6 +596,13 @@ def lint_visible_style(path: Path, line_number: int, text: str) -> list[Finding]
     return findings
 
 
+def _alias_order(alias_owners: dict[str, set[str]]) -> tuple[tuple[str, frozenset[str]], ...]:
+    return tuple(
+        (alias, frozenset(owners))
+        for alias, owners in sorted(alias_owners.items(), key=lambda item: (-len(item[0]), item[0]))
+    )
+
+
 def lint_name_style(
     path: Path,
     line_number: int,
@@ -571,6 +610,8 @@ def lint_name_style(
     card_name: str,
     all_card_names: tuple[str, ...],
     alias_owners: dict[str, set[str]],
+    *,
+    alias_order: tuple[tuple[str, frozenset[str]], ...] | None = None,
 ) -> list[Finding]:
     findings: list[Finding] = []
     for segment, bold, italic in markup_segments(text):
@@ -580,18 +621,18 @@ def lint_name_style(
             if bold:
                 continue
             for fragment in NAME_FRAGMENTS:
-                if re.search(rf"(?<![\w]){re.escape(fragment)}(?![\w])", segment):
+                if boundary_search(fragment, segment):
                     findings.append(Finding(path, line_number, "MSE012", f"name fragment '{fragment}' is plain", f"use <i-auto>“{fragment}”</i-auto>"))
                     break
             for alias in name_aliases(card_name):
-                if re.search(rf"(?<![\w]){re.escape(alias)}(?![\w])", segment):
+                if boundary_search(alias, segment):
                     findings.append(Finding(path, line_number, "MSE008", f"self-name reference '{alias}' is not italic", f"wrap {alias} in <i-auto>...</i-auto>"))
                     break
             else:
-                for alias, owners in sorted(alias_owners.items(), key=lambda item: len(item[0]), reverse=True):
+                for alias, owners in alias_order if alias_order is not None else _alias_order(alias_owners):
                     if owners == {card_name}:
                         continue
-                    if re.search(rf"(?<![\w]){re.escape(alias)}(?![\w])", segment):
+                    if boundary_search(alias, segment):
                         findings.append(Finding(path, line_number, "MSE010", f"card-name reference '{alias}' is not italic", f"use <i-auto>“{alias}”</i-auto>"))
                         break
 
@@ -636,13 +677,14 @@ def lint(projects_root: Path = PROJECTS_ROOT) -> list[Finding]:
     for card_name in all_card_names:
         for alias in name_aliases(card_name):
             alias_owners.setdefault(alias, set()).add(card_name)
+    alias_order = _alias_order(alias_owners)
     for path in cards:
         name, rules = parsed[path]
         findings.extend(lint_markup_block(path, rules))
         for line_number, text in rules:
             findings.extend(lint_bold_catalog(path, line_number, text))
             findings.extend(lint_visible_style(path, line_number, text))
-            findings.extend(lint_name_style(path, line_number, text, name, all_card_names, alias_owners))
+            findings.extend(lint_name_style(path, line_number, text, name, all_card_names, alias_owners, alias_order=alias_order))
     return findings
 
 

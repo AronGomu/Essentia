@@ -274,3 +274,10 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 
 - [ ] Run `cd website && npm run rights:check`: `rights: 100 approved assets` (50 independent display sources + 50 print masters), approved by AronGomu on 2026-08-10.
 - [ ] At 1920px viewport width and 100% browser zoom, compare a card page against its pre-HD screenshot and confirm the render is visibly sharper. This manual visual check remains pending until performed.
+
+## T1 lint-perf
+
+- [ ] Run `time python .script/lint_mse_card_style.py` on a clean checkout: wall clock stays well under 2 seconds (was ~25.6s before this change).
+- [ ] Run the lint script twice with `PYTHONHASHSEED=0` and `PYTHONHASHSEED=1` (`PYTHONHASHSEED=0 python .script/lint_mse_card_style.py` vs `PYTHONHASHSEED=1 python .script/lint_mse_card_style.py`); confirm stdout is identical between the two runs.
+- [ ] Diff the lint output against a pre-change capture (`git stash` the `.script/` change, capture output, restore, re-run): the findings text, order, and count must be byte-identical.
+- [ ] Edit a card's rule text to introduce a known keyword in plain (non-bold) text, e.g. remove `<b>` around `Discard`; confirm the linter still reports `MSE014` for it, proving the perf rewrite didn't silently drop a rule.

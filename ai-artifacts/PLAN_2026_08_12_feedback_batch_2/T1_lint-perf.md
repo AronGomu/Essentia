@@ -55,10 +55,10 @@
 
 ## Impl steps
 
-- [ ] 1. Capture baseline: `python .script/lint_mse_card_style.py > /tmp/lint-before.txt 2>&1; echo $?` — record exit code (1) and line count (198 findings + trailer = 200 lines).
-- [ ] 2. Write `tests/test_lint_performance.py`. Import the script exactly like `tests/test_mse_card_style.py` does (`importlib.util.spec_from_file_location("lint_mse_card_style", ROOT / ".script" / "lint_mse_card_style.py")`). For the compile-count test: call `LINTER._boundary_pattern.cache_clear()`, then `with unittest.mock.patch("re.compile", wraps=re.compile) as spy:` run `LINTER.lint(fixture_root)` and assert `spy.call_count <= 400`. For the hash-seed test use `subprocess.run([sys.executable, str(SCRIPT)], env={**os.environ, "PYTHONHASHSEED": "0"}, capture_output=True, text=True)` twice with seeds `"0"` and `"1"`, compare `.stdout`.
-- [ ] 3. In `.script/lint_mse_card_style.py`, add `from functools import lru_cache` to the imports block (after `from dataclasses import dataclass`).
-- [ ] 4. Insert directly below `QUOTED_NAME_RE` (line 20):
+- [x] 1. Capture baseline: `python .script/lint_mse_card_style.py > /tmp/lint-before.txt 2>&1; echo $?` — record exit code (1) and line count (198 findings + trailer = 200 lines). Evidence: exit=1, 200 lines.
+- [x] 2. Write `tests/test_lint_performance.py`. Evidence: file created, red-then-green confirmed. Import the script exactly like `tests/test_mse_card_style.py` does (`importlib.util.spec_from_file_location("lint_mse_card_style", ROOT / ".script" / "lint_mse_card_style.py")`). For the compile-count test: call `LINTER._boundary_pattern.cache_clear()`, then `with unittest.mock.patch("re.compile", wraps=re.compile) as spy:` run `LINTER.lint(fixture_root)` and assert `spy.call_count <= 400`. For the hash-seed test use `subprocess.run([sys.executable, str(SCRIPT)], env={**os.environ, "PYTHONHASHSEED": "0"}, capture_output=True, text=True)` twice with seeds `"0"` and `"1"`, compare `.stdout`.
+- [x] 3. In `.script/lint_mse_card_style.py`, add `from functools import lru_cache` to the imports block (after `from dataclasses import dataclass`). Evidence: import added.
+- [x] 4. Insert directly below `QUOTED_NAME_RE` (line 20): Evidence: `_boundary_pattern`, `boundary_search`, `boundary_finditer` added.
 
   ```python
   @lru_cache(maxsize=None)
@@ -83,8 +83,8 @@
       return list(_boundary_pattern(needle, True).finditer(text))
   ```
 
-- [ ] 5. Decorate `name_aliases` (line 308) with `@lru_cache(maxsize=None)` and change its return type to `tuple[str, ...]`, ending with `return tuple(sorted(aliases, key=lambda alias: (-len(alias), alias)))`. Then delete any now-redundant `sorted(...)` at its call sites; call sites only iterate or test membership, both fine on a tuple.
-- [ ] 6. Add a module constant directly under `KEYWORD_PATTERNS` (line 200 block end):
+- [x] 5. Decorate `name_aliases` (line 308) with `@lru_cache(maxsize=None)` and change its return type to `tuple[str, ...]`, ending with `return tuple(sorted(aliases, key=lambda alias: (-len(alias), alias)))`. Then delete any now-redundant `sorted(...)` at its call sites; call sites only iterate or test membership, both fine on a tuple. Evidence: no call site used sorted() on the result — none to delete.
+- [x] 6. Add a module constant directly under `KEYWORD_PATTERNS` (line 200 block end): Evidence: `REQUIRED_EXACT_KEYWORDS` added.
 
   ```python
   # Sorted by (-len, text) so the order is independent of set iteration, which
@@ -94,9 +94,9 @@
   )
   ```
 
-- [ ] 7. In `lint_visible_style`: delete the local `required_exact = ...` line, add `lowered = visible.casefold()` next to the existing `visible` computation, and replace the keyword loop body with `for keyword in REQUIRED_EXACT_KEYWORDS:` / `for match in boundary_finditer(keyword, visible, lowered):`.
-- [ ] 8. In `lint_name_style`: replace all three `re.search(rf"(?<![\w]){re.escape(X)}(?![\w])", segment)` calls with `boundary_search(X, segment)` (X = `fragment`, `alias`, `alias`). Keep the `for ... else:` structure exactly as-is — the MSE010 branch must still only run when the MSE008 loop found nothing.
-- [ ] 9. In `lint_name_style`, add a keyword-only parameter `alias_order: tuple[tuple[str, frozenset[str]], ...] | None = None` and replace the per-line `sorted(alias_owners.items(), key=lambda item: len(item[0]), reverse=True)` with `alias_order if alias_order is not None else _alias_order(alias_owners)`, where `_alias_order` is a new module function:
+- [x] 7. In `lint_visible_style`: delete the local `required_exact = ...` line, add `lowered = visible.casefold()` next to the existing `visible` computation, and replace the keyword loop body with `for keyword in REQUIRED_EXACT_KEYWORDS:` / `for match in boundary_finditer(keyword, visible, lowered):`. Evidence: done.
+- [x] 8. In `lint_name_style`: replace all three `re.search(rf"(?<![\w]){re.escape(X)}(?![\w])", segment)` calls with `boundary_search(X, segment)` (X = `fragment`, `alias`, `alias`). Keep the `for ... else:` structure exactly as-is — the MSE010 branch must still only run when the MSE008 loop found nothing. Evidence: done, `for...else` preserved.
+- [x] 9. In `lint_name_style`, add a keyword-only parameter `alias_order: tuple[tuple[str, frozenset[str]], ...] | None = None` and replace the per-line `sorted(alias_owners.items(), key=lambda item: len(item[0]), reverse=True)` with `alias_order if alias_order is not None else _alias_order(alias_owners)`, where `_alias_order` is a new module function:
 
   ```python
   def _alias_order(alias_owners: dict[str, set[str]]) -> tuple[tuple[str, frozenset[str]], ...]:
@@ -106,9 +106,11 @@
       )
   ```
 
-- [ ] 10. In `lint()` (line 630): after `alias_owners` is built, add `alias_order = _alias_order(alias_owners)` and pass `alias_order=alias_order` to the `lint_name_style(...)` call.
-- [ ] 11. Run `python .script/lint_mse_card_style.py > /tmp/lint-after.txt 2>&1; diff /tmp/lint-before.txt /tmp/lint-after.txt` — must print nothing.
-- [ ] 12. Run `time python .script/lint_mse_card_style.py` — `real` must be under 2s.
+  Evidence for step 9: `_alias_order` and keyword-only `alias_order` param added.
+
+- [x] 10. In `lint()` (line 630): after `alias_owners` is built, add `alias_order = _alias_order(alias_owners)` and pass `alias_order=alias_order` to the `lint_name_style(...)` call. Evidence: done.
+- [x] 11. Run `python .script/lint_mse_card_style.py > /tmp/lint-after.txt 2>&1; diff /tmp/lint-before.txt /tmp/lint-after.txt` — must print nothing. Evidence: diff empty, exit 0.
+- [x] 12. Run `time python .script/lint_mse_card_style.py` — `real` must be under 2s. Evidence: real 0m0.241s.
 
 ## Outputs
 
@@ -118,10 +120,10 @@
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_lint_performance -v` — 5 tests pass
-- [ ] `python -m unittest tests.test_mse_card_style -v` — same result as before the change (pre-existing failures unchanged in count and names)
-- [ ] `diff /tmp/lint-before.txt /tmp/lint-after.txt` — empty
-- [ ] `time python .script/lint_mse_card_style.py` — under 2s
-- [ ] `python -m unittest discover -s tests 2>&1 | tail -3` — failure count still 21, not 22+
-- [ ] app functional — linter is standalone; no other caller signature changed except the new keyword-only default
-- [ ] commit msg draft: `perf(lint): compile boundary patterns once instead of per alias per line`
+- [x] `python -m unittest tests.test_lint_performance -v` — 5 tests pass. Evidence: `Ran 5 tests ... OK`.
+- [x] `python -m unittest tests.test_mse_card_style -v` — same result as before the change (pre-existing failures unchanged in count and names). Evidence: 1 failure (`test_checked_in_canonical_cards_pass`, the 198-findings case) — pre-existing, unrelated to this change.
+- [x] `diff /tmp/lint-before.txt /tmp/lint-after.txt` — empty. Evidence: no output, exit 0.
+- [x] `time python .script/lint_mse_card_style.py` — under 2s. Evidence: real 0m0.241s.
+- [x] `python -m unittest discover -s tests 2>&1 | tail -3` — failure count still 21, not 22+. Evidence: `Ran 205 tests in 1.786s` / `FAILED (failures=21)`.
+- [x] app functional — linter is standalone; no other caller signature changed except the new keyword-only default. Evidence: only `lint()` passes `alias_order`; `main()` untouched.
+- [x] commit msg draft: `perf(lint): compile boundary patterns once instead of per alias per line`. Evidence: used as commit message below.
