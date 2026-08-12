@@ -26,7 +26,9 @@ const bothCategoriesCard = catalog.cards.find(
 test('both categories render linked thumbnail card galleries', async ({
   page,
 }) => {
-  test.skip(!bothCategoriesCard, 'no card fills both related lists');
+  // Not `test.skip`: a catalog with no such card means this spec covers nothing,
+  // which has to be a failure rather than a silent pass.
+  expect(bothCategoriesCard).toBeDefined();
   await page.goto(urlFor(`/cards/${bothCategoriesCard!.id}/`));
   for (const heading of ['related-archetype', 'related-interaction']) {
     const section = page.locator(`section:has(#${heading})`);
@@ -90,7 +92,7 @@ test('a card with no relations renders no related section', async ({
 });
 
 test('related galleries carry no New badge', async ({ page }) => {
-  test.skip(!bothCategoriesCard, 'no card fills both related lists');
+  expect(bothCategoriesCard).toBeDefined();
   for (const id of ['burning-abyss-graff', bothCategoriesCard!.id]) {
     await page.goto(urlFor(`/cards/${id}/`));
     await expect(

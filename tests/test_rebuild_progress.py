@@ -9,7 +9,10 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
+
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -174,6 +177,115 @@ class RebuildProgressTests(unittest.TestCase):
         for line in lines:
             self.assertRegex(line, PHASE_LINE_RE)
             self.assertTrue(line.startswith(f"rebuild {package.name} ["))
+
+    def write_png(self, path: Path, size: tuple[int, int]) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGBA", size, (255, 255, 255, 255)).save(path, format="PNG")
+
+    def stub_renderer(self, names: list[str], size: tuple[int, int]):
+        """Stand in for the MSE CLI: write one PNG per card where the exporter looks."""
+
+        def run(command, *_args, **_kwargs):  # noqa: ANN001
+            if "--export-images" in command:
+                directory = Path(command[-1]).parent
+                for name in names:
+                    self.write_png(directory / f"{name}.png", size)
+            else:
+                directory = Path(command[-1]).parent / "print-files"
+                for name in names:
+                    self.write_png(directory / f"{name}.png", size)
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+
+        return run
+
+    def render_project(self, names: list[str]) -> Path:
+        return self.project(
+            self.root / "00_drafts",
+            "",
+            "10_YGO_Test.mse-set",
+            "Test Set Draft",
+            [(name.lower(), name) for name in names],
+        )
+
+    def test_export_emits_one_render_line_per_card(self) -> None:
+        names = ["Card One", "Card Two", "Card Three"]
+        project = self.render_project(names)
+        config = SimpleNamespace(cli=Path("mse"))
+        buffer = io.StringIO()
+        with patch.object(export_mse_renders.subprocess, "run", self.stub_renderer(names, (30, 42))):
+            with redirect_stdout(buffer):
+                export_mse_renders.export(project, project / "render", config)
+        lines = [line for line in buffer.getvalue().splitlines() if line.startswith("mse.render ")]
+        self.assertEqual(
+            lines,
+            [f"mse.render {index}/3 {name}" for index, name in enumerate(names, start=1)],
+        )
+
+    def test_export_prints_nothing_when_quiet(self) -> None:
+        names = ["Card One", "Card Two", "Card Three"]
+        project = self.render_project(names)
+        config = SimpleNamespace(cli=Path("mse"))
+        buffer = io.StringIO()
+        with patch.object(export_mse_renders.subprocess, "run", self.stub_renderer(names, (30, 42))):
+            with redirect_stdout(buffer):
+                export_mse_renders.export(project, project / "render", config, quiet=True)
+        self.assertEqual(buffer.getvalue(), "")
+
+    def test_print_masters_emit_one_line_per_card(self) -> None:
+        names = ["Card One", "Card Two", "Card Three"]
+        project = self.render_project(names)
+        config = SimpleNamespace(cli=Path("mse"))
+        size = (export_mse_renders.PRINT_WIDTH, export_mse_renders.PRINT_HEIGHT)
+        output = project.parent / export_mse_renders.PRINT_DIR_NAME
+        buffer = io.StringIO()
+        with patch.object(export_mse_renders.subprocess, "run", self.stub_renderer(names, size)):
+            with redirect_stdout(buffer):
+                export_mse_renders.export_print_masters(project, output, config)
+        lines = [line for line in buffer.getvalue().splitlines() if line.startswith("mse.print ")]
+        self.assertEqual(
+            lines,
+            [f"mse.print {index}/3 {name}" for index, name in enumerate(names, start=1)],
+        )
+
+        quiet_buffer = io.StringIO()
+        with patch.object(export_mse_renders.subprocess, "run", self.stub_renderer(names, size)):
+            with redirect_stdout(quiet_buffer):
+                export_mse_renders.export_print_masters(project, output, config, quiet=True)
+        self.assertEqual(quiet_buffer.getvalue(), "")
+
+    def test_main_forwards_quiet_to_the_exporters(self) -> None:
+        project = self.render_project(["Card One"])
+        output = Path(self.temporary.name) / "render-out"
+        output.mkdir()
+        config = SimpleNamespace(cli=Path("mse"), projects_dir=self.root)
+        seen: list[tuple[str, bool]] = []
+
+        def fake_export(_project: Path, _output: Path, _config, *, quiet: bool = False) -> dict[str, object]:
+            seen.append(("render", quiet))
+            return {"schemaVersion": export_mse_renders.PROVENANCE_SCHEMA, "cards": []}
+
+        def fake_print_masters(_project: Path, _output: Path, _config, *, quiet: bool = False) -> dict[str, object]:
+            seen.append(("print", quiet))
+            return {"cards": []}
+
+        argv = [
+            "export_mse_renders.py",
+            str(project),
+            "--output",
+            str(output),
+            "--print-masters",
+            "--quiet",
+        ]
+        with patch.object(sys, "argv", argv), patch.object(
+            export_mse_renders, "export", fake_export
+        ), patch.object(
+            export_mse_renders, "export_print_masters", fake_print_masters
+        ), patch.object(
+            export_mse_renders.MSEConfig, "load", classmethod(lambda cls: config)
+        ):
+            with redirect_stdout(io.StringIO()):
+                export_mse_renders.main()
+        self.assertEqual(seen, [("render", True), ("print", True)])
 
     def test_progress_line_format(self) -> None:
         self.assertEqual(

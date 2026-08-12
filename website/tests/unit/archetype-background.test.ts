@@ -33,6 +33,12 @@ describe('archetype background assets', () => {
     }
   });
 
+  it('records no absolute home path as a provenance source', () => {
+    for (const entry of provenance.art ?? []) {
+      expect(entry.source).not.toMatch(/(^|\s)\/home\//);
+    }
+  });
+
   it('admits AI generation in the provenance note', () => {
     expect(provenance.note).toMatch(/AI[- ]generated/i);
     expect(provenance.note).not.toMatch(/No generative service is used/i);

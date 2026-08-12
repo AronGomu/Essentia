@@ -186,6 +186,51 @@ class RebuildStampTests(unittest.TestCase):
         self.assertNotEqual(before, after_empty)
         self.assertNotEqual(after_empty, after_changed)
 
+    def test_input_hash_covers_the_identity_registry(self) -> None:
+        package, identities = self.open_package([("card one", "Card One")])
+        before = release.rebuild_input_hash(package, identities)
+        registry = json.loads(identities.read_text(encoding="utf-8"))
+        registry["cards"][0]["routeAliases"] = ["card-one-alias"]
+        identities.write_text(json.dumps(registry), encoding="utf-8")
+        self.assertNotEqual(before, release.rebuild_input_hash(package, identities))
+
+    def test_identity_edit_defeats_the_stamp(self) -> None:
+        package, identities = self.open_package([("card one", "Card One")])
+        calls = []
+
+        def spy(package: Path, aggregate: Path, *, print_masters: bool = False, verbose: bool = False) -> None:
+            calls.append(package)
+            self.fake_artifacts(package, aggregate, print_masters=print_masters, verbose=verbose)
+
+        release.rebuild(package, identities_path=identities, artifact_builder=spy)
+        self.assertTrue(release.rebuild_is_current(package, identities))
+
+        registry = json.loads(identities.read_text(encoding="utf-8"))
+        registry["cards"][0]["routeAliases"] = ["card-one-alias"]
+        identities.write_text(json.dumps(registry), encoding="utf-8")
+
+        self.assertFalse(release.rebuild_is_current(package, identities))
+        release.rebuild(package, identities_path=identities, artifact_builder=spy)
+        self.assertEqual(len(calls), 2)
+
+    def test_empty_render_directory_is_not_present(self) -> None:
+        package, identities = self.open_package([("card one", "Card One")])
+        calls = []
+
+        def spy(package: Path, aggregate: Path, *, print_masters: bool = False, verbose: bool = False) -> None:
+            calls.append(package)
+            self.fake_artifacts(package, aggregate, print_masters=print_masters, verbose=verbose)
+
+        release.rebuild(package, identities_path=identities, artifact_builder=spy)
+        self.assertTrue(release.rebuild_outputs_present(package))
+
+        for render in (package / "renders").iterdir():
+            render.unlink()
+        self.assertFalse(release.rebuild_outputs_present(package))
+
+        release.rebuild(package, identities_path=identities, artifact_builder=spy)
+        self.assertEqual(len(calls), 2)
+
     def test_rebuild_skips_on_matching_stamp(self) -> None:
         package, identities = self.open_package([("card one", "Card One")])
         calls = []

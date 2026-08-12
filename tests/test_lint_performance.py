@@ -6,7 +6,6 @@ import re
 import sys
 import time
 import unittest
-import unittest.mock
 import subprocess
 from pathlib import Path
 
@@ -34,6 +33,24 @@ def write_project(root: Path, name: str, rule_text: str, *, folder: str) -> Path
     return project
 
 
+def write_scanned_project(root: Path, name: str, lines: list[str], *, folder: str) -> Path:
+    """A project whose rule text really reaches the keyword and alias scans, so the
+    boundary-pattern cache is exercised instead of short-circuited by the prefilter."""
+    project = root / folder
+    project.mkdir(parents=True, exist_ok=True)
+    (project / "set").write_text("include_file: card test\n", encoding="utf-8")
+    body = "".join(f"\t\t{line}\n" for line in lines)
+    (project / "card test").write_text(
+        "mse_version: 2.5.8\n"
+        "card:\n"
+        f"\tname: {name}\n"
+        f"\trule_text:\n{body}"
+        "\tflavor_text: <i-flavor></i-flavor>\n",
+        encoding="utf-8",
+    )
+    return project
+
+
 class BoundarySearchTests(unittest.TestCase):
     def test_boundary_search_respects_word_boundaries(self) -> None:
         self.assertIsNotNone(LINTER.boundary_search("Nekroz", "Nekroz of Trishula"))
@@ -55,20 +72,40 @@ class BoundarySearchTests(unittest.TestCase):
                 actual = LINTER.boundary_search(needle, text)
                 self.assertEqual(bool(actual), bool(reference))
 
+    def test_prefilter_keeps_matches_a_non_length_preserving_fold_hides(self) -> None:
+        # 'İ'.casefold() is two codepoints, so the casefolded copy no longer
+        # contains 'discard' even though the reference regex still matches.
+        for needle, text in [("Discard", "DİSCARD"), ("Discard", "Discard 1 card"), ("Set", "SET this card")]:
+            with self.subTest(needle=needle, text=text):
+                reference = list(re.finditer(rf"(?<![\w]){re.escape(needle)}(?![\w])", text, re.IGNORECASE))
+                actual = LINTER.boundary_finditer(needle, text, text.casefold())
+                self.assertEqual(
+                    [(match.start(), match.end()) for match in actual],
+                    [(match.start(), match.end()) for match in reference],
+                )
+
 
 class LintPerformanceTests(unittest.TestCase):
-    def test_lint_compiles_a_bounded_number_of_patterns(self) -> None:
+    def test_each_boundary_pattern_compiles_once_and_is_reused(self) -> None:
+        """The bug was one compile per needle per line. Reuse has to show up as cache
+        hits: without the `lru_cache` every call is a miss and this goes red."""
         LINTER._boundary_pattern.cache_clear()
         import tempfile
 
+        lines = ["Discard 1 card, then Summon Nekroz of Trishula from your Grave."] * 8
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            write_project(root, "Nekroz of Trishula", "<b>Discard</b> 1 card from Hand.", folder="01_A.mse-set")
-            write_project(root, "Shaddoll Falco", "<b>Search</b> your Deck for a card.", folder="02_B.mse-set")
-            write_project(root, "Burning Abyss - Dante", "<b>Summon</b> a Creature from Grave.", folder="03_C.mse-set")
-            with unittest.mock.patch("re.compile", wraps=re.compile) as spy:
-                LINTER.lint(root)
-            self.assertLessEqual(spy.call_count, 400)
+            write_scanned_project(root, "Nekroz of Trishula", lines, folder="01_A.mse-set")
+            write_scanned_project(root, "Shaddoll Falco", lines, folder="02_B.mse-set")
+            write_scanned_project(root, "Burning Abyss - Dante", lines, folder="03_C.mse-set")
+            findings = LINTER.lint(root)
+
+        self.assertTrue(findings, "fixture must reach the keyword and alias scans")
+        info = LINTER._boundary_pattern.cache_info()
+        self.assertGreater(info.misses, 0, "no boundary pattern was compiled at all")
+        # One compile per distinct needle, not per needle per line.
+        self.assertLessEqual(info.misses, 10)
+        self.assertGreater(info.hits, info.misses * 5)
 
     def test_full_corpus_lint_under_two_seconds(self) -> None:
         start = time.perf_counter()
@@ -81,6 +118,11 @@ class LintPerformanceTests(unittest.TestCase):
         env1 = {**os.environ, "PYTHONHASHSEED": "1"}
         result0 = subprocess.run([sys.executable, str(SCRIPT)], env=env0, capture_output=True, text=True)
         result1 = subprocess.run([sys.executable, str(SCRIPT)], env=env1, capture_output=True, text=True)
+        # A crashed run prints nothing and would compare equal to another crash.
+        for result in (result0, result1):
+            self.assertEqual(result.returncode, 1, result.stderr[-2000:])
+            self.assertTrue(result.stdout.strip(), "lint printed no findings at all")
+            self.assertIn(": MSE", result.stdout.splitlines()[0])
         self.assertEqual(result0.stdout, result1.stdout)
 
 

@@ -17,15 +17,30 @@ describe('card related band', () => {
     );
   });
 
+  /** Index of the `</div>` that closes the `<div>` opened at `openTagIndex`. */
+  function matchingDivClose(markup: string, openTagIndex: number): number {
+    const tags = /<div\b|<\/div\s*>/g;
+    tags.lastIndex = openTagIndex;
+    let depth = 0;
+    let match: RegExpExecArray | null;
+    while ((match = tags.exec(markup)) !== null) {
+      depth += match[0].startsWith('</') ? -1 : 1;
+      if (depth === 0) return match.index;
+    }
+    throw new Error('unbalanced <div> around the card transcription');
+  }
+
   it('related sections are not inside the transcription', () => {
-    const transcriptionOpen = source.indexOf('class="card-transcription"');
-    const transcriptionClose = source.indexOf('</div>', transcriptionOpen);
+    const classIndex = source.indexOf('class="card-transcription"');
+    expect(classIndex).toBeGreaterThan(-1);
+    // The nearest inner `</div>` closes `.card-facts`, not the transcription:
+    // count depth so re-nesting the related sections after it turns this red.
+    const transcriptionOpen = source.lastIndexOf('<div', classIndex);
+    const transcriptionClose = matchingDivClose(source, transcriptionOpen);
     const archetypeIndex = source.indexOf('related-archetype');
     const bandIndex = source.indexOf('related-band');
-    expect(transcriptionOpen).toBeGreaterThan(-1);
-    expect(transcriptionClose).toBeGreaterThan(-1);
     expect(archetypeIndex).toBeGreaterThan(transcriptionClose);
-    expect(bandIndex).toBeGreaterThan(-1);
+    expect(bandIndex).toBeGreaterThan(transcriptionClose);
   });
 
   it('band spans the viewport', () => {

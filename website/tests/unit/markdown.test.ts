@@ -190,6 +190,12 @@ describe('authored Markdown renderer', () => {
     );
   });
 
+  it('rejects a protocol-relative image', () => {
+    expect(() => renderSafeMarkdown('![a](//evil.example/x.png)')).toThrow(
+      'Unsafe Markdown image URL: //evil.example/x.png',
+    );
+  });
+
   it('rejects an unsupported scale', () => {
     expect(() => renderSafeMarkdown('![x|63%](/y.webp)')).toThrow(
       'Unsupported Markdown image scale',

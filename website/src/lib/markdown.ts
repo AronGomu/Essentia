@@ -48,7 +48,9 @@ function inline(value: string, base: string): string {
     /!\[([^\]|]*)(?:\|(\d{1,3})%)?\]\(([^)\s]+)\)/g,
     (_match, alt: string, rawScale: string | undefined, rawUrl: string) => {
       const url = rawUrl.trim();
-      if (!url.startsWith('/'))
+      // `//host/x.png` is protocol-relative, not site-relative: it loads from a
+      // third-party origin. Only a single leading slash is a local asset.
+      if (!url.startsWith('/') || url.startsWith('//'))
         throw new Error(`Unsafe Markdown image URL: ${url}`);
       const scale = imageScale(rawScale);
       const src = `${base.replace(/\/$/, '')}${url}`;

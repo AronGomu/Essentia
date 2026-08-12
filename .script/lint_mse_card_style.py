@@ -38,7 +38,10 @@ def boundary_search(needle: str, text: str) -> re.Match[str] | None:
 def boundary_finditer(needle: str, text: str, lowered: str) -> list[re.Match[str]]:
     """Case-insensitive word-boundary matches. `lowered` is `text.casefold()`, hoisted
     by the caller so it is computed once per line instead of once per keyword."""
-    if needle.casefold() not in lowered:
+    # The prefilter is only a superset test while the fold preserves length. A
+    # fold that expands (İ → i + combining dot) can hide a match the regex finds,
+    # so drop the prefilter for such a line and let the regex decide.
+    if len(lowered) == len(text) and needle.casefold() not in lowered:
         return []
     return list(_boundary_pattern(needle, True).finditer(text))
 

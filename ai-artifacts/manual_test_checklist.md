@@ -232,7 +232,7 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 ## T9 related-graph
 
 - [ ] Run `cd website && npm run content`, confirm it exits 0 and prints the one-line content summary with no errors.
-- [ ] Open `website/src/generated/catalog.ts`, search for `"id": "tour-guide-from-the-underworld"`, confirm its `related.interaction` array includes `burning-abyss-graff` and `burning-abyss-cir` (both Fiend, MV 1 — cards Tour Guide can Summon).
+- [ ] Open `website/src/generated/catalog.ts`, search for `"id": "tour-guide-from-the-underworld"`, confirm `burning-abyss-graff` and `burning-abyss-cir` are related to it (both Fiend, MV 1 — cards Tour Guide can Summon). (Superseded by feedback-batch-2 T6: they now sit in `related.archetype`, because the dedupe drops from `related.interaction` anything already listed as same archetype.)
 - [ ] In the same file, search for `"id": "burning-abyss-graff"`, confirm its `related.archetype` array lists every other `burning-abyss-*` card id and does not include `burning-abyss-graff` itself.
 - [ ] Search for `"id": "downerd-magician"`, confirm its `related.interaction` array does not include every card at MV 1 — only Xyz MV 1 creatures (e.g. `bagooska`, `tornado-dragon`), not `ash-blossom-and-joyous-spring` (MV 1, non-Xyz).
 - [ ] Confirm `"schemaVersion": 11` near the top of `catalog.ts`.
@@ -241,11 +241,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 ## T10 related-cards-ui
 
 - [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/burning-abyss-graff/`.
-- [ ] Confirm two headed sections appear after the card pager: `Same archetype` and `Interacts with this card`, each showing a gallery grid of card tiles (thumbnail + name), not bare text links.
+- [ ] Confirm a headed section appears after the card pager: `Same archetype`, showing a gallery grid of card tiles (thumbnail + name), not bare text links. (Superseded by feedback-batch-2 T6: Graff's interaction targets were all same-archetype duplicates, so only one section renders here now. Use `/cards/tour-guide-from-the-underworld/` — the only card left that fills both lists — to see `Same archetype` and `Interacts with this card` together.)
 - [ ] Confirm the old flat `Related cards` bullet list is gone.
 - [ ] Hover a tile in either gallery: confirm the shared hover-preview card render/rulings pop up, same as any other gallery tile on the site.
-- [ ] Open `/cards/tour-guide-from-the-underworld/`: confirm `Interacts with this card` includes Fiend MV-1 creatures such as `Burning Abyss - Graff`.
-- [ ] Find (or temporarily note) a card whose `Same archetype` list exceeds 12 — e.g. any Burning Abyss card given the archetype currently has more than 12 same-name relations plus the non-archetype pool card `burning-abyss-fire-lake`/`burning-abyss-traveler` fallback: confirm the gallery caps at 12 tiles and a trailing `View all N … cards` link appears, pointing at that archetype's section page.
+- [ ] Open `/cards/tour-guide-from-the-underworld/`: confirm its Burning Abyss fetch targets appear. (Superseded by feedback-batch-2 T6: the two lists are now disjoint, so `Burning Abyss - Graff` and the rest sit under `Same archetype`, not under `Interacts with this card`, which now lists only `Bagooska` and `Evilswarm Exciton Knight`.)
+- [ ] Find a card whose `Same archetype` list exceeds 12 — currently only `/cards/tour-guide-from-the-underworld/` (13; each Burning Abyss card sits at exactly 12 and shows no overflow link): confirm the gallery caps at 12 tiles and a trailing `View all N … cards` link appears, pointing at that card's own section page (`/sections/non-archetype/non-archetype/` for Tour Guide).
 - [ ] For a card whose `Interacts with this card` list exceeds 12 (if any exists in the current catalog), confirm the trailing text reads `N more` with no link.
 - [ ] Open a card whose both related lists are empty, if one exists in the current catalog (check `card.related` in `src/generated/catalog.ts`): confirm neither related section renders at all.
 
@@ -279,7 +279,7 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 
 - [ ] Run `time python .script/lint_mse_card_style.py` on a clean checkout: wall clock stays well under 2 seconds (was ~25.6s before this change).
 - [ ] Run the lint script twice with `PYTHONHASHSEED=0` and `PYTHONHASHSEED=1` (`PYTHONHASHSEED=0 python .script/lint_mse_card_style.py` vs `PYTHONHASHSEED=1 python .script/lint_mse_card_style.py`); confirm stdout is identical between the two runs.
-- [ ] Diff the lint output against a pre-change capture (`git stash` the `.script/` change, capture output, restore, re-run): the findings text, order, and count must be byte-identical.
+- [ ] Diff the lint output against a pre-change capture (capture the pre-change output from a scratch copy of the old script — do not stash a dirty tree): 248 findings before and after, same files, same lines, same rule codes. The output is **not** byte-identical: exactly one MSE008 message changed, on `card nekroz - shurit:19`, from `'Shurit'` to `'Nekroz'`. That single line is expected — equal-length alias ties used to fall out of set iteration order and are now deterministic. Any *other* difference is a regression.
 - [ ] Edit a card's rule text to introduce a known keyword in plain (non-bold) text, e.g. remove `<b>` around `Discard`; confirm the linter still reports `MSE014` for it, proving the perf rewrite didn't silently drop a rule.
 
 ## T2 rebuild-progress
@@ -319,7 +319,7 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 
 ## T7 related-band-layout
 
-- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/burning-abyss-graff/` at 1440px: `Same archetype` and `Interacts with this card` render below the card render and text, inside a visibly tinted full-width band with a hairline top border. The band's background spans edge to edge; the gallery content inside it stays inset to the page shell width.
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/burning-abyss-graff/` at 1440px: `Same archetype` renders below the card render and text, inside a visibly tinted full-width band with a hairline top border. (Graff renders that one section only — see T6 below. For a page with both sections in the band, use `/cards/tour-guide-from-the-underworld/`.) The band's background spans edge to edge; the gallery content inside it stays inset to the page shell width.
 - [ ] Slowly scroll the page: the card render (`.render-column`) stays pinned (sticky) while the rules text scrolls past it, then once the transcription column runs out, the render and the related band scroll away together — the render never overlaps or bleeds into the related band.
 - [ ] Confirm the related galleries are visibly wider than they were before (up to 6 columns at ≥ 90rem viewport width, vs. 5 for other `.card-grid` usages on the site).
 - [ ] Resize down to 44rem / 704px and below: the render column unsticks (`position: static`) and the two-column `.card-detail` grid stacks to one column, same as before this ticket.
@@ -348,3 +348,13 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Confirm the image is lazy-loaded (`loading="lazy"`) and does not shift surrounding layout on load.
 - [ ] Open DevTools console on `/docs/`: no CSP violations (no inline `style` attribute is present on the `<img>`; the scale comes from a `md-image-scale-60` class).
 - [ ] Resize the browser to a narrow width (~390px): the image scales down proportionally with the reading column, no overflow or clipping.
+
+## T10 review-fixes
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/nekroz/` at 1440px: the icy photo backdrop fills the whole viewport (no tiled seam, no small unscaled image sitting in the middle of the page). Before this fix the Nekroz theme's five background layers cycled a three-value `background-size` list and left the photo at its intrinsic size; Burning Abyss happened to land on `cover` and looked right.
+- [ ] Repeat on `/archetypes/burning-abyss/` at 1440px and at 390px: the backdrop still covers, and the gradients above it look unchanged (they have no intrinsic size, so `cover` is a no-op for them).
+- [ ] Run `python .script/rebuild_open_packages.py` twice. **The first run after this commit does a full rebuild even if nothing changed** — `STAMP_SCHEMA` went 1 → 2, so every existing stamp is invalid once. The second run must print `unchanged, skipped` in well under a second.
+- [ ] Edit `website/content/identities.json` (e.g. add a route alias), then run `python .script/rebuild_open_packages.py`: it rebuilds instead of skipping. The stamp now covers the identity registry, which the aggregate is built from.
+- [ ] Delete the PNGs inside an open package's `renders/` (keep the directory) and run the rebuild: it rebuilds rather than treating the empty directory as a finished output.
+- [ ] `grep -rn '/home/' website/content/art-provenance.json` prints nothing: the two archetype-background entries now record `owner-supplied (outside repo): <file>.png`. The source images themselves still live outside the repo, under `~/Downloads`.
+- [ ] Read the T1 lint-perf line above: it no longer asks anyone to verify byte-identical lint output. The true expectation is 248 findings with one changed MSE008 message on `card nekroz - shurit:19`.

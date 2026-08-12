@@ -130,12 +130,13 @@
       /* Dim veil: the photo must sit behind the page, not compete with it. */
         linear-gradient(oklch(0.08 0 0 / 0.72), oklch(0.08 0 0 / 0.72)),
       var(--page-photo, none);
-    background-position:
-      50% 0,
-      50% 50%,
-      50% 50%;
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-size: auto, auto, cover;
+    /* Single values, not per-layer lists: `--page-atmosphere` contributes a
+       different number of layers per theme, so a list cycles and can leave the
+       photo at `auto`. Gradients have no intrinsic size, so `cover` is a no-op
+       for them. */
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   body::after {
     opacity: 0;

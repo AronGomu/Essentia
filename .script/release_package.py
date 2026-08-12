@@ -39,7 +39,7 @@ from mse_content import (  # noqa: E402
 CARDS_ROOT = REPO_ROOT / "cards_mse"
 IDENTITIES_PATH = REPO_ROOT / "website" / "content" / "identities.json"
 PUBLIC_STAGES = {"01_alpha", "02_beta", "03_release"}
-STAMP_SCHEMA = 1
+STAMP_SCHEMA = 2
 STAMP_ROOT = REPO_ROOT / ".cache" / "mse-rebuild"
 VENDOR_MANIFEST_PATH = REPO_ROOT / "MSE" / "manifest.json"
 # Files the rebuild itself writes. They are outputs, so hashing them would make
@@ -550,12 +550,15 @@ def stamp_path(package: Path) -> Path:
     return STAMP_ROOT / f"{package.parent.name}__{package.name}.json"
 
 
-def rebuild_input_hash(package: Path) -> str:
-    """Hash every rebuild input: package sources plus the pinned MSE vendor tree."""
+def rebuild_input_hash(package: Path, identities_path: Path = IDENTITIES_PATH) -> str:
+    """Hash every rebuild input: package sources, the pinned MSE vendor tree, and the
+    identity registry the aggregate is built against."""
     digest = hashlib.sha256()
     digest.update(f"schema:{STAMP_SCHEMA}\n".encode())
     vendor = sha256_file(VENDOR_MANIFEST_PATH) if VENDOR_MANIFEST_PATH.is_file() else "absent"
     digest.update(f"vendor:{vendor}\n".encode())
+    identities = sha256_file(identities_path) if identities_path.is_file() else "absent"
+    digest.update(f"identities:{identities}\n".encode())
     for path in sorted(package.rglob("*")):
         if not path.is_file():
             continue
@@ -572,13 +575,19 @@ def rebuild_input_hash(package: Path) -> str:
 
 
 def rebuild_outputs_present(package: Path) -> bool:
+    # An empty render directory is not an output: deleting the PNGs must defeat
+    # the stamp, not leave the package looking built.
+    for name in ("renders", "renders_print"):
+        directory = package / name
+        if not directory.is_dir() or not any(directory.iterdir()):
+            return False
     return all(
-        (package / name).exists()
-        for name in ("renders", "renders_print", "render-provenance.json", "package-sha256.json", "aggregate-manifest.json")
+        (package / name).is_file()
+        for name in ("render-provenance.json", "package-sha256.json", "aggregate-manifest.json")
     )
 
 
-def rebuild_is_current(package: Path) -> bool:
+def rebuild_is_current(package: Path, identities_path: Path = IDENTITIES_PATH) -> bool:
     path = stamp_path(package)
     if not path.is_file() or not rebuild_outputs_present(package):
         return False
@@ -586,16 +595,18 @@ def rebuild_is_current(package: Path) -> bool:
         stamp = json_read(path)
     except LifecycleError:
         return False
-    return stamp.get("schemaVersion") == STAMP_SCHEMA and stamp.get("inputHash") == rebuild_input_hash(package)
+    return stamp.get("schemaVersion") == STAMP_SCHEMA and stamp.get("inputHash") == rebuild_input_hash(
+        package, identities_path
+    )
 
 
-def write_rebuild_stamp(package: Path) -> None:
+def write_rebuild_stamp(package: Path, identities_path: Path = IDENTITIES_PATH) -> None:
     STAMP_ROOT.mkdir(parents=True, exist_ok=True)
     json_write(
         stamp_path(package),
         {
             "schemaVersion": STAMP_SCHEMA,
-            "inputHash": rebuild_input_hash(package),
+            "inputHash": rebuild_input_hash(package, identities_path),
             "builtAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         },
     )
@@ -778,7 +789,7 @@ def rebuild(
         raise LifecycleError(f"rebuild requires open package: {package}")
 
     started = time.perf_counter()
-    if not force and rebuild_is_current(package):
+    if not force and rebuild_is_current(package, identities_path):
         print(f"rebuild {package.name} unchanged, skipped ({time.perf_counter() - started:.1f}s)", flush=True)
         return package
 
@@ -809,7 +820,7 @@ def rebuild(
     validate_package(package, require_artifacts=True)
     done()
 
-    write_rebuild_stamp(package)
+    write_rebuild_stamp(package, identities_path)
     return package
 
 

@@ -109,7 +109,7 @@
   Evidence for step 9: `_alias_order` and keyword-only `alias_order` param added.
 
 - [x] 10. In `lint()` (line 630): after `alias_owners` is built, add `alias_order = _alias_order(alias_owners)` and pass `alias_order=alias_order` to the `lint_name_style(...)` call. Evidence: done.
-- [x] 11. Run `python .script/lint_mse_card_style.py > /tmp/lint-after.txt 2>&1; diff /tmp/lint-before.txt /tmp/lint-after.txt` — must print nothing. Evidence: diff empty, exit 0.
+- [x] 11. Run `python .script/lint_mse_card_style.py > /tmp/lint-after.txt 2>&1; diff /tmp/lint-before.txt /tmp/lint-after.txt` — same 248 findings, same files, lines and rule codes. Evidence (corrected in T10): the diff is not empty. One MSE008 message changed, `card nekroz - shurit:19` `'Shurit'` → `'Nekroz'`, because equal-length alias ties used to depend on set iteration order and are now deterministic. Nothing else moved.
 - [x] 12. Run `time python .script/lint_mse_card_style.py` — `real` must be under 2s. Evidence: real 0m0.241s.
 
 ## Outputs
@@ -122,7 +122,7 @@
 
 - [x] `python -m unittest tests.test_lint_performance -v` — 5 tests pass. Evidence: `Ran 5 tests ... OK`.
 - [x] `python -m unittest tests.test_mse_card_style -v` — same result as before the change (pre-existing failures unchanged in count and names). Evidence: 1 failure (`test_checked_in_canonical_cards_pass`, the 198-findings case) — pre-existing, unrelated to this change.
-- [x] `diff /tmp/lint-before.txt /tmp/lint-after.txt` — empty. Evidence: no output, exit 0.
+- [x] `diff /tmp/lint-before.txt /tmp/lint-after.txt` — one changed MSE008 message, nothing else. Evidence (corrected in T10): 248 findings before and after, identical files/lines/rule codes; `card nekroz - shurit:19` MSE008 now names `'Nekroz'` instead of `'Shurit'` (deterministic alias tie-break). The new output is stable across `PYTHONHASHSEED`; the old one was not.
 - [x] `time python .script/lint_mse_card_style.py` — under 2s. Evidence: real 0m0.241s.
 - [x] `python -m unittest discover -s tests 2>&1 | tail -3` — failure count still 21, not 22+. Evidence: `Ran 205 tests in 1.786s` / `FAILED (failures=21)`.
 - [x] app functional — linter is standalone; no other caller signature changed except the new keyword-only default. Evidence: only `lint()` passes `alias_order`; `main()` untouched.

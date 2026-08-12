@@ -1,12 +1,15 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-/** Owner-supplied AI-generated backdrops. Converted once, by hand, then committed. */
+/** Owner-supplied AI-generated backdrops. Converted once, by hand, then committed.
+ *  The sources live outside the repo; `--source-dir` points the run elsewhere. */
+export const BACKGROUND_SOURCE_DIR = path.join(homedir(), 'Downloads');
 export const BACKGROUND_SOURCES = {
-  'burning-abyss': '/home/aron/Downloads/burning-abyss-bg.png',
-  nekroz: '/home/aron/Downloads/nekroz-bg.png',
+  'burning-abyss': path.join(BACKGROUND_SOURCE_DIR, 'burning-abyss-bg.png'),
+  nekroz: path.join(BACKGROUND_SOURCE_DIR, 'nekroz-bg.png'),
 };
 export const MAX_WIDTH = 2560;
 export const WEBP_QUALITY = 80;
@@ -46,7 +49,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       entry = { key };
       provenance.art.push(entry);
     }
-    entry.source = sourcePath;
+    // Provenance is public: record the file, never the owner's home path.
+    entry.source = `owner-supplied (outside repo): ${path.basename(sourcePath)}`;
     entry.tool = PROVENANCE_TOOL;
     entry.generatedOn = generatedOn;
     process.stdout.write(`${slug}: ${sourcePath} -> ${key}\n`);

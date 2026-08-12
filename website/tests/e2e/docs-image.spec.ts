@@ -8,9 +8,11 @@ test('docs index shows the scaled card image', async ({ page }) => {
   const image = page.locator('img.md-image');
   await expect(image).toBeVisible();
   await expect(image).toHaveClass(/md-image-scale-60/);
-  expect(
-    await image.evaluate((node: HTMLImageElement) => node.naturalWidth),
-  ).toBeGreaterThan(0);
+  // The image is `loading="lazy" decoding="async"`, so `naturalWidth` is 0
+  // until the decode lands. Poll instead of reading it once.
+  await expect
+    .poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
+    .toBeGreaterThan(0);
 
   const imageBox = await image.boundingBox();
   const readingBody = page.locator('.reading-body');

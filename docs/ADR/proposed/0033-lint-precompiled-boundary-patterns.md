@@ -24,7 +24,7 @@ Second finding: `sorted(required_exact, key=len, reverse=True)` sorts a `set`. `
 
 ## Consequences
 
-- ~13× speedup with no behavior change; output verified byte-identical by diff before/after.
-- Finding order becomes reproducible, which makes the diff check above meaningful in CI.
+- ~13× speedup with the rule set unchanged: same 248 findings, same files, lines and rule codes before and after. The output is not byte-identical — one MSE008 message changed (`card nekroz - shurit:19`, `'Shurit'` → `'Nekroz'`), because equal-length alias ties used to be broken by set iteration order and are now broken deterministically by `(-len, text)`.
+- Finding order becomes reproducible: the new output is stable across `PYTHONHASHSEED`, which is what makes a diff check meaningful in CI. The old output was not.
 - Repo keeps one language per concern: Python for MSE tooling, Node for the website.
 - `boundary_search` / `boundary_finditer` become the house style for any future rule scan; a new rule that hand-rolls an f-string pattern re-introduces the bug.
