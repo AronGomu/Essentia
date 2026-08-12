@@ -20,6 +20,21 @@ function escapeHtml(value: string): string {
  */
 const PARK = '\uE000';
 
+const IMAGE_SCALES = Array.from(
+  { length: 20 },
+  (_unused, index) => (index + 1) * 5,
+);
+
+function imageScale(token: string | undefined): number {
+  if (token === undefined) return 100;
+  const value = Number(token);
+  // The scale is a CSS class, not an inline style: this site's CSP forbids
+  // per-element `style` attributes, so only the authored ladder can be used.
+  if (!IMAGE_SCALES.includes(value))
+    throw new Error(`Unsupported Markdown image scale: ${token}%`);
+  return value;
+}
+
 function inline(value: string, base: string): string {
   const parked: string[] = [];
   const park = (fragment: string): string => {
@@ -28,6 +43,20 @@ function inline(value: string, base: string): string {
   };
 
   let html = escapeHtml(value).replaceAll(PARK, '');
+
+  html = html.replace(
+    /!\[([^\]|]*)(?:\|(\d{1,3})%)?\]\(([^)\s]+)\)/g,
+    (_match, alt: string, rawScale: string | undefined, rawUrl: string) => {
+      const url = rawUrl.trim();
+      if (!url.startsWith('/'))
+        throw new Error(`Unsafe Markdown image URL: ${url}`);
+      const scale = imageScale(rawScale);
+      const src = `${base.replace(/\/$/, '')}${url}`;
+      return park(
+        `<img class="md-image md-image-scale-${scale}" src="${src}" alt="${alt}" loading="lazy" decoding="async">`,
+      );
+    },
+  );
 
   html = html.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,

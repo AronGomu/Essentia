@@ -341,3 +341,10 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Open `/archetypes/shaddoll/` if it resolves in your checkout (it currently 404s here — Shaddoll has no published cards yet, unrelated to this ticket): confirm no photo backdrop appears and nothing else changed.
 - [ ] Open `/cards/nekroz-trishula/`: confirm there is no photo backdrop on a card page, even though its theme is `nekroz` (only archetype pages carry `data-page="archetype"`).
 - [ ] Open DevTools console on `/archetypes/nekroz/` and `/archetypes/burning-abyss/`: no CSP violations (the injected `<style>` setting `--page-photo` is hashed by `harden-csp.mjs`, confirmed by `npm run build` succeeding).
+
+## T9 markdown-images
+
+- [ ] `cd website && npm run dev`, open `http://localhost:4201/docs/`: the Nekroz of Trishula card render appears in the "What is published here" section, at roughly 60% of the reading column's width, bordered like other reading-body media.
+- [ ] Confirm the image is lazy-loaded (`loading="lazy"`) and does not shift surrounding layout on load.
+- [ ] Open DevTools console on `/docs/`: no CSP violations (no inline `style` attribute is present on the `<img>`; the scale comes from a `md-image-scale-60` class).
+- [ ] Resize the browser to a narrow width (~390px): the image scales down proportionally with the reading column, no overflow or clipping.

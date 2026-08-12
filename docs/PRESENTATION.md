@@ -18,6 +18,8 @@ Cards are authored in Magic Set Editor and released in packages. This site publi
 - [Rules](/rules/) — how the cube plays.
 - [Card updates](/updates/) — everything that changed, newest first.
 
+![Nekroz of Trishula card render|60%](/generated/releases/alpha-LOTA-0001-Alpha-0-1/nekroz-trishula-display.webp)
+
 ## How to play
 
 Essentia is a cube. Build 40 cards plus a 10-card Extra Deck, two copies maximum of any card, and proxy the renders on this site. Deck-building rules live in [Deck building](rules/DECK_BUILDING.md); the starter decklists shipped with the first package live in [Legend of the Alpha decklists](rules/DECKLISTS_ALPHA_0.1.md).

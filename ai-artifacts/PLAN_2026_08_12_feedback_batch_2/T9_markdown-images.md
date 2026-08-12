@@ -58,8 +58,8 @@
 
 ## Impl steps
 
-- [ ] 1. Write the three test files/additions.
-- [ ] 2. In `website/src/lib/markdown.ts`, add above `inline`:
+- [x] 1. Write the three test files/additions. `website/tests/unit/markdown.test.ts` (7 image cases), `website/tests/unit/markdown-image-css.test.ts` (new), `website/tests/e2e/docs-image.spec.ts` (new).
+- [x] 2. In `website/src/lib/markdown.ts`, add above `inline`:
 
   ```ts
   const IMAGE_SCALES = Array.from({ length: 20 }, (_unused, index) => (index + 1) * 5);
@@ -75,7 +75,7 @@
   }
   ```
 
-- [ ] 3. In `inline()`, insert the image rule **immediately before** the link rule (after `let html = escapeHtml(value).replaceAll(PARK, '');`):
+- [x] 3. In `inline()`, insert the image rule **immediately before** the link rule (after `let html = escapeHtml(value).replaceAll(PARK, '');`):
 
   ```ts
   html = html.replace(
@@ -95,7 +95,7 @@
 
   Parking the whole tag is what keeps the link rule and the emphasis rules off it.
 
-- [ ] 4. In `website/src/styles/global.css`, inside `@layer components` next to the `.reading-body` rules, add:
+- [x] 4. In `website/src/styles/global.css`, inside `@layer components` next to the `.reading-body` rules, add: (`.reading-body` actually lives in `@layer utilities`, not `components`, contradicting Requirements' explicit `@layer components` — followed the explicit layer requirement, placed the ladder at the end of the existing `@layer components` block instead of physically beside `.reading-body`; logged under Assumptions.)
 
   ```css
   .md-image {
@@ -110,13 +110,13 @@
 
   followed by 20 authored rules `.md-image-scale-5 { width: 5%; }` … `.md-image-scale-100 { width: 100%; }` (write all 20; no preprocessor is in use).
 
-- [ ] 5. In `docs/PRESENTATION.md`, add one image line in a sensible place in the prose (own paragraph, blank line above and below):
+- [x] 5. In `docs/PRESENTATION.md`, add one image line in a sensible place in the prose (own paragraph, blank line above and below):
 
   ```md
   ![Nekroz of Trishula card render|60%](/generated/releases/alpha-LOTA-0001-Alpha-0-1/nekroz-trishula-display.webp)
   ```
 
-- [ ] 6. `cd website && npm run content && npm run build && npx playwright test tests/e2e/docs-image.spec.ts`.
+- [x] 6. `cd website && npm run content && npm run build && npx playwright test tests/e2e/docs-image.spec.ts`. — content: `1 releases, 3 sections, 50 current cards, 50 versions, 82 keywords, 38 docs, 2 posts`; build: `dist scan: clean`; playwright: 3/3 browsers pass.
 
 ## Outputs
 
@@ -126,11 +126,11 @@
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — no new failures; all image cases pass
-- [ ] `cd website && npm run check && npm run lint && npm run format:check`
-- [ ] `cd website && npm run build` — `scan-dist` and `harden-csp` must pass, proving no inline style was introduced
-- [ ] `cd website && npm run links:check`
-- [ ] `cd website && npx playwright test tests/e2e/docs-image.spec.ts tests/e2e/smoke.spec.ts`
+- [x] `cd website && npx vitest run` — no new failures; all image cases pass — 774 passed, 1 pre-existing `asset-rights.test.ts` failure (known-red per ticket prompt).
+- [x] `cd website && npm run check && npm run lint && npm run format:check` — all pass (0 errors, 0 warnings; eslint clean; prettier clean after `--write` on the 3 touched files).
+- [x] `cd website && npm run build` — `scan-dist` and `harden-csp` must pass, proving no inline style was introduced — `csp: hashed inline content in 152 HTML files`, `dist scan: clean`.
+- [x] `cd website && npm run links:check` — `links: 152 pages clean`.
+- [x] `cd website && npx playwright test tests/e2e/docs-image.spec.ts tests/e2e/smoke.spec.ts` — 6 passed (chromium, firefox, webkit).
 - [ ] manual check: `npm run dev`, open `http://localhost:4201/docs/` — Trishula render appears at ~60% of the reading column
-- [ ] full batch re-check: `python -m unittest discover -s tests` (21 baseline failures), `python .script/lint_mse_card_style.py` (198 baseline findings, 200 stdout lines), `cd website && npm run ci`
+- [x] full batch re-check (using the prompt's corrected baseline, not the stale numbers above): `python -m unittest discover -s tests` → 215 tests, 3 failures (matches corrected baseline, pre-existing italics drift); `python .script/lint_mse_card_style.py` → 248 findings (matches corrected baseline); `cd website && npm run ci` cannot pass (known-red `rights:check`, pre-existing) — ran the individual gates instead: `npx vitest run`, `npm run check`, `npm run lint`, `npm run format:check`, `npm run build`, `npm run content:check` — all pass.
 - [ ] commit msg draft: `feat(website): render markdown images with an authored scale ladder`

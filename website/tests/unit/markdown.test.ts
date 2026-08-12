@@ -155,4 +155,53 @@ describe('authored Markdown renderer', () => {
       'Unsafe Markdown URL: javascript:alert(1',
     );
   });
+
+  it('renders an image', () => {
+    const html = renderSafeMarkdown('![Trishula](/generated/x.webp)');
+    expect(html).toContain(
+      '<img class="md-image md-image-scale-100" src="/generated/x.webp" alt="Trishula" loading="lazy" decoding="async">',
+    );
+  });
+
+  it('applies a percentage scale', () => {
+    const html = renderSafeMarkdown('![Trishula|60%](/generated/x.webp)');
+    expect(html).toContain('md-image-scale-60');
+    expect(html).toContain('alt="Trishula"');
+    expect(html).not.toContain('|60%');
+  });
+
+  it('prefixes the deployment base for an image', () => {
+    const html = renderSafeMarkdown(
+      '![Trishula|60%](/generated/x.webp)',
+      '/YGO-x-MTG/',
+    );
+    expect(html).toContain('src="/YGO-x-MTG/generated/x.webp"');
+  });
+
+  it('does not linkify an image', () => {
+    const html = renderSafeMarkdown('![x](/y.webp)');
+    expect(html).not.toContain('<a');
+    expect(html).not.toContain('!<img');
+  });
+
+  it('rejects an external image', () => {
+    expect(() => renderSafeMarkdown('![x](https://example.com/y.png)')).toThrow(
+      'Unsafe Markdown image URL',
+    );
+  });
+
+  it('rejects an unsupported scale', () => {
+    expect(() => renderSafeMarkdown('![x|63%](/y.webp)')).toThrow(
+      'Unsupported Markdown image scale',
+    );
+    expect(() => renderSafeMarkdown('![x|0%](/y.webp)')).toThrow(
+      'Unsupported Markdown image scale',
+    );
+  });
+
+  it('keeps a bang before a real link intact', () => {
+    const html = renderSafeMarkdown('Wow! [link](/a/)');
+    expect(html).toContain('<a href="/a/">link</a>');
+    expect(html).toContain('Wow!');
+  });
 });

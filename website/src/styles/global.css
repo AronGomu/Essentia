@@ -1097,6 +1097,74 @@
   .legal-copy h2 {
     margin-top: var(--space-5);
   }
+  .md-image {
+    display: block;
+    height: auto;
+    margin-block: 1.5rem;
+    margin-inline: auto;
+    border: 1px solid var(--ruleline);
+    border-radius: 0.5rem;
+  }
+  .md-image-scale-5 {
+    width: 5%;
+  }
+  .md-image-scale-10 {
+    width: 10%;
+  }
+  .md-image-scale-15 {
+    width: 15%;
+  }
+  .md-image-scale-20 {
+    width: 20%;
+  }
+  .md-image-scale-25 {
+    width: 25%;
+  }
+  .md-image-scale-30 {
+    width: 30%;
+  }
+  .md-image-scale-35 {
+    width: 35%;
+  }
+  .md-image-scale-40 {
+    width: 40%;
+  }
+  .md-image-scale-45 {
+    width: 45%;
+  }
+  .md-image-scale-50 {
+    width: 50%;
+  }
+  .md-image-scale-55 {
+    width: 55%;
+  }
+  .md-image-scale-60 {
+    width: 60%;
+  }
+  .md-image-scale-65 {
+    width: 65%;
+  }
+  .md-image-scale-70 {
+    width: 70%;
+  }
+  .md-image-scale-75 {
+    width: 75%;
+  }
+  .md-image-scale-80 {
+    width: 80%;
+  }
+  .md-image-scale-85 {
+    width: 85%;
+  }
+  .md-image-scale-90 {
+    width: 90%;
+  }
+  .md-image-scale-95 {
+    width: 95%;
+  }
+  .md-image-scale-100 {
+    width: 100%;
+  }
 }
 
 @layer motion {
