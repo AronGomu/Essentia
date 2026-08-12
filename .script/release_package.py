@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -657,6 +658,21 @@ def validate_cards_root(cards_root: Path = CARDS_ROOT) -> None:
             )
 
 
+PHASE_COUNT = 5
+
+
+def report_phase(package: Path, index: int, label: str) -> Callable[[], None]:
+    """Print `rebuild <stem> [i/5] <label>` and return a callable that prints the done line."""
+    stem = package.name
+    start = time.perf_counter()
+    print(f"rebuild {stem} [{index}/{PHASE_COUNT}] {label}", flush=True)
+
+    def done() -> None:
+        print(f"rebuild {stem} [{index}/{PHASE_COUNT}] {label} done ({time.perf_counter() - start:.2f}s)", flush=True)
+
+    return done
+
+
 def build_artifacts(package: Path, aggregate: Path, *, print_masters: bool = False, verbose: bool = False) -> None:
     """
     Export renders and provenance.
@@ -697,15 +713,34 @@ def rebuild(
     metadata = release_metadata(package)
     if metadata["status"] != "open":
         raise LifecycleError(f"rebuild requires open package: {package}")
+
+    done = report_phase(package, 1, "aggregate manifest")
     aggregate = generate_aggregate(package, identities_path)
+    done()
+
+    done = report_phase(package, 2, "render cards")
     artifact_builder(
         package,
         aggregate,
         print_masters=print_masters,
         verbose=verbose,
     )
+    done()
+
+    if print_masters:
+        done = report_phase(package, 3, "print masters")
+        done()
+    else:
+        print(f"rebuild {package.name} [3/5] print masters skipped", flush=True)
+
+    done = report_phase(package, 4, "write hashes")
     write_package_hashes(package)
+    done()
+
+    done = report_phase(package, 5, "validate")
     validate_package(package, require_artifacts=True)
+    done()
+
     return package
 
 

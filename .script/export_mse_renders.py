@@ -207,7 +207,7 @@ def build_provenance(project: Path, cards: list, render_dir: Path, config: MSECo
     }
 
 
-def export_print_masters(project: Path, output: Path, config: MSEConfig) -> dict[str, object]:
+def export_print_masters(project: Path, output: Path, config: MSEConfig, *, quiet: bool = False) -> dict[str, object]:
     """
     Export print masters through the Essentia print export template.
 
@@ -277,7 +277,8 @@ def export_print_masters(project: Path, output: Path, config: MSEConfig) -> dict
             shutil.rmtree(staging)
         staging.mkdir(parents=True)
         try:
-            for key, card in expected_by_key.items():
+            for position, (key, card) in enumerate(expected_by_key.items(), start=1):
+                report_progress("mse.print", position, len(cards), card.name, quiet=quiet)
                 destination = staging / render_filename(card.name)
                 if destination.resolve().parent != staging.resolve():
                     raise MSESourceError(f"print filename escapes staging: {card.name}")
@@ -370,7 +371,7 @@ def inspect_project(project: Path) -> tuple[list, list[dict[str, object]]]:
     return cards, rows
 
 
-def export(project: Path, output: Path, config: MSEConfig) -> dict[str, object]:
+def export(project: Path, output: Path, config: MSEConfig, *, quiet: bool = False) -> dict[str, object]:
     cards, _ = inspect_project(project)
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="mse-render-export-") as temporary:
@@ -418,7 +419,8 @@ def export(project: Path, output: Path, config: MSEConfig) -> dict[str, object]:
         staging.mkdir(parents=True)
         provenance_temp: Path | None = None
         try:
-            for key, card in expected_by_key.items():
+            for position, (key, card) in enumerate(expected_by_key.items(), start=1):
+                report_progress("mse.render", position, len(cards), card.name, quiet=quiet)
                 destination = staging / render_filename(card.name)
                 if destination.resolve().parent != staging.resolve():
                     raise MSESourceError(
@@ -457,6 +459,16 @@ def export(project: Path, output: Path, config: MSEConfig) -> dict[str, object]:
     return provenance
 
 
+def progress_line(event: str, index: int, total: int, name: str) -> str:
+    return f"{event} {index}/{total} {name}"
+
+
+def report_progress(event: str, index: int, total: int, name: str, *, quiet: bool) -> None:
+    if quiet:
+        return
+    print(progress_line(event, index, total, name), flush=True)
+
+
 def summary_line(project: Path, loaded: int, checked: int, rendered: int, print_masters: int) -> str:
     stem = project.name.removesuffix(".mse-set").removesuffix("_all_cards")
     return (
@@ -478,6 +490,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dry-run", action="store_true", help="validate sources and print planned JSON without exporting")
     parser.add_argument("--verbose", action="store_true", help="print the full per-card render plan and completion JSON")
+    parser.add_argument("--quiet", action="store_true", help="suppress per-card progress lines; keep the summary line")
     parser.add_argument(
         "--print-masters",
         action="store_true",
@@ -513,7 +526,7 @@ def main() -> int:
         return 0
     if args.attest_canonical:
         with tempfile.TemporaryDirectory(prefix="mse-canonical-attestation-") as temporary:
-            fresh = export(project, Path(temporary) / "render", config)
+            fresh = export(project, Path(temporary) / "render", config, quiet=args.quiet)
             canonical = build_provenance(project, cards, project / "render", config)
             fresh_by_id = {item["id"]: item for item in fresh["cards"]}
             for item in canonical["cards"]:
@@ -552,7 +565,7 @@ def main() -> int:
     prior_provenance = (
         load_provenance(project / "render-provenance.json") if args.canonical else None
     )
-    provenance = export(project, output, config)
+    provenance = export(project, output, config, quiet=args.quiet)
     timestamp_updates: list[str] = []
     if prior_provenance:
         prior_cards = {
@@ -588,7 +601,7 @@ def main() -> int:
     print_count = 0
     if args.print_masters:
         print_output = output.parent / PRINT_DIR_NAME if not args.canonical else project / PRINT_DIR_NAME
-        provenance["print"] = export_print_masters(project, print_output, config)
+        provenance["print"] = export_print_masters(project, print_output, config, quiet=args.quiet)
         print_count = len(provenance["print"]["cards"])
     if not args.canonical:
         provenance_path = output / "render-provenance.json"

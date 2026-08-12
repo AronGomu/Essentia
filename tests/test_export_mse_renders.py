@@ -320,7 +320,7 @@ class QuietMainTests(unittest.TestCase):
                 "cards": [],
             }
 
-            def fake_export(project_arg, output_arg, config_arg):
+            def fake_export(project_arg, output_arg, config_arg, *, quiet=False):
                 out.mkdir(parents=True, exist_ok=True)
                 self.make_opaque_render(out / "Card One.png")
                 export_mse_renders.make_white_corners_transparent(out / "Card One.png")

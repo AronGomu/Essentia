@@ -281,3 +281,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Run the lint script twice with `PYTHONHASHSEED=0` and `PYTHONHASHSEED=1` (`PYTHONHASHSEED=0 python .script/lint_mse_card_style.py` vs `PYTHONHASHSEED=1 python .script/lint_mse_card_style.py`); confirm stdout is identical between the two runs.
 - [ ] Diff the lint output against a pre-change capture (`git stash` the `.script/` change, capture output, restore, re-run): the findings text, order, and count must be byte-identical.
 - [ ] Edit a card's rule text to introduce a known keyword in plain (non-bold) text, e.g. remove `<b>` around `Discard`; confirm the linter still reports `MSE014` for it, proving the perf rewrite didn't silently drop a rule.
+
+## T2 rebuild-progress
+
+- [ ] Run `cd website && npm run cards:rebuild` (or `python .script/rebuild_open_packages.py` from repo root) and watch the terminal: five numbered `rebuild <package> [i/5] <phase>` lines appear with matching `... done (N.NNs)` lines, never a long silent stretch.
+- [ ] During the same run, confirm one `mse.render i/50 <card name>` line prints per card as renders happen, followed by one `mse.print i/50 <card name>` line per card during print-master export.
+- [ ] Confirm no carriage returns, spinners, or ANSI colour codes appear — every progress line is a plain, scrollable, greppable terminal line.
+- [ ] Confirm the run still ends with the existing `mse.render <package>: N cards loaded, ...` summary line and `rebuild: 1 package rebuilt` line, unchanged from before.
+- [ ] Run `python .script/export_mse_renders.py <project> --canonical --quiet` on a project: confirm no `mse.render i/n` lines print, only the final summary line.
