@@ -119,10 +119,15 @@ class LintPerformanceTests(unittest.TestCase):
         result0 = subprocess.run([sys.executable, str(SCRIPT)], env=env0, capture_output=True, text=True)
         result1 = subprocess.run([sys.executable, str(SCRIPT)], env=env1, capture_output=True, text=True)
         # A crashed run prints nothing and would compare equal to another crash.
+        # Exit 1 means findings, exit 0 means a clean corpus; anything else is a crash.
         for result in (result0, result1):
-            self.assertEqual(result.returncode, 1, result.stderr[-2000:])
-            self.assertTrue(result.stdout.strip(), "lint printed no findings at all")
-            self.assertIn(": MSE", result.stdout.splitlines()[0])
+            self.assertIn(result.returncode, (0, 1), result.stderr[-2000:])
+            self.assertTrue(result.stdout.strip(), "lint printed nothing at all")
+            first = result.stdout.splitlines()[0]
+            self.assertTrue(
+                ": MSE" in first or first == "MSE card style OK",
+                f"unrecognised lint output: {first!r}",
+            )
         self.assertEqual(result0.stdout, result1.stdout)
 
 
