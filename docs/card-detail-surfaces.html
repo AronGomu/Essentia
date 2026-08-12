@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia — card detail surfaces</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .22rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      a { color: var(--accent-2); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 40rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.mono, .mono { font-family: var(--mono); }
+      .sd { color: var(--warn); } .hd { color: var(--ok); }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p, .card li { font-size: .87rem; color: var(--muted); }
+      .card code { color: var(--ink); }
+      figure { margin: 1.2rem 0; border: 1px solid var(--line); background: var(--panel); padding: 1rem; }
+      figcaption { color: var(--muted); font-size: .85rem; margin-bottom: .7rem; }
+      svg { display: block; width: 100%; height: auto; }
+      svg text { font-family: system-ui, sans-serif; }
+      .n { fill: var(--panel-2); stroke: var(--line); stroke-width: 2; }
+      .n.warn { stroke: var(--warn); } .n.ok { stroke: var(--ok); }
+      .l { fill: none; stroke: var(--line); stroke-width: 2; }
+      .lab { fill: var(--ink); font-size: 12px; } .note { fill: var(--muted); font-size: 10px; }
+      .tag { display: inline-block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+             border: 1px solid var(--line); border-radius: 999px; padding: .1rem .5rem; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Card detail surfaces</h1>
+      <p class="sub">
+        Hover overlay geometry, card page scroll choreography, and the markdown image
+        rule — the three website surfaces feedback batch 2 changes. Companion to
+        <a href="ADR/proposed/0035-hover-preview-overlays-the-card.md">ADR 0035</a>,
+        <a href="ADR/proposed/0036-related-interaction-excludes-archetype.md">ADR 0036</a>,
+        <a href="ADR/proposed/0037-markdown-images-with-scale-ladder.md">ADR 0037</a>.
+      </p>
+
+      <h2>Pixel budget, stated once</h2>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Artifact</th><th>Size</th><th>Where</th><th>Used by</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>canonical MSE render</td><td class="mono">750 × 1046</td><td class="mono">&lt;package&gt;/renders/</td><td>source of every derivative</td></tr>
+            <tr><td>thumb tier</td><td class="mono">240 px avif/webp</td><td class="mono">/generated/…-thumb.*</td><td>grids, hover trigger tiles</td></tr>
+            <tr><td>display tier</td><td class="mono">750 px avif/webp</td><td class="mono">/generated/…-display.*</td><td>card page render, hover overlay</td></tr>
+            <tr><td>print master</td><td class="mono hd">1500 × 2092 PNG</td><td class="mono">/generated/…-print.png</td><td><code>Show full size</code>, proxy printing</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        There is no 1920 px source. "Almost full size" is bounded by the print master,
+        which is why the full-size link points there and why the page render caps at
+        40 rem (640 px) rather than growing without limit.
+      </p>
+
+      <h2>Hover overlay geometry</h2>
+      <figure>
+        <figcaption><b>Before / after.</b> The preview stops reserving a card-width of screen.</figcaption>
+        <svg viewBox="0 0 760 240" role="img" aria-labelledby="t3 d3">
+          <title id="t3">Hover preview placement, before and after</title>
+          <desc id="d3">
+            Previously a 320 by 448 preview sat beside the tile with an optional rulings
+            column beside that. Now the preview is centred over the tile at 75 percent of
+            viewport height and the rulings float outside it.
+          </desc>
+          <text class="note" x="10" y="24">before</text>
+          <rect class="n" x="10" y="34" width="60" height="84" rx="4" />
+          <text class="note" x="24" y="80">tile</text>
+          <rect class="n warn" x="82" y="28" width="96" height="134" rx="4" />
+          <text class="lab" x="96" y="98">preview</text>
+          <text class="note" x="96" y="114">320 × 448</text>
+          <rect class="n" x="190" y="28" width="90" height="134" rx="4" />
+          <text class="note" x="204" y="98">rulings</text>
+          <text class="note" x="10" y="196">layout space reserved for a hover-only box</text>
+
+          <text class="note" x="430" y="24">after</text>
+          <rect class="n" x="470" y="34" width="60" height="84" rx="4" />
+          <text class="note" x="484" y="80">tile</text>
+          <rect class="n ok" x="452" y="16" width="96" height="134" rx="4" />
+          <text class="lab" x="462" y="86">overlay</text>
+          <text class="note" x="462" y="102">≤ 75 vh</text>
+          <rect class="n" x="560" y="16" width="90" height="134" rx="4" />
+          <text class="note" x="574" y="86">rulings</text>
+          <text class="note" x="430" y="196">centred on the tile, pointer-events: none → hover zone unchanged</text>
+        </svg>
+      </figure>
+      <ul>
+        <li><code>height = min(0.75 × viewport.height, (viewport.width − 32) × 1046/750)</code>, <code>width = height / (1046/750)</code>.</li>
+        <li>Centred on the tile centre, then clamped inside the viewport with a 16 px margin.</li>
+        <li>Rulings are absolutely positioned against the overlay, on the side with more room, dropped when neither side has 320 px.</li>
+        <li>The overlay never intercepts the pointer, so covering the tile cannot break the hover it depends on.</li>
+      </ul>
+
+      <h2>Card page structure and scroll</h2>
+      <figure>
+        <figcaption><b>Sticky release.</b> No JavaScript: moving the related sections out of <code>.card-detail</code> is the whole mechanism.</figcaption>
+        <svg viewBox="0 0 760 260" role="img" aria-labelledby="t4 d4">
+          <title id="t4">Card page block structure</title>
+          <desc id="d4">
+            The card detail grid holds the sticky render column and the transcription.
+            The related band is a sibling after it, full bleed, with its content inside
+            the page shell.
+          </desc>
+          <rect class="n" x="10" y="16" width="740" height="26" rx="4" />
+          <text class="note" x="24" y="34">article.card-page</text>
+          <rect class="n" x="24" y="52" width="712" height="120" rx="4" />
+          <text class="note" x="38" y="70">div.page-shell.card-detail — sticky context</text>
+          <rect class="n ok" x="40" y="80" width="200" height="80" rx="4" />
+          <text class="lab" x="54" y="112">.render-column</text>
+          <text class="note" x="54" y="128">position: sticky</text>
+          <text class="note" x="54" y="144">img max-width 40rem + full-size link</text>
+          <rect class="n" x="256" y="80" width="464" height="80" rx="4" />
+          <text class="lab" x="270" y="112">.card-transcription</text>
+          <text class="note" x="270" y="128">rules, facts, Rules block, notes, pager</text>
+          <rect class="n" x="10" y="184" width="740" height="62" rx="4" />
+          <text class="lab" x="24" y="206">section.related-band — width: 100vw, tinted</text>
+          <text class="note" x="24" y="224">.related-band-inner (page-shell): Same archetype + Interacts with this card, 6 columns ≥ 90rem</text>
+        </svg>
+      </figure>
+      <p>
+        Scroll order follows from the block structure: the render sticks while the
+        transcription scrolls, releases at the end of <code>.card-detail</code>, then
+        render and text leave together and the band owns the full width.
+        <code>@media (max-width: 44rem)</code> unsticks the render, unchanged.
+      </p>
+      <h3>Related lists</h3>
+      <ul>
+        <li><code>interaction</code> minus <code>archetype</code>, subtracted in derivation so every consumer sees the same disjoint data.</li>
+        <li><code>CardGallery</code> takes <code>showNewBadge</code> (default <code>true</code>); the card page passes <code>false</code>.</li>
+      </ul>
+
+      <h2>Markdown images</h2>
+      <figure>
+        <figcaption><b>Why the scale is a class.</b> The inline-style channel is closed by the build's own CSP gates.</figcaption>
+        <svg viewBox="0 0 760 200" role="img" aria-labelledby="t5 d5">
+          <title id="t5">Markdown image pipeline</title>
+          <desc id="d5">
+            The image rule runs before the link rule, parks its tag, and emits a class
+            from the authored scale ladder because inline style attributes are rejected
+            by the content security policy hardening step.
+          </desc>
+          <rect class="n" x="10" y="20" width="180" height="50" rx="6" />
+          <text class="lab" x="24" y="42">![alt|60%](/path)</text>
+          <text class="note" x="24" y="58">docs / blog markdown</text>
+          <path class="l" d="M190 45 H240" />
+          <rect class="n" x="240" y="20" width="190" height="50" rx="6" />
+          <text class="lab" x="254" y="42">image rule (first)</text>
+          <text class="note" x="254" y="58">parks tag → link rule skips it</text>
+          <path class="l" d="M430 45 H480" />
+          <rect class="n ok" x="480" y="20" width="270" height="50" rx="6" />
+          <text class="lab" x="494" y="42">&lt;img class="md-image md-image-scale-60"&gt;</text>
+          <text class="note" x="494" y="58">20 authored rules, 5 % steps</text>
+          <rect class="n warn" x="240" y="104" width="510" height="56" rx="6" />
+          <text class="lab" x="254" y="126">style="width:60%" → harden-csp.mjs throws</text>
+          <text class="note" x="254" y="144">no 'unsafe-hashes'; scan-dist.mjs re-checks dist; attr() not portable</text>
+          <path class="l" d="M370 70 V104" />
+        </svg>
+      </figure>
+      <ul>
+        <li>Site-absolute sources only. External and <code>data:</code> throw; CSP is <code>img-src 'self' data:</code> and remote art has no rights record.</li>
+        <li>Scale must be a multiple of 5 in 5…100. An unsupported value is an error, not a silent round.</li>
+        <li>Consequence accepted: a site-absolute path does not resolve when the same <code>.md</code> is read on GitHub.</li>
+      </ul>
+
+      <h2>Page backdrops</h2>
+      <ul>
+        <li><code>public/backgrounds/{burning-abyss,nekroz}.webp</code>, converted once by a manually-run script, committed, recorded in <code>content/art-provenance.json</code> as AI-generated.</li>
+        <li><code>body::before</code> paints atmosphere gradient, then a dim veil, then <code>var(--page-photo, none)</code> at <code>cover</code>.</li>
+        <li>Archetype pages only: <code>data-theme</code> alone is not enough because archetype card pages share it, so the layout also sets <code>data-page="archetype"</code>.</li>
+        <li>The url arrives through one hashed <code>&lt;style&gt;</code> block, which keeps it correct under <code>BASE_PATH=/YGO-x-MTG/</code>.</li>
+      </ul>
+
+    </div>
+  </body>
+</html>

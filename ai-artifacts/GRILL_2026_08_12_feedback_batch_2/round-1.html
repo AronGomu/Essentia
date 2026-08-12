@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback batch 2: render pipeline speed, hover overlay, card page layout, docs images</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 1 · Whole frontier</span>
+    <h1>Feedback batch 2: render pipeline speed, hover overlay, card page layout, docs images</h1>
+    <p class="lede">11 feedback items. Facts already scouted (lint = 25.6s / 1.16M regex compiles; rebuild = 41s, always re-renders 50 cards because the aggregate .mse-set has no canonical render/ dir). What is left is 8 decisions only you can make. Tick answers, add precision, copy summary back to me.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress"><span class="node">Feedback batch 2</span> <span class="arrow">→</span> <span class="node active">Pipeline speed (1,2,10)</span> <span class="arrow">→</span> <span class="node active">Hover overlay (3)</span> <span class="arrow">→</span> <span class="node active">Card page (4-8)</span> <span class="arrow">→</span> <span class="node active">Archetype bg (9)</span> <span class="arrow">→</span> <span class="node active">Docs images (11)</span></nav>
+
+  <section class="visuals" aria-label="Technical context">
+    <!-- Prefer inline SVG. Every image needs role="img", aria-labelledby, title, and desc. -->
+    
+<figure role="img" aria-labelledby="v1t v1d">
+  <figcaption><b>Why the linter takes 25.6s</b>cProfile: 1,166,598 regex compiles inside <code>lint_name_style</code>.</figcaption>
+  <svg viewBox="0 0 420 210">
+    <title id="v1t">Regex compile thrash in lint_name_style</title>
+    <desc id="v1d">Each of 471 rule lines loops over every alias and builds a fresh pattern string, exceeding the 512-entry re cache so every search recompiles.</desc>
+    <rect class="svg-node" x="8" y="12" width="120" height="42" rx="8"/>
+    <text class="svg-label" x="20" y="32">471 rule lines</text>
+    <text class="svg-note" x="20" y="47">50 cards</text>
+    <path class="svg-line" d="M128 33 H176"/><polygon class="svg-arrow" points="176,28 186,33 176,38"/>
+    <rect class="svg-node" x="186" y="12" width="130" height="42" rx="8"/>
+    <text class="svg-label" x="198" y="32">× ~500 aliases</text>
+    <text class="svg-note" x="198" y="47">+ fragments + keywords</text>
+    <path class="svg-line" d="M251 54 V96"/><polygon class="svg-arrow" points="246,96 251,106 256,96"/>
+    <rect class="svg-node" x="150" y="106" width="200" height="44" rx="8"/>
+    <text class="svg-label" x="162" y="126">re.search(f"...{escape(a)}...")</text>
+    <text class="svg-note" x="162" y="141">new pattern string each call</text>
+    <path class="svg-line" d="M150 128 H100"/><polygon class="svg-arrow" points="100,123 90,128 100,133"/>
+    <rect class="svg-node" x="8" y="106" width="82" height="44" rx="8"/>
+    <text class="svg-label" x="18" y="126">re cache</text>
+    <text class="svg-note" x="18" y="141">512 max → purge</text>
+    <text class="svg-accent" x="8" y="180">1,166,598 compiles · 83s of 87s profiled</text>
+    <text class="svg-note" x="8" y="196">Fix candidate: compile once + single alternation scan → O(text), not O(text × aliases)</text>
+  </svg>
+</figure>
+<figure role="img" aria-labelledby="v2t v2d">
+  <figcaption><b>Hover preview today vs asked</b>Item 3 wants the duplicate over the original, up to 75vh.</figcaption>
+  <svg viewBox="0 0 420 210">
+    <title id="v2t">Hover preview placement</title>
+    <desc id="v2d">Left: current layout places a 20rem preview beside the tile plus an optional rulings column. Right: the requested overlay sits on top of the tile at up to 75 percent viewport height, hover zone unchanged.</desc>
+    <text class="svg-note" x="8" y="16">now</text>
+    <rect class="svg-node" x="8" y="24" width="44" height="62" rx="4"/>
+    <text class="svg-note" x="14" y="58">tile</text>
+    <rect class="svg-node active" x="60" y="20" width="70" height="98" rx="4"/>
+    <text class="svg-note" x="70" y="72">preview</text>
+    <rect class="svg-node" x="138" y="20" width="60" height="98" rx="4"/>
+    <text class="svg-note" x="145" y="72">rulings</text>
+    <text class="svg-note" x="8" y="140">asked</text>
+    <rect class="svg-node" x="240" y="24" width="44" height="62" rx="4"/>
+    <text class="svg-note" x="246" y="58">tile</text>
+    <rect class="svg-node active" x="252" y="12" width="96" height="134" rx="4"/>
+    <text class="svg-label" x="262" y="76">overlay</text>
+    <text class="svg-note" x="262" y="92">≤ 75vh</text>
+    <path class="svg-line" d="M262 152 H348"/>
+    <text class="svg-accent" x="240" y="170">hover zone stays on tile</text>
+    <text class="svg-note" x="240" y="186">rulings: keep, drop, or float?</text>
+  </svg>
+</figure>
+
+  </section>
+
+  <form id="questions">
+    <!-- Repeat one fieldset per frontier question. Keep data-question unique. -->
+    <fieldset data-question="Item 2 — how far do we go on linter speed?">
+  <legend>1. Item 2 — how far do we go on linter speed?</legend>
+  <p class="why">Measured cause is regex compile thrash in lint_name_style, not parsing algorithm. A Python fix is a few hours; a Rust engine is a vendored toolchain forever.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Python fix only: precompile patterns + one alternation scan, target under 2s"><span><b>Python fix only: precompile patterns + one alternation scan, target under 2s</b><span class="rank">Recommended</span><span class="detail">Kills 83 of 87 profiled seconds with no new toolchain; keeps one implementation of the rules.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Python fix now, benchmark test guards it, revisit Rust only if it stays over 5s"><span><b>Python fix now, benchmark test guards it, revisit Rust only if it stays over 5s</b><span class="rank">Second</span><span class="detail">Same work plus a regression test asserting a wall-clock or compile-count budget.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Python fix + parse rule text once into a shared token stream reused by every MSE rule"><span><b>Python fix + parse rule text once into a shared token stream reused by every MSE rule</b><span class="rank">Third</span><span class="detail">Bigger refactor of lint_mse_card_style.py; faster ceiling, higher risk of changing which findings fire.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Vendored Rust engine with Python bindings"><span><b>Vendored Rust engine with Python bindings</b><span class="rank">Fourth</span><span class="detail">Fastest ceiling; adds cargo/maturin to a Python+Node repo and duplicates the rule logic.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="e.g. hard budget you want: &#x27;must finish under 2s on 50 cards&#x27;"></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 1 — what should the rebuild print while it works?">
+  <legend>2. Item 1 — what should the rebuild print while it works?</legend>
+  <p class="why">41s of silence today. Progress format decides whether it stays greppable output or becomes a live TTY line.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Phase + per-card counter lines: &#x27;mse.render 12/50 burning abyss - dante&#x27;, plus existing summary"><span><b>Phase + per-card counter lines: &#x27;mse.render 12/50 burning abyss - dante&#x27;, plus existing summary</b><span class="rank">Recommended</span><span class="detail">Plain lines, works in logs and CI, no TTY tricks.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Single carriage-return progress bar on TTY, plain lines when not a TTY"><span><b>Single carriage-return progress bar on TTY, plain lines when not a TTY</b><span class="rank">Second</span><span class="detail">Nicest interactive feel; needs isatty branch and cannot be diffed in logs.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Phase lines only: aggregate / render / print masters / hashes / validate, with elapsed ms each"><span><b>Phase lines only: aggregate / render / print masters / hashes / validate, with elapsed ms each</b><span class="rank">Third</span><span class="detail">Five lines total, tells you where the 41s goes, no per-card noise.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Keep quiet, only print when a step exceeds 5s"><span><b>Keep quiet, only print when a step exceeds 5s</b><span class="rank">Fourth</span><span class="detail">Least change; still silent for most of the run.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="MSE renders in one batch subprocess — per-card progress may need parsing MSE stdout. Say if phase lines are enough."></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 10 — skip granularity when nothing changed?">
+  <legend>3. Item 10 — skip granularity when nothing changed?</legend>
+  <p class="why">Aggregate .mse-set is regenerated each run so its canonical render/ never exists → 0 of 50 checked, all 50 always re-rendered.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Package-level short-circuit: hash card files + style, compare to a stamp, skip whole rebuild if equal"><span><b>Package-level short-circuit: hash card files + style, compare to a stamp, skip whole rebuild if equal</b><span class="rank">Recommended</span><span class="detail">One cheap check turns a no-op rebuild into well under a second.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Card-level: point staleness at the package renders/ + render-provenance.json, render only stale cards"><span><b>Card-level: point staleness at the package renders/ + render-provenance.json, render only stale cards</b><span class="rank">Second</span><span class="detail">Finer grained, keeps partial edits fast; MSE batch export must be told a card subset.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Both: package short-circuit first, card-level staleness inside"><span><b>Both: package short-circuit first, card-level staleness inside</b><span class="rank">Third</span><span class="detail">Best behavior, most work in export_mse_renders.py.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Package-level, with --force to override"><span><b>Package-level, with --force to override</b><span class="rank">Fourth</span><span class="detail">Adds an escape hatch flag.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="Should package-sha256.json be the stamp, or a separate .rebuild-stamp.json?"></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 3 — where exactly does the overlay sit, and what happens to the keyword rulings panel?">
+  <legend>4. Item 3 — where exactly does the overlay sit, and what happens to the keyword rulings panel?</legend>
+  <p class="why">The rulings column currently shares the preview box; an overlay centered on the tile has nowhere obvious to put it.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Overlay centered on the tile, clamped into the viewport; rulings float beside the overlay on whichever side has room, dropped when neither fits"><span><b>Overlay centered on the tile, clamped into the viewport; rulings float beside the overlay on whichever side has room, dropped when neither fits</b><span class="rank">Recommended</span><span class="detail">Keeps the rulings feature and reclaims the card-width of space.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Overlay centered on the tile; rulings removed from hover entirely (they stay on the card page)"><span><b>Overlay centered on the tile; rulings removed from hover entirely (they stay on the card page)</b><span class="rank">Second</span><span class="detail">Simplest layout, biggest image, loses at-a-glance rulings.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Overlay anchored to the tile&#x27;s top-left corner, growing down/right; rulings beside it"><span><b>Overlay anchored to the tile&#x27;s top-left corner, growing down/right; rulings beside it</b><span class="rank">Third</span><span class="detail">Less jump, but the overlay can look off-centre on edge tiles.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Overlay centered on the viewport, not the tile"><span><b>Overlay centered on the viewport, not the tile</b><span class="rank">Fourth</span><span class="detail">Most stable position; loses the visual link to the hovered card.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="75vh cap confirmed? Also: fade/scale animation kept as-is?"></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 8 — how wide may the card render get on the card page?">
+  <legend>5. Item 8 — how wide may the card render get on the card page?</legend>
+  <p class="why">Removing width:min(100%,25rem) lets the render fill the 0.85fr column, which at 1440px is roughly 30rem and at 2560px much more.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Fill the column, cap at 40rem so it never exceeds the print master&#x27;s useful size"><span><b>Fill the column, cap at 40rem so it never exceeds the print master&#x27;s useful size</b><span class="rank">Recommended</span><span class="detail">Bigger card, still bounded on ultrawide screens.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Fill the column with no cap"><span><b>Fill the column with no cap</b><span class="rank">Second</span><span class="detail">Exactly the inspector edit you pasted; on a 4K monitor the render upscales past its 750px display tier.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Fill the column and widen the column to 1fr / 1fr"><span><b>Fill the column and widen the column to 1fr / 1fr</b><span class="rank">Third</span><span class="detail">Card and text get equal space; text column narrows.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Cap at 32rem"><span><b>Cap at 32rem</b><span class="rank">Fourth</span><span class="detail">Conservative bump.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="The display tier is 750px wide; above ~34rem it visibly upscales. Say if that is acceptable."></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 7 — what is the exact scroll choreography for card image + text, then related cards?">
+  <legend>6. Item 7 — what is the exact scroll choreography for card image + text, then related cards?</legend>
+  <p class="why">You asked that the image and the text/rules scroll together at the end, freeing full width for related cards.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Wrap image+text in a sticky-until-end group: image sticks while text scrolls, then both scroll away, and related sections sit full width below the group"><span><b>Wrap image+text in a sticky-until-end group: image sticks while text scrolls, then both scroll away, and related sections sit full width below the group</b><span class="rank">Recommended</span><span class="detail">Matches the description; implemented with position:sticky on the render column inside a bounded wrapper.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Same, but related sections also get a full-width band background to signal the change"><span><b>Same, but related sections also get a full-width band background to signal the change</b><span class="rank">Second</span><span class="detail">Extra visual work.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Drop sticky entirely: image scrolls with text, related full width below"><span><b>Drop sticky entirely: image scrolls with text, related full width below</b><span class="rank">Third</span><span class="detail">Simplest and most predictable; loses the persistent card while reading.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Keep current sticky behavior, only move related sections to full width"><span><b>Keep current sticky behavior, only move related sections to full width</b><span class="rank">Fourth</span><span class="detail">Smallest change; does not give the &#x27;bound&#x27; feel you described.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="Should related sections be inside the same page-shell max-width, or edge-to-edge?"></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 9 — how are the archetype background images applied and licensed?">
+  <legend>7. Item 9 — how are the archetype background images applied and licensed?</legend>
+  <p class="why">The site has a rights inventory and a CSP check; new raster backgrounds must pass both, and the two files currently live in ~/Downloads.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Copy into website/public/backgrounds/, layer as a fixed, dimmed image under the existing --page-atmosphere gradient, on archetype pages only"><span><b>Copy into website/public/backgrounds/, layer as a fixed, dimmed image under the existing --page-atmosphere gradient, on archetype pages only</b><span class="rank">Recommended</span><span class="detail">Keeps the existing theme system; one new CSS layer per theme.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Same, but also on every card page belonging to that archetype"><span><b>Same, but also on every card page belonging to that archetype</b><span class="rank">Second</span><span class="detail">Stronger identity; heavier pages on card detail.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Generate webp/avif derivatives through the content pipeline and serve those instead of the PNGs"><span><b>Generate webp/avif derivatives through the content pipeline and serve those instead of the PNGs</b><span class="rank">Third</span><span class="detail">2.3MB and 3.1MB PNGs become ~200KB; more pipeline code.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Full-bleed background replacing the gradient atmosphere for those two themes"><span><b>Full-bleed background replacing the gradient atmosphere for those two themes</b><span class="rank">Fourth</span><span class="detail">Boldest look; risks text contrast failures in the a11y e2e tests.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="Who owns these two images (AI-generated by you? official art?) — I need a rights-inventory entry and a license string."></textarea></label>
+</fieldset>
+
+<fieldset data-question="Item 11 — what image syntax and scale control do docs/blog markdown get?">
+  <legend>8. Item 11 — what image syntax and scale control do docs/blog markdown get?</legend>
+  <p class="why">The renderer is a hand-written safe subset; ![...](...) is not supported yet, so both syntax and the scale mechanism are ours to define.</p>
+  <div class="choices"><label class="choice"><input type="checkbox" value="Support ![alt](/path) plus an optional pipe scale: ![alt|60%](/path), emitted as &lt;img style=&quot;width:60%&quot;&gt;"><span><b>Support ![alt](/path) plus an optional pipe scale: ![alt|60%](/path), emitted as &lt;img style=&quot;width:60%&quot;&gt;</b><span class="rank">Recommended</span><span class="detail">Yes, percentage scale is possible; one small syntax, one attribute, easy to validate.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Support ![alt](/path) only, with a fixed responsive max-width of 100% and no per-image scale"><span><b>Support ![alt](/path) only, with a fixed responsive max-width of 100% and no per-image scale</b><span class="rank">Second</span><span class="detail">Least syntax; you cannot shrink a single image.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Support ![alt](/path){width=60%} attribute-block syntax"><span><b>Support ![alt](/path){width=60%} attribute-block syntax</b><span class="rank">Third</span><span class="detail">Closer to other markdown dialects; more parser surface.</span></span></label>
+    <label class="choice"><input type="checkbox" value="Support ![alt](/path) plus named size classes: small / medium / full"><span><b>Support ![alt](/path) plus named size classes: small / medium / full</b><span class="rank">Fourth</span><span class="detail">Constrains authors to a scale ladder; no arbitrary percentages.</span></span></label></div>
+  <label class="precision">Precision or custom answer<textarea placeholder="Test image: use the generated Nekroz Trishula display webp under /generated/, or copy a PNG into public/docs/?"></textarea></label>
+</fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 1 · Whole frontier — Feedback batch 2: render pipeline speed, hover overlay, card page layout, docs images\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

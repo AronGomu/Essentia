@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Essentia — rebuild fast path</title>
+    <style>
+      :root {
+        --bg: #0b0b0d; --panel: #121216; --panel-2: #17171d; --line: #2a2a33;
+        --ink: #e8e6e3; --muted: #9a97a3; --accent: #c9a227; --accent-2: #6fb3d2;
+        --ok: #7bc47f; --warn: #d9884a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+             font: 16px/1.62 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .wrap { width: min(100% - 2rem, 76rem); margin-inline: auto; padding-block: 3rem 5rem; }
+      h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin: 0 0 .3rem; letter-spacing: -.02em; }
+      .sub { color: var(--muted); margin: 0 0 1.6rem; }
+      h2 { margin: 2.6rem 0 .8rem; font-size: 1.25rem; }
+      h2::before { content: "▚ "; color: var(--accent); }
+      h3 { margin: 1.6rem 0 .4rem; font-size: .98rem; color: var(--accent-2); }
+      p { margin: .6rem 0; }
+      ul { margin: .5rem 0; padding-left: 1.15rem; }
+      li { margin: .22rem 0; }
+      code { font-family: var(--mono); font-size: .86em; background: #0f0f13;
+             border: 1px solid var(--line); border-radius: 4px; padding: .05rem .3rem; }
+      a { color: var(--accent-2); }
+      .scroll { overflow-x: auto; border: 1px solid var(--line); }
+      table { width: 100%; border-collapse: collapse; font-size: .87rem; min-width: 40rem; }
+      th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { background: var(--panel-2); color: var(--muted); font-weight: 600; }
+      td.mono, .mono { font-family: var(--mono); }
+      .sd { color: var(--warn); } .hd { color: var(--ok); }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+      .card { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.1rem; }
+      .card h4 { margin: 0 0 .35rem; font-size: .95rem; }
+      .card p, .card li { font-size: .87rem; color: var(--muted); }
+      .card code { color: var(--ink); }
+      figure { margin: 1.2rem 0; border: 1px solid var(--line); background: var(--panel); padding: 1rem; }
+      figcaption { color: var(--muted); font-size: .85rem; margin-bottom: .7rem; }
+      svg { display: block; width: 100%; height: auto; }
+      svg text { font-family: system-ui, sans-serif; }
+      .n { fill: var(--panel-2); stroke: var(--line); stroke-width: 2; }
+      .n.warn { stroke: var(--warn); } .n.ok { stroke: var(--ok); }
+      .l { fill: none; stroke: var(--line); stroke-width: 2; }
+      .lab { fill: var(--ink); font-size: 12px; } .note { fill: var(--muted); font-size: 10px; }
+      .tag { display: inline-block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+             border: 1px solid var(--line); border-radius: 999px; padding: .1rem .5rem; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Rebuild fast path</h1>
+      <p class="sub">
+        Where the 41 s of <code>npm run dev</code> and the 25.6 s of
+        <code>lint_mse_card_style.py</code> go, and what the fast path replaces them
+        with. Companion to
+        <a href="ADR/proposed/0033-lint-precompiled-boundary-patterns.md">ADR 0033</a>
+        and
+        <a href="ADR/proposed/0034-rebuild-progress-and-stamp.md">ADR 0034</a>.
+      </p>
+
+      <h2>Measured before</h2>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Step</th><th>Command</th><th>Wall</th><th>Cause</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>card-style lint</td>
+              <td class="mono">python .script/lint_mse_card_style.py</td>
+              <td class="sd">25.6 s</td>
+              <td>1,166,598 <code>re</code> compiles; 512-entry cache purged every line</td>
+            </tr>
+            <tr>
+              <td>package rebuild</td>
+              <td class="mono">python .script/rebuild_open_packages.py</td>
+              <td class="sd">41.3 s</td>
+              <td>50 of 50 cards always stale; 2 output lines, both at the end</td>
+            </tr>
+            <tr>
+              <td>rebuild, nothing changed</td>
+              <td class="mono">same, run twice</td>
+              <td class="sd">41.3 s</td>
+              <td>aggregate <code>.mse-set</code> is regenerated, so it never has a <code>render/</code> to compare against</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Why the linter was slow</h2>
+      <figure>
+        <figcaption>
+          <b>Compile thrash.</b> The cost was pattern construction, not text analysis.
+        </figcaption>
+        <svg viewBox="0 0 760 210" role="img" aria-labelledby="t1 d1">
+          <title id="t1">Regex compile thrash</title>
+          <desc id="d1">
+            471 rule lines multiplied by roughly 500 aliases produced over a million
+            fresh pattern strings, each one exceeding the interpreter regex cache.
+          </desc>
+          <rect class="n" x="10" y="20" width="150" height="52" rx="6" />
+          <text class="lab" x="26" y="44">471 rule lines</text>
+          <text class="note" x="26" y="60">50 cards</text>
+          <path class="l" d="M160 46 H210" />
+          <rect class="n" x="210" y="20" width="170" height="52" rx="6" />
+          <text class="lab" x="226" y="44">× ~500 aliases</text>
+          <text class="note" x="226" y="60">+ fragments + keywords</text>
+          <path class="l" d="M380 46 H430" />
+          <rect class="n warn" x="430" y="20" width="230" height="52" rx="6" />
+          <text class="lab" x="446" y="44">rf"(?&lt;![\w]){escaped}(?![\w])"</text>
+          <text class="note" x="446" y="60">new string → new compile</text>
+          <path class="l" d="M545 72 V116" />
+          <rect class="n warn" x="430" y="116" width="230" height="46" rx="6" />
+          <text class="lab" x="446" y="140">re cache: 512 max → purge</text>
+          <text class="note" x="10" y="190">1,166,598 compiles · 83 s of 87 s profiled</text>
+        </svg>
+      </figure>
+      <h3>After</h3>
+      <ul>
+        <li><code>_boundary_pattern(needle, ignore_case)</code> is <code>lru_cache</code>d → one compile per distinct needle, ever.</li>
+        <li>Exact substring prefilter (<code>needle in text</code>) before every regex → the regex runs only on candidates. Strict superset test, so results cannot change.</li>
+        <li><code>name_aliases</code> cached; keyword and alias order sorted by <code>(-len, text)</code> → order no longer depends on <code>PYTHONHASHSEED</code>.</li>
+        <li>Budget: under 2 s, enforced by <code>tests/test_lint_performance.py</code>. Output verified byte-identical by diff.</li>
+      </ul>
+
+      <h2>Rebuild output protocol</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Phase lines — <code>release_package.rebuild()</code></h4>
+          <p class="mono">rebuild LOTA-0001-Alpha_0.1 [2/5] render cards</p>
+          <p class="mono">rebuild LOTA-0001-Alpha_0.1 [2/5] render cards done (28.41s)</p>
+          <p>Five phases: aggregate manifest, render cards, print masters, package hashes, validate.</p>
+        </div>
+        <div class="card">
+          <h4>Per-card lines — <code>export_mse_renders.py</code></h4>
+          <p class="mono">mse.render 12/50 burning abyss - dante</p>
+          <p class="mono">mse.print 12/50 burning abyss - dante</p>
+          <p>
+            Emitted from the post-export per-card loops. MSE itself renders in one
+            batch subprocess with captured stdout, so those loops are the only
+            per-card vantage point. <code>--quiet</code> suppresses them.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Not used</h4>
+          <p>
+            No carriage returns, no ANSI, no spinner. The output has to stay
+            greppable in CI logs and diffable between runs.
+          </p>
+        </div>
+      </div>
+
+      <h2>Skip fast path</h2>
+      <figure>
+        <figcaption><b>Stamp gate.</b> Content hashes, not mtimes; stamp outside the package.</figcaption>
+        <svg viewBox="0 0 760 250" role="img" aria-labelledby="t2 d2">
+          <title id="t2">Rebuild skip decision</title>
+          <desc id="d2">
+            The rebuild hashes package sources plus the vendored MSE manifest, compares
+            to a cached stamp, and skips all five phases when the hash matches and every
+            output is present.
+          </desc>
+          <rect class="n" x="10" y="16" width="200" height="60" rx="6" />
+          <text class="lab" x="26" y="40">package sources</text>
+          <text class="note" x="26" y="56">*.mse-set/card *, set, release.json</text>
+          <rect class="n" x="10" y="92" width="200" height="52" rx="6" />
+          <text class="lab" x="26" y="116">MSE/manifest.json</text>
+          <text class="note" x="26" y="132">pins frames, style, print template</text>
+          <path class="l" d="M210 46 H270 V110" />
+          <path class="l" d="M210 118 H270" />
+          <rect class="n" x="270" y="86" width="170" height="52" rx="6" />
+          <text class="lab" x="286" y="110">rebuild_input_hash()</text>
+          <text class="note" x="286" y="126">sha256 over path + bytes</text>
+          <path class="l" d="M440 112 H500" />
+          <rect class="n" x="500" y="80" width="240" height="64" rx="6" />
+          <text class="lab" x="516" y="104">.cache/mse-rebuild/&lt;stage&gt;__&lt;pkg&gt;.json</text>
+          <text class="note" x="516" y="122">{schemaVersion, inputHash, builtAt}</text>
+          <path class="l" d="M620 144 V180" />
+          <rect class="n ok" x="440" y="180" width="150" height="46" rx="6" />
+          <text class="lab" x="456" y="204">match → skip</text>
+          <text class="note" x="456" y="219">&lt; 1 s</text>
+          <rect class="n warn" x="610" y="180" width="150" height="46" rx="6" />
+          <text class="lab" x="626" y="204">differ → 5 phases</text>
+          <text class="note" x="626" y="219">~41 s</text>
+        </svg>
+      </figure>
+      <ul>
+        <li>Excluded from the hash: the generated <code>*_all_cards.mse-set</code>, <code>renders/</code>, <code>renders_print/</code>, dotfiles, and the four generated JSON artifacts. They are outputs — hashing them would make every run look like a source change.</li>
+        <li>Skip also requires every output to exist, so a deleted <code>render-provenance.json</code> forces a real rebuild.</li>
+        <li>The stamp lives outside the package because <code>package_hashes()</code> hashes every package file except <code>package-sha256.json</code>; an in-package stamp would dirty git on every run.</li>
+        <li><code>--force</code> bypasses. <code>lock()</code> always forces. Locked packages were already skipped upstream.</li>
+      </ul>
+
+      <h2>Not built</h2>
+      <ul>
+        <li><span class="tag">deferred</span> Per-card partial rendering. A one-card edit still re-renders the package, because MSE exports in one batch and would need a subset mode.</li>
+        <li><span class="tag">rejected</span> Rust/native lint engine. The cost was cache thrash, not the algorithm; a second implementation of the rules is the expensive part.</li>
+      </ul>
+
+    </div>
+  </body>
+</html>

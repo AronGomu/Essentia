@@ -38,6 +38,11 @@ Decision evidence lives here after rule/design review.
 - [0026 — Docs and blog ordering is configuration, not code](proposed/0026-reading-order-config.md)
 - [0030 — Every frame renders at 750 × 1046](proposed/0030-hd-frames-at-750.md)
 - [0031 — The card page prints MSE text verbatim; rulings live in a Rules block](proposed/0031-card-page-prints-mse-text.md)
+- [0033 — Card-style linting stays Python; patterns compile once](proposed/0033-lint-precompiled-boundary-patterns.md)
+- [0034 — Rebuild reports phases and skips unchanged packages by input hash](proposed/0034-rebuild-progress-and-stamp.md)
+- [0035 — The hover preview overlays the hovered card at 75vh](proposed/0035-hover-preview-overlays-the-card.md)
+- [0036 — Related lists are disjoint; the band owns the page width](proposed/0036-related-interaction-excludes-archetype.md)
+- [0037 — Markdown images scale through an authored class ladder](proposed/0037-markdown-images-with-scale-ladder.md)
 - [0032 — Related cards are derived at build time, in two categories](proposed/0032-derived-related-cards.md)
 
 ## Workflow
