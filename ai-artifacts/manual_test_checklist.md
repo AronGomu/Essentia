@@ -297,3 +297,13 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Run `python .script/rebuild_open_packages.py --force` after a skipped run: it always does the full rebuild, ignoring the stamp.
 - [ ] Run `python .script/release_package.py lock <package>`: confirm it always rebuilds fully even if a matching stamp exists (locking must never skip).
 - [ ] Confirm `.cache/mse-rebuild/` appears at the repo root after a rebuild and is not tracked by git (`git status --porcelain .cache` prints nothing).
+
+## T4 hover-overlay
+
+- [ ] `cd website && npm run dev`, open `/archetypes/nekroz/` at a desktop width: hover a card tile — a large preview appears directly over the tile, roughly 75% of the viewport's height.
+- [ ] While hovering, move the pointer slightly off the tile edge but still over the preview image itself: the preview stays visible (pointer events pass through it to whatever is underneath), and moving off the tile fully hides it.
+- [ ] Hover a tile whose card prints an authored keyword (e.g. a `Static` or `Trap` card on `/archetypes/burning-abyss/`): the keyword rulings float beside the big preview, on whichever side of the screen has more room, not squeezed into a fixed side-by-side column.
+- [ ] Hover a tile near the left edge of the viewport and one near the right edge: the rulings column flips to the side with space, and clamps fully on-screen in both cases (never clipped off the viewport).
+- [ ] Shrink the browser to a narrow desktop width (~900px) where neither side has 320px free: the rulings column disappears entirely, but the big preview itself stays put and fully visible.
+- [ ] Tab through the tiles with the keyboard (no mouse): focusing a tile shows the same overlay preview as hovering it, and tabbing away hides it.
+- [ ] Resize or scroll the page while a preview is open: it stays correctly positioned over its tile (doesn't drift or detach).

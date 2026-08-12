@@ -53,8 +53,8 @@
 
 ## Impl steps
 
-- [ ] 1. Rewrite `tests/unit/hover-placement.test.ts` per the table (import `PREVIEW_ASPECT`, `PREVIEW_GAP`, `RULINGS_WIDTH`, `VIEWPORT_HEIGHT_FRACTION` from the module). Add `tests/e2e/hover-overlay.spec.ts` using `page.setViewportSize({width:1440,height:900})`, `tile.hover()`, then `tile.boundingBox()` and `page.locator('.card-hover-preview').boundingBox()` for the intersection maths.
-- [ ] 2. Rewrite `src/lib/hover-placement.ts`:
+- [x] 1. Rewrite `tests/unit/hover-placement.test.ts` per the table (import `PREVIEW_ASPECT`, `PREVIEW_GAP`, `RULINGS_WIDTH`, `VIEWPORT_HEIGHT_FRACTION` from the module). Add `tests/e2e/hover-overlay.spec.ts` using `page.setViewportSize({width:1440,height:900})`, `tile.hover()`, then `tile.boundingBox()` and `page.locator('.card-hover-preview').boundingBox()` for the intersection maths.
+- [x] 2. Rewrite `src/lib/hover-placement.ts`:
 
   ```ts
   export interface PreviewRect {
@@ -105,7 +105,7 @@
   }
   ```
 
-- [ ] 3. In `src/components/CardHoverPreview.astro`, extend the rect passed in with `width: rect.width` and set the returned size as custom properties:
+- [x] 3. In `src/components/CardHoverPreview.astro`, extend the rect passed in with `width: rect.width` and set the returned size as custom properties:
 
   ```ts
   preview.style.setProperty('--preview-left', `${placement.left}px`);
@@ -116,8 +116,8 @@
 
   Keep the two `classList.toggle` calls unchanged.
 
-- [ ] 4. In the same file, change the `<img class="preview-render" width="320" height="448">` attributes to `width="750" height="1046"` so the intrinsic ratio matches the render and the browser reserves the right box before decode.
-- [ ] 5. Replace the CSS block at `src/styles/global.css:1446-1482` with:
+- [x] 4. In the same file, change the `<img class="preview-render" width="320" height="448">` attributes to `width="750" height="1046"` so the intrinsic ratio matches the render and the browser reserves the right box before decode.
+- [x] 5. Replace the CSS block at `src/styles/global.css:1446-1482` with:
 
   ```css
   .card-hover-preview {
@@ -160,8 +160,8 @@
 
   Delete the now-unused `.card-hover-preview.is-rulings-left { flex-direction: row-reverse; }` rule. Keep `.card-hover-preview.is-visible`, `.keyword-ruling`, and `.keyword-ruling strong` exactly as they are.
 
-- [ ] 6. `npx vitest run tests/unit/hover-placement.test.ts` — green.
-- [ ] 7. `npm run build && npx playwright test tests/e2e/hover-overlay.spec.ts tests/e2e/ruling-keywords.spec.ts` — green in all three browsers.
+- [x] 6. `npx vitest run tests/unit/hover-placement.test.ts` — green.
+- [x] 7. `npm run build && npx playwright test tests/e2e/hover-overlay.spec.ts tests/e2e/ruling-keywords.spec.ts` — green in all three browsers.
 
 ## Outputs
 
@@ -171,10 +171,10 @@
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — no new failures
-- [ ] `cd website && npm run check` — no type errors (the `PreviewRect` field is required, so any missed call site fails here)
-- [ ] `cd website && npm run lint && npm run format:check`
-- [ ] `cd website && npm run build`
-- [ ] `cd website && npx playwright test tests/e2e/hover-overlay.spec.ts tests/e2e/ruling-keywords.spec.ts`
+- [x] `cd website && npx vitest run` — no new failures
+- [x] `cd website && npm run check` — no type errors (the `PreviewRect` field is required, so any missed call site fails here)
+- [x] `cd website && npm run lint && npm run format:check`
+- [x] `cd website && npm run build`
+- [x] `cd website && npx playwright test tests/e2e/hover-overlay.spec.ts tests/e2e/ruling-keywords.spec.ts`
 - [ ] manual check: `npm run dev`, hover a tile on `/archetypes/nekroz/` — big preview sits over the tile, rulings float beside it, moving the pointer off the tile hides it
 - [ ] commit msg draft: `feat(website): overlay the hover preview on the card at 75vh`

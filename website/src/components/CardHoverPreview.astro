@@ -2,8 +2,8 @@
   <img
     class="preview-render"
     alt=""
-    width="320"
-    height="448"
+    width="750"
+    height="1046"
     decoding="async"
   />
   <div class="keyword-rulings"></div>
@@ -30,6 +30,7 @@
         left: rect.left,
         right: rect.right,
         top: rect.top,
+        width: rect.width,
         height: rect.height,
       },
       { width: window.innerWidth, height: window.innerHeight },
@@ -37,6 +38,8 @@
     );
     preview.style.setProperty('--preview-left', `${placement.left}px`);
     preview.style.setProperty('--preview-top', `${placement.top}px`);
+    preview.style.setProperty('--preview-width', `${placement.width}px`);
+    preview.style.setProperty('--preview-height', `${placement.height}px`);
     preview.classList.toggle('is-rulings-left', placement.rulingsLeft);
     preview.classList.toggle('has-rulings', placement.showRulings);
   };

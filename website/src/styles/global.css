@@ -1444,16 +1444,12 @@ html[data-theme='nekroz'] .render-column picture {
     inset 0 0 0.45rem oklch(0.98 0.025 210 / 0.62);
 }
 .card-hover-preview {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 1rem;
   position: fixed;
   z-index: var(--z-tooltip);
   left: var(--preview-left, 1rem);
   top: var(--preview-top, 1rem);
-  width: max-content;
-  max-width: calc(100vw - 2rem);
+  width: var(--preview-width, 20rem);
+  height: var(--preview-height, 28rem);
   pointer-events: none;
   opacity: 0;
   transform: scale(0.96);
@@ -1463,22 +1459,25 @@ html[data-theme='nekroz'] .render-column picture {
     opacity 100ms linear,
     transform 120ms var(--ease-out);
 }
-.card-hover-preview.is-rulings-left {
-  flex-direction: row-reverse;
-}
 .card-hover-preview .preview-render {
-  flex: 0 0 20rem;
-  width: 20rem;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .card-hover-preview .keyword-rulings {
   display: none;
 }
 .card-hover-preview.has-rulings .keyword-rulings {
   display: grid;
-  flex: 0 0 20rem;
+  position: absolute;
+  top: 0;
+  left: calc(100% + 1rem);
   width: 20rem;
   gap: 0.4rem;
+}
+.card-hover-preview.has-rulings.is-rulings-left .keyword-rulings {
+  left: auto;
+  right: calc(100% + 1rem);
 }
 .card-hover-preview.is-visible {
   opacity: 1;
