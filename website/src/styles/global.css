@@ -980,10 +980,27 @@
   }
   .card-detail .render-column picture,
   .card-detail .render-column img {
-    width: min(100%, 25rem);
-    max-width: 25rem;
+    width: 100%;
+    max-width: 40rem;
     height: auto;
     margin-inline: auto;
+  }
+  .full-size-link {
+    display: block;
+    width: fit-content;
+    margin: 0.9rem auto 0;
+    border: 1px solid var(--ruleline);
+    border-radius: 0.5rem;
+    background: var(--sleeve);
+    color: var(--cardstock);
+    padding: 0.45rem 0.9rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  .full-size-link:hover,
+  .full-size-link:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
   }
   .card-transcription {
     max-width: 72ch;

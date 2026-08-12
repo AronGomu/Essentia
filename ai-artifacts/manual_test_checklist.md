@@ -298,6 +298,15 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Run `python .script/release_package.py lock <package>`: confirm it always rebuilds fully even if a matching stamp exists (locking must never skip).
 - [ ] Confirm `.cache/mse-rebuild/` appears at the repo root after a rebuild and is not tracked by git (`git status --porcelain .cache` prints nothing).
 
+## T5 card-render-size-and-full-size
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/nekroz-trishula/` at a desktop width (e.g. 1440px): the card render is visibly bigger than before this change — it now fills the column up to 40rem (640px) instead of being capped at 25rem (400px).
+- [ ] Directly under the render, confirm a `Show full size` link/button appears, styled like the pager buttons (bordered, rounded, dark background), centred under the image.
+- [ ] Click `Show full size`: it opens a new tab with the raw print-master PNG (1500 × 2092), not the on-page render.
+- [ ] Narrow the viewport to a phone width (~390px): the render still fills its column responsively (no overflow, no clipping) and the `Show full size` link is still present and tappable.
+- [ ] Repeat the render-size and full-size-link checks on a second card, e.g. `/cards/burning-abyss-graff/`.
+- [ ] Open DevTools console while loading a card page: no console errors, no CSP violations.
+
 ## T4 hover-overlay
 
 - [ ] `cd website && npm run dev`, open `/archetypes/nekroz/` at a desktop width: hover a card tile — a large preview appears directly over the tile, roughly 75% of the viewport's height.

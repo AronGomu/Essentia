@@ -75,7 +75,17 @@ const versions = catalog.cardVersions
         tier="display"
         eager
         alt={`${card.name} card render`}
+        sizes="(min-width: 70rem) 40rem, 92vw"
       />
+      <a
+        class="full-size-link"
+        href={withBase(base, card.images.print.url)}
+        target="_blank"
+        rel="noopener"
+        aria-label={`Show ${card.name} at full size`}
+      >
+        Show full size{card.images.print.draftResolution && ' (draft)'}
+      </a>
     </div>
     <div class="card-transcription">
       <h1>{card.name}</h1>

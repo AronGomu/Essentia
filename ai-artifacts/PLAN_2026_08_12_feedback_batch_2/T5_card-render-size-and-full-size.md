@@ -69,8 +69,8 @@
 
 ## Impl steps
 
-- [ ] 1. Write `tests/unit/card-render-width.test.ts` (read `src/styles/global.css` with `node:fs/promises`, use `resolve` from `../support/css`) and `tests/e2e/card-full-size.spec.ts` (Playwright, `basePath` prefix pattern copied from `tests/e2e/related-cards.spec.ts`).
-- [ ] 2. In `src/pages/cards/[id].astro`, replace the render column block with:
+- [x] 1. Write `tests/unit/card-render-width.test.ts` (read `src/styles/global.css` with `node:fs/promises`, use `resolve` from `../support/css`) and `tests/e2e/card-full-size.spec.ts` (Playwright, `basePath` prefix pattern copied from `tests/e2e/related-cards.spec.ts`). Validation: `npx vitest run tests/unit/card-render-width.test.ts` red before impl (3 failed), `card-full-size.spec.ts` written against not-yet-existing `.full-size-link`.
+- [x] 2. In `src/pages/cards/[id].astro`, replace the render column block with: Validation: diff applied, `npm run check` 0 errors.
 
   ```astro
   <div class="render-column">
@@ -93,7 +93,7 @@
   </div>
   ```
 
-- [ ] 3. In `src/styles/global.css`, inside `@layer components`, replace the `.card-detail .render-column picture, .card-detail .render-column img` rule body with:
+- [x] 3. In `src/styles/global.css`, inside `@layer components`, replace the `.card-detail .render-column picture, .card-detail .render-column img` rule body with: Validation: `npx vitest run tests/unit/card-render-width.test.ts` green (3 passed).
 
   ```css
   .card-detail .render-column picture,
@@ -105,7 +105,7 @@
   }
   ```
 
-- [ ] 4. Add directly after that rule:
+- [x] 4. Add directly after that rule: Validation: `.full-size-link` present in built HTML (`dist/cards/nekroz-trishula/index.html`), `npm run lint`/`format:check` clean.
 
   ```css
   .full-size-link {
@@ -127,7 +127,7 @@
   }
   ```
 
-- [ ] 5. `npm run build` then `npx playwright test tests/e2e/card-full-size.spec.ts`.
+- [x] 5. `npm run build` then `npx playwright test tests/e2e/card-full-size.spec.ts`. Validation: build clean (check-404/scan-dist/harden-csp pass), 3 chromium+3 firefox+3 webkit card-full-size tests pass.
 
 ## Outputs
 
@@ -137,10 +137,10 @@
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — no new failures
-- [ ] `cd website && npm run check && npm run lint && npm run format:check`
-- [ ] `cd website && npm run build` — includes `check-404`, `scan-dist`, `harden-csp`; a stray inline style or bad link fails here
-- [ ] `cd website && npx playwright test tests/e2e/card-full-size.spec.ts tests/e2e/showcase.spec.ts`
-- [ ] `cd website && npm run budgets:check` — print masters were already shipped, so the total must not move
+- [x] `cd website && npx vitest run` — no new failures. Result: 751 passed, 1 failed (`asset-rights.test.ts`, pre-existing dirty-tree issue unrelated to this ticket's files).
+- [x] `cd website && npm run check && npm run lint && npm run format:check`. Result: check 0 errors/0 warnings/5 pre-existing hints, lint clean, format clean.
+- [x] `cd website && npm run build` — includes `check-404`, `scan-dist`, `harden-csp`; a stray inline style or bad link fails here. Result: 152 pages built, dist scan clean, CSP hashed, 404 redirects to root.
+- [x] `cd website && npx playwright test tests/e2e/card-full-size.spec.ts tests/e2e/showcase.spec.ts`. Result: 67 passed, 2 skipped (chromium/firefox/webkit).
+- [x] `cd website && npm run budgets:check` — print masters were already shipped, so the total must not move. Result: `9 JS, 152 HTML, 215 images, 50 print masters (51 MiB) within limits`.
 - [ ] manual check: `/cards/nekroz-trishula/` shows a visibly bigger render; clicking `Show full size` opens the raw PNG
 - [ ] commit msg draft: `feat(website): widen the card render and link the print master`
