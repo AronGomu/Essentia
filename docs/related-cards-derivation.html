@@ -116,6 +116,10 @@ It loses its abilities on Field.</pre>
           card.</p>
         </div>
       </div>
+      <p>The two lists are disjoint by construction. <code>archetype</code> is
+      computed first, and its ids are subtracted from <code>interaction</code>
+      once that pass runs — an archetype member that fetches its own archetype
+      would otherwise print the same gallery twice.</p>
 
       <h2>Closed vocabularies</h2>
       <div class="scroll">

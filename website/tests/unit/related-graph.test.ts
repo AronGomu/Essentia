@@ -117,6 +117,55 @@ describe('buildRelatedGraph — fixtures', () => {
       buildRelatedGraph(cards, [], registry).get('source')!.interaction,
     ).toEqual(['target']);
   });
+
+  it('interaction never repeats an archetype relation', () => {
+    const cards = [
+      {
+        id: 'a',
+        name: 'Burning Abyss - A',
+        archetype: 'burning-abyss',
+        subType: 'Fiend',
+        colors: [],
+        supertypes: [],
+        manaValue: 1,
+        keywords: ['Search'],
+        ruleTextPlain: 'Search 1 "Burning Abyss" Creature from Deck.',
+      },
+      {
+        id: 'b',
+        name: 'Burning Abyss - B',
+        archetype: 'burning-abyss',
+        subType: 'Fiend',
+        colors: [],
+        supertypes: [],
+        manaValue: 1,
+        keywords: [],
+        ruleTextPlain: '',
+      },
+      {
+        id: 'c',
+        name: 'Burning Abyss - C',
+        archetype: 'burning-abyss',
+        subType: 'Fiend',
+        colors: [],
+        supertypes: [],
+        manaValue: 1,
+        keywords: [],
+        ruleTextPlain: '',
+      },
+    ];
+    const sections = [{ slug: 'burning-abyss', namePattern: 'Burning Abyss' }];
+    const registry = new Map([
+      ['Search', { term: 'Search', category: 'action' }],
+    ]);
+
+    const graph = buildRelatedGraph(cards, sections, registry);
+    expect(graph.get('a')!.archetype).toEqual(
+      expect.arrayContaining(['b', 'c']),
+    );
+    expect(graph.get('a')!.interaction).not.toContain('b');
+    expect(graph.get('a')!.interaction).not.toContain('c');
+  });
 });
 
 describe('buildRelatedGraph — real catalog', () => {
@@ -136,22 +185,24 @@ describe('buildRelatedGraph — real catalog', () => {
     expect(graff.archetype).not.toContain('burning-abyss-graff');
   });
 
-  it('relates Tour Guide to the full eligible Fiend MV-1 target set', () => {
-    const expected = catalog.cards
+  it('relates Tour Guide to the eligible Fiend MV-1 targets outside its archetype', () => {
+    const entry = related.get('tour-guide-from-the-underworld')!;
+    const archetypeIds = new Set(entry.archetype);
+    const eligible = catalog.cards
       .filter(
         (card) =>
           card.id !== 'tour-guide-from-the-underworld' &&
           card.manaValue === 1 &&
           card.subType.split(/\s+/).includes('Fiend'),
       )
-      .map((card) => card.id)
+      .map((card) => card.id);
+    expect(eligible.length).toBeGreaterThan(2);
+    const expected = eligible
+      .filter((id) => !archetypeIds.has(id))
       .sort((a, b) =>
         cardsById.get(a)!.name.localeCompare(cardsById.get(b)!.name),
       );
-    expect(related.get('tour-guide-from-the-underworld')!.interaction).toEqual(
-      expected,
-    );
-    expect(expected.length).toBeGreaterThan(2);
+    expect(entry.interaction).toEqual(expected);
   });
 
   it('does not attach Gagaga Cowboy material constraints to Detach', () => {
@@ -176,6 +227,23 @@ describe('buildRelatedGraph — real catalog', () => {
       expect(entry.archetype).not.toContain(card.id);
       expect(entry.interaction).not.toContain(card.id);
     }
+  });
+
+  it('interaction never repeats an archetype relation (real catalog)', () => {
+    for (const card of catalog.cards) {
+      const entry = related.get(card.id)!;
+      const archetypeSet = new Set(entry.archetype);
+      const overlap = entry.interaction.filter((id: string) =>
+        archetypeSet.has(id),
+      );
+      expect(overlap).toEqual([]);
+    }
+  });
+
+  it("Tour Guide's Burning Abyss targets live in the archetype list only", () => {
+    const entry = related.get('tour-guide-from-the-underworld')!;
+    expect(entry.archetype).toContain('burning-abyss-graff');
+    expect(entry.interaction).not.toContain('burning-abyss-graff');
   });
 
   it('schema version is 11', () => {

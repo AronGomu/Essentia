@@ -316,3 +316,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Shrink the browser to a narrow desktop width (~900px) where neither side has 320px free: the rulings column disappears entirely, but the big preview itself stays put and fully visible.
 - [ ] Tab through the tiles with the keyboard (no mouse): focusing a tile shows the same overlay preview as hovering it, and tabbing away hides it.
 - [ ] Resize or scroll the page while a preview is open: it stays correctly positioned over its tile (doesn't drift or detach).
+
+## T6 related-dedupe-and-badge
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/tour-guide-from-the-underworld/` (the only card that still fills both lists): no card name appears under both `Same archetype` and `Interacts with this card`.
+- [ ] On the same page, confirm neither related gallery shows a `New` badge on any tile.
+- [ ] Open `/cards/burning-abyss-graff/`: only the `Same archetype` block renders (its interaction targets were all same-archetype duplicates and are now gone), and no tile in it carries a `New` badge.
+- [ ] Open `/archetypes/burning-abyss/` and the home page: the `New` badge still renders on those section grids, unchanged.
+- [ ] Hover a tile inside a related gallery: the hover preview still works (the badge opt-out did not affect the preview data attributes).

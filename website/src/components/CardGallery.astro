@@ -11,9 +11,11 @@ import CardPicture from './CardPicture.astro';
 interface Props {
   cards: GalleryCard[];
   base: string;
+  /** Section grids flag new cards; a related block inside a card page does not. */
+  showNewBadge?: boolean;
 }
 
-const { cards, base } = Astro.props;
+const { cards, base, showNewBadge = true } = Astro.props;
 const sorted = [...cards].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
@@ -28,7 +30,9 @@ const sorted = [...cards].sort((a, b) => a.name.localeCompare(b.name));
           .map((entry) => entry.term)
           .join(',')}
       >
-        {isLatestRelease(card) && <span class="tile-badge">New</span>}
+        {showNewBadge && isLatestRelease(card) && (
+          <span class="tile-badge">New</span>
+        )}
         <CardPicture card={card} eager={index < 8} />
         <span class="card-caption">
           <strong>{card.name}</strong>

@@ -16,11 +16,18 @@ const noRelationsCard = catalog.cards.find(
     card.related.archetype.length === 0 &&
     card.related.interaction.length === 0,
 );
+// The two lists are disjoint, so a card that still fills both is the only one
+// whose page renders both sections at once.
+const bothCategoriesCard = catalog.cards.find(
+  (card) =>
+    card.related.archetype.length > 0 && card.related.interaction.length > 0,
+);
 
 test('both categories render linked thumbnail card galleries', async ({
   page,
 }) => {
-  await page.goto(urlFor('/cards/burning-abyss-graff/'));
+  test.skip(!bothCategoriesCard, 'no card fills both related lists');
+  await page.goto(urlFor(`/cards/${bothCategoriesCard!.id}/`));
   for (const heading of ['related-archetype', 'related-interaction']) {
     const section = page.locator(`section:has(#${heading})`);
     await expect(section.locator(`#${heading}`)).toBeVisible();
@@ -80,4 +87,17 @@ test('a card with no relations renders no related section', async ({
   test.skip(!noRelationsCard, 'every card currently has at least one relation');
   await page.goto(urlFor(`/cards/${noRelationsCard!.id}/`));
   await expect(page.locator('#related-archetype')).toHaveCount(0);
+});
+
+test('related galleries carry no New badge', async ({ page }) => {
+  test.skip(!bothCategoriesCard, 'no card fills both related lists');
+  for (const id of ['burning-abyss-graff', bothCategoriesCard!.id]) {
+    await page.goto(urlFor(`/cards/${id}/`));
+    await expect(
+      page.locator('section:has(#related-archetype) .tile-badge'),
+    ).toHaveCount(0);
+    await expect(
+      page.locator('section:has(#related-interaction) .tile-badge'),
+    ).toHaveCount(0);
+  }
 });

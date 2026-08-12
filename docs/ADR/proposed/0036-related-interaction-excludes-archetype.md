@@ -22,6 +22,6 @@ Both galleries also rendered the `New` badge, which is meaningful on a section g
 ## Consequences
 
 - Cards inside an archetype that fetch their own archetype lose those entries from `Interacts with this card`. That list can now be empty where it was previously a duplicate — intended.
-- `Tour Guide from the Underworld` is unaffected: its printed name carries no archetype pattern, so its `archetype` list is empty and its fetch targets survive. The existing test that asserts this stays green.
+- Archetype **support** cards (`archetypeRole: "support"`, e.g. `Tour Guide From the Underworld`) carry a full `archetype` list too, so their same-archetype fetch targets are subtracted from `interaction` as well. Those cards still appear once on the page, under `Same archetype`.
 - Related galleries get more columns (6 from 90rem) because they own the full shell width.
 - `src/generated/catalog.ts` must be regenerated; `npm run content:check` is the gate.

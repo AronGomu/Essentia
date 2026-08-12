@@ -169,6 +169,7 @@ const versions = catalog.cardVersions
             <CardGallery
               cards={archetypeRelated.slice(0, RELATED_CAP).map(toGalleryCard)}
               base={base}
+              showNewBadge={false}
             />
             {archetypeRelated.length > RELATED_CAP && (
               <p class="related-more">
@@ -189,6 +190,7 @@ const versions = catalog.cardVersions
                 .slice(0, RELATED_CAP)
                 .map(toGalleryCard)}
               base={base}
+              showNewBadge={false}
             />
             {interactionRelated.length > RELATED_CAP && (
               <p class="related-more">

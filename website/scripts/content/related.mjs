@@ -213,9 +213,15 @@ export function buildRelatedGraph(cards, sections, keywordRegistry) {
     }
 
     const cardsById = new Map(cards.map((c) => [c.id, c]));
-    result.get(card.id).interaction = [...relatedIds].sort((a, b) =>
-      cardsById.get(a).name.localeCompare(cardsById.get(b).name),
-    );
+    // A card listed under `Same archetype` must not reappear under `Interacts with
+    // this card`: on an archetype member that fetches its own archetype, every
+    // interaction was a duplicate of the block directly above it.
+    const archetypeIds = new Set(result.get(card.id).archetype);
+    result.get(card.id).interaction = [...relatedIds]
+      .filter((id) => !archetypeIds.has(id))
+      .sort((a, b) =>
+        cardsById.get(a).name.localeCompare(cardsById.get(b).name),
+      );
   }
 
   return result;

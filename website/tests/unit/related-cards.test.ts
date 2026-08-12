@@ -25,9 +25,10 @@ describe('related cards data (catalog field)', () => {
     }
   });
 
-  it("interaction list holds Tour Guide's fetch targets", () => {
+  it("Tour Guide's fetch targets live in the archetype list only", () => {
     const card = cardsById.get('tour-guide-from-the-underworld')!;
-    expect(card.related.interaction).toContain('burning-abyss-graff');
+    expect(card.related.archetype).toContain('burning-abyss-graff');
+    expect(card.related.interaction).not.toContain('burning-abyss-graff');
   });
 
   it('the old helper is gone', () => {
