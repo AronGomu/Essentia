@@ -317,6 +317,15 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Tab through the tiles with the keyboard (no mouse): focusing a tile shows the same overlay preview as hovering it, and tabbing away hides it.
 - [ ] Resize or scroll the page while a preview is open: it stays correctly positioned over its tile (doesn't drift or detach).
 
+## T7 related-band-layout
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/burning-abyss-graff/` at 1440px: `Same archetype` and `Interacts with this card` render below the card render and text, inside a visibly tinted full-width band with a hairline top border. The band's background spans edge to edge; the gallery content inside it stays inset to the page shell width.
+- [ ] Slowly scroll the page: the card render (`.render-column`) stays pinned (sticky) while the rules text scrolls past it, then once the transcription column runs out, the render and the related band scroll away together — the render never overlaps or bleeds into the related band.
+- [ ] Confirm the related galleries are visibly wider than they were before (up to 6 columns at ≥ 90rem viewport width, vs. 5 for other `.card-grid` usages on the site).
+- [ ] Resize down to 44rem / 704px and below: the render column unsticks (`position: static`) and the two-column `.card-detail` grid stacks to one column, same as before this ticket.
+- [ ] Check 1440px, 1024px and 390px widths for a horizontal scrollbar. None should appear at 1440 or 390. At 1024px there is a pre-existing ~48px page-level overflow that also reproduces on the untouched `/` homepage (confirmed unrelated to this ticket) — confirm it is not visibly worse or different in character on the card page.
+- [ ] Confirm the breadcrumb, pager, release history, Rules block, and design notes are still inside the narrower transcription column (unchanged width/position), only the two related sections moved.
+
 ## T6 related-dedupe-and-badge
 
 - [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/cards/tour-guide-from-the-underworld/` (the only card that still fills both lists): no card name appears under both `Same archetype` and `Interacts with this card`.

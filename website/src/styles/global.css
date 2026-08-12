@@ -968,6 +968,9 @@
     text-align: center;
     padding: var(--space-6) 1rem;
   }
+  .card-page {
+    overflow-x: clip;
+  }
   .card-detail {
     display: grid;
     grid-template-columns: minmax(18rem, 0.85fr) minmax(20rem, 1.15fr);
@@ -1004,6 +1007,17 @@
   }
   .card-transcription {
     max-width: 72ch;
+  }
+  .related-band {
+    /* Full-bleed: the band background leaves the shell, its content does not. */
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    border-top: 1px solid var(--ruleline);
+    background: color-mix(in oklch, var(--sleeve) 55%, transparent);
+  }
+  .related-band-inner {
+    display: grid;
+    gap: var(--space-6);
   }
   .card-transcription h1 {
     font-size: clamp(2.4rem, 5vw, 4.8rem);
@@ -1136,6 +1150,10 @@
 @media (min-width: 90rem) {
   .card-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .related-band-inner .card-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 

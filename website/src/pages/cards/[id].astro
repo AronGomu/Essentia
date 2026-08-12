@@ -68,138 +68,146 @@ const versions = catalog.cardVersions
     { label: card.name },
   ]}
 >
-  <article class="page-shell card-detail">
-    <div class="render-column">
-      <CardPicture
-        card={card}
-        tier="display"
-        eager
-        alt={`${card.name} card render`}
-        sizes="(min-width: 70rem) 40rem, 92vw"
-      />
-      <a
-        class="full-size-link"
-        href={withBase(base, card.images.print.url)}
-        target="_blank"
-        rel="noopener"
-        aria-label={`Show ${card.name} at full size`}
-      >
-        Show full size{card.images.print.draftResolution && ' (draft)'}
-      </a>
-    </div>
-    <div class="card-transcription">
-      <h1>{card.name}</h1>
-      {
-        card.castingCost && (
-          <p>
-            <strong>Cost:</strong> {card.castingCost}
-          </p>
-        )
-      }
-      <p class="type-line">
-        {card.superType}{card.subType && ` — ${card.subType}`}
-      </p>
-      <RichText value={card.ruleText} class="rules-text" />
-      {
-        card.flavorTextPlain && (
-          <RichText value={card.flavorText} class="flavor-text" />
-        )
-      }
-      {
-        card.power && card.toughness && (
-          <p>
-            <strong>Power / toughness:</strong> {card.power}/{card.toughness}
-          </p>
-        )
-      }
-      <div class="card-facts">
-        <span>Current: {card.stageLabel} {card.version}</span>
-        <span>Published {formatDate(card.releasedOn)}</span>
-        <span>Rarity: {card.rarity}</span>
-        <span>Collection: {card.collectionNumber}</span>
-        {card.support && <span>Support card</span>}
-      </div>
-      {
-        rules.length > 0 && (
-          <section>
-            <h2>Rules</h2>
-            <dl class="keyword-rules">
-              {rules.map((rule) => (
-                <>
-                  <dt>{rule.term}</dt>
-                  <dd>{rule.definition}</dd>
-                </>
-              ))}
-            </dl>
-          </section>
-        )
-      }
-      {
-        explanation && (
-          <section>
-            <h2>Design notes</h2>
-            <Markdown value={explanation} class="authored-explanation" />
-          </section>
-        )
-      }
-      <section>
-        <h2>Release history</h2>
-        <ul>
-          {
-            versions.map((version) => (
-              <li>
-                <a href={withBase(base, version.versionRoute)}>
-                  {version.stageLabel} {version.version} ·{' '}
-                  {formatDate(version.releasedOn)}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-      <nav class="card-pager" aria-label="Cards in manifest order">
-        <a href={withBase(base, previous.route)}>← {previous.name}</a><a
-          href={withBase(base, next.route)}>{next.name} →</a
+  <article class="card-page">
+    <div class="page-shell card-detail">
+      <div class="render-column">
+        <CardPicture
+          card={card}
+          tier="display"
+          eager
+          alt={`${card.name} card render`}
+          sizes="(min-width: 70rem) 40rem, 92vw"
+        />
+        <a
+          class="full-size-link"
+          href={withBase(base, card.images.print.url)}
+          target="_blank"
+          rel="noopener"
+          aria-label={`Show ${card.name} at full size`}
         >
-      </nav>
-      {
-        archetypeRelated.length > 0 && (
-          <section aria-labelledby="related-archetype">
-            <h2 id="related-archetype">Same archetype</h2>
-            <CardGallery
-              cards={archetypeRelated.slice(0, RELATED_CAP).map(toGalleryCard)}
-              base={base}
-              showNewBadge={false}
-            />
-            {archetypeRelated.length > RELATED_CAP && (
-              <p class="related-more">
-                <a href={withBase(base, section.route)}>
-                  View all {archetypeRelated.length} {section.label} cards
-                </a>
-              </p>
-            )}
-          </section>
-        )
-      }
-      {
-        interactionRelated.length > 0 && (
-          <section aria-labelledby="related-interaction">
-            <h2 id="related-interaction">Interacts with this card</h2>
-            <CardGallery
-              cards={interactionRelated
-                .slice(0, RELATED_CAP)
-                .map(toGalleryCard)}
-              base={base}
-              showNewBadge={false}
-            />
-            {interactionRelated.length > RELATED_CAP && (
-              <p class="related-more">
-                {interactionRelated.length - RELATED_CAP} more
-              </p>
-            )}
-          </section>
-        )
-      }
+          Show full size{card.images.print.draftResolution && ' (draft)'}
+        </a>
+      </div>
+      <div class="card-transcription">
+        <h1>{card.name}</h1>
+        {
+          card.castingCost && (
+            <p>
+              <strong>Cost:</strong> {card.castingCost}
+            </p>
+          )
+        }
+        <p class="type-line">
+          {card.superType}{card.subType && ` — ${card.subType}`}
+        </p>
+        <RichText value={card.ruleText} class="rules-text" />
+        {
+          card.flavorTextPlain && (
+            <RichText value={card.flavorText} class="flavor-text" />
+          )
+        }
+        {
+          card.power && card.toughness && (
+            <p>
+              <strong>Power / toughness:</strong> {card.power}/{card.toughness}
+            </p>
+          )
+        }
+        <div class="card-facts">
+          <span>Current: {card.stageLabel} {card.version}</span>
+          <span>Published {formatDate(card.releasedOn)}</span>
+          <span>Rarity: {card.rarity}</span>
+          <span>Collection: {card.collectionNumber}</span>
+          {card.support && <span>Support card</span>}
+        </div>
+        {
+          rules.length > 0 && (
+            <section>
+              <h2>Rules</h2>
+              <dl class="keyword-rules">
+                {rules.map((rule) => (
+                  <>
+                    <dt>{rule.term}</dt>
+                    <dd>{rule.definition}</dd>
+                  </>
+                ))}
+              </dl>
+            </section>
+          )
+        }
+        {
+          explanation && (
+            <section>
+              <h2>Design notes</h2>
+              <Markdown value={explanation} class="authored-explanation" />
+            </section>
+          )
+        }
+        <section>
+          <h2>Release history</h2>
+          <ul>
+            {
+              versions.map((version) => (
+                <li>
+                  <a href={withBase(base, version.versionRoute)}>
+                    {version.stageLabel} {version.version} ·{' '}
+                    {formatDate(version.releasedOn)}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+        <nav class="card-pager" aria-label="Cards in manifest order">
+          <a href={withBase(base, previous.route)}>← {previous.name}</a><a
+            href={withBase(base, next.route)}>{next.name} →</a
+          >
+        </nav>
+      </div>
     </div>
+    {
+      (archetypeRelated.length > 0 || interactionRelated.length > 0) && (
+        <section class="related-band" aria-label="Related cards">
+          <div class="page-shell related-band-inner">
+            {archetypeRelated.length > 0 && (
+              <section aria-labelledby="related-archetype">
+                <h2 id="related-archetype">Same archetype</h2>
+                <CardGallery
+                  cards={archetypeRelated
+                    .slice(0, RELATED_CAP)
+                    .map(toGalleryCard)}
+                  base={base}
+                  showNewBadge={false}
+                />
+                {archetypeRelated.length > RELATED_CAP && (
+                  <p class="related-more">
+                    <a href={withBase(base, section.route)}>
+                      View all {archetypeRelated.length} {section.label} cards
+                    </a>
+                  </p>
+                )}
+              </section>
+            )}
+            {interactionRelated.length > 0 && (
+              <section aria-labelledby="related-interaction">
+                <h2 id="related-interaction">Interacts with this card</h2>
+                <CardGallery
+                  cards={interactionRelated
+                    .slice(0, RELATED_CAP)
+                    .map(toGalleryCard)}
+                  base={base}
+                  showNewBadge={false}
+                />
+                {interactionRelated.length > RELATED_CAP && (
+                  <p class="related-more">
+                    {interactionRelated.length - RELATED_CAP} more
+                  </p>
+                )}
+              </section>
+            )}
+          </div>
+        </section>
+      )
+    }
   </article>
 </BaseLayout>

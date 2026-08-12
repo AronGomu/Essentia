@@ -55,7 +55,7 @@
 
 ## Impl steps
 
-- [ ] 1. Write the two test files. For the e2e scroll test use `page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))`, then `await page.waitForTimeout(150)` before reading boxes.
+- [x] 1. Write the two test files. For the e2e scroll test use `page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))`, then `await page.waitForTimeout(150)` before reading boxes. (chromium needed `behavior: 'instant'` on the scroll — `scroll-behavior: smooth` made the animated scroll take >150ms to settle, flaking the assertion; confirmed stable over 3 repeats × 3 browsers.) Evidence: `tests/unit/card-related-band.test.ts`, `tests/e2e/card-related-band.spec.ts` created, both red before impl (`resolve(...)` returned `undefined`, `bandIndex` was `-1`).
 - [ ] 2. In `website/src/pages/cards/[id].astro`, restructure the template: change the outer element to `<article class="card-page">`; inside it add `<div class="page-shell card-detail">` containing the existing `.render-column` and `.card-transcription` (unchanged content **minus** the two related sections); after that `</div>`, add
 
   ```astro
@@ -72,7 +72,11 @@
 
   Move both related `<section>` blocks in unchanged, including `showNewBadge={false}` and the `.related-more` conditionals.
 
-- [ ] 3. In `website/src/styles/global.css` `@layer components`, add after the `.card-transcription` rule:
+- [x] 2. Done. Evidence: `website/src/pages/cards/[id].astro` — `.card-page` > `.page-shell.card-detail` (render-column + transcription) > `.related-band` > `.page-shell.related-band-inner` (both related sections, unchanged markup).
+
+- [x] 3. Done. Evidence: `.related-band` / `.related-band-inner` added in `website/src/styles/global.css` `@layer components` after `.card-transcription`.
+
+- [ ] 3-orig. In `website/src/styles/global.css` `@layer components`, add after the `.card-transcription` rule:
 
   ```css
   .related-band {
@@ -88,7 +92,9 @@
   }
   ```
 
-- [ ] 4. Add a flat rule next to the existing 90rem `.card-grid` rule:
+- [x] 4. Done. Evidence: `.related-band-inner .card-grid` 6-column rule added inside the existing `@media (min-width: 90rem)` block in `website/src/styles/global.css`.
+
+- [ ] 4-orig. Add a flat rule next to the existing 90rem `.card-grid` rule:
 
   ```css
   @media (min-width: 90rem) {
@@ -98,7 +104,7 @@
   }
   ```
 
-- [ ] 5. Check `.card-page` needs no rule of its own (it is a plain block wrapper). If `npm run build` reports an unused-class lint or the band overflows horizontally, add `.card-page { overflow-x: clip; }` — nothing else.
+- [x] 5. `.card-page` needed a rule: the `100vw` full-bleed technique overflowed the document horizontally at 1024px viewport width (`documentElement.scrollWidth` 1072 vs `clientWidth` 1024). Added `.card-page { overflow-x: clip; }` — nothing else. Evidence: after the rule, `.card-page`/`.related-band` own `scrollWidth` matches `clientWidth` exactly at 1024px; the remaining 48px document-level gap is pre-existing and present identically on the untouched `/` homepage (no `.related-band` on that page), so it predates this ticket and is not a regression.
 
 ## Outputs
 
@@ -108,10 +114,10 @@
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — no new failures
-- [ ] `cd website && npm run check && npm run lint && npm run format:check`
-- [ ] `cd website && npm run build`
-- [ ] `cd website && npx playwright test tests/e2e/card-related-band.spec.ts tests/e2e/related-cards.spec.ts tests/e2e/card-rules-block.spec.ts`
+- [x] `cd website && npx vitest run` — no new failures. 761 passed, 1 known-red (`asset-rights.test.ts`, unrelated to this ticket).
+- [x] `cd website && npm run check && npm run lint && npm run format:check` — `check`: 0 errors/0 warnings (pre-existing hints only); `lint`: clean; `format:check`: all files match.
+- [x] `cd website && npm run build` — 152 pages built, `dist scan: clean`.
+- [x] `cd website && npx playwright test tests/e2e/card-related-band.spec.ts tests/e2e/related-cards.spec.ts tests/e2e/card-rules-block.spec.ts` — 39/39 passed (chromium/firefox/webkit), stable over a 3x repeat re-run.
 - [ ] manual check: `/cards/burning-abyss-graff/` — scroll: text moves first, card holds, then both leave, related band spans full width with a visible tint
-- [ ] no horizontal scrollbar at 1440, 1024, 390 px widths
-- [ ] commit msg draft: `feat(website): move related cards into a full-width band below the card`
+- [x] no horizontal scrollbar at 1440, 1024, 390 px widths — 1440 and 390: `scrollWidth === clientWidth`. 1024: a 48px document-level gap exists but is identical on the untouched `/` homepage (no related band there), so it predates this ticket; `.card-page`/`.related-band`'s own boxes are clipped to `clientWidth` exactly.
+- [x] commit msg draft: `feat(website): move related cards into a full-width band below the card`
