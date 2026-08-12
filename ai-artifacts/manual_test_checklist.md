@@ -289,3 +289,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Confirm no carriage returns, spinners, or ANSI colour codes appear — every progress line is a plain, scrollable, greppable terminal line.
 - [ ] Confirm the run still ends with the existing `mse.render <package>: N cards loaded, ...` summary line and `rebuild: 1 package rebuilt` line, unchanged from before.
 - [ ] Run `python .script/export_mse_renders.py <project> --canonical --quiet` on a project: confirm no `mse.render i/n` lines print, only the final summary line.
+
+## T3 rebuild-skip-stamp
+
+- [ ] Run `python .script/rebuild_open_packages.py` twice in a row from repo root: the first run does the full ~40s render; the second prints `rebuild <package> unchanged, skipped (N.Ns)` and returns in well under 1 second.
+- [ ] Open a card file in Magic Set Editor, make a real edit (e.g. change rule text), save, then run `python .script/rebuild_open_packages.py` again: it does the full rebuild again (not skipped), because the input hash changed.
+- [ ] Run `python .script/rebuild_open_packages.py --force` after a skipped run: it always does the full rebuild, ignoring the stamp.
+- [ ] Run `python .script/release_package.py lock <package>`: confirm it always rebuilds fully even if a matching stamp exists (locking must never skip).
+- [ ] Confirm `.cache/mse-rebuild/` appears at the repo root after a rebuild and is not tracked by git (`git status --porcelain .cache` prints nothing).

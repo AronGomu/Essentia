@@ -14,7 +14,7 @@ import sys
 import tempfile
 import time
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Callable, Iterable
 
@@ -39,6 +39,13 @@ from mse_content import (  # noqa: E402
 CARDS_ROOT = REPO_ROOT / "cards_mse"
 IDENTITIES_PATH = REPO_ROOT / "website" / "content" / "identities.json"
 PUBLIC_STAGES = {"01_alpha", "02_beta", "03_release"}
+STAMP_SCHEMA = 1
+STAMP_ROOT = REPO_ROOT / ".cache" / "mse-rebuild"
+VENDOR_MANIFEST_PATH = REPO_ROOT / "MSE" / "manifest.json"
+# Files the rebuild itself writes. They are outputs, so hashing them would make
+# every rebuild look like a source change and the stamp would never match.
+STAMP_EXCLUDED_TOP = {"renders", "renders_print"}
+STAMP_EXCLUDED_FILES = {"package-sha256.json", "render-provenance.json", "aggregate-manifest.json"}
 DRAFT_STAGE = "00_drafts"
 STATUSES = {"open", "locked"}
 FILE_FIELDS = (
@@ -539,6 +546,61 @@ def write_package_hashes(package: Path) -> None:
     )
 
 
+def stamp_path(package: Path) -> Path:
+    return STAMP_ROOT / f"{package.parent.name}__{package.name}.json"
+
+
+def rebuild_input_hash(package: Path) -> str:
+    """Hash every rebuild input: package sources plus the pinned MSE vendor tree."""
+    digest = hashlib.sha256()
+    digest.update(f"schema:{STAMP_SCHEMA}\n".encode())
+    vendor = sha256_file(VENDOR_MANIFEST_PATH) if VENDOR_MANIFEST_PATH.is_file() else "absent"
+    digest.update(f"vendor:{vendor}\n".encode())
+    for path in sorted(package.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(package).as_posix()
+        parts = relative.split("/")
+        if any(part.startswith(".") for part in parts):
+            continue
+        if parts[0].endswith("_all_cards.mse-set") or parts[0] in STAMP_EXCLUDED_TOP:
+            continue
+        if relative in STAMP_EXCLUDED_FILES or "render" in parts[:-1]:
+            continue
+        digest.update(f"{relative}\n{sha256_file(path)}\n".encode())
+    return digest.hexdigest()
+
+
+def rebuild_outputs_present(package: Path) -> bool:
+    return all(
+        (package / name).exists()
+        for name in ("renders", "renders_print", "render-provenance.json", "package-sha256.json", "aggregate-manifest.json")
+    )
+
+
+def rebuild_is_current(package: Path) -> bool:
+    path = stamp_path(package)
+    if not path.is_file() or not rebuild_outputs_present(package):
+        return False
+    try:
+        stamp = json_read(path)
+    except LifecycleError:
+        return False
+    return stamp.get("schemaVersion") == STAMP_SCHEMA and stamp.get("inputHash") == rebuild_input_hash(package)
+
+
+def write_rebuild_stamp(package: Path) -> None:
+    STAMP_ROOT.mkdir(parents=True, exist_ok=True)
+    json_write(
+        stamp_path(package),
+        {
+            "schemaVersion": STAMP_SCHEMA,
+            "inputHash": rebuild_input_hash(package),
+            "builtAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        },
+    )
+
+
 def validate_package_hashes(package: Path) -> None:
     manifest_path = package / "package-sha256.json"
     manifest = json_read(manifest_path)
@@ -707,12 +769,18 @@ def rebuild(
     artifact_builder: Callable[[Path, Path], None] = build_artifacts,
     print_masters: bool = True,
     verbose: bool = False,
+    force: bool = False,
 ) -> Path:
     """Regenerate aggregate/artifacts/hashes for an open package."""
     package = package.resolve()
     metadata = release_metadata(package)
     if metadata["status"] != "open":
         raise LifecycleError(f"rebuild requires open package: {package}")
+
+    started = time.perf_counter()
+    if not force and rebuild_is_current(package):
+        print(f"rebuild {package.name} unchanged, skipped ({time.perf_counter() - started:.1f}s)", flush=True)
+        return package
 
     done = report_phase(package, 1, "aggregate manifest")
     aggregate = generate_aggregate(package, identities_path)
@@ -741,6 +809,7 @@ def rebuild(
     validate_package(package, require_artifacts=True)
     done()
 
+    write_rebuild_stamp(package)
     return package
 
 
@@ -768,6 +837,7 @@ def lock(
         artifact_builder=artifact_builder,
         print_masters=True,
         verbose=False,
+        force=True,
     )
     metadata = release_metadata(package)
     metadata["status"] = "locked"

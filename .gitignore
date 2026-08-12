@@ -50,6 +50,9 @@ graphify-out/
 # Working scratch: progress notes, one-off exports, downloaded archives
 .tmp/
 
+# Rebuild fast-path stamps (derived; safe to delete)
+.cache/
+
 # impeccable design-hook cache
 .impeccable/
 

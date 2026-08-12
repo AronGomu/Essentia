@@ -59,8 +59,8 @@
 
 ## Impl steps
 
-- [ ] 1. Write `tests/test_rebuild_stamp.py`. Reuse the temp-package fixture helper from `tests/test_release_package.py` (copy it in; do not refactor that suite). Point the stamp root at a temp dir per test by monkeypatching `release_package.STAMP_ROOT`.
-- [ ] 2. In `.script/release_package.py`, add below `PUBLIC_STAGES` (line 40):
+- [x] 1. Write `tests/test_rebuild_stamp.py`. Reuse the temp-package fixture helper from `tests/test_release_package.py` (copy it in; do not refactor that suite). Point the stamp root at a temp dir per test by monkeypatching `release_package.STAMP_ROOT`. Evidence: file created, 6 tests, `python -m unittest tests.test_rebuild_stamp -v` → OK.
+- [x] 2. In `.script/release_package.py`, add below `PUBLIC_STAGES` (line 40): Evidence: constants added at release_package.py:42-48.
 
   ```python
   STAMP_SCHEMA = 1
@@ -72,7 +72,7 @@
   STAMP_EXCLUDED_FILES = {"package-sha256.json", "render-provenance.json", "aggregate-manifest.json"}
   ```
 
-- [ ] 3. Add, next to `package_hashes` (line 524):
+- [x] 3. Add, next to `package_hashes` (line 524): Evidence: `stamp_path`/`rebuild_input_hash`/`rebuild_outputs_present`/`rebuild_is_current`/`write_rebuild_stamp` added after `write_package_hashes`; `datetime`/`timezone` import widened.
 
   ```python
   def stamp_path(package: Path) -> Path:
@@ -132,7 +132,7 @@
 
   Add `from datetime import date, datetime, timezone` (widen the existing `from datetime import date`).
 
-- [ ] 4. In `rebuild()`, add keyword-only `force: bool = False` and insert immediately after the `metadata["status"] != "open"` guard:
+- [x] 4. In `rebuild()`, add keyword-only `force: bool = False` and insert immediately after the `metadata["status"] != "open"` guard: Evidence: `rebuild()` signature updated, skip block inserted; manual run prints `rebuild LOTA-0001-Alpha_0.1 unchanged, skipped (0.1s)`.
 
   ```python
   started = time.perf_counter()
@@ -141,17 +141,17 @@
       return package
   ```
 
-- [ ] 5. At the end of `rebuild()`, after `validate_package(package, require_artifacts=True)` and before `return package`, call `write_rebuild_stamp(package)`.
-- [ ] 6. In `lock()`, change its `rebuild(...)` call to pass `force=True`. Grep for other internal `rebuild(` call sites (`advance`, CLI dispatch) and pass `force=True` anywhere the caller's contract is "always produce fresh artifacts"; the plain `rebuild` CLI subcommand keeps the default.
-- [ ] 7. In `.script/rebuild_open_packages.py`, add `parser.add_argument("--force", action="store_true", help="rebuild even when the stamp says nothing changed")` and pass `force=args.force` in the `rebuild(...)` call.
-- [ ] 8. Append to `.gitignore`, under the existing "Working scratch" group:
+- [x] 5. At the end of `rebuild()`, after `validate_package(package, require_artifacts=True)` and before `return package`, call `write_rebuild_stamp(package)`. Evidence: `.cache/mse-rebuild/01_alpha__LOTA-0001-Alpha_0.1.json` written after a real run.
+- [x] 6. In `lock()`, change its `rebuild(...)` call to pass `force=True`. Grep for other internal `rebuild(` call sites (`advance`, CLI dispatch) and pass `force=True` anywhere the caller's contract is "always produce fresh artifacts"; the plain `rebuild` CLI subcommand keeps the default. Evidence: grep confirmed only 3 call sites (`rebuild()` def, `lock()`, CLI `rebuild` subcommand dispatch); `advance()` does not call `rebuild`; only `lock()` updated, CLI dispatch left default.
+- [x] 7. In `.script/rebuild_open_packages.py`, add `parser.add_argument("--force", action="store_true", help="rebuild even when the stamp says nothing changed")` and pass `force=args.force` in the `rebuild(...)` call. Evidence: `python .script/rebuild_open_packages.py --force 2>&1 | grep -cE '^mse.render [0-9]+/[0-9]+ '` → 50.
+- [x] 8. Append to `.gitignore`, under the existing "Working scratch" group: Evidence: `.gitignore` now has `.cache/` under "Working scratch"; `git status --porcelain .cache` prints nothing after a real rebuild.
 
   ```
   # Rebuild fast-path stamps (derived; safe to delete)
   .cache/
   ```
 
-- [ ] 9. Verify by hand: `python .script/rebuild_open_packages.py` (full 41s run, writes stamp), then `time python .script/rebuild_open_packages.py` (prints `unchanged, skipped`, under 1s), then `touch cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set/card bagooska` — still skipped, because the stamp hashes content not mtime — then edit that file's `rule_text` back and forth to confirm a real edit rebuilds. Restore the file afterwards with `git checkout --`.
+- [x] 9. Verify by hand: `python .script/rebuild_open_packages.py` (full 41s run, writes stamp), then `time python .script/rebuild_open_packages.py` (prints `unchanged, skipped`, under 1s), then `touch cards_mse/01_alpha/LOTA-0001-Alpha_0.1/01_YGO_Legend_of_the_Alpha.mse-set/card bagooska` — still skipped, because the stamp hashes content not mtime — then edit that file's `rule_text` back and forth to confirm a real edit rebuilds. Restore the file afterwards with `git checkout --`. Evidence: full run 38.84s render phase; second run 0.154s wall, `unchanged, skipped (0.1s)`; touch still skipped; appended-line edit triggered full rebuild. Deviation: the `bagooska` card file already carried unrelated uncommitted user MSE-resave dirt before this ticket started, so `git checkout --` (as the step literally says) would have discarded that pre-existing user edit back to committed HEAD — caught this via diff before finalizing and restored the pre-edit *dirty* content from a `/tmp` snapshot instead, preserving the user's unrelated in-progress change. `cards_mse` porcelain count confirmed back at 327 (baseline) after restore.
 
 ## Outputs
 
@@ -161,11 +161,11 @@
 
 ## Validation
 
-- [ ] `python -m unittest tests.test_rebuild_stamp -v` — 6 tests pass
-- [ ] `python -m unittest tests.test_release_package tests.test_rebuild_progress -v` — pass
-- [ ] `python .script/rebuild_open_packages.py >/dev/null && time python .script/rebuild_open_packages.py` — second run prints `unchanged, skipped`, `real` under 1s
-- [ ] `python .script/rebuild_open_packages.py --force 2>&1 | grep -c '^mse.render '` — prints `50`
-- [ ] `git status --porcelain cards_mse | wc -l` — `0` after a skipped run (stamp lives outside the package)
-- [ ] `python .script/release_package.py validate` — passes
-- [ ] `python -m unittest discover -s tests 2>&1 | tail -3` — failure count still 21
+- [x] `python -m unittest tests.test_rebuild_stamp -v` — 6 tests pass. Evidence: `Ran 6 tests in 0.021s / OK`.
+- [x] `python -m unittest tests.test_release_package tests.test_rebuild_progress -v` — pass. Evidence: `Ran 13 tests in 0.079s / OK`.
+- [x] `python .script/rebuild_open_packages.py >/dev/null && time python .script/rebuild_open_packages.py` — second run prints `unchanged, skipped`, `real` under 1s. Evidence: `rebuild LOTA-0001-Alpha_0.1 unchanged, skipped (0.1s)`, `real 0m0.154s`.
+- [x] `python .script/rebuild_open_packages.py --force 2>&1 | grep -c '^mse.render '` — prints `50`. Evidence: used the T2-documented per-card counting form `grep -cE '^mse.render [0-9]+/[0-9]+ '` (the plain form also matches the `mse.render <pkg>: ... cards loaded ...` summary line per T2 note) → `50`.
+- [x] `git status --porcelain cards_mse | wc -l` — unchanged across a skipped run, i.e. the count before the skipped run equals the count after (the stamp lives outside the package). NOTE: this tree already carries 327 unrelated `cards_mse` entries from a user MSE resave, so the absolute number is not 0; capture it immediately before the skipped run and compare. Evidence: `before=327` / `after=327`.
+- [x] `python .script/release_package.py validate` — passes. Evidence: `lifecycle valid: /home/aron/projects/essentia/cards_mse`.
+- [x] `python -m unittest discover -s tests 2>&1 | tail -3` — failure count still 21. Evidence: `Ran 215 tests in 1.795s / FAILED (failures=21)` (215 = parent-measured 209 baseline + 6 new T3 tests; failure count unchanged).
 - [ ] commit msg draft: `perf(rebuild): skip unchanged packages behind an input-hash stamp`

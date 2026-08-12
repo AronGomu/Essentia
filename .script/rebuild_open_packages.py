@@ -45,6 +45,7 @@ def open_packages(cards_root: Path = CARDS_ROOT) -> list[Path]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verbose", action="store_true", help="print the full per-card render plan and completion JSON")
+    parser.add_argument("--force", action="store_true", help="rebuild even when the stamp says nothing changed")
     return parser.parse_args()
 
 
@@ -55,7 +56,7 @@ def main() -> int:
         print("no open packages to rebuild")
         return 0
     for package in packages:
-        rebuild(package, verbose=args.verbose)
+        rebuild(package, verbose=args.verbose, force=args.force)
     print(
         f"rebuild: {len(packages)} package rebuilt"
         if len(packages) == 1
