@@ -17,6 +17,7 @@
     "format:check": "prettier --check .",
     "preflight": "node scripts/check-preflight.mjs",
     "hero:art": "node scripts/make-hero-art.mjs",
+    "backgrounds:art": "node scripts/make-archetype-backgrounds.mjs",
     "brand:assets": "node scripts/make-brand-assets.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",

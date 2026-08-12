@@ -333,3 +333,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Open `/cards/burning-abyss-graff/`: only the `Same archetype` block renders (its interaction targets were all same-archetype duplicates and are now gone), and no tile in it carries a `New` badge.
 - [ ] Open `/archetypes/burning-abyss/` and the home page: the `New` badge still renders on those section grids, unchanged.
 - [ ] Hover a tile inside a related gallery: the hover preview still works (the badge opt-out did not affect the preview data attributes).
+
+## T8 archetype-backgrounds
+
+- [ ] `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/nekroz/`: a dim, icy photographic backdrop is visible behind the atmosphere gradient, sitting behind all content, and text stays comfortably readable.
+- [ ] Open `/archetypes/burning-abyss/`: a dim, lava/chained photographic backdrop is visible behind the atmosphere gradient, and text stays comfortably readable.
+- [ ] Open `/archetypes/shaddoll/` if it resolves in your checkout (it currently 404s here — Shaddoll has no published cards yet, unrelated to this ticket): confirm no photo backdrop appears and nothing else changed.
+- [ ] Open `/cards/nekroz-trishula/`: confirm there is no photo backdrop on a card page, even though its theme is `nekroz` (only archetype pages carry `data-page="archetype"`).
+- [ ] Open DevTools console on `/archetypes/nekroz/` and `/archetypes/burning-abyss/`: no CSP violations (the injected `<style>` setting `--page-photo` is hashed by `harden-csp.mjs`, confirmed by `npm run build` succeeding).

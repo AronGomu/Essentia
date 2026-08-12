@@ -118,14 +118,24 @@
   }
   body::before {
     opacity: 0.82;
-    background: var(
-      --page-atmosphere,
-      radial-gradient(
-        circle at 80% -10%,
-        color-mix(in oklch, var(--accent) 18%, transparent),
-        transparent 36rem
-      )
-    );
+    background:
+      var(
+        --page-atmosphere,
+        radial-gradient(
+          circle at 80% -10%,
+          color-mix(in oklch, var(--accent) 18%, transparent),
+          transparent 36rem
+        )
+      ),
+      /* Dim veil: the photo must sit behind the page, not compete with it. */
+        linear-gradient(oklch(0.08 0 0 / 0.72), oklch(0.08 0 0 / 0.72)),
+      var(--page-photo, none);
+    background-position:
+      50% 0,
+      50% 50%,
+      50% 50%;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size: auto, auto, cover;
   }
   body::after {
     opacity: 0;
