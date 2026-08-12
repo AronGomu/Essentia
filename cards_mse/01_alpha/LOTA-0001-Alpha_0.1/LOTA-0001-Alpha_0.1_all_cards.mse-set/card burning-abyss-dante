@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 01:36:28
-	time_modified: 2026-08-09 20:21:50
+	time_modified: 2026-08-12 00:48:03
 	name: Burning Abyss - Dante
 	casting_cost: W
-	image: images/burning-abyss-dante-image.png
+	image: images/burning-abyss-dante-image.bin
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 
@@ -17,7 +17,7 @@ card:
 	rarity: common
 	rule_text:
 		<i>2 Creatures MV 1</i>
-		<i-auto>(1 - Activated Soft)</i-auto> <b>Detach 1</b> and <b>Mill 1-4</b> <i-auto>“Dante”</i-auto> gains +1/+0 for each milled and gains <b><kw-a>Vigilance</kw-a></b> to end turn.
+		<i-auto>(1 - Activated Soft)</i-auto> <b>Detach 1</b> and <b>Mill 1-4</b>; <i-auto>“Dante”</i-auto> gains +1/+0 for each milled and gains <b><kw-a>Vigilance</kw-a></b> to end turn.
 		<i-auto>(2 - Triggered)</i-auto> <b>On Send Grave</b> — <b>Salvage</b> 1 other <i-auto>“Burning Abyss”</i-auto>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 2

@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card maxx c
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-03 00:13:02
+	time_modified: 2026-08-12 00:05:16
 	name: Maxx “C”
 	casting_cost: G
-	image: mse_images/maxx-c-image.png
+	image: image19
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 

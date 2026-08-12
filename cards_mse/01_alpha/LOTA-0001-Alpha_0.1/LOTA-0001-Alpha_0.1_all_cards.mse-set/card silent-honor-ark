@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card silent honor ark
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-08-03 00:13:02
+	time_modified: 2026-08-12 00:10:30
 	name: Silent Honor ARK
 	casting_cost: U
-	image: images/silent-honor-ark-image.png
+	image: images/silent-honor-ark-image.bin
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 

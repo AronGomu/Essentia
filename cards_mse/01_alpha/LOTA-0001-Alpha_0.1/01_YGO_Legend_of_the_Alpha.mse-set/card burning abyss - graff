@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 01:36:28
-	time_modified: 2026-08-09 20:23:38
+	time_modified: 2026-08-12 00:03:02
 	name: Burning Abyss - Graff
 	casting_cost: B
-	image: mse_images/burning-abyss-graff-image.png
+	image: image13
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 

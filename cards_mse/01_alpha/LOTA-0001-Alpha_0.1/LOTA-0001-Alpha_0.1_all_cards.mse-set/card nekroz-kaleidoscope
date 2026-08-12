@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: docs/03_nekroz/CONTEXT.md
 	time_created: 2026-07-10 23:49:32
-	time_modified: 2026-08-09 20:28:11
+	time_modified: 2026-08-12 00:15:55
 	name: Nekroz - Kaleidoscope
 	casting_cost: U
-	image: images/nekroz-kaleidoscope-image.png
+	image: images/nekroz-kaleidoscope-image.bin
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 

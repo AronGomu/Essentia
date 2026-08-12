@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: docs/01_burning_abyss/CONTEXT.md
 	time_created: 2026-07-11 16:40:30
-	time_modified: 2026-08-03 00:13:02
+	time_modified: 2026-08-12 00:10:06
 	name: Leviair the Sea Dragon
 	casting_cost: G
-	image: images/leviair-the-sea-dragon-image.jpg
+	image: images/leviair-the-sea-dragon-image.bin
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 

@@ -5,10 +5,10 @@ card:
 	has_styling: false
 	notes: Source: cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card tornado dragon
 	time_created: 2026-07-11 17:03:48
-	time_modified: 2026-08-03 00:13:02
+	time_modified: 2026-08-12 00:10:54
 	name: Tornado Dragon
 	casting_cost: G
-	image: mse_images/tornado-dragon-image.png
+	image: image35
 	image_2: 
 	mainframe_image: 
 	mainframe_image_2: 
