@@ -124,12 +124,12 @@
           <p>Text ships as <code>&lt;span class="label-full"&gt;</code>, with a <code>&lt;span class="label-short"&gt;</code> where a shorter word exists (“Learn about Essentia” → “Learn”). CSS swaps which one is <code>display: none</code>; an explicit <code>aria-label</code> on the control keeps the accessible name viewport-independent.</p>
         </div>
         <div class="card">
-          <h4>Three links, always inline</h4>
-          <p><code>&lt;div class="utility-menu"&gt;</code>, a plain flex row at every width. No island, no script, no popover — <code>Learn</code>, <code>Blog</code> and <code>Decks</code> stay in the header row down to 400px; the <code>⋯</code> trigger and its popover panel were removed (T3).</p>
+          <h4>Four links, always inline</h4>
+          <p><code>&lt;div class="utility-menu"&gt;</code>, a plain flex row at every width. No island, no script, no popover — <code>Cards</code>, <code>Learn</code>, <code>Blog</code> and <code>Decks</code> stay in that order down to 400px. Cards uses the deploy-base homepage URL.</p>
         </div>
         <div class="card">
           <h4>Never remove the strings</h4>
-          <p><code>scripts/check-chrome.mjs</code> fails the build when a built page's <code>.utility-nav</code> block lacks the literal <code>&gt;Learn about Essentia&lt;</code>, <code>&gt;Blog&lt;</code> or <code>&gt;Decks&lt;</code>, or when the page lacks <code>&gt;Find&lt;/span&gt;</code>. Shorten with CSS, never with markup.</p>
+          <p><code>scripts/check-chrome.mjs</code> fails the build when a built page's <code>.utility-nav</code> block lacks Cards, <code>&gt;Learn about Essentia&lt;</code>, <code>&gt;Blog&lt;</code> or <code>&gt;Decks&lt;</code>, when their order changes, or when the page lacks <code>&gt;Find&lt;/span&gt;</code>. Shorten with CSS, never with markup.</p>
         </div>
         <div class="card">
           <h4>One row at 400px</h4>
@@ -142,12 +142,12 @@
           <thead><tr><th>Item</th><th>Width at 400px</th><th>Why</th></tr></thead>
           <tbody>
             <tr><td class="sel">.compact-brand</td><td>32px</td><td><code>.compact-brand img { width: 2rem; height: 2rem }</code></td></tr>
-            <tr><td class="sel">.drawer-trigger</td><td>≈36px</td><td>Icon, <code>padding: 0.5rem</code>, 1px border</td></tr>
-            <tr><td class="sel">.utility-nav</td><td>179.3px</td><td>Three inline links (<code>.utility-menu a</code>, <code>padding: 0.5rem 0.55rem</code>), no popover</td></tr>
-            <tr><td class="sel">.search-trigger</td><td>≈48px</td><td>Icon, base <code>button</code> padding <code>0.65rem 0.9rem</code>, <code>&lt;kbd&gt;</code> hidden</td></tr>
-            <tr><td class="sel">.breadcrumb</td><td>flexible, ≥64px</td><td><code>flex: 1 1 auto; min-width: 0</code>, list <code>nowrap</code>, item ellipsised</td></tr>
-            <tr><td class="sel">gaps + padding</td><td>28.8px + 32px</td><td><code>gap: 0.45rem</code> ×4, <code>clamp(1rem, 3vw, 3rem)</code> floor ×2</td></tr>
-            <tr><td class="sel">total</td><td>317.2px of 368px</td><td>50.8px of slack on an inner page</td></tr>
+            <tr><td class="sel">.drawer-trigger</td><td>34px</td><td>Icon, <code>padding: 0.5rem</code>, 1px border</td></tr>
+            <tr><td class="sel">.utility-nav</td><td>≈205.1px</td><td>Four inline links (<code>.utility-menu a</code>, compact <code>padding: 0.5rem 0.25rem</code>) plus three inner gaps</td></tr>
+            <tr><td class="sel">.search-trigger</td><td>39.8px</td><td>Icon, base <code>button</code> padding <code>0.65rem 0.9rem</code>, <code>&lt;kbd&gt;</code> hidden</td></tr>
+            <tr><td class="sel">.breadcrumb</td><td>flexible, 0px reserved</td><td><code>flex: 1 1 0; min-width: 0</code>, list <code>nowrap</code>, item ellipsised</td></tr>
+            <tr><td class="sel">conservative gaps + padding</td><td>50.4px + 32px</td><td>Seven outer <code>gap: 0.45rem</code> references; the 16.8px inner utility gap is cross-checked but excluded from this conservative model</td></tr>
+            <tr><td class="sel">modeled total</td><td>344.5px of 368px</td><td>23.5px remains for the shrinkable breadcrumb at 400px</td></tr>
           </tbody>
         </table>
       </div>

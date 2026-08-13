@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   HD_ROOT,
@@ -5,9 +6,24 @@ import {
   provenanceTool,
 } from '../../scripts/make-hero-art.mjs';
 import { HERO_SOURCES } from '../../scripts/check-preflight.mjs';
+import { resolve } from '../support/css';
+
+const css = readFileSync(
+  new URL('../../src/styles/global.css', import.meta.url),
+  'utf8',
+);
 
 const never = () => false;
 const always = () => true;
+
+describe('hero art', () => {
+  it('keeps the home crop at the image top', () => {
+    expect(resolve(css, '.hero-art', 'object-position', 1440)).toBe(
+      'center 0%',
+    );
+    expect(resolve(css, '.hero-art', 'object-position', 400)).toBe('center 0%');
+  });
+});
 
 describe('heroSourceFor', () => {
   it('falls back to the committed 624 px original when no upscale exists', () => {

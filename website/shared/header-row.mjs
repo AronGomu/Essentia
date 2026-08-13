@@ -2,7 +2,7 @@
  * Width budget for the compact site header.
  *
  * 400px is the narrowest supported viewport. The header holds one row
- * there thanks to three inline links (`Learn`, `Blog`, `Decks`) in
+ * there thanks to four inline links (`Cards`, `Learn`, `Blog`, `Decks`) in
  * `.utility-menu`, not a `⋯` popover trigger; a wrap is a warning, never a
  * build failure, so this module only ever reports arithmetic — see scripts/check-header-row.mjs (build) and
  * the inline guard in src/layouts/BaseLayout.astro (browser).
@@ -74,23 +74,32 @@ export const HEADER_CONTROLS = [
     intrinsicPx: 18,
   },
   {
-    name: 'utility-learn',
-    // `.utility-menu a { padding: 0.5rem 0.55rem }` = 17.6px of the 57.6px
-    // box. The remaining 40.0px is the `Learn` glyph run (the `.label-full`
-    // "Learn about Essentia" text is hidden below 64rem) plus the 2×1px
-    // `border`. Measured 57.6px at 400px.
-    px: 57.6,
+    name: 'utility-cards',
+    // 8px compact padding + 40.9px for the `Cards` glyph run and border.
+    // Measured 48.9px at 400px.
+    px: 48.9,
     cssPx: [
       ['.utility-menu a', 'padding-left'],
       ['.utility-menu a', 'padding-right'],
     ],
-    intrinsicPx: 40.0,
+    intrinsicPx: 40.9,
+  },
+  {
+    name: 'utility-learn',
+    // 8px compact padding + 40px for the `Learn` glyph run and border.
+    // Measured 48px at 400px.
+    px: 48,
+    cssPx: [
+      ['.utility-menu a', 'padding-left'],
+      ['.utility-menu a', 'padding-right'],
+    ],
+    intrinsicPx: 40,
   },
   {
     name: 'utility-blog',
-    // Same 17.6px of padding; the `Blog` glyph run plus the 2×1px border is
-    // 32.1px. Measured 49.7px at 400px.
-    px: 49.7,
+    // 8px compact padding + 32.1px for the `Blog` glyph run and border.
+    // Measured 40.1px at 400px.
+    px: 40.1,
     cssPx: [
       ['.utility-menu a', 'padding-left'],
       ['.utility-menu a', 'padding-right'],
@@ -99,9 +108,9 @@ export const HEADER_CONTROLS = [
   },
   {
     name: 'utility-decks',
-    // Same 17.6px of padding; the `Decks` glyph run plus the 2×1px border is
-    // 43.3px. Measured 60.9px at 400px.
-    px: 60.9,
+    // 8px compact padding + 43.3px for the `Decks` glyph run and border.
+    // Measured 51.3px at 400px.
+    px: 51.3,
     cssPx: [
       ['.utility-menu a', 'padding-left'],
       ['.utility-menu a', 'padding-right'],
@@ -137,9 +146,9 @@ export const BREADCRUMB = {
 };
 
 /**
- * `.utility-menu { gap: 0.35rem }` — the two gaps between the three inline
+ * `.utility-menu { gap: 0.35rem }` — the three gaps between the four inline
  * links. This is not one of `HEADER_CONTROLS`: those items sit in the outer
- * `.site-header` row, spaced by `HEADER_GAP` (7.2px), while the three links
+ * `.site-header` row, spaced by `HEADER_GAP` (7.2px), while the four links
  * share one `.utility-nav` flex item there and are spaced by this smaller
  * inner gap instead. It exists so the cross-check in
  * `tests/unit/header-row.test.ts` still walks every authored length; it does
@@ -147,8 +156,9 @@ export const BREADCRUMB = {
  * gap as the (over-)conservative distance between every item.
  */
 export const UTILITY_GAP = {
-  px: 11.2,
+  px: 16.8,
   cssPx: [
+    ['.utility-menu', 'gap'],
     ['.utility-menu', 'gap'],
     ['.utility-menu', 'gap'],
   ],

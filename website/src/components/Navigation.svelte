@@ -57,8 +57,8 @@
     return state[group.key] ?? isGroupOpen(docsGroup(group), currentPath, null);
   }
 
-  function toggleGroup(group: ReadingNavGroup, event: Event) {
-    const open = (event.currentTarget as HTMLDetailsElement).open;
+  function toggleGroup(group: ReadingNavGroup, event: globalThis.Event) {
+    const open = (event.currentTarget as globalThis.HTMLDetailsElement).open;
     openState = { ...openState, [group.key]: open };
     writeStored<StoredGroupState>(
       docsGroupStorageKey(group.key).replace('essentia.v1.', ''),

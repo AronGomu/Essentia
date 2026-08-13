@@ -182,6 +182,13 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       <nav class="utility-nav" aria-label="Sections">
         <div class="utility-menu" id="utility-menu">
           <a
+            href={base}
+            aria-current={Astro.url.pathname === base ? 'page' : undefined}
+            ><span class="label-full">Cards</span><span class="label-short"
+              >Cards</span
+            ></a
+          >
+          <a
             href={`${base}docs/`}
             aria-label="Learn about Essentia"
             aria-current={section === 'docs/' ? 'page' : undefined}
@@ -244,7 +251,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
             '.compact-brand, .drawer-trigger, .breadcrumb, .utility-nav, .search-trigger',
           );
           // The compact header's controls have different authored heights
-          // (T5: 32px brand, ~36-44px drawer trigger, ~39px utility-more,
+          // (T5: 32px brand, ~36-44px drawer trigger, ~40-49px utility links,
           // ~48-49px search trigger) and are vertically centered, so their
           // `top` differs by up to ~17px even on one visual row. Cluster
           // sorted tops instead of comparing exact rounded values: a gap

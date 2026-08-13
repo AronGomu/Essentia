@@ -83,6 +83,7 @@ describe('header-row constants track global.css', () => {
     expect(HEADER_CONTROLS.map((control) => control.name)).toEqual([
       'compact-brand',
       'drawer-trigger',
+      'utility-cards',
       'utility-learn',
       'utility-blog',
       'utility-decks',
@@ -117,11 +118,12 @@ describe('header-row constants track global.css', () => {
 });
 
 describe('header-row', () => {
-  it('the compact header fits 400px with a breadcrumb', () => {
+  it('the compact header fits 400px with four utility links and a breadcrumb', () => {
     const budget = headerRowBudget(400);
     expect(budget.fits).toBe(true);
     expect(budget.overflowPx).toBe(0);
-    expect(budget.contentPx).toBe(317.2);
+    expect(budget.contentPx).toBe(344.5);
+    expect(budget.availablePx).toBe(368);
   });
 
   it('fits at 400px with a breadcrumb', () => {
@@ -129,10 +131,10 @@ describe('header-row', () => {
     expect(budget.fits).toBe(true);
   });
 
-  it('the compact header fits 400px without one', () => {
+  it('the compact header fits 400px with four utility links and no breadcrumb', () => {
     const budget = headerRowBudget(400, { withBreadcrumb: false });
     expect(budget.fits).toBe(true);
-    expect(budget.contentPx).toBe(310);
+    expect(budget.contentPx).toBe(337.3);
   });
 
   it('a fatter control is reported, not thrown', () => {

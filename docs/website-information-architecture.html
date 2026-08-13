@@ -68,8 +68,8 @@
             <tr><td class="route">/</td><td>Entry point for every visitor: hero, new cards, archetype tiles</td><td class="src">src/pages/index.astro</td><td>hover preview only</td></tr>
             <tr><td class="route">/docs/</td><td>Project presentation — the alphabetically first root doc</td><td class="src">docs/00_PRESENTATION.md</td><td>none</td></tr>
             <tr><td class="route">/docs/&lt;path&gt;/</td><td>Every other published repo doc, left rail + chapter summary</td><td class="src">docs/**/*.md except docs/ADR/** and ruling files</td><td>none</td></tr>
-            <tr><td class="route">/blog/</td><td>Latest post inline; canonical remains <code>/blog/&lt;slug&gt;/</code></td><td class="src">blog/&lt;date&gt;-&lt;slug&gt;.md</td><td>none</td></tr>
-            <tr><td class="route">/blog/&lt;slug&gt;/</td><td>One post</td><td class="src">same</td><td>none</td></tr>
+            <tr><td class="route">/blog/</td><td>Latest post inline + H2 chapter summary; canonical remains <code>/blog/&lt;slug&gt;/</code></td><td class="src">blog/&lt;date&gt;-&lt;slug&gt;.md</td><td>none</td></tr>
+            <tr><td class="route">/blog/&lt;slug&gt;/</td><td>One post + H2 chapter summary</td><td class="src">same</td><td>none</td></tr>
             <tr><td class="route">/decks/</td><td>Browser-local decklist manager</td><td class="src">localStorage essentia.v1.decks</td><td>required</td></tr>
             <tr><td class="route">/archetypes/&lt;slug&gt;/</td><td>Archetype gallery, alphabetical, NEW badges</td><td class="src">catalog.sections (kind archetype)</td><td>hover preview only</td></tr>
             <tr><td class="route">/sections/non-archetype/&lt;slug&gt;/</td><td>Staples and unlinked support cards</td><td class="src">catalog.sections (kind non-archetype)</td><td>hover preview only</td></tr>
@@ -96,7 +96,7 @@
         </div>
         <div class="card">
           <h4>Header — full width, above the rail</h4>
-          <p>The header spans the whole viewport and paints above the rail, which starts at the header's bottom border (<code>inset: var(--header) auto 0 0</code>). In order: the brand (<code>.compact-brand</code>, wordmark above 44rem, letter mark below, <code>display: block</code> at every width), the catalog hamburger (≤64rem, an in-flow item — the <code>&lt;Navigation&gt;</code> island renders inside the header), the breadcrumb, then <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then the Find trigger. Below 44rem every label is hidden by CSS and the three destinations fold into a native <code>popover</code> behind <code>⋯</code>. See ADR 0027 and ADR 0029.</p>
+          <p>The header spans the whole viewport and paints above the rail, which starts at its bottom border. Order: brand, catalog hamburger (≤64rem), breadcrumb, then <em>Cards</em> → deploy-base home, <em>Learn about Essentia</em> → <code>/docs/</code>, <em>Blog</em> → <code>/blog/</code>, <em>Decks</em> → <code>/decks/</code>, then Find. All four utility links remain inline through 400px; full labels shorten at 64rem and Find squares off at 56rem. Compact budget: 344.5px of 368px available. No popover. See ADR 0027 and ADR 0029.</p>
         </div>
         <div class="card">
           <h4>Back to top</h4>
@@ -142,7 +142,7 @@
         <div class="flowline">↓</div>
         <div class="stage"><b>4 · Images</b><p><code>images.mjs</code> derives the <code>thumb</code> and <code>display</code> tiers plus the print master with sharp. Hero art is committed, never derived here.</p></div>
         <div class="flowline">↓</div>
-        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target. Docs groups, labels, order, and routes derive from the <code>docs/</code> folder tree and numeric filename prefixes; root docs come first and remain ungrouped. Posts are sorted newest first; no authored blog reading-order file remains. See <code>docs/ADR/proposed/0041-docs-navigation-from-folders.md</code> and <code>docs/ADR/proposed/0043-blog-landing-is-the-latest-post.md</code>.</p></div>
+        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown. Both store renderer-matching H2-H4 metadata. Reading pages expose H2 links through <code>ChapterSummary.astro</code>; native fragments need no client JS. Docs groups/routes derive from the folder tree. Posts sort newest first. See ADR 0020, ADR 0041 and ADR 0043.</p></div>
         <div class="flowline">↓</div>
         <div class="stage"><b>6 · Catalog</b><p><code>orchestrator.mjs</code> selects the current version per card, builds sections, updates and releases, and writes <code>src/generated/catalog.ts</code> plus the rights inventory.</p></div>
         <div class="flowline">↓</div>
@@ -153,7 +153,7 @@
       <div class="grid">
         <div class="card gate"><h4>scan-dist</h4><p>No symlink, no unexpected extension, no local path, no private key, no source map, no embedded image metadata, no surviving <code>'unsafe-inline'</code>.</p></div>
         <div class="card gate"><h4>check-404</h4><p><code>dist/404.html</code> is a zero-delay noindex redirect to the base, and never regains the not-found page.</p></div>
-        <div class="card gate"><h4>check-chrome</h4><p>Every page carries the three header links and a breadcrumb; every page but <code>404.html</code> carries <code>class="back-to-top"</code>; every reading page carries <code>class="reading-switch"</code>, so dropping the <code>Docs | Blog</code> switcher fails the build instead of shipping an unnavigable docs page; the home hero keeps its copy, art and CTA; galleries carry no date groups; the licence line sits under the footer links; any bold phrase with a page ruling is followed by its reminder span.</p></div>
+        <div class="card gate"><h4>check-chrome</h4><p>Every page carries four ordered header links; every non-home page carries a breadcrumb; every page but <code>404.html</code> carries Back to top. Reading pages carry the reading shell plus matching desktop/mobile nav. Home hero, gallery, licence and keyword-reminder contracts remain gated.</p></div>
         <div class="card gate"><h4>check-links</h4><p>Every internal <code>href</code> and <code>src</code> in every built page resolves to a real file.</p></div>
         <div class="card gate"><h4>check-budgets</h4><p>JS total ≤ 350 KiB, HTML ≤ 500 KiB per page, image ≤ 3 MiB each, print masters ≤ 400 MiB total.</p></div>
         <div class="card gate"><h4>check-rights</h4><p>Every published render is covered by an owner-approved rights record before a public artifact ships.</p></div>

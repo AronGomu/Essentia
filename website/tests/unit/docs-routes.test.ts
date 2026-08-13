@@ -72,18 +72,12 @@ describe('rewriteDocLinks', () => {
     ).toContain('github.com/AronGomu/YGO-x-MTG/blob/main/cards_mse/');
     expect(
       rewriteDocLinks('[adr](ADR/README.md)', 'docs/CONTEXT.md', knownPaths),
-    ).toContain(
-      'github.com/AronGomu/YGO-x-MTG/blob/main/docs/ADR/README.md',
-    );
+    ).toContain('github.com/AronGomu/YGO-x-MTG/blob/main/docs/ADR/README.md');
   });
 
   it('fails on a missing docs target', () => {
     expect(() =>
-      rewriteDocLinks(
-        '[missing](rules/NOPE.md)',
-        'docs/RULES.md',
-        knownPaths,
-      ),
+      rewriteDocLinks('[missing](rules/NOPE.md)', 'docs/RULES.md', knownPaths),
     ).toThrow(/unpublished link target/);
   });
 });

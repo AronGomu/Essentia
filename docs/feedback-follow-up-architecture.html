@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Essentia — feedback follow-up target architecture</title>
+  <style>
+    :root { color-scheme: dark; --bg:#090a0c; --panel:#11141a; --raised:#171c24; --line:#2a3442; --ink:#edf1f7; --muted:#9da9b8; --gold:#d8b65a; --ice:#74b9d6; --ok:#7ecb8b; --warn:#df8b62; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(circle at 80% 0,#162332 0,transparent 34rem),var(--bg); color:var(--ink); font:16px/1.58 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { width:min(1120px,calc(100% - 32px)); margin:auto; padding:48px 0 80px; }
+    header { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr); gap:28px; align-items:end; border-bottom:1px solid var(--line); padding-bottom:30px; }
+    .eyebrow { color:var(--gold); text-transform:uppercase; letter-spacing:.13em; font-size:.73rem; font-weight:800; }
+    h1 { margin:.45rem 0 .6rem; font-size:clamp(2.2rem,6vw,4.6rem); line-height:.98; letter-spacing:-.05em; }
+    .lede { max-width:64ch; color:var(--muted); margin:0; }
+    .status { border:1px solid var(--gold); background:color-mix(in srgb,var(--gold) 9%,transparent); padding:18px; }
+    .status b { color:var(--gold); display:block; margin-bottom:4px; }
+    h2 { margin:42px 0 14px; font-size:1.25rem; }
+    h2::before { content:"◆"; color:var(--gold); margin-right:.6rem; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    article { border:1px solid var(--line); background:linear-gradient(145deg,var(--raised),var(--panel)); padding:22px; min-width:0; }
+    article h3 { margin:0 0 6px; font-size:1rem; color:var(--ice); }
+    article p,article li { color:var(--muted); font-size:.9rem; }
+    article ul { padding-left:1.1rem; margin:.65rem 0 0; }
+    code { color:var(--ink); background:#0b0e13; border:1px solid var(--line); border-radius:4px; padding:.06rem .28rem; font: .86em ui-monospace,SFMono-Regular,Menlo,monospace; }
+    figure { margin:18px 0 0; border:1px solid var(--line); background:var(--panel); padding:16px; overflow:hidden; }
+    figcaption { color:var(--muted); font-size:.82rem; margin-bottom:12px; }
+    svg { width:100%; height:auto; display:block; }
+    .node { fill:var(--raised); stroke:var(--line); stroke-width:2; }
+    .hot { stroke:var(--gold); }
+    .edge { stroke:var(--line); stroke-width:2; fill:none; }
+    .label { fill:var(--ink); font:12px system-ui,sans-serif; }
+    .note { fill:var(--muted); font:10px system-ui,sans-serif; }
+    .visual { position:relative; min-height:230px; overflow:hidden; padding:0; }
+    .visual img { width:100%; height:230px; object-fit:cover; object-position:center 0%; display:block; opacity:.72; }
+    .visual::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,#090a0ce8 0,#090a0c99 52%,#090a0c22); }
+    .visual-copy { position:absolute; inset:auto 22px 22px; z-index:1; max-width:32ch; }
+    .visual-copy b { display:block; font-size:1.15rem; }
+    .visual-copy span { color:var(--muted); font-size:.86rem; }
+    table { width:100%; border-collapse:collapse; font-size:.86rem; }
+    th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--muted); font-weight:600; }
+    td:first-child { color:var(--gold); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .fence { border-left:3px solid var(--warn); padding:12px 16px; background:var(--panel); color:var(--muted); }
+    footer { margin-top:42px; border-top:1px solid var(--line); padding-top:16px; color:var(--muted); font-size:.8rem; }
+    @media(max-width:760px){ header,.grid{grid-template-columns:1fr;} main{width:min(100% - 20px,1120px);padding-top:28px;} }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <div class="eyebrow">Architecture target · 2026-08-13</div>
+      <h1>Four clean deltas.</h1>
+      <p class="lede">Header/home polish, native blog chapters, explicit staple identity, sharp dimmed archetype photos. No new runtime layer. No MSE mutation.</p>
+    </div>
+    <aside class="status"><b>Plan-only target</b>Implementation tracked in <code>ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md</code>. Current code may lag until T1–T4 land.</aside>
+  </header>
+
+  <h2>Flow</h2>
+  <figure>
+    <figcaption>Sequential commits. Shared generated catalog makes T3 consume T2 output.</figcaption>
+    <svg viewBox="0 0 980 170" role="img" aria-labelledby="flow-title flow-desc">
+      <title id="flow-title">Four-ticket architecture flow</title><desc id="flow-desc">Header and hero flow to blog chapters, then card identity regeneration, then backdrop correction and full validation.</desc>
+      <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path fill="#2a3442" d="M0 0L8 4L0 8Z"/></marker></defs>
+      <rect class="node hot" x="10" y="42" width="190" height="84" rx="10"/><text class="label" x="28" y="70">T1 · header + hero</text><text class="note" x="28" y="91">4 links · 344.5px</text><text class="note" x="28" y="108">object-position: 0%</text>
+      <path class="edge" marker-end="url(#arrow)" d="M200 84H252"/>
+      <rect class="node" x="260" y="42" width="190" height="84" rx="10"/><text class="label" x="278" y="70">T2 · blog chapters</text><text class="note" x="278" y="91">H2-H4 metadata</text><text class="note" x="278" y="108">H2 native fragments</text>
+      <path class="edge" marker-end="url(#arrow)" d="M450 84H502"/>
+      <rect class="node" x="510" y="42" width="190" height="84" rx="10"/><text class="label" x="528" y="70">T3 · identity</text><text class="note" x="528" y="91">null + staple</text><text class="note" x="528" y="108">catalog regenerate</text>
+      <path class="edge" marker-end="url(#arrow)" d="M700 84H752"/>
+      <rect class="node hot" x="760" y="42" width="210" height="84" rx="10"/><text class="label" x="778" y="70">T4 · sharp backdrop</text><text class="note" x="778" y="91">filter: none · dim stays</text><text class="note" x="778" y="108">all repo gates</text>
+    </svg>
+  </figure>
+
+  <h2>Contracts</h2>
+  <section class="grid">
+    <article>
+      <h3>Header + hero</h3>
+      <p><code>BaseLayout.astro</code> owns one ordered utility row:</p>
+      <p><b>Cards → Learn → Blog → Decks</b></p>
+      <ul><li>Cards href = deploy <code>base</code>.</li><li>≤44rem link padding = <code>.5rem .25rem</code>.</li><li>400 px budget = 344.5 / 368 px.</li><li>Home art crop = <code>center 0%</code>.</li></ul>
+    </article>
+    <article>
+      <h3>Blog chapter data</h3>
+      <p><code>blog.mjs</code> extracts renderer-matching H2-H4 IDs. Catalog schema 12 stores them. Both blog routes filter H2 + reuse <code>ChapterSummary.astro</code>.</p>
+      <ul><li>Native <code>#id</code> links.</li><li>No island, listener, scrollspy.</li><li>Scroll margin clears sticky header.</li><li>No-H2 post → no empty TOC.</li></ul>
+    </article>
+    <article>
+      <h3>Identity → related cards</h3>
+      <p>Four generic cards change from support affinity to true staples.</p>
+      <ul><li><code>archetype: null</code>.</li><li><code>role: "staple"</code>; derived <code>support: false</code>.</li><li>Section stays non-archetype.</li><li><code>related.archetype</code> becomes empty.</li></ul>
+    </article>
+    <article>
+      <h3>Backdrop composition</h3>
+      <p><code>main::before</code> keeps photo + flat 60% black veil. Blur leaves.</p>
+      <ul><li><code>filter: none</code>.</li><li><code>transform: scale(1.01)</code> stays.</li><li>Absolute inset + main clipping stay.</li><li>Header/rail/body atmosphere stay excluded.</li></ul>
+    </article>
+  </section>
+
+  <h2>Visual intent</h2>
+  <section class="grid">
+    <figure class="visual">
+      <img src="../website/public/art/nekroz-hero.webp" alt="Nekroz of Trishula hero illustration cropped from top center" />
+      <div class="visual-copy"><b>Top-centred heart.</b><span>Head + trishula remain visible. One CSS coordinate change.</span></div>
+    </figure>
+    <figure class="visual">
+      <img src="../website/public/backgrounds/nekroz.webp" alt="Nekroz archetype background illustration" />
+      <div class="visual-copy"><b>Sharp photo. Dark veil.</b><span>Legibility from 60% dim layer, not optical blur.</span></div>
+    </figure>
+  </section>
+
+  <h2>Ownership</h2>
+  <table>
+    <thead><tr><th>Concern</th><th>Owner</th><th>Red gate</th></tr></thead>
+    <tbody>
+      <tr><td>header</td><td><code>BaseLayout.astro</code> + <code>header-row.mjs</code></td><td>Vitest + Playwright one-row/overflow</td></tr>
+      <tr><td>chapters</td><td><code>blog.mjs</code> + <code>ChapterSummary.astro</code></td><td>loader parity + click/position e2e</td></tr>
+      <tr><td>affinity</td><td><code>content/identities.json</code></td><td>exact identity/catalog/e2e assertions</td></tr>
+      <tr><td>backdrop</td><td><code>global.css main::before</code></td><td>computed filter/dim/geometry e2e</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Scope fence</h2>
+  <p class="fence">No card deletion. No MSE/package/renders/decklist changes. No nested TOC. No client chapter JS. No dim/crop/scale redesign. No package install.</p>
+
+  <footer>Decision refs: ADR 0016, 0020, 0029, 0040, 0042. Implementation index: <code>ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md</code>.</footer>
+</main>
+</body>
+</html>

@@ -49,11 +49,34 @@ describe('compact header utility links', () => {
     expect(baseLayout).not.toContain('class="utility-more"');
   });
 
+  it('Cards links home immediately before Learn about Essentia', () => {
+    const menu = baseLayout.slice(
+      baseLayout.indexOf('<div class="utility-menu"'),
+      baseLayout.indexOf(
+        '</div>',
+        baseLayout.indexOf('<div class="utility-menu"'),
+      ),
+    );
+    expect(menu).toMatch(
+      /href=\{base\}[\s\S]*?>Cards<\/span>[\s\S]*?>Cards<\/span[\s\S]*?<\/a\s*>\s*<a\s+href=\{`\$\{base\}docs\/`\}/,
+    );
+    expect(menu).toContain(
+      "aria-current={Astro.url.pathname === base ? 'page' : undefined}",
+    );
+  });
+
+  it('compact utility links use the measured padding', () => {
+    expect(resolve(css, '.utility-menu a', 'padding', 400)).toBe(
+      '0.5rem 0.25rem',
+    );
+  });
+
   it('the docs link keeps a stable accessible name', () => {
     expect(baseLayout).toContain('aria-label="Learn about Essentia"');
   });
 
   it("check-chrome's literals survive", () => {
+    expect(baseLayout.match(/Cards<\/span/g)).toHaveLength(2);
     expect(baseLayout).toContain('>Learn about Essentia</span>');
     expect(baseLayout).toContain('>Blog</span>');
     expect(baseLayout).toContain('>Decks</span>');
@@ -86,7 +109,8 @@ describe('compact header utility links', () => {
 /**
  * `feedback.md` line 8.6 asks for an *ordered* width budget, not one step:
  * first drop "about Essentia", then shrink Find to a square icon button, then
- * (T3) keep the three links inline rather than fold them into a `⋯` menu.
+ * (T3) keep the links inline rather than fold them into a `⋯` menu; this
+ * ticket extends that row to four links with Cards.
  * T5 collapsed all three into a single `@media (max-width: 44rem)`, so the
  * shortened `Learn` label only ever rendered inside the popover; T3 removed
  * the popover, so the short label and the links now share the same row at
@@ -108,7 +132,7 @@ const STAGES: Array<{
   // Stage 0 — desktop: full labels, wide Find, links inline.
   { width: 1440, stage: 0, labelFull: undefined, labelShort: 'none', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
   { width: 1025, stage: 0, labelFull: undefined, labelShort: 'none', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
-  // Stage 1 — 64rem: short labels. `Learn` / `Blog` / `Decks` stay inline.
+  // Stage 1 — 64rem: short labels. Cards / `Learn` / `Blog` / `Decks` stay inline.
   { width: 1024, stage: 1, labelFull: 'none', labelShort: 'inline', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
   { width: 897, stage: 1, labelFull: 'none', labelShort: 'inline', searchMinWidth: 'min(22rem, 45vw)' }, // prettier-ignore
   // Stage 2 — 56rem: Find collapses to a square, links still inline, all the

@@ -69,15 +69,21 @@ test('the header holds one row at every stage boundary', async ({ page }) => {
   }
 });
 
-test('the three section links are inline at every width', async ({ page }) => {
+test('the four section links are inline at every width', async ({ page }) => {
   // No stage folds the links into a popover any more — they stay inline in
   // the header row from 1024px down to 400px.
   for (const width of [1024, 960, 896, 705, 400]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(urlFor('/archetypes/burning-abyss/'));
-    const learn = page.locator(
-      '.utility-menu a[aria-label="Learn about Essentia"]',
-    );
+    const menu = page.locator('.utility-menu');
+    const cards = menu.getByRole('link', { name: 'Cards' });
+    const learn = menu.locator('a[aria-label="Learn about Essentia"]');
+    await expect(cards, `@ ${width}px`).toBeVisible();
+    await expect(cards, `@ ${width}px`).toHaveAttribute('href', urlFor('/'));
+    await expect(
+      menu.locator('a').first(),
+      `@ ${width}px`,
+    ).toHaveAccessibleName('Cards');
     await expect(learn, `@ ${width}px`).toBeVisible();
     await expect(
       page.locator('.utility-menu a[href$="/blog/"]'),
@@ -97,17 +103,17 @@ test('the three section links are inline at every width', async ({ page }) => {
       const header = document
         .querySelector('.site-header')!
         .getBoundingClientRect();
-      const link = document
-        .querySelector('.utility-menu a[aria-label="Learn about Essentia"]')!
-        .getBoundingClientRect();
-      return { header, link };
+      const links = [...document.querySelectorAll('.utility-menu a')].map(
+        (link) => link.getBoundingClientRect(),
+      );
+      return { header, links };
     });
-    expect(boxes.link.top, `@ ${width}px`).toBeGreaterThanOrEqual(
-      boxes.header.top,
-    );
-    expect(boxes.link.bottom, `@ ${width}px`).toBeLessThanOrEqual(
-      boxes.header.bottom,
-    );
+    for (const link of boxes.links) {
+      expect(link.top, `@ ${width}px`).toBeGreaterThanOrEqual(boxes.header.top);
+      expect(link.bottom, `@ ${width}px`).toBeLessThanOrEqual(
+        boxes.header.bottom,
+      );
+    }
   }
 });
 

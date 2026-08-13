@@ -12,6 +12,7 @@ function unescapeHtml(value) {
 }
 
 export const UTILITY_LINKS = [
+  { label: 'Cards', path: '' },
   { label: 'Learn about Essentia', path: 'docs/' },
   { label: 'Blog', path: 'blog/' },
   { label: 'Decks', path: 'decks/' },
@@ -71,6 +72,14 @@ export function chromeIssues(file, html, base, keywords = null) {
         `${file}: header is missing the "${label}" link to ${href}`,
       );
     }
+  }
+
+  const expectedUtilityHrefs = UTILITY_LINKS.map(({ path }) => base + path);
+  if (
+    JSON.stringify(hrefsIn(navBlock).slice(0, expectedUtilityHrefs.length)) !==
+    JSON.stringify(expectedUtilityHrefs)
+  ) {
+    problems.push(`${file}: header utility links are out of order`);
   }
 
   if (!html.includes('class="search-trigger"') || !/>Find<\/span>/.test(html)) {

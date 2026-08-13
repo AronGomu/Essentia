@@ -308,7 +308,7 @@ test('rail items carry their archetype colour', async ({ page }) => {
   await expect.poll(() => bg(abyss)).not.toBe(abyssRest);
 });
 
-test('header keeps its three section links inline at 400px', async ({
+test('header keeps its four section links inline at 400px', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 400, height: 800 });
@@ -317,12 +317,30 @@ test('header keeps its three section links inline at 400px', async ({
   // Scoped to the header nav: the homepage body also has "Learn about
   // Essentia" CTA links (index.astro, out of this ticket's scope) sharing
   // the same accessible name, which an unscoped role locator would match too.
+  const header = page.locator('.site-header');
   const menu = page.locator('.utility-menu');
+  const cards = menu.getByRole('link', { name: 'Cards' });
   const docs = menu.getByRole('link', { name: 'Learn about Essentia' });
+  await expect(cards).toBeVisible();
+  await expect(cards).toHaveAttribute('href', urlFor('/'));
+  await expect(menu.locator('a').first()).toHaveAccessibleName('Cards');
   await expect(docs).toBeVisible();
   await expect(menu).toBeVisible();
   await expect(menu.getByRole('link', { name: 'Blog' })).toBeVisible();
   await expect(menu.getByRole('link', { name: 'Decks' })).toBeVisible();
+
+  const cardsBox = (await cards.boundingBox())!;
+  expect(Math.abs(cardsBox.width - 48.9)).toBeLessThanOrEqual(5);
+  const headerBox = (await header.boundingBox())!;
+  expect(cardsBox.y).toBeGreaterThanOrEqual(headerBox.y);
+  expect(cardsBox.y + cardsBox.height).toBeLessThanOrEqual(
+    headerBox.y + headerBox.height,
+  );
+  expect(
+    await header.evaluate(
+      (element) => element.scrollWidth - element.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
 
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);

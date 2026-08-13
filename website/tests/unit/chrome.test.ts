@@ -67,6 +67,7 @@ const homePage = (base = '/') => `
 ${railChrome}
 <header class="site-header">
   <nav class="utility-nav" aria-label="Sections">
+    <a href="${base}">Cards</a>
     <a href="${base}docs/">Learn about Essentia</a>
     <a href="${base}blog/">Blog</a>
     <a href="${base}decks/">Decks</a>
@@ -93,9 +94,27 @@ describe('chromeIssues', () => {
     expect(chromeIssues('index.html', compliantHomeHtml, '/')).toEqual([]);
   });
 
+  it('flags a missing Cards link', () => {
+    const html = compliantHomeHtml.replace('    <a href="/">Cards</a>\n', '');
+    expect(chromeIssues('index.html', html, '/')).toContain(
+      'index.html: header is missing the "Cards" link to /',
+    );
+  });
+
+  it('flags Cards after Learn about Essentia', () => {
+    const html = compliantHomeHtml.replace(
+      '    <a href="/">Cards</a>\n    <a href="/docs/">Learn about Essentia</a>',
+      '    <a href="/docs/">Learn about Essentia</a>\n    <a href="/">Cards</a>',
+    );
+    expect(chromeIssues('index.html', html, '/')).toContain(
+      'index.html: header utility links are out of order',
+    );
+  });
+
   it('flags a missing Decks link', () => {
     const html = `
 <nav class="utility-nav" aria-label="Sections">
+  <a href="/">Cards</a>
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
 </nav>
@@ -111,6 +130,7 @@ describe('chromeIssues', () => {
   it('flags a leftover Rules link', () => {
     const html = `
 <nav class="utility-nav" aria-label="Sections">
+  <a href="/">Cards</a>
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
@@ -367,6 +387,7 @@ ${Array.from({ length: 15 }, () => '<li class="new-card-item"></li>').join(
 ${railChrome}
 <header class="site-header">
   <nav class="utility-nav" aria-label="Sections">
+    <a href="/">Cards</a>
     <a href="/docs/">Learn about Essentia</a>
     <a href="/blog/">Blog</a>
     <a href="/decks/">Decks</a>
@@ -503,6 +524,7 @@ describe('R7 card pages must emit inline keyword reminders', () => {
   const cardPage = (reminder: boolean) => `
 ${railChrome}
 <nav class="utility-nav" aria-label="Sections">
+  <a href="/">Cards</a>
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
@@ -662,6 +684,7 @@ describe('the published keyword ruling map must hold exactly the preview set', (
   const page = (json: string) => `
 ${railChrome}
 <nav class="utility-nav" aria-label="Sections">
+  <a href="/">Cards</a>
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
@@ -735,6 +758,7 @@ describe('the footer legal line must sit under the footer links', () => {
     const html = `
 ${railChrome}
 <nav class="utility-nav" aria-label="Sections">
+  <a href="/">Cards</a>
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
@@ -879,6 +903,7 @@ describe('a browser-local deck must never reach a built page', () => {
 describe('every reading page ships matching desktop and mobile nav', () => {
   const utilityNav = `
 <nav class="utility-nav" aria-label="Sections">
+  <a href="/">Cards</a>
   <a href="/docs/">Learn about Essentia</a>
   <a href="/blog/">Blog</a>
   <a href="/decks/">Decks</a>
