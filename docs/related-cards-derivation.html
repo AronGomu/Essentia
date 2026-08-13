@@ -71,8 +71,7 @@
       <div class="grid">
         <div class="card">
           <h4>Same archetype</h4>
-          <p><code>archetype</code> remains the sorted list of other cards whose
-          printed name contains the section's <code>namePattern</code>.</p>
+          <p><code>archetype</code> exists only when identity metadata carries a non-null authored <code>archetype</code>. It lists printed-name members matching that section's <code>namePattern</code>. A null-affinity staple gets an empty list, so its card page renders no Same archetype block.</p>
         </div>
         <div class="card">
           <h4>References</h4>
@@ -113,7 +112,7 @@
         </svg>
       </figure>
       <ol>
-        <li>If the token occurs inside the card's own printed name, it is a self-reference and creates no edge.</li>
+        <li>If the token occurs inside the card's own printed name, it is a self-reference and creates no quoted-name edge.</li>
         <li>If it equals a section <code>namePattern</code>, case-insensitively, it creates an archetype reference unless that section is the card's own archetype.</li>
         <li>Otherwise, if it matches another printed card name on a word boundary, it creates a card reference.</li>
         <li>If nothing matches, <code>fail()</code> stops the content build.</li>
@@ -140,7 +139,8 @@
 
       <h2>Where it lives</h2>
       <ol>
-        <li><code>website/scripts/content/related.mjs</code> extracts tokens and builds both directions.</li>
+        <li><code>website/content/identities.json</code> owns optional authored archetype affinity.</li>
+        <li><code>website/scripts/content/related.mjs</code> builds Same archetype plus quoted-name directions.</li>
         <li><code>website/scripts/content/orchestrator.mjs</code> attaches the result before writing <code>src/generated/catalog.ts</code>.</li>
         <li><code>website/src/pages/cards/[id].astro</code> renders the three conditional related-card blocks.</li>
       </ol>

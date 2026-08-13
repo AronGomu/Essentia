@@ -17,3 +17,11 @@ Evidence: focused Vitest 138/138; focused Chromium Playwright 26/26; base-path b
 - [ ] Click several chapter links: URL hash matches heading and target clears sticky header.
 - [ ] Blog canonical URLs: `/blog/` points to latest post; post route stays self-canonical.
 - [ ] Post without H2: one-column shell appears with no empty chapter summary.
+
+## T3 — Remove four archetype affinities
+
+- [ ] Open Tour Guide From the Underworld: card stays visible under Non-archetype with no Burning Abyss relation.
+- [ ] Open Preparation of Rites: card stays visible under Non-archetype with no Nekroz relation.
+- [ ] Open Manju of the Ten Thousand Hands: card stays visible under Non-archetype with no Nekroz relation.
+- [ ] Open Senju of the Thousand Hands: card stays visible under Non-archetype with no Nekroz relation.
+- [ ] Open Burning Abyss and Nekroz members: Same archetype galleries still render their printed-name members.

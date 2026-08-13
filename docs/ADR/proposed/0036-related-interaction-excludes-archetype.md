@@ -1,7 +1,7 @@
 # ADR 0036 — Related lists are disjoint; the band owns the page width
 
 - Date: 2026-08-12
-- Status: Proposed
+- Status: Proposed — superseded for implementation by ADR 0040; target-card example amended by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T3)
 - Scope: `website/scripts/content/related.mjs`, `CardGallery.astro`, card detail layout
 - Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q6; extends ADR 0032
 
@@ -22,6 +22,6 @@ Both galleries also rendered the `New` badge, which is meaningful on a section g
 ## Consequences
 
 - Cards inside an archetype that fetch their own archetype lose those entries from `Interacts with this card`. That list can now be empty where it was previously a duplicate — intended.
-- Archetype **support** cards (`archetypeRole: "support"`, e.g. `Tour Guide From the Underworld`) carry a full `archetype` list too, so their same-archetype fetch targets are subtracted from `interaction` as well. Those cards still appear once on the page, under `Same archetype`.
+- Under this superseded model, a support card with retained authored affinity carried a full `archetype` list, so its same-archetype targets were subtracted from `interaction`. Feedback follow-up removes affinity from former target examples; ADR 0040 removes `interaction` entirely.
 - Related galleries get more columns (6 from 90rem) because they own the full shell width.
 - `src/generated/catalog.ts` must be regenerated; `npm run content:check` is the gate.

@@ -40,7 +40,7 @@ describe('membership cross-check', () => {
     expect(() =>
       assertMembership(
         { stableId: 'x', archetype: 'burning-abyss', role: 'support' },
-        'Tour Guide From the Underworld',
+        'Beatrice, Lady of the Eternal',
         registry,
       ),
     ).not.toThrow();
@@ -138,7 +138,7 @@ describe('resolveSection', () => {
     expect(
       resolveSection(
         {
-          stableId: 'tour-guide-from-the-underworld',
+          stableId: 'beatrice-lady-of-the-eternal',
           role: 'support',
           archetype: 'burning-abyss',
         },
@@ -151,7 +151,7 @@ describe('resolveSection', () => {
     expect(
       resolveSection(
         {
-          stableId: 'tour-guide-from-the-underworld',
+          stableId: 'beatrice-lady-of-the-eternal',
           role: 'support',
           archetype: 'burning-abyss',
           linked: true,
@@ -207,6 +207,43 @@ describe('authored archetype registry', () => {
       if (identity.archetype === null) expect(identity.role).toBe('staple');
       else expect(identity.role).not.toBe('staple');
     }
+  });
+
+  it('selected generic cards carry no archetype affinity', () => {
+    const identities = content('identities.json');
+    const selectedIds = [
+      'tour-guide-from-the-underworld',
+      'preparation-of-rites',
+      'manju-of-the-ten-thousand-hands',
+      'senju-of-the-thousand-hands',
+    ];
+    const byId = new Map(
+      identities.cards.map((identity: { stableId: string }) => [
+        identity.stableId,
+        identity,
+      ]),
+    );
+
+    expect(
+      selectedIds.map((stableId) => {
+        const identity = byId.get(stableId) as
+          | { archetype: string | null; linked?: boolean; role: string }
+          | undefined;
+        return {
+          stableId,
+          archetype: identity?.archetype,
+          role: identity?.role,
+          linked: Object.hasOwn(identity ?? {}, 'linked'),
+        };
+      }),
+    ).toEqual(
+      selectedIds.map((stableId) => ({
+        stableId,
+        archetype: null,
+        role: 'staple',
+        linked: false,
+      })),
+    );
   });
 
   it('gives every archetype section a namePattern', () => {

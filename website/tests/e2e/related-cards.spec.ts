@@ -4,6 +4,12 @@ import { catalog } from '../../src/lib/catalog';
 const basePath = process.env.E2E_BASE_PATH?.replace(/\/$/, '') ?? '';
 const urlFor = (path: string) => `${basePath}${path}`;
 const RELATED_CAP = 12;
+const SELECTED_GENERIC_STAPLE_IDS = [
+  'tour-guide-from-the-underworld',
+  'preparation-of-rites',
+  'manju-of-the-ten-thousand-hands',
+  'senju-of-the-thousand-hands',
+];
 
 const truncatedArchetypeCard = catalog.cards.find(
   (card) => card.related.archetype.length > RELATED_CAP,
@@ -12,19 +18,24 @@ const noReferencesCard = catalog.cards.find(
   (card) => card.related.references.length === 0,
 );
 
-test('archetype category renders a linked thumbnail card gallery', async ({
+test('Burning Abyss member renders a linked Same archetype gallery', async ({
   page,
 }) => {
-  const card = catalog.cards.find(
-    (candidate) => candidate.related.archetype.length,
-  );
-  expect(card).toBeDefined();
-  await page.goto(urlFor(`/cards/${card!.id}/`));
+  await page.goto(urlFor('/cards/burning-abyss-graff/'));
   const section = page.locator('section:has(#related-archetype)');
   await expect(section.locator('#related-archetype')).toBeVisible();
   const cards = section.locator('a.gallery-card[href*="/cards/"]:has(img)');
   expect(await cards.count()).toBeGreaterThan(0);
   await expect(cards.first()).toBeVisible();
+});
+
+test('selected generic staples render no Same archetype section', async ({
+  page,
+}) => {
+  for (const id of SELECTED_GENERIC_STAPLE_IDS) {
+    await page.goto(urlFor(`/cards/${id}/`));
+    await expect(page.locator('#related-archetype')).toHaveCount(0);
+  }
 });
 
 test('archetype category shows at most 12 cards', async ({ page }) => {

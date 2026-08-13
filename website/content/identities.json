@@ -819,9 +819,9 @@
       "withdrawn": false
     },
     {
-      "archetype": "nekroz",
+      "archetype": null,
       "retired": false,
-      "role": "support",
+      "role": "staple",
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card manju of the ten thousand hands",
@@ -1117,9 +1117,9 @@
       "withdrawn": false
     },
     {
-      "archetype": "nekroz",
+      "archetype": null,
       "retired": false,
-      "role": "support",
+      "role": "staple",
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card preparation of rites",
@@ -1203,9 +1203,9 @@
       "withdrawn": false
     },
     {
-      "archetype": "nekroz",
+      "archetype": null,
       "retired": false,
-      "role": "support",
+      "role": "staple",
       "routeAliases": [],
       "sources": [
         "03_YGO_Nekroz.mse-set/card senju of the thousand hands",
@@ -1527,9 +1527,9 @@
       "withdrawn": false
     },
     {
-      "archetype": "burning-abyss",
+      "archetype": null,
       "retired": false,
-      "role": "support",
+      "role": "staple",
       "routeAliases": [],
       "sources": [
         "01_YGO_Burning_Abyss.mse-set/card tour guide from the underworld",

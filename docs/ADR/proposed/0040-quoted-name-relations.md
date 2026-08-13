@@ -1,7 +1,7 @@
 # ADR 0040 — Cards relate through the names they print
 
 - Date: 2026-08-13
-- Status: Proposed
+- Status: Proposed — authored-affinity example amended by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T3)
 - Scope: `website/scripts/content/related.mjs`, `website/scripts/content/orchestrator.mjs`, `website/src/lib/catalog.ts`, `website/src/pages/cards/[id].astro`
 - Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q4, `round-2.html` Q2, `round-3.html` Q1-Q3; supersedes ADR 0032 and ADR 0036
 
@@ -31,9 +31,10 @@ Two further facts, measured on the live corpus:
 ## Decision
 
 1. The `interaction` relation and the entire constraint matcher are deleted.
-2. The authored `archetype` relation is unchanged. It comes from `content/identities.json`,
-   which is why `Tour Guide From the Underworld` — a non-archetype staple with
-   `archetype: "burning-abyss", role: "support"` — lists all 13 Burning Abyss cards.
+2. The Same archetype relation comes from optional authored affinity in
+   `content/identities.json`. A card with non-null `archetype` gets the relation; a card with
+   `archetype: null`, `role: "staple"` does not. Feedback follow-up removes the former
+   Tour Guide/Manju/Senju/Preparation affinities; no rule-text inference restores them.
 3. A new relation derives from **quoted names only**. For each distinct quoted token on a
    card, first match wins:
    1. the token occurs inside the card's own printed name → self-reference, no edge;
@@ -58,5 +59,5 @@ Two further facts, measured on the live corpus:
 - `Interacts with this card` disappears from card pages, replaced by `References` and
   `Referenced by`.
 - `catalog.cards[].related.interaction` is removed from the catalog shape.
-- A relationship now exists because the card text says so, not because a matcher inferred it.
-  Making two cards related is an authoring act: print the name.
+- Quoted-name relationships exist because card text says so, not because a matcher inferred them.
+  Same archetype remains separate authored metadata; null affinity means no Same archetype block.
