@@ -408,3 +408,10 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Hash all generated derivative files before and after warm run: every derivative remains byte-identical.
 - [ ] Delete one generated derivative, rerun `npm run content`: deleted file returns; unrelated derivative mtimes remain unchanged.
 - [ ] Run focused symlink tests on filesystem supporting symlinks: generated-root plus manifest sentinels remain unchanged after rejection.
+
+## T10 security review fixes
+
+- [ ] Run `cd website && npx vitest run tests/unit/image-cache.test.ts` on a filesystem supporting symlinks: public-parent, generated-root, derivative-file, and manifest symlink cases reject; every external sentinel remains byte-identical.
+- [ ] Delete one generated `*-print.png`, rerun `npm run content`, and confirm the print image is recreated while unrelated derivative mtimes remain unchanged.
+- [ ] Run `cd website && npm run content && time npm run content`: the cold/repair run succeeds, the immediate warm run finishes under 3 seconds, and card-image output remains visually unchanged.
+- [ ] Read the T2 verifier contract before implementation: only its own fresh, empty, canonical direct child of the canonical system temp root with the exact `essentia-derivatives-` prefix is accepted; relative, nested, non-empty, absent, or symlinked overrides reject before writes.

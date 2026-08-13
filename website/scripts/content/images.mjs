@@ -1,12 +1,14 @@
-import { existsSync } from 'node:fs';
+import { constants, existsSync } from 'node:fs';
 import {
   lstat,
   mkdir,
+  open,
   readFile,
   readdir,
-  rm,
+  realpath,
+  rmdir,
   stat,
-  writeFile,
+  unlink,
 } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
@@ -61,7 +63,14 @@ export function derivativeKey(input) {
   return sha(JSON.stringify(derivativeKeyInput(input)));
 }
 
-async function assertGeneratedPathSafe(target = GENERATED_PUBLIC) {
+const GENERATED_PUBLIC_PARENT = path.dirname(GENERATED_PUBLIC);
+const NO_FOLLOW_WRITE_FLAGS =
+  constants.O_NOFOLLOW |
+  constants.O_CREAT |
+  constants.O_TRUNC |
+  constants.O_WRONLY;
+
+function generatedRelative(target) {
   const relative = path.relative(GENERATED_PUBLIC, target);
   if (
     relative.startsWith(`..${path.sep}`) ||
@@ -69,26 +78,96 @@ async function assertGeneratedPathSafe(target = GENERATED_PUBLIC) {
     path.isAbsolute(relative)
   )
     fail(`generated path escape ${target}`);
+  return relative;
+}
 
-  const segments = relative ? relative.split(path.sep) : [];
+/**
+ * Defend static generated-path ancestry. Concurrent same-user mutation is
+ * outside the local build threat model; final files still use O_NOFOLLOW.
+ */
+async function assertGeneratedPathSafe(target = GENERATED_PUBLIC) {
+  const relative = generatedRelative(target);
+  const paths = [GENERATED_PUBLIC_PARENT, GENERATED_PUBLIC];
   let cursor = GENERATED_PUBLIC;
-  for (let index = 0; index <= segments.length; index += 1) {
+  for (const segment of relative ? relative.split(path.sep) : []) {
+    cursor = path.join(cursor, segment);
+    paths.push(cursor);
+  }
+
+  for (let index = 0; index < paths.length; index += 1) {
+    const candidate = paths[index];
     try {
-      const info = await lstat(cursor);
+      const info = await lstat(candidate);
       if (info.isSymbolicLink())
         fail(
-          index === 0
-            ? 'linked generated root forbidden'
-            : `linked generated path forbidden ${relative}`,
+          candidate === GENERATED_PUBLIC_PARENT
+            ? 'linked generated ancestry forbidden'
+            : candidate === GENERATED_PUBLIC
+              ? 'linked generated root forbidden'
+              : `linked generated path forbidden ${relative}`,
         );
-      if (index < segments.length && !info.isDirectory())
+      if (index < paths.length - 1 && !info.isDirectory())
         fail(`invalid generated path ${relative}`);
+      if (
+        candidate === GENERATED_PUBLIC &&
+        candidate === target &&
+        !info.isDirectory()
+      )
+        fail('invalid generated root');
     } catch (error) {
       if (error?.code === 'ENOENT') return;
       throw error;
     }
-    cursor = path.join(cursor, segments[index] ?? '');
   }
+}
+
+async function canonicalGeneratedRoot() {
+  await assertGeneratedPathSafe();
+  const info = await lstat(GENERATED_PUBLIC);
+  if (!info.isDirectory()) fail('invalid generated root');
+  const [canonicalParent, canonicalRoot] = await Promise.all([
+    realpath(GENERATED_PUBLIC_PARENT),
+    realpath(GENERATED_PUBLIC),
+  ]);
+  if (
+    canonicalRoot !==
+    path.join(canonicalParent, path.basename(GENERATED_PUBLIC))
+  )
+    fail('generated root containment failure');
+  return canonicalRoot;
+}
+
+async function assertContainedDirectory(directory, canonicalRoot) {
+  await assertGeneratedPathSafe(directory);
+  const info = await lstat(directory);
+  if (!info.isDirectory()) fail(`invalid generated directory ${directory}`);
+  const canonical = await realpath(directory);
+  const relative = path.relative(canonicalRoot, canonical);
+  if (
+    relative === '..' ||
+    relative.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relative)
+  )
+    fail(`generated directory escape ${directory}`);
+  return canonical;
+}
+
+async function writeNoFollow(target, bytes) {
+  await assertGeneratedPathSafe(target);
+  const canonicalRoot = await canonicalGeneratedRoot();
+  await assertContainedDirectory(path.dirname(target), canonicalRoot);
+  const file = await open(target, NO_FOLLOW_WRITE_FLAGS, 0o666);
+  try {
+    await file.writeFile(bytes);
+  } finally {
+    await file.close();
+  }
+}
+
+export async function ensureGeneratedRoot() {
+  await assertGeneratedPathSafe();
+  await mkdir(GENERATED_PUBLIC, { recursive: true });
+  await canonicalGeneratedRoot();
 }
 
 export async function loadDerivativeManifest() {
@@ -107,30 +186,36 @@ export async function writeDerivativeManifest(entries) {
     schemaVersion: MANIFEST_SCHEMA_VERSION,
     entries: Object.fromEntries([...entries].sort()),
   };
-  await writeFile(MANIFEST_PATH, `${JSON.stringify(value, null, 2)}\n`);
+  await writeNoFollow(
+    MANIFEST_PATH,
+    Buffer.from(`${JSON.stringify(value, null, 2)}\n`),
+  );
 }
 
-async function pruneDirectory(directory, claimed) {
+async function pruneDirectory(directory, claimed, canonicalRoot) {
+  await assertContainedDirectory(directory, canonicalRoot);
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const absolute = path.join(directory, entry.name);
-    if (entry.isDirectory()) {
-      await pruneDirectory(absolute, claimed);
-      if ((await readdir(absolute)).length === 0)
-        await rm(absolute, { recursive: true });
+    const info = await lstat(absolute);
+    if (info.isSymbolicLink()) {
+      await unlink(absolute);
       continue;
     }
-    const relative = path
-      .relative(GENERATED_PUBLIC, absolute)
-      .split(path.sep)
-      .join('/');
+    if (info.isDirectory()) {
+      await pruneDirectory(absolute, claimed, canonicalRoot);
+      await assertContainedDirectory(absolute, canonicalRoot);
+      if ((await readdir(absolute)).length === 0) await rmdir(absolute);
+      continue;
+    }
+    const relative = generatedRelative(absolute).split(path.sep).join('/');
     if (relative !== path.basename(MANIFEST_PATH) && !claimed.has(relative))
-      await rm(absolute);
+      await unlink(absolute);
   }
 }
 
 export async function pruneOrphans(claimed) {
-  await assertGeneratedPathSafe();
-  await pruneDirectory(GENERATED_PUBLIC, claimed);
+  const canonicalRoot = await canonicalGeneratedRoot();
+  await pruneDirectory(GENERATED_PUBLIC, claimed, canonicalRoot);
 }
 
 async function writeDerivative(input, output, format, width) {
@@ -143,9 +228,12 @@ async function writeDerivative(input, output, format, width) {
   })
     .rotate()
     .resize({ width, withoutEnlargement: true });
-  if (format === 'png') await pipeline.png(PNG_OPTIONS).toFile(output);
-  else if (format === 'webp') await pipeline.webp(WEBP_OPTIONS).toFile(output);
-  else await pipeline.avif(AVIF_OPTIONS).toFile(output);
+  let bytes;
+  if (format === 'png') bytes = await pipeline.png(PNG_OPTIONS).toBuffer();
+  else if (format === 'webp')
+    bytes = await pipeline.webp(WEBP_OPTIONS).toBuffer();
+  else bytes = await pipeline.avif(AVIF_OPTIONS).toBuffer();
+  await writeNoFollow(output, bytes);
 }
 
 /**

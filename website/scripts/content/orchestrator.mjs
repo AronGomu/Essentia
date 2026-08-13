@@ -9,7 +9,6 @@ import {
 import path from 'node:path';
 import {
   CONTENT,
-  GENERATED_PUBLIC,
   GENERATED_SOURCE,
   fail,
   sectionRoute,
@@ -29,6 +28,7 @@ import { loadSectionIntros, sectionIntroSummary } from './section-intros.mjs';
 import { discover } from './packages.mjs';
 import { buildRelatedGraph } from './related.mjs';
 import {
+  ensureGeneratedRoot,
   loadDerivativeManifest,
   pruneOrphans,
   writeDerivativeManifest,
@@ -81,7 +81,7 @@ export async function build({ checkOnly }) {
   const docs = await loadDocs();
   const posts = await loadPosts();
 
-  if (!checkOnly) await mkdir(GENERATED_PUBLIC, { recursive: true });
+  if (!checkOnly) await ensureGeneratedRoot();
   // Keep generated modules importable while Astro/Vite watches this directory.
   // Removing it first creates a window where SSR imports fail, then Vite caches
   // the missing-module error until its dev server restarts.

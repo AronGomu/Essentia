@@ -37,11 +37,17 @@ runs it.
 ## Requirements
 
 - `website/scripts/content/shared.mjs` accepts `process.env.GENERATED_PUBLIC_DIR` only for
-  verifier-owned roots already created by
-  `mkdtemp(path.join(tmpdir(), 'essentia-derivatives-'))`. At module initialization it
-  rejects every other override (including paths outside `tmpdir()`, wrong-prefix temp
-  paths, and non-existent paths) before any `mkdir`, prune, or write can run. Normal builds
-  with no override still use `website/public/generated/`.
+  the verifier-owned path returned by
+  `mkdtemp(path.join(await realpath(tmpdir()), 'essentia-derivatives-'))`. The override must
+  be absolute and canonical, its canonical parent must equal the canonical system temp root
+  (one direct child only), its basename must start with the exact
+  `essentia-derivatives-` prefix, and it must be an existing empty directory. At module
+  initialization, reject every other override — including relative/non-canonical paths,
+  paths outside or nested below the temp root, wrong-prefix paths, non-existent or non-empty
+  directories, and paths with any symlink component — before any `mkdir`, prune, or write
+  can run. `check-derivatives.mjs` alone creates, supplies, and removes this directory; no
+  unrestricted caller output path exists. Normal builds with no override still use
+  `website/public/generated/`.
 - `npm run cache:verify` spawns a cold content build into a temp directory and compares it
   file-for-file against `website/public/generated/`.
 - The comparison ignores `.derivative-manifest.json` and reports, in one message: files
@@ -82,20 +88,27 @@ File: `website/tests/unit/generated-public-override.test.ts`
 
 | Test | Input | Expect |
 | --- | --- | --- |
-| `accepts a verifier-created temp root` | existing root from `mkdtemp(path.join(tmpdir(), 'essentia-derivatives-'))` | module import resolves `GENERATED_PUBLIC` to that root |
+| `accepts a verifier-created temp root` | existing empty root returned by `mkdtemp(path.join(await realpath(tmpdir()), 'essentia-derivatives-'))` | module import resolves `GENERATED_PUBLIC` to that absolute canonical root |
 | `rejects an override outside tmpdir before writes` | repo-local or other non-temp path | module import rejects; sentinel/path remains unchanged |
-| `rejects a temp override with the wrong prefix before writes` | existing `mkdtemp(path.join(tmpdir(), 'other-'))` root | module import rejects; sentinel remains unchanged |
-| `rejects a non-existent matching override before writes` | absent `tmpdir()/essentia-derivatives-*` path | module import rejects; path is not created |
+| `rejects a temp override with the wrong prefix before writes` | existing `mkdtemp(path.join(await realpath(tmpdir()), 'other-'))` root | module import rejects; sentinel remains unchanged |
+| `rejects a non-existent matching override before writes` | absent direct child of canonical temp root with exact prefix | module import rejects; path is not created |
+| `rejects a non-empty matching override before writes` | matching temp directory containing a sentinel | module import rejects; sentinel remains unchanged |
+| `rejects a non-canonical or nested override before writes` | relative path, `..` spelling, or matching directory below another temp child | module import rejects; path remains unchanged |
+| `rejects any symlink component before writes` | override reached through a symlinked temp child or symlink final component | module import rejects; external sentinel remains unchanged |
 
 Run: `cd website && npx vitest run tests/unit/derivative-verify.test.ts tests/unit/generated-public-override.test.ts`
 
 ## Impl steps
 
 - [ ] 1. In `website/scripts/content/shared.mjs`, add a startup validator for
-      `GENERATED_PUBLIC_DIR`. Accept only an existing, non-symlink directory whose real
-      parent is `realpath(tmpdir())` and whose basename starts with
-      `essentia-derivatives-`; reject every other override during module initialization.
-      Then resolve `GENERATED_PUBLIC` to that validated path or, when unset, to
+      `GENERATED_PUBLIC_DIR`. Accept only an absolute canonical path returned from an
+      existing empty `mkdtemp(path.join(await realpath(tmpdir()),
+      'essentia-derivatives-'))` directory: its canonical parent must equal
+      `realpath(tmpdir())`, its basename must start with the exact
+      `essentia-derivatives-` prefix, and `lstat` of every existing component must reject
+      symlinks. Reject relative/non-canonical, nested, non-existent, non-directory,
+      non-empty, wrong-prefix, and symlinked overrides during module initialization. Then
+      resolve `GENERATED_PUBLIC` to that validated path or, when unset, to
       `path.join(WEBSITE, 'public', 'generated')`. Validation must complete before any
       content-build `mkdir`, prune, or write is reachable.
 - [ ] 2. Create `website/scripts/check-derivatives.mjs`.
@@ -108,10 +121,13 @@ Run: `cd website && npx vitest run tests/unit/derivative-verify.test.ts tests/un
 - [ ] 5. Add the main block guarded by
       `if (import.meta.url === \`file://${process.argv[1]}\`)`, matching
       `scripts/make-archetype-backgrounds.mjs`.
-- [ ] 6. In the verifier main block only, create the override root with
-      `const temporary = await mkdtemp(path.join(tmpdir(), 'essentia-derivatives-'));`.
-      Pass exactly that returned path as `GENERATED_PUBLIC_DIR`; no caller-supplied output
-      path is allowed.
+- [ ] 6. In the verifier main block only, canonicalize the system temp root, create the
+      override root with
+      `const temporary = await mkdtemp(path.join(canonicalTmp, 'essentia-derivatives-'));`,
+      and confirm it is still empty immediately before spawning. Pass exactly that returned
+      path as `GENERATED_PUBLIC_DIR`; no CLI arg, inherited override, or other
+      caller-supplied output path is allowed. `check-derivatives.mjs` owns cleanup in a
+      `finally` block.
 - [ ] 7. Spawn the cold build with
       `execFileSync(process.execPath, ['scripts/build-content.mjs'], { cwd: WEBSITE_ROOT, stdio: 'inherit', env: { ...process.env, GENERATED_PUBLIC_DIR: temporary } })`.
 - [ ] 8. Hash both trees, run `compareDerivativeTrees`, print
@@ -132,13 +148,15 @@ Run: `cd website && npx vitest run tests/unit/derivative-verify.test.ts tests/un
   `website/scripts/check-derivatives.mjs` (new),
   `website/tests/unit/derivative-verify.test.ts` (new).
 - New env var: `GENERATED_PUBLIC_DIR` — verifier-only override. Runtime accepts only the
-  existing `mkdtemp(path.join(tmpdir(), 'essentia-derivatives-'))` shape and rejects every
-  other value before writes; never set it for a normal build.
+  absolute canonical, empty direct child returned by verifier-owned
+  `mkdtemp(path.join(await realpath(tmpdir()), 'essentia-derivatives-'))`, with exact prefix
+  and no symlink component, and rejects every other value before writes; never set it for a
+  normal build.
 - New npm script: `cache:verify`, also run by `ci`.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/derivative-verify.test.ts tests/unit/generated-public-override.test.ts` — comparison tests plus four override-contract tests pass
+- [ ] `cd website && npx vitest run tests/unit/derivative-verify.test.ts tests/unit/generated-public-override.test.ts` — comparison tests plus override-contract tests for accepted canonical empty root and rejected outside, wrong-prefix, absent, non-empty, non-canonical/nested, and symlinked roots pass
 - [ ] `cd website && npm run content && npm run cache:verify` — prints
       `derivatives: 250 files verified identical`, exit 0
 - [ ] Negative check: `printf 'x' >> website/public/generated/releases/alpha-LOTA-0001-Alpha-0-1/bagooska-thumb.webp && npm run cache:verify` — exits 1 and names that file under `changed`; then `npm run content` does **not** repair it (the key still matches), so restore it with `rm website/public/generated/.derivative-manifest.json && npm run content` and re-verify clean
