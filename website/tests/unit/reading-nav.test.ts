@@ -121,15 +121,6 @@ describe('readingKindFor', () => {
   });
 });
 
-/**
- * Class-token matching, the same loosening `check-chrome.mjs` uses. Asserting
- * the exact attribute string broke on precisely the change the gate was
- * widened to permit — a modifier class in either position.
- */
-const SWITCH_TOKEN = /class="(?:[^"]*\s)?reading-switch(?:\s[^"]*)?"/g;
-const switcherIndices = () =>
-  [...navigationSource.matchAll(SWITCH_TOKEN)].map((match) => match.index!);
-
 /** The `<nav id="desktop-catalog">…</nav>` slice of the component source. */
 const railSource = /<nav id="desktop-catalog"[\s\S]*?<\/nav>/.exec(
   navigationSource,
@@ -140,12 +131,8 @@ const drawerSource = /<dialog\s+class="mobile-drawer"[\s\S]*?<\/dialog>/.exec(
 )![0];
 
 describe('the catalog rail in reading mode', () => {
-  it('the nav renders a docs/blog switcher', () => {
-    const switchStart = switcherIndices()[0] ?? -1;
-    expect(switchStart).toBeGreaterThan(-1);
-    const switchBlock = navigationSource.slice(switchStart, switchStart + 600);
-    expect(switchBlock).toContain('>Docs<');
-    expect(switchBlock).toContain('>Blog<');
+  it('the nav removes the redundant docs/blog switcher', () => {
+    expect(navigationSource).not.toContain('reading-switch');
   });
 
   it('the reading nav sits before the rail toggle', () => {
@@ -159,8 +146,11 @@ describe('the catalog rail in reading mode', () => {
       ),
     ].map((match) => match.index!);
     expect(toggles).toHaveLength(1);
-    const switcher = switcherIndices()[0]!;
-    expect(switcher).toBeLessThan(toggles[0]!);
+    const readingGroups = navigationSource.indexOf(
+      '{#each readingGroups as group',
+    );
+    expect(readingGroups).toBeGreaterThan(-1);
+    expect(readingGroups).toBeLessThan(toggles[0]!);
   });
 
   it('reading mode hides the archetype list', () => {
@@ -170,28 +160,16 @@ describe('the catalog rail in reading mode', () => {
     // list — this is that list's marker, in place of the old `archetypes`
     // filter's.
     const sectionsList = railSource.indexOf('{#each sections as section');
-    const switcher = railSource.search(
-      /class="(?:[^"]*\s)?reading-switch(?:\s[^"]*)?"/,
+    const readingGroups = railSource.indexOf(
+      '{#each readingGroups as group',
+      elseBranch,
     );
 
     expect(catalogBranch).toBeGreaterThan(-1);
     expect(elseBranch).toBeGreaterThan(catalogBranch);
-    // The section list lives in the catalog branch, the switcher after it.
     expect(sectionsList).toBeGreaterThan(catalogBranch);
     expect(sectionsList).toBeLessThan(elseBranch);
-    expect(switcher).toBeGreaterThan(elseBranch);
-  });
-
-  it('the switcher survives a modifier class in either position', () => {
-    // The mirror of the `check-chrome.mjs` gate: `class="nav-block
-    // reading-switch"` and `class="reading-switch reading-switch--wide"` must
-    // both still be found, and `reading-switcheroo` must not.
-    const token = /class="(?:[^"]*\s)?reading-switch(?:\s[^"]*)?"/;
-    expect(token.test('<div class="nav-block reading-switch">')).toBe(true);
-    expect(
-      token.test('<div class="reading-switch reading-switch--wide">'),
-    ).toBe(true);
-    expect(token.test('<div class="reading-switcheroo">')).toBe(false);
+    expect(readingGroups).toBeGreaterThan(elseBranch);
   });
 });
 
@@ -200,9 +178,7 @@ describe('the mobile drawer in reading mode', () => {
     // Below 64rem `.desktop-catalog` is `display: none`, so the drawer is the
     // only navigation a phone has. It shipped catalog-only for a whole pass,
     // which left `/docs/rules/zones/` with no route to any other doc.
-    expect(drawerSource).toMatch(
-      /class="(?:[^"]*\s)?reading-switch(?:\s[^"]*)?"/,
-    );
+    expect(drawerSource).not.toContain('reading-switch');
     expect(drawerSource).toContain('{#each readingGroups as group');
     expect(drawerSource).toContain('{#each group.items as item');
   });
@@ -220,26 +196,5 @@ describe('the mobile drawer in reading mode', () => {
       "drawerLabel = mode === 'reading' ? 'Docs & blog' : 'Catalog'",
     );
     expect(drawerSource).toContain('<h2 id="catalog-title">{drawerLabel}</h2>');
-  });
-});
-
-describe('the reading switcher marks a section, not a page', () => {
-  it("uses aria-current='true' so a nested page has one current page", () => {
-    // On `/docs/rules/zones/` the group list already marks the current page;
-    // a second `aria-current="page"` on the switcher announced two.
-    expect(navigationSource).not.toMatch(
-      /readingKind === '(?:docs|blog)' \? 'page'/,
-    );
-    expect(navigationSource).toMatch(/readingKind === 'docs' \? 'true'/);
-    expect(navigationSource).toMatch(/readingKind === 'blog' \? 'true'/);
-  });
-
-  it('the stylesheet follows the attribute it now emits', () => {
-    const css = readFileSync(
-      new URL('../../src/styles/global.css', import.meta.url),
-      'utf-8',
-    );
-    expect(css).toContain(".reading-switch a[aria-current='true']");
-    expect(css).not.toContain(".reading-switch a[aria-current='page']");
   });
 });

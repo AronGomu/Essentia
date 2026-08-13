@@ -211,6 +211,14 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Resize the window narrower (down to ~400px): the hero still displays correctly (no clipped text, no overlap) — the shorter hero height does not break small-screen layout.
 - [ ] Open the browser devtools console while loading `/` at 1920×1080: no console errors.
 
+## T6 collapsible docs rail
+
+- [x] Desktop `/docs/rules/zones/`: active group open; sibling groups closed; root docs render as bare links above disclosures.
+- [x] Desktop toggle persists across navigation/reload; active group overrides persisted closed state on arrival.
+- [x] Desktop and 400px drawer contain no Docs/Blog rail switch; header retains Learn / Blog / Decks.
+- [x] Keyboard: Tab reaches each summary; Enter toggles; drawer focus trap remains functional.
+- [x] JavaScript-disabled SSR check: active group carries `open`; inactive groups remain closed.
+
 ## T7 archetype-hero-panel
 
 - [ ] Run `cd website && npm run build && node scripts/serve-dist.mjs`, open `/archetypes/burning-abyss/`.

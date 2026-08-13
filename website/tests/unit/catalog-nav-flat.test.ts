@@ -23,9 +23,15 @@ describe('flat catalog rail', () => {
     expect(navSource).not.toMatch(/Non-Archetype/);
   });
 
-  it('the drawer has no disclosure', () => {
-    expect(navSource).not.toMatch(/<details/);
-    expect(navSource).not.toMatch(/<summary/);
+  it('the catalog branches have no disclosure', () => {
+    const catalogBranches = navSource.match(
+      /{#if mode === 'catalog'}[\s\S]*?{:else}/g,
+    );
+    expect(catalogBranches).toHaveLength(2);
+    for (const branch of catalogBranches ?? []) {
+      expect(branch).not.toMatch(/<details/);
+      expect(branch).not.toMatch(/<summary/);
+    }
   });
 
   it('the archetype heading is gone', () => {
@@ -43,10 +49,12 @@ describe('flat catalog rail', () => {
     expect(navSource).not.toMatch(/nonArchetypeOpen/);
   });
 
-  it('the reading branch keeps its group headings', () => {
+  it('the reading branch keeps blog headings and docs disclosures', () => {
     expect(navSource).toMatch(/#each readingGroups as group/);
     const navLabelMatches = navSource.match(/class="nav-label"/g) ?? [];
     expect(navLabelMatches.length).toBe(2);
+    expect(navSource.match(/<details/g)).toHaveLength(2);
+    expect(navSource.match(/<summary/g)).toHaveLength(2);
   });
 
   it('the group button style is gone', () => {

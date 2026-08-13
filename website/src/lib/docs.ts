@@ -7,6 +7,26 @@ export interface DocsRailGroup {
   docs: Array<{ route: string; title: string }>;
 }
 
+export function docsGroupStorageKey(key: string): string {
+  return `essentia.v1.docs-group.${key}`;
+}
+
+export function isGroupOpen(
+  group: { key: string; docs: Array<{ route: string }> },
+  currentPath: string,
+  persisted: boolean | null,
+): boolean {
+  if (group.key === '') return true;
+  const normalizedPath = currentPath.endsWith('/')
+    ? currentPath
+    : `${currentPath}/`;
+  const currentGroup = group.docs.some((doc) => {
+    const route = doc.route.endsWith('/') ? doc.route : `${doc.route}/`;
+    return normalizedPath.endsWith(route);
+  });
+  return currentGroup || persisted === true;
+}
+
 /** Groups catalog docs for the rail, preserving catalog order, dropping empty groups. */
 export function docsRailGroups(docs: CatalogDoc[]): DocsRailGroup[] {
   const groups: DocsRailGroup[] = [];

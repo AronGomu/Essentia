@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { CatalogSection } from '../lib/catalog';
+  import { docsGroupStorageKey, isGroupOpen } from '../lib/docs';
   import {
     applyRailState,
     readRailState,
@@ -9,6 +10,7 @@
     type RailState,
   } from '../lib/catalog-rail';
   import type { ReadingKind, ReadingNavGroup } from '../lib/reading-nav';
+  import { readStored, writeStored } from '../lib/storage';
 
   type NavSection = Pick<
     CatalogSection,
@@ -25,9 +27,63 @@
   let dialog: HTMLDialogElement;
   let opener: HTMLButtonElement;
   let railState: RailState = 'expanded';
+  let openState: Record<string, boolean> = {};
+
+  type StoredGroupState = { schemaVersion: 1; open: boolean };
+
+  const docsGroup = (group: ReadingNavGroup) => ({
+    key: group.key,
+    docs: group.items,
+  });
+
+  function readPersistedGroup(key: string): boolean | null {
+    const stored = readStored<StoredGroupState>(
+      docsGroupStorageKey(key).replace('essentia.v1.', ''),
+      (value) => {
+        if (typeof value !== 'object' || value === null) return null;
+        const record = value as Record<string, unknown>;
+        return record.schemaVersion === 1 && typeof record.open === 'boolean'
+          ? { schemaVersion: 1, open: record.open }
+          : null;
+      },
+    );
+    return stored?.open ?? null;
+  }
+
+  function groupOpen(
+    group: ReadingNavGroup,
+    state: Record<string, boolean>,
+  ): boolean {
+    return state[group.key] ?? isGroupOpen(docsGroup(group), currentPath, null);
+  }
+
+  function toggleGroup(group: ReadingNavGroup, event: Event) {
+    const open = (event.currentTarget as HTMLDetailsElement).open;
+    openState = { ...openState, [group.key]: open };
+    writeStored<StoredGroupState>(
+      docsGroupStorageKey(group.key).replace('essentia.v1.', ''),
+      { schemaVersion: 1, open },
+    );
+  }
+
+  function syncGroupOpenState() {
+    openState = Object.fromEntries(
+      (readingKind === 'docs' ? readingGroups : [])
+        .filter((group) => group.key !== '')
+        .map((group) => [
+          group.key,
+          isGroupOpen(
+            docsGroup(group),
+            currentPath,
+            readPersistedGroup(group.key),
+          ),
+        ]),
+    );
+  }
 
   onMount(() => {
     railState = readRailState();
+    syncGroupOpenState();
     applyRailState(railState);
     // This CSSOM pass is the *only* thing that paints the rail tint.
     //
@@ -164,30 +220,48 @@
       {/each}
     </ul>
   {:else}
-    <!-- `true`, not `page`: on `/docs/rules/zones/` the switcher marks the
-         active *section* while the group list marks the active page, and two
-         `aria-current="page"` links in one nav announce two current pages. -->
-    <div class="reading-switch">
-      <a
-        href={href('/docs/')}
-        aria-current={readingKind === 'docs' ? 'true' : undefined}>Docs</a
-      >
-      <a
-        href={href('/blog/')}
-        aria-current={readingKind === 'blog' ? 'true' : undefined}>Blog</a
-      >
-    </div>
     {#each readingGroups as group (group.key)}
-      <p class="nav-label">{group.label}</p>
-      <ul>
-        {#each group.items as item (item.route)}
-          <li>
-            <a href={href(item.route)} aria-current={current(item.route)}
-              >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
-            >
-          </li>
-        {/each}
-      </ul>
+      {#if readingKind === 'docs'}
+        {#if group.key === ''}
+          <ul>
+            {#each group.items as item (item.route)}
+              <li>
+                <a href={href(item.route)} aria-current={current(item.route)}
+                  >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
+                >
+              </li>
+            {/each}
+          </ul>
+        {:else}
+          <details
+            open={groupOpen(group, openState)}
+            on:toggle={(event) => toggleGroup(group, event)}
+          >
+            <summary>{group.label}</summary>
+            <ul>
+              {#each group.items as item (item.route)}
+                <li>
+                  <a href={href(item.route)} aria-current={current(item.route)}
+                    >{item.title}{#if item.meta}<small>{item.meta}</small
+                      >{/if}</a
+                  >
+                </li>
+              {/each}
+            </ul>
+          </details>
+        {/if}
+      {:else}
+        <p class="nav-label">{group.label}</p>
+        <ul>
+          {#each group.items as item (item.route)}
+            <li>
+              <a href={href(item.route)} aria-current={current(item.route)}
+                >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      {/if}
     {/each}
   {/if}
   <button
@@ -234,25 +308,48 @@
             </li>{/each}
         </ul>
       {:else}
-        <div class="reading-switch">
-          <a
-            href={href('/docs/')}
-            aria-current={readingKind === 'docs' ? 'true' : undefined}>Docs</a
-          >
-          <a
-            href={href('/blog/')}
-            aria-current={readingKind === 'blog' ? 'true' : undefined}>Blog</a
-          >
-        </div>
         {#each readingGroups as group (group.key)}
-          <p class="nav-label">{group.label}</p>
-          <ul>
-            {#each group.items as item (item.route)}<li>
-                <a href={href(item.route)} aria-current={current(item.route)}
-                  >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
-                >
-              </li>{/each}
-          </ul>
+          {#if readingKind === 'docs'}
+            {#if group.key === ''}
+              <ul>
+                {#each group.items as item (item.route)}<li>
+                    <a
+                      href={href(item.route)}
+                      aria-current={current(item.route)}
+                      >{item.title}{#if item.meta}<small>{item.meta}</small
+                        >{/if}</a
+                    >
+                  </li>{/each}
+              </ul>
+            {:else}
+              <details
+                open={groupOpen(group, openState)}
+                on:toggle={(event) => toggleGroup(group, event)}
+              >
+                <summary>{group.label}</summary>
+                <ul>
+                  {#each group.items as item (item.route)}<li>
+                      <a
+                        href={href(item.route)}
+                        aria-current={current(item.route)}
+                        >{item.title}{#if item.meta}<small>{item.meta}</small
+                          >{/if}</a
+                      >
+                    </li>{/each}
+                </ul>
+              </details>
+            {/if}
+          {:else}
+            <p class="nav-label">{group.label}</p>
+            <ul>
+              {#each group.items as item (item.route)}<li>
+                  <a href={href(item.route)} aria-current={current(item.route)}
+                    >{item.title}{#if item.meta}<small>{item.meta}</small
+                      >{/if}</a
+                  >
+                </li>{/each}
+            </ul>
+          {/if}
         {/each}
       {/if}
     </nav>

@@ -479,26 +479,34 @@ html[data-page='archetype'] body::after {
     margin: 1.6rem 0 0.5rem;
     padding-inline: 0.65rem;
   }
-  .reading-switch {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
-  }
-  .reading-switch a {
-    border: 1px solid var(--ruleline);
-    border-radius: var(--radius-sm);
+  .desktop-catalog details summary,
+  .mobile-drawer details summary {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    list-style: none;
     color: var(--silver-ink);
-    font-weight: 700;
-    padding: 0.5rem 0.6rem;
-    text-align: center;
-    text-decoration: none;
+    font-size: 0.85rem;
+    margin: 1.6rem 0 0.5rem;
+    padding-inline: 0.65rem;
   }
-  .reading-switch a:hover,
-  .reading-switch a[aria-current='true'] {
-    border-color: var(--accent);
-    background: var(--sleeve);
-    color: var(--cardstock);
+  .desktop-catalog details summary::-webkit-details-marker,
+  .mobile-drawer details summary::-webkit-details-marker {
+    display: none;
+  }
+  .desktop-catalog details summary::before,
+  .mobile-drawer details summary::before {
+    content: '▸';
+  }
+  .desktop-catalog details[open] summary::before,
+  .mobile-drawer details[open] summary::before {
+    content: '▾';
+  }
+  .desktop-catalog details summary:focus-visible,
+  .mobile-drawer details summary:focus-visible {
+    outline: 0.2rem solid var(--accent);
+    outline-offset: 0.2rem;
   }
   .drawer-trigger {
     display: none;
@@ -532,11 +540,6 @@ html[data-page='archetype'] body::after {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-  }
-  .drawer-panel summary {
-    cursor: pointer;
-    font-weight: 700;
-    padding: 0.7rem;
   }
   .search-trigger {
     display: flex;

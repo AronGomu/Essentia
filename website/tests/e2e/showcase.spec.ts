@@ -155,18 +155,15 @@ test('docs pages navigate from the catalog rail', async ({ page }) => {
   await page.goto(urlFor('/docs/'));
 
   const rail = page.getByRole('navigation', { name: 'Documentation and blog' });
-  // `true`, not `page`: the switcher marks the active section, and the group
-  // list below it marks the active page.
-  await expect(
-    rail.getByRole('link', { name: 'Docs', exact: true }),
-  ).toHaveAttribute('aria-current', 'true');
-  await expect(
-    rail.getByRole('link', { name: 'Blog', exact: true }),
-  ).toBeVisible();
+  await expect(page.locator('.reading-switch')).toHaveCount(0);
   // The in-page rail is gone: the article owns the freed column.
   await expect(page.locator('.reading-rail')).toHaveCount(0);
 
-  await rail.getByRole('link', { name: 'Zones', exact: true }).click();
+  const zones = rail.getByRole('link', { name: 'Zones', exact: true });
+  await zones.evaluate((link) =>
+    link.closest('details')?.setAttribute('open', ''),
+  );
+  await zones.click();
   await expect(page).toHaveURL(new RegExp(`${urlFor('/docs/rules/zones/')}$`));
   await expect(
     page.getByRole('navigation', { name: 'Documentation and blog' }),
@@ -181,9 +178,7 @@ test('blog pages swap the catalog for the blog list', async ({ page }) => {
   await page.goto(urlFor('/blog/'));
 
   const rail = page.getByRole('navigation', { name: 'Documentation and blog' });
-  await expect(
-    rail.getByRole('link', { name: 'Blog', exact: true }),
-  ).toHaveAttribute('aria-current', 'true');
+  await expect(page.locator('.reading-switch')).toHaveCount(0);
   // The card catalog is not rendered here — none of its sections appear.
   await expect(rail.getByRole('link', { name: /Nekroz/ })).toHaveCount(0);
   await expect(page.locator('.reading-rail')).toHaveCount(0);

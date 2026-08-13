@@ -19,8 +19,8 @@ export const UTILITY_LINKS = [
 
 /**
  * True when `html` carries `token` as a whole class token, wherever it sits in
- * the attribute. `class="nav-block reading-switch"` and `class="reading-switch
- * reading-switch--wide"` both count; `class="reading-switcheroo"` does not.
+ * the attribute. `class="chrome-btn rail-toggle"` and `class="rail-toggle
+ * rail-toggle--bottom"` both count; `class="rail-toggler"` does not.
  *
  * The earlier regexes only tolerated a *trailing* modifier, so a leading one
  * silently retired the gate they guarded.
@@ -112,12 +112,6 @@ export function chromeIssues(file, html, base, keywords = null) {
     file === 'docs/index.html' ||
     file === 'blog/index.html'
   ) {
-    // The docs/blog navigation lives in the catalog rail now, and the switcher
-    // is its entry point. Match the class *token*, not the whole attribute, so
-    // a modifier class in *either* position cannot silently retire this gate.
-    if (!hasClassToken(html, 'reading-switch')) {
-      problems.push(`${file}: reading page is missing the docs/blog switcher`);
-    }
     if (!html.includes('class="reading-shell')) {
       problems.push(`${file}: reading page is missing the reading shell`);
     }
@@ -302,12 +296,6 @@ function mobileReadingNavIssues(file, html) {
 
   const drawer = drawerMatch[0];
   const problems = [];
-  if (!hasClassToken(drawer, 'reading-switch')) {
-    problems.push(
-      `${file}: the mobile drawer is missing the docs/blog switcher`,
-    );
-  }
-
   const offered = new Set(hrefsIn(drawer));
   const missing = hrefsIn(railMatch[0]).filter((href) => !offered.has(href));
   if (missing.length) {

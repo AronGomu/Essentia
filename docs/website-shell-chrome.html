@@ -172,8 +172,8 @@
           <p>A single 2.25rem <code>.rail-toggle</code>, the last child of <code>&lt;nav id="desktop-catalog"&gt;</code>, <code>align-self: flex-end</code> and <code>margin-top: auto</code>. Same footprint in the 17rem rail and the 3.25rem collapsed strip, so it never moves or resizes when the rail toggles. State: <code>html[data-catalog]</code>, persisted at <code>essentia.v1.catalog-rail</code>.</p>
         </div>
         <div class="card">
-          <h4>Reading mode is unchanged</h4>
-          <p>On <code>/docs/…</code> and <code>/blog/…</code> the same component renders the <code>Docs | Blog</code> switcher and the authored article groups, each under its own <code>.nav-label</code>. <code>check-chrome.mjs</code> requires the switcher and every rail destination to appear in the mobile drawer too.</p>
+          <h4>Reading mode</h4>
+          <p>On <code>/docs/…</code>, root docs render as bare links followed by collapsible folder groups. The current page's group opens on arrival; each group's state persists under <code>essentia.v1.docs-group.{group}</code>. Blog groups retain authored headings. The redundant <code>Docs | Blog</code> switcher is gone; header links own that choice. <code>check-chrome.mjs</code> still requires every desktop rail destination in the mobile drawer.</p>
         </div>
       </div>
 
@@ -190,7 +190,7 @@
         <table>
           <thead><tr><th>Gate</th><th>Runs in</th><th>Protects</th></tr></thead>
           <tbody>
-            <tr><td class="src">scripts/check-chrome.mjs</td><td><code>npm run build</code></td><td>Utility links + labels, Find trigger, breadcrumb, rail state, rail toggle, reading switcher, drawer parity. <b>Fails</b> the build.</td></tr>
+            <tr><td class="src">scripts/check-chrome.mjs</td><td><code>npm run build</code></td><td>Utility links + labels, Find trigger, breadcrumb, rail state, rail toggle, reading shell, drawer parity. <b>Fails</b> the build.</td></tr>
             <tr><td class="src">scripts/check-header-row.mjs</td><td><code>npm run build</code></td><td>400px width budget. <b>Warns</b>, exits 0.</td></tr>
             <tr><td class="src">inline guard in BaseLayout.astro</td><td>browser, ≤400px</td><td>Real measured wrap. <b>Warns</b> in the console.</td></tr>
             <tr><td class="src">tests/unit/header-priority.test.ts</td><td><code>npm test</code></td><td>Header width, stacking, rail dock, the no-transform ban, island placement.</td></tr>

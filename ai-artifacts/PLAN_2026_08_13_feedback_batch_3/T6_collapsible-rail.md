@@ -62,7 +62,11 @@ desktop rail and the mobile drawer.
 - `website/src/styles/global.css` — `.nav-label`, `.desktop-catalog`, `.drawer-panel`
   styles. `summary` needs `cursor: pointer; list-style: none;` and a rotating marker.
 - Existing tests: `website/tests/unit/reading-shell.test.ts`,
-  `website/tests/unit/catalog-rail.test.ts`, `website/tests/e2e/showcase.spec.ts`.
+  `website/tests/unit/catalog-rail.test.ts`, `website/tests/e2e/showcase.spec.ts`,
+  `website/tests/unit/chrome.test.ts`, `website/tests/unit/reading-nav.test.ts`, and
+  `website/tests/unit/catalog-nav-flat.test.ts`.
+- `website/scripts/check-chrome.mjs` — reading-page build guard; remove its stale
+  Docs/Blog switch requirement while retaining desktop/mobile destination parity.
 
 ## TDD
 
@@ -101,42 +105,48 @@ Run: `cd website && npx vitest run tests/unit/docs-rail-groups.test.ts` then
 
 ## Impl steps
 
-- [ ] 1. In `website/src/lib/docs.ts`, add `docsGroupStorageKey(key)` returning
+- [x] 1. In `website/src/lib/docs.ts`, add `docsGroupStorageKey(key)` returning
       `` `essentia.v1.docs-group.${key}` ``.
-- [ ] 2. In the same file, add
+- [x] 2. In the same file, add
       `export function isGroupOpen(group: { key: string; docs: Array<{ route: string }> }, currentPath: string, persisted: boolean | null): boolean`
       returning `true` when `group.key === ''`, when any `doc.route` matches `currentPath`
       (compare with a trailing slash on both sides), or when `persisted === true`;
       otherwise `false`.
-- [ ] 3. In `website/src/lib/reading-nav.ts`, keep the docs branch as it is; confirm the
+- [x] 3. In `website/src/lib/reading-nav.ts`, keep the docs branch as it is; confirm the
       root group's `key`/`label` pass through as `''`.
-- [ ] 4. In `website/src/components/Navigation.svelte`, delete both `.reading-switch`
+- [x] 4. In `website/src/components/Navigation.svelte`, delete both `.reading-switch`
       blocks and the now-unused `readingKind` usages inside them. Keep the `readingKind`
       prop, which still drives `mode`.
-- [ ] 5. Replace the desktop reading branch with: for `group.key === ''` a bare
+- [x] 5. Replace the desktop reading branch with: for `group.key === ''` a bare
       `<ul>` of items; for every other group a
       `<details open={openState[group.key]} on:toggle={…}><summary>{group.label}</summary><ul>…</ul></details>`.
-- [ ] 6. Mirror the exact same structure in the mobile drawer branch.
-- [ ] 7. Add `let openState: Record<string, boolean> = {};` initialised in `onMount` from
+- [x] 6. Mirror the exact same structure in the mobile drawer branch.
+- [x] 7. Add `let openState: Record<string, boolean> = {};` initialised in `onMount` from
       `isGroupOpen(group, currentPath, readPersistedGroup(group.key))`, where
       `readPersistedGroup` uses the guarded reader from `website/src/lib/storage.ts`.
-- [ ] 8. On `toggle`, write the new state with the guarded writer under
+- [x] 8. On `toggle`, write the new state with the guarded writer under
       `docsGroupStorageKey(group.key)`.
-- [ ] 9. Server-render `open` for the active group so the markup is correct before
+- [x] 9. Server-render `open` for the active group so the markup is correct before
       hydration: compute it in the template from `isGroupOpen(group, currentPath, null)`.
-- [ ] 10. In `website/src/styles/global.css`, style `summary` inside the rail: remove the
+- [x] 10. In `website/src/styles/global.css`, style `summary` inside the rail: remove the
       default marker (`list-style: none; &::-webkit-details-marker { display: none; }`),
       reuse `.nav-label`'s typography, add a `▸` / `▾` indicator, and give it a
       `:focus-visible` outline consistent with the rest of the rail.
-- [ ] 11. Write the two test files per the test plan.
-- [ ] 12. Update `docs/website-shell-chrome.html`: the rail's reading mode now uses
+- [x] 11. Write the two test files per the test plan.
+- [x] 12. Update `docs/website-shell-chrome.html`: the rail's reading mode now uses
       collapsible groups and no longer carries a section switcher.
+- [x] 13. Update the chrome guard and stale switch/disclosure assertions in the
+      approved expanded test scope; preserve reading destination parity and the
+      catalog branch's no-disclosure guarantee.
 
 ## Outputs
 
 - Touched: `website/src/components/Navigation.svelte`, `website/src/lib/docs.ts`,
   `website/src/styles/global.css`, `website/tests/unit/docs-rail-groups.test.ts` (new),
-  `website/tests/e2e/docs-rail.spec.ts` (new), `docs/website-shell-chrome.html`.
+  `website/tests/e2e/docs-rail.spec.ts` (new), `website/tests/e2e/showcase.spec.ts`,
+  `website/tests/unit/chrome.test.ts`, `website/tests/unit/reading-nav.test.ts`,
+  `website/tests/unit/catalog-nav-flat.test.ts`, `website/scripts/check-chrome.mjs`,
+  `docs/website-shell-chrome.html`.
 - New localStorage keys: `essentia.v1.docs-group.{group}`.
 - Removed UI: the rail's Docs/Blog switch, desktop and mobile.
 
@@ -145,10 +155,10 @@ Run: `cd website && npx vitest run tests/unit/docs-rail-groups.test.ts` then
 - [ ] `cd website && npx vitest run` — whole unit suite green
 - [ ] `cd website && npm run check` — no Svelte or TS error
 - [ ] `cd website && npm run build && npm run test:e2e` — green, including the new spec
-- [ ] manual check on `/docs/01-general-rules/01-zones/` (or the current equivalent): its
+- [x] manual check on `/docs/01-general-rules/01-zones/` (or the current equivalent): its
       group is open, others closed; collapsing one and reloading keeps it collapsed
-- [ ] manual check at 400 px: the drawer shows the same groups and no switch; the header
+- [x] manual check at 400 px: the drawer shows the same groups and no switch; the header
       still offers Learn / Blog / Decks
-- [ ] keyboard check: `Tab` reaches every `<summary>`, `Enter` toggles, focus stays trapped
+- [x] keyboard check: `Tab` reaches every `<summary>`, `Enter` toggles, focus stays trapped
       inside the open drawer
-- [ ] commit msg draft: `feat(website): collapse docs rail groups and drop the rail switch`
+- [x] commit msg draft: `feat(website): collapse docs rail groups and drop the rail switch`

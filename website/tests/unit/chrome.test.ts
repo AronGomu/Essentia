@@ -876,7 +876,7 @@ describe('a browser-local deck must never reach a built page', () => {
   });
 });
 
-describe('every reading page ships the docs/blog switcher', () => {
+describe('every reading page ships matching desktop and mobile nav', () => {
   const utilityNav = `
 <nav class="utility-nav" aria-label="Sections">
   <a href="/docs/">Learn about Essentia</a>
@@ -887,7 +887,6 @@ describe('every reading page ships the docs/blog switcher', () => {
 
   /** The reading destinations the rail offers, which the drawer must match. */
   const readingLinks = `
-  <div class="reading-switch"><a href="/docs/">Docs</a><a href="/blog/">Blog</a></div>
   <ul>
     <li><a href="/docs/rules/zones/">Zones</a></li>
     <li><a href="/docs/glossary/">Glossary</a></li>
@@ -936,18 +935,13 @@ ${utilityNav}
 ${siteFooter}
 `;
 
-  it('accepts a blog index with the reading shell and switcher', () => {
+  it('accepts a blog index with the reading shell and matching nav', () => {
     const issues = chromeIssues('blog/index.html', withReadingSwitch, '/');
     expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
   });
 
-  it('flags a blog index missing the switcher and shell', () => {
+  it('flags a blog index missing the shell', () => {
     const issues = chromeIssues('blog/index.html', withoutReadingSwitch, '/');
-    expect(
-      issues.some((issue) =>
-        issue.includes('reading page is missing the docs/blog switcher'),
-      ),
-    ).toBe(true);
     expect(
       issues.some((issue) =>
         issue.includes('reading page is missing the reading shell'),
@@ -955,53 +949,8 @@ ${siteFooter}
     ).toBe(true);
   });
 
-  it('flags a reading page without the switcher', () => {
-    const issues = chromeIssues('docs/index.html', withoutReadingSwitch, '/');
-    expect(issues).toContain(
-      'docs/index.html: reading page is missing the docs/blog switcher',
-    );
-  });
-
-  it('still accepts the switcher when it grows a modifier class', () => {
-    // The gate matches the class token, not the whole attribute: a later
-    // `class="reading-switch reading-switch--wide"` must not silently stop
-    // being recognised the way an exact-string check would.
-    const issues = chromeIssues(
-      'docs/index.html',
-      withReadingSwitch.replaceAll(
-        'class="reading-switch"',
-        'class="reading-switch reading-switch--wide"',
-      ),
-      '/',
-    );
-    expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
-  });
-
-  it('rejects a lookalike class that only starts the same', () => {
-    const issues = chromeIssues(
-      'docs/index.html',
-      withReadingSwitch.replaceAll(
-        'class="reading-switch"',
-        'class="reading-switcheroo"',
-      ),
-      '/',
-    );
-    expect(issues).toContain(
-      'docs/index.html: reading page is missing the docs/blog switcher',
-    );
-  });
-
-  it('still accepts the switcher when the modifier class comes first', () => {
-    // The mirror of the case above. The old regex only tolerated a *trailing*
-    // modifier, so `class="nav-block reading-switch"` retired the gate.
-    const issues = chromeIssues(
-      'docs/index.html',
-      withReadingSwitch.replaceAll(
-        'class="reading-switch"',
-        'class="nav-block reading-switch"',
-      ),
-      '/',
-    );
+  it('accepts reading nav without a redundant switcher', () => {
+    const issues = chromeIssues('docs/index.html', withReadingSwitch, '/');
     expect(issues.filter((issue) => issue.includes('reading'))).toEqual([]);
   });
 
@@ -1020,13 +969,10 @@ ${siteFooter}
 `,
       '/',
     );
-    expect(issues).toContain(
-      'docs/rules/zones/index.html: the mobile drawer is missing the docs/blog switcher',
-    );
     expect(
       issues.some((issue) =>
         issue.includes(
-          'the mobile drawer is missing 4 reading destination(s) the rail offers, starting with /docs/',
+          'the mobile drawer is missing 2 reading destination(s) the rail offers, starting with /docs/rules/zones/',
         ),
       ),
     ).toBe(true);
