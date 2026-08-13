@@ -66,8 +66,8 @@
           <thead><tr><th>Route</th><th>Purpose</th><th>Source</th><th>JS</th></tr></thead>
           <tbody>
             <tr><td class="route">/</td><td>Entry point for every visitor: hero, new cards, archetype tiles</td><td class="src">src/pages/index.astro</td><td>hover preview only</td></tr>
-            <tr><td class="route">/docs/</td><td>Project presentation — the first page of the documentation</td><td class="src">docs/PRESENTATION.md</td><td>none</td></tr>
-            <tr><td class="route">/docs/&lt;group&gt;/&lt;doc&gt;/</td><td>Every published repo doc, left rail + chapter summary</td><td class="src">docs/**/*.md except docs/ADR/**</td><td>none</td></tr>
+            <tr><td class="route">/docs/</td><td>Project presentation — the alphabetically first root doc</td><td class="src">docs/00_PRESENTATION.md</td><td>none</td></tr>
+            <tr><td class="route">/docs/&lt;path&gt;/</td><td>Every other published repo doc, left rail + chapter summary</td><td class="src">docs/**/*.md except docs/ADR/** and ruling files</td><td>none</td></tr>
             <tr><td class="route">/blog/</td><td>Post index, grouped by reading order</td><td class="src">blog/&lt;date&gt;-&lt;slug&gt;.md</td><td>none</td></tr>
             <tr><td class="route">/blog/&lt;slug&gt;/</td><td>One post</td><td class="src">same</td><td>none</td></tr>
             <tr><td class="route">/decks/</td><td>Browser-local decklist manager</td><td class="src">localStorage essentia.v1.decks</td><td>required</td></tr>
@@ -127,8 +127,9 @@
         <code>docs/keywords/{id}.md</code> (one file per keyword),
         <code>website/content/sections.json</code>,
         <code>website/content/section-intros/{slug}.md</code> (one per section),
-        <code>website/content/reading-order.json</code> (docs and blog order and grouping),
-        plus <code>identities.json</code>, <code>art-provenance.json</code>,
+        folder and filename prefixes under <code>docs/</code> (docs order and grouping),
+        <code>website/content/reading-order.json</code> (blog order and grouping), plus
+        <code>identities.json</code>, <code>art-provenance.json</code>,
         <code>asset-rights.json</code>, <code>color-overrides.json</code> and
         <code>explanations/</code>.
       </p>
@@ -141,7 +142,7 @@
         <div class="flowline">↓</div>
         <div class="stage"><b>4 · Images</b><p><code>images.mjs</code> derives the <code>thumb</code> and <code>display</code> tiers plus the print master with sharp. Hero art is committed, never derived here.</p></div>
         <div class="flowline">↓</div>
-        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target. <code>reading-order.mjs</code> supplies the groups: a doc listed in no group fails the build, and exactly one docs group and one blog group may be the catch-all.</p></div>
+        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target. Docs groups, labels, order, and routes derive from the <code>docs/</code> folder tree and numeric filename prefixes; root docs come first and remain ungrouped. <code>reading-order.mjs</code> supplies blog groups only. See <code>docs/ADR/proposed/0041-docs-navigation-from-folders.md</code>.</p></div>
         <div class="flowline">↓</div>
         <div class="stage"><b>6 · Catalog</b><p><code>orchestrator.mjs</code> selects the current version per card, builds sections, updates and releases, and writes <code>src/generated/catalog.ts</code> plus the rights inventory.</p></div>
         <div class="flowline">↓</div>
@@ -240,8 +241,8 @@
             <tr>
               <td>Reading order</td>
               <td><code>DOC_GROUPS</code> hardcoded in build code; the blog had no grouping</td>
-              <td><code>website/content/reading-order.json</code> drives both, with one catch-all group each and <code>catalog.postGroups</code></td>
-              <td>T9 · ADR 0026</td>
+              <td><code>website/content/reading-order.json</code> drives blog groups; docs now derive from their folder tree and raw prefixed names</td>
+              <td>T9 · ADR 0026, docs half superseded by ADR 0041</td>
             </tr>
             <tr>
               <td>Reading navigation</td>
@@ -338,6 +339,7 @@
         Sources: <code>WEBSITE_V2_SPEC.md</code> · <code>docs/CONTEXT.md</code> ·
         <code>website/DESIGN.md</code> ·
         <code>docs/ADR/proposed/0015</code>–<code>0026</code> ·
+        <code>docs/ADR/proposed/0041-docs-navigation-from-folders.md</code> ·
         <code>ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass.md</code> ·
         <code>ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass-2.md</code> ·
         <code>ai-artifacts/archive/PLAN_2026_08_08_website-feedback-pass-2/</code>

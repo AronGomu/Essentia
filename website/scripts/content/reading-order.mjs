@@ -43,40 +43,27 @@ function validateGroups(groups, { itemsField, itemRe, itemLabel }) {
     );
 }
 
-// `.*` also accepted `docs/../../../../etc/passwd.md`. There is no exploit —
-// `loadDocs` only reads paths that came out of its own `docs/` walk — but the
-// error a traversing path produces ("not listed in the reading order") points
-// at the wrong thing entirely. Reject the segment outright, like `SLUG_RE`.
-const DOC_FILE_RE = /^(?!.*(?:^|\/)\.\.(?:\/|$))docs\/[^\\]*\.md$/;
-
 /**
- * Parses and validates `website/content/reading-order.json`, failing the
- * build loudly on any malformed shape rather than letting a page silently
- * drop out of the docs or blog rail.
+ * Parses and validates blog groups in `website/content/reading-order.json`,
+ * failing loudly on malformed input rather than silently dropping a post.
  *
  * @param {string} [file]
- * @returns {Promise<{ docs: Array<{key:string,label:string,files:string[]|null}>, blog: Array<{key:string,label:string,slugs:string[]|null}> }>}
+ * @returns {Promise<{ blog: Array<{key:string,label:string,slugs:string[]|null}> }>}
  */
 export async function loadReadingOrder(file = READING_ORDER_FILE) {
   const raw = await readFile(file, 'utf8');
   const data = JSON.parse(raw);
 
   if (data.schemaVersion !== 1) fail('reading order must use schemaVersion 1');
-  if (!Array.isArray(data.docs) || !Array.isArray(data.blog))
-    fail('invalid reading order');
+  if (!Array.isArray(data.blog)) fail('invalid reading order');
 
-  validateGroups(data.docs, {
-    itemsField: 'files',
-    itemRe: DOC_FILE_RE,
-    itemLabel: 'doc',
-  });
   validateGroups(data.blog, {
     itemsField: 'slugs',
     itemRe: SLUG_RE,
     itemLabel: 'slug',
   });
 
-  return { docs: data.docs, blog: data.blog };
+  return { blog: data.blog };
 }
 
 /** Blog groups filled from loaded posts; explicit slugs first, catch-all takes the rest. */

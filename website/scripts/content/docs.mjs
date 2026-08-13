@@ -5,11 +5,24 @@ import { ROOT, fail, slugify } from './shared.mjs';
 
 const MAX_DOC_BYTES = 262_144;
 
-/** `docs/rules/ZONES.md` → `/docs/rules/zones/`; `docs/PRESENTATION.md` → `/docs/`. */
-export function docRoute(relativePath) {
-  const withoutExtension = relativePath.replace(/\.md$/, '');
-  if (withoutExtension === 'docs/PRESENTATION') return '/docs/';
-  const segments = withoutExtension.split('/').slice(1).map(slugify);
+/** `02_burning_abyss` → `Burning Abyss`. */
+export function groupLabelFor(directoryName) {
+  return directoryName
+    .replace(/^\d+[_-]/, '')
+    .replace(/[_-]+/g, ' ')
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+/** `docs/rules/ZONES.md` → `/docs/rules/zones/`. */
+export function docRoute(relativePath, { isLanding = false } = {}) {
+  if (isLanding) return '/docs/';
+  const segments = relativePath
+    .replace(/\.md$/, '')
+    .split('/')
+    .slice(1)
+    .map(slugify);
   return `/docs/${segments.join('/')}/`;
 }
 
@@ -20,8 +33,20 @@ function resolveLinkTarget(target, relativePath) {
   return path.posix.join(dir, target);
 }
 
+function rootDocPath(relativePath) {
+  const segments = relativePath.slice('docs/'.length).split('/');
+  return segments.length === 1;
+}
+
+function landingPathFor(knownPaths) {
+  return [...knownPaths]
+    .filter(rootDocPath)
+    .sort((a, b) => a.localeCompare(b))[0];
+}
+
 /** Rewrites relative `.md` links, keeps anchors, throws through fail() on an unknown target. */
 export function rewriteDocLinks(body, relativePath, knownPaths) {
+  const landingPath = landingPathFor(knownPaths);
   return body.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, rawUrl) => {
     const url = rawUrl.trim();
     if (/^(?:https:\/\/|mailto:|#|\/)/i.test(url)) return match;
@@ -39,7 +64,7 @@ export function rewriteDocLinks(body, relativePath, knownPaths) {
     if (resolved.startsWith('docs/') && !resolved.startsWith('docs/ADR/')) {
       if (!knownPaths.has(resolved))
         fail(`doc ${relativePath}: unpublished link target ${resolved}`);
-      return `[${label}](${docRoute(resolved)}${anchor})`;
+      return `[${label}](${docRoute(resolved, { isLanding: resolved === landingPath })}${anchor})`;
     }
 
     return `[${label}](${REPO_BLOB}/${resolved}${anchor})`;
@@ -71,54 +96,46 @@ async function discoverDocPaths(root) {
   return output;
 }
 
-function groupFor(relativePath, archetypeOrder, groups) {
-  for (const group of groups) {
-    if (group.files) {
-      const index = group.files.indexOf(relativePath);
-      if (index !== -1) return { group, order: index };
-    }
-  }
-  if (/^docs\/0\d_[^/]+\/[A-Z_]+\.md$/.test(relativePath)) {
-    const archetypeGroup = groups.find((g) => g.key === 'archetypes');
-    const order = archetypeOrder.indexOf(relativePath);
-    return { group: archetypeGroup, order };
-  }
-  return null;
+function placementFor(relative) {
+  const segments = relative.slice('docs/'.length).split('/');
+  const group = segments.length > 1 ? segments[0] : '';
+  return { group, filename: segments.at(-1) };
+}
+
+function compareDocPaths(a, b) {
+  const left = placementFor(a);
+  const right = placementFor(b);
+  if (left.group === '' && right.group !== '') return -1;
+  if (left.group !== '' && right.group === '') return 1;
+  return (
+    left.group.localeCompare(right.group) ||
+    left.filename.localeCompare(right.filename) ||
+    a.localeCompare(b)
+  );
 }
 
 /**
- * @param {object[]} groups the reading-order doc groups
  * @param {string} [root] repository root to read `docs/` from. Defaults to this
  *   repository; tests point it at a temp tree, exactly as `loadPosts(blogRoot)`
  *   and `loadSectionIntros(directory)` already allow — a fixture written into
  *   the tracked tree survives a SIGKILL or a vitest timeout and then breaks
  *   `npm run content` for everyone until a human deletes it.
- * @returns {Promise<DocEntry[]>} sorted by group order, authored order, title
+ * @returns {Promise<DocEntry[]>} root docs first, then folder and filename order
  */
-export async function loadDocs(groups, root = ROOT) {
-  const discovered = await discoverDocPaths(root);
+export async function loadDocs(root = ROOT) {
+  const discovered = (await discoverDocPaths(root)).sort(compareDocPaths);
   const knownPaths = new Set(discovered);
+  const landingPath = discovered.find(rootDocPath);
+  if (!landingPath) fail('docs: no root-level doc to serve /docs/');
 
-  const archetypeOrder = discovered
-    .filter((relative) => /^docs\/0\d_[^/]+\/[A-Z_]+\.md$/.test(relative))
-    .sort((a, b) => a.localeCompare(b));
-
-  // A config listing a file that does not exist on disk must fail as loudly
-  // as one that omits a real doc — otherwise a typo'd path silently drops
-  // the intended entry from its group without ever surfacing an error.
-  for (const group of groups) {
-    if (!group.files) continue;
-    for (const file of group.files)
-      if (!knownPaths.has(file))
-        fail(
-          `reading group ${group.key}: configured doc ${file} does not exist`,
-        );
-  }
-
+  const orderByGroup = new Map();
   const entries = [];
   for (const relative of discovered) {
-    const placement = groupFor(relative, archetypeOrder, groups);
-    if (!placement) fail(`doc ${relative} is not listed in the reading order`);
+    const segments = relative.slice('docs/'.length).split('/');
+    const group = segments.length > 1 ? segments[0] : '';
+    const groupLabel = group ? groupLabelFor(group) : '';
+    const order = orderByGroup.get(group) ?? 0;
+    orderByGroup.set(group, order + 1);
 
     const raw = await readFile(path.join(root, relative), 'utf8');
     const lines = raw.split('\n');
@@ -142,23 +159,15 @@ export async function loadDocs(groups, root = ROOT) {
     entries.push({
       id: slugify(relative.replace(/^docs\//, '').replace(/\.md$/, '')),
       path: relative,
-      route: docRoute(relative),
+      route: docRoute(relative, { isLanding: relative === landingPath }),
       title,
-      group: placement.group.key,
-      groupLabel: placement.group.label,
-      order: placement.order,
+      group,
+      groupLabel,
+      order,
       body,
       headings,
     });
   }
-
-  const groupIndex = new Map(groups.map((group, index) => [group.key, index]));
-  entries.sort(
-    (a, b) =>
-      groupIndex.get(a.group) - groupIndex.get(b.group) ||
-      a.order - b.order ||
-      a.title.localeCompare(b.title),
-  );
 
   const seenRoutes = new Set();
   for (const entry of entries) {

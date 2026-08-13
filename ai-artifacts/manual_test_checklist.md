@@ -381,3 +381,9 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [x] Both backdrops use `position: absolute`, scroll with content, and produce zero horizontal overflow at both widths.
 - [x] Focused `archetype-background.spec.ts` passes under Chromium, Firefox, and WebKit using the authorized NixOS Playwright shim: 15 passed.
 - [x] Full Playwright suite passes using the authorized NixOS shim: 205 passed, 2 owner-gated accessibility scans skipped.
+
+## T5 folder-derived docs
+
+- [x] `/docs/` shows the Essentia presentation page.
+- [x] `/docs/rules/zones/` still resolves.
+- [x] Docs rail renders one heading per folder-derived group; root docs stay ungrouped first.

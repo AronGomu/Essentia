@@ -68,10 +68,12 @@ never break the build again.
 
 ## TDD
 
-1. **Red** — rewrite `website/tests/unit/docs-routes.test.ts` against the new `docRoute`
-   and a new `groupLabel` export; add the fixture-tree test below. Watch them fail.
-2. **Green** — rewrite `docs.mjs`, drop the docs half of the reading order.
-3. **Refactor** — only if needed. Keep green.
+- [x] 1. **Red** — rewrite `website/tests/unit/docs-routes.test.ts` against the new `docRoute`
+      and a new `groupLabel` export; add the fixture-tree test below. Verify the targeted
+      Vitest command fails against production code.
+- [x] 2. **Green** — rewrite `docs.mjs`, drop the docs half of the reading order. Verify the
+      targeted Vitest command passes.
+- [x] 3. **Refactor** — only if needed. Keep green by rerunning the targeted Vitest command.
 
 ## Test plan
 
@@ -103,37 +105,37 @@ Run: `cd website && npx vitest run tests/unit/docs-routes.test.ts tests/unit/doc
 
 ## Impl steps
 
-- [ ] 1. In `website/scripts/content/docs.mjs`, add
+- [x] 1. In `website/scripts/content/docs.mjs`, add
       `export function groupLabelFor(directoryName)`: strip `/^\d+[_-]/`, replace `[_-]+`
       with a space, then upper-case the first letter of each word.
-- [ ] 2. Rewrite `docRoute(relativePath, { isLanding })`: return `/docs/` when `isLanding`;
+- [x] 2. Rewrite `docRoute(relativePath, { isLanding })`: return `/docs/` when `isLanding`;
       otherwise `\`/docs/${segments.map(slugify).join('/')}/\`` where `segments` is the path
       under `docs/` with `.md` removed. Numeric prefixes survive `slugify` untouched.
-- [ ] 3. In `discoverDocPaths`, keep the `docs/ADR` and per-keyword exclusions and the
+- [x] 3. In `discoverDocPaths`, keep the `docs/ADR` and per-keyword exclusions and the
       symlink and size checks exactly as they are.
-- [ ] 4. Delete `groupFor` and the `archetypeOrder` computation.
-- [ ] 5. Change the signature to `export async function loadDocs(root = ROOT)` — no groups
+- [x] 4. Delete `groupFor` and the `archetypeOrder` computation.
+- [x] 5. Change the signature to `export async function loadDocs(root = ROOT)` — no groups
       argument.
-- [ ] 6. Compute placement per doc: `const segments = relative.slice('docs/'.length).split('/');`
+- [x] 6. Compute placement per doc: `const segments = relative.slice('docs/'.length).split('/');`
       `const group = segments.length > 1 ? segments[0] : '';`
       `const groupLabel = group ? groupLabelFor(group) : '';`
-- [ ] 7. Sort the discovered paths: root docs (`group === ''`) first by filename, then by
+- [x] 7. Sort the discovered paths: root docs (`group === ''`) first by filename, then by
       `group` raw name, then by filename inside the group. Assign `order` as the index
       within the group.
-- [ ] 8. Mark the landing doc: the first entry of the root group, if any; give it
+- [x] 8. Mark the landing doc: the first entry of the root group, if any; give it
       `docRoute(path, { isLanding: true })`. If there is no root-level doc,
       `fail('docs: no root-level doc to serve /docs/')`.
-- [ ] 9. Keep the duplicate-route check and the `#` heading requirement unchanged.
-- [ ] 10. In `website/scripts/content/reading-order.mjs`, remove the `docs` key from the
+- [x] 9. Keep the duplicate-route check and the `#` heading requirement unchanged.
+- [x] 10. In `website/scripts/content/reading-order.mjs`, remove the `docs` key from the
       parsed shape and its validation; `loadReadingOrder()` now returns `{ blog }`.
-- [ ] 11. In `website/content/reading-order.json`, delete the `docs` array, leaving
+- [x] 11. In `website/content/reading-order.json`, delete the `docs` array, leaving
       `{ "schemaVersion": 1, "blog": [...] }`.
-- [ ] 12. In `website/scripts/content/orchestrator.mjs`, change to
+- [x] 12. In `website/scripts/content/orchestrator.mjs`, change to
       `const docs = await loadDocs();` and update the `readingOrder` destructuring.
-- [ ] 13. Confirm `website/src/lib/docs.ts::docsRailGroups` still works unchanged — it keys
+- [x] 13. Confirm `website/src/lib/docs.ts::docsRailGroups` still works unchanged — it keys
       on `doc.group` and `doc.groupLabel`, both still present, with `''` for root docs.
-- [ ] 14. Update the tests per the test plan.
-- [ ] 15. Update `docs/website-information-architecture.html`: the docs section now derives
+- [x] 14. Update the tests per the test plan.
+- [x] 15. Update `docs/website-information-architecture.html`: the docs section now derives
       from the folder tree; cite `docs/ADR/proposed/0041-docs-navigation-from-folders.md`.
 
 ## Outputs
@@ -155,11 +157,13 @@ Run: `cd website && npx vitest run tests/unit/docs-routes.test.ts tests/unit/doc
 ## Validation
 
 - [ ] `cd website && npx vitest run` — whole unit suite green
-- [ ] `cd website && npm run content` — exits 0, prints `… 38 docs …`
-- [ ] `node -e` on the built catalog: `/docs/` resolves to the Essentia presentation doc,
+      (owner-gated baseline only: 761 passed; `asset-rights.test.ts` reports
+      `Public artifact blocked: 92 missing/changed and 0 stale rights records`)
+- [x] `cd website && npm run content` — exits 0, prints `… 38 docs …`
+- [x] `node -e` on the built catalog: `/docs/` resolves to the Essentia presentation doc,
       and every root doc has `group === ''`
-- [ ] `cd website && npm run build` — 152 pages, exits 0, `check-404` and `check-links` pass
-- [ ] `cd website && npm run links:check` — exits 0
-- [ ] manual check: `/docs/` shows the presentation page; `/docs/rules/zones/` still resolves
-- [ ] app functional — the rail still renders one heading per group (styling unchanged until T6)
-- [ ] commit msg draft: `feat(website): derive docs navigation from the docs folder tree`
+- [x] `cd website && npm run build` — 152 pages, exits 0, `check-404` and `check-links` pass
+- [x] `cd website && npm run links:check` — exits 0
+- [x] manual check: `/docs/` shows the presentation page; `/docs/rules/zones/` still resolves
+- [x] app functional — the rail still renders one heading per group (styling unchanged until T6)
+- [x] commit msg draft: `feat(website): derive docs navigation from the docs folder tree`

@@ -79,10 +79,10 @@ export async function build({ checkOnly }) {
   const sectionIntros = await loadSectionIntros(
     new Set([...registry.sections.values()].map((section) => section.slug)),
   );
-  const readingOrder = await loadReadingOrder();
-  const docs = await loadDocs(readingOrder.docs);
+  const { blog } = await loadReadingOrder();
+  const docs = await loadDocs();
   const posts = await loadPosts();
-  const groupedPosts = postGroups(readingOrder.blog, posts);
+  const groupedPosts = postGroups(blog, posts);
 
   if (!checkOnly) await mkdir(GENERATED_PUBLIC, { recursive: true });
   // Keep generated modules importable while Astro/Vite watches this directory.

@@ -18,7 +18,7 @@
 
 ## Documentation map
 
-- [Presentation](PRESENTATION.md)
+- [Presentation](00_PRESENTATION.md)
 - [Design](DESIGN.md)
   - [Conversion](design/CONVERSION.md)
   - [Balance](design/BALANCE.md)
