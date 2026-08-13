@@ -60,6 +60,11 @@ graphify-out/
 .astro/
 
 # pi.dev / subagent tool run artifacts (debug transcripts, ad-hoc HTML views)
+.pi/
 .pi/artifacts/
 .pi-subagents/artifacts/
+**/.pi/
 **/.pi/artifacts/
+
+# Accidental root install (website deps live under website/)
+/node_modules/

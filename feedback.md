@@ -1,8 +1,17 @@
 # Feedback
 
-1. The build of the application is still very long, and I don't really understand what is happening. What is the root issue of that very long application build when I run npm run dev? So I want you, for the grill‑me session, when making the plan, to create tests to analyze what could be the issue and then propose solutions to fix it. The compilation time to build the application is too long at the moment, and I don't know how I can scale it if I add a lot of content to the website.
+## Header Menubar
 
-2. I don't understand how you define related cards that are not from the same archetype in the code. For example, for Tour Guide, the card is not of the same archetype as Burning Abyss. Can you explain how it is coded and defined?
-   I really want to analyze if it's feasible, because if we have many cards this may cause an issue; there will be many related cards everywhere, which could increase compilation time and affect the build site, the website itself.
+1. At the left of Learn about Essentia, add a "Cards" button that returns to the homepage.
 
-3.
+## Main page
+
+1. Update the CSS for the hero heart image to set its object-position to center 0% instead of 24%. Because otherwise, it's possible to not see the head of the trishula in the hero heart.
+
+## Blog
+
+1. For blog posts, I don't see the chapters on the right. Add chapters that, when you click on them, scroll to the target section of the post.
+
+## Card Data
+
+1. Remove Tour Guide from the Underworld from the Burning Abyss archetype.
