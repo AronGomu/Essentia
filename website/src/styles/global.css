@@ -384,7 +384,6 @@ html[data-page='archetype'] main::before {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: blur(2px);
   transform: scale(1.01);
   pointer-events: none;
 }

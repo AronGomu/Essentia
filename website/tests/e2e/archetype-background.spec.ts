@@ -9,6 +9,7 @@ const backdropStyles = () => {
   return {
     backgroundImage: style.backgroundImage,
     filter: style.filter,
+    transform: style.transform,
     position: style.position,
     top: Number.parseFloat(style.top),
     right: Number.parseFloat(style.right),
@@ -32,11 +33,12 @@ test('archetype page paints the photo inside main', async ({ page }) => {
   expect(backdrop.backgroundImage).toContain('backgrounds/nekroz');
 });
 
-test('the photo is blurred and dimmed', async ({ page }) => {
+test('the photo is unblurred and dimmed', async ({ page }) => {
   await page.goto(urlFor('/archetypes/nekroz/'));
   const backdrop = await page.evaluate(backdropStyles);
-  expect(backdrop.filter).toContain('blur(2px)');
+  expect(backdrop.filter).toBe('none');
   expect(backdrop.backgroundImage).toContain('linear-gradient');
+  expect(backdrop.transform).not.toBe('none');
 });
 
 test('body carries no atmosphere on an archetype page', async ({ page }) => {

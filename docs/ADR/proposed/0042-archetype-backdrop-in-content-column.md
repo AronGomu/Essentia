@@ -1,7 +1,7 @@
 # ADR 0042 — The archetype backdrop paints the content column, not the viewport
 
 - Date: 2026-08-13
-- Status: Proposed
+- Status: Proposed — blur clause amended by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T4)
 - Scope: `website/src/styles/global.css`, `website/src/layouts/BaseLayout.astro`, `website/src/pages/archetypes/[slug].astro`
 - Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q5-Q6; revises the backdrop half of feedback batch 2
 
@@ -24,8 +24,8 @@ of.
    it. The header, the rail and the footer are siblings of `<main>` and are therefore excluded
    structurally rather than by masking.
 3. The backdrop scrolls with the content — it is absolute inside `<main>`, not fixed.
-4. It is dimmed 60 % by a flat black layer above the photo and blurred 2 px, so card text and
-   tiles stay legible.
+4. It is dimmed 60% by a flat black layer above the photo. Photo stays sharp: computed
+   `filter` is `none`. Legibility comes from veil, not blur.
 5. An archetype with no background file renders flat black. That is the intended result, not
    a fallback to a gradient.
 6. The photo URL keeps arriving through the hashed `<style>` element `BaseLayout.astro`
@@ -42,5 +42,5 @@ of.
   page.
 - Roughly 100 lines of per-theme gradient CSS stop applying to archetype pages. They are kept,
   not deleted, because the same custom properties still drive the other themes.
-- `tests/e2e/archetype-background.spec.ts` moves from asserting on `body::before` to
-  asserting on `main::before`, including that the backdrop's box is bounded by `<main>`.
+- `tests/e2e/archetype-background.spec.ts` asserts `main::before` stays bounded by `<main>`,
+  filter computes to `none`, dim gradient remains, scale remains, no horizontal overflow appears.
