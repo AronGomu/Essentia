@@ -153,10 +153,18 @@ async function assertContainedDirectory(directory, canonicalRoot) {
 }
 
 async function writeNoFollow(target, bytes) {
-  await assertGeneratedPathSafe(target);
+  const parent = path.dirname(target);
+  await assertGeneratedPathSafe(parent);
   const canonicalRoot = await canonicalGeneratedRoot();
-  await assertContainedDirectory(path.dirname(target), canonicalRoot);
-  const file = await open(target, NO_FOLLOW_WRITE_FLAGS, 0o666);
+  await assertContainedDirectory(parent, canonicalRoot);
+  let file;
+  try {
+    file = await open(target, NO_FOLLOW_WRITE_FLAGS, 0o666);
+  } catch (error) {
+    if (error?.code === 'ELOOP')
+      fail(`linked generated path forbidden ${generatedRelative(target)}`);
+    throw error;
+  }
   try {
     await file.writeFile(bytes);
   } finally {
@@ -181,7 +189,7 @@ export async function loadDerivativeManifest() {
 }
 
 export async function writeDerivativeManifest(entries) {
-  await assertGeneratedPathSafe(MANIFEST_PATH);
+  await assertGeneratedPathSafe(path.dirname(MANIFEST_PATH));
   const value = {
     schemaVersion: MANIFEST_SCHEMA_VERSION,
     entries: Object.fromEntries([...entries].sort()),

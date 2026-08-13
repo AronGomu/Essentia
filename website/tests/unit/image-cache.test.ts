@@ -145,6 +145,33 @@ describe('image derivative cache', () => {
     ).not.toBe(expected);
   });
 
+  it('emits bytes identical to direct Sharp encoding', async () => {
+    const directory = await mkdtemp(path.join(generatedRoot, 'bytes-'));
+    const source = path.join(directory, 'source.png');
+    const assetRoot = path.basename(directory);
+    await sourceImage(source, '#402010');
+    await build(source, assetRoot);
+
+    const cases = [
+      ['test-card-thumb.avif', 'avif', 240, images.AVIF_OPTIONS],
+      ['test-card-thumb.webp', 'webp', 240, images.WEBP_OPTIONS],
+      ['test-card-display.avif', 'avif', 750, images.AVIF_OPTIONS],
+      ['test-card-display.webp', 'webp', 750, images.WEBP_OPTIONS],
+      ['test-card-print.png', 'png', 60, images.PNG_OPTIONS],
+    ] as const;
+    for (const [name, format, width, options] of cases) {
+      const pipeline = sharp(source, {
+        limitInputPixels: 80_000_000,
+        failOn: 'warning',
+      })
+        .rotate()
+        .resize({ width, withoutEnlargement: true });
+      const expected = await pipeline[format](options).toBuffer();
+      const actual = await readFile(path.join(generatedRoot, assetRoot, name));
+      expect(actual, name).toEqual(expected);
+    }
+  });
+
   it('buildCardImages skips a derivative whose key already matches', async () => {
     const directory = await mkdtemp(path.join(generatedRoot, 'skip-'));
     const source = path.join(directory, 'source.png');

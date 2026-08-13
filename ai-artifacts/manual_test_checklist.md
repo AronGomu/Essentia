@@ -415,3 +415,9 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Delete one generated `*-print.png`, rerun `npm run content`, and confirm the print image is recreated while unrelated derivative mtimes remain unchanged.
 - [ ] Run `cd website && npm run content && time npm run content`: the cold/repair run succeeds, the immediate warm run finishes under 3 seconds, and card-image output remains visually unchanged.
 - [ ] Read the T2 verifier contract before implementation: only its own fresh, empty, canonical direct child of the canonical system temp root with the exact `essentia-derivatives-` prefix is accepted; relative, nested, non-empty, absent, or symlinked overrides reject before writes.
+
+## T11 cache proof tests
+
+- [ ] On a filesystem supporting symlinks, replace the manifest no-follow write temporarily with a direct `writeFile`, run `cd website && npx vitest run tests/unit/image-cache.test.ts -t 'refuses a symlinked manifest without changing its external target'`, and confirm it fails; revert the mutation.
+- [ ] Temporarily append one byte to each encoded derivative before writing, run `cd website && npx vitest run tests/unit/image-cache.test.ts -t 'emits bytes identical to direct Sharp encoding'`, and confirm the AVIF byte comparison fails; revert the mutation.
+- [ ] Run the unmodified focused suite and confirm all 17 tests pass, including external sentinel preservation and direct Sharp byte equivalence for AVIF, WebP, and PNG derivatives.
