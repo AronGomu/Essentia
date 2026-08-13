@@ -374,3 +374,10 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [x] `/cards/tour-guide-from-the-underworld/` built HTML contains `Same archetype`, its 13-card overflow link, and no empty `References` heading.
 - [x] Focused `related-cards.spec.ts` passes under Chromium, Firefox, and WebKit using the authorized NixOS Playwright shim: 15 passed.
 - [x] Related galleries render without `New` badges; empty reference data renders no `References` section.
+
+## T4 archetype backdrop
+
+- [x] Nekroz and Burning Abyss photos start at `<main>` below the header and end above the footer at 1440 px and 400 px.
+- [x] Both backdrops use `position: absolute`, scroll with content, and produce zero horizontal overflow at both widths.
+- [x] Focused `archetype-background.spec.ts` passes under Chromium, Firefox, and WebKit using the authorized NixOS Playwright shim: 15 passed.
+- [x] Full Playwright suite passes using the authorized NixOS shim: 205 passed, 2 owner-gated accessibility scans skipped.

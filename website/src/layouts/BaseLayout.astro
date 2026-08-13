@@ -133,7 +133,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
     {
       background && (
         <style
-          set:html={`html[data-page='archetype'] body { --page-photo: url('${withBase(base, background)}'); }`}
+          set:html={`html[data-page='archetype'] main { --page-photo: url('${withBase(base, background)}'); }`}
         />
       )
     }

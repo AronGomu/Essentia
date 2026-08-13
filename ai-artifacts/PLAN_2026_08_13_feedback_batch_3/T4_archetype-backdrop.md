@@ -77,6 +77,11 @@ File: `website/tests/e2e/archetype-background.spec.ts`
 | `the backdrop covers main and is clipped to it`         | `/archetypes/nekroz/`                | the `::before` box height equals `main`'s `scrollHeight` (±2 px) and its top is not above `main`'s top            |
 | `card page of the same theme has no photo backdrop`     | `/cards/nekroz-trishula/`            | neither `body::before` nor `main::before` contains `backgrounds/`                            |
 
+**Parent correction:** `transform: scale(1.01)` contributes its visual overflow to
+`main.scrollHeight`, so comparing the inset pseudo-element to `scrollHeight` is circular.
+Assert computed `inset: 0`, computed pseudo width/height against `main.clientWidth` /
+`main.clientHeight` (±2 px), clipping, and zero document-width spill instead.
+
 File: `website/tests/unit/archetype.test.ts` (already exists) — add:
 
 | Test                                                | Input               | Expect                                                             |
@@ -88,27 +93,27 @@ Run: `cd website && npx vitest run tests/unit/archetype.test.ts` then
 
 ## Impl steps
 
-- [ ] 1. In `website/src/styles/global.css`, inside `@layer base`, add
+- [x] 1. In `website/src/styles/global.css`, inside `@layer base`, add
       `main { position: relative; isolation: isolate; }`.
-- [ ] 2. Add a new rule outside `@layer base`:
+- [x] 2. Add a new rule outside `@layer base`:
       `html[data-page='archetype'] main::before { content: ''; position: absolute; inset: 0; z-index: -1; overflow: hidden; background: linear-gradient(oklch(0.08 0 0 / 0.6), oklch(0.08 0 0 / 0.6)), var(--page-photo, none); background-position: 50% 50%; background-repeat: no-repeat; background-size: cover; filter: blur(2px); transform: scale(1.01); pointer-events: none; }`
-- [ ] 3. Add `html[data-page='archetype'] main { overflow: hidden; }` **only if** step 2's
+- [x] 3. Add `html[data-page='archetype'] main { overflow: hidden; }` **only if** step 2's
       `transform: scale(1.01)` produces a horizontal scrollbar; verify at 400 px width first.
-- [ ] 4. Add `html[data-page='archetype'] body::before { background: none; opacity: 1; }` and
+- [x] 4. Add `html[data-page='archetype'] body::before { background: none; opacity: 1; }` and
       `html[data-page='archetype'] body::after { background: none; opacity: 0; }` so the
       atmosphere and pattern are suppressed regardless of `data-theme`.
-- [ ] 5. In `website/src/layouts/BaseLayout.astro`, change the injected style text from
+- [x] 5. In `website/src/layouts/BaseLayout.astro`, change the injected style text from
       `html[data-page='archetype'] body { --page-photo: … }` to
       `html[data-page='archetype'] main { --page-photo: url('…') }`.
-- [ ] 6. Leave `website/src/pages/archetypes/[slug].astro` and `BACKGROUND_SLUGS` as they
+- [x] 6. Leave `website/src/pages/archetypes/[slug].astro` and `BACKGROUND_SLUGS` as they
       are — an archetype with no entry simply gets no `--page-photo` and renders flat black.
-- [ ] 7. Rewrite `website/tests/e2e/archetype-background.spec.ts` per the test plan.
-- [ ] 8. Add the `BACKGROUND_SLUGS` consistency test to
+- [x] 7. Rewrite `website/tests/e2e/archetype-background.spec.ts` per the test plan.
+- [x] 8. Add the `BACKGROUND_SLUGS` consistency test to
       `website/tests/unit/archetype.test.ts`, exporting `BACKGROUND_SLUGS` from
       `website/src/pages/archetypes/[slug].astro` if it is not importable — if it is not,
       move the set into `website/src/lib/catalog.ts` as
       `export const ARCHETYPE_BACKGROUND_SLUGS` and import it in the page.
-- [ ] 9. Run `npm run build` and confirm `scripts/harden-csp.mjs` still exits 0 — the style
+- [x] 9. Run `npm run build` and confirm `scripts/harden-csp.mjs` still exits 0 — the style
       block is still a hashable `<style>` element, not an attribute.
 
 ## Outputs
@@ -122,12 +127,12 @@ Run: `cd website && npx vitest run tests/unit/archetype.test.ts` then
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/archetype.test.ts` — green
-- [ ] `cd website && npm run build` — exits 0, CSP hardening included
-- [ ] `cd website && npx playwright test tests/e2e/archetype-background.spec.ts` — 5 passed
-- [ ] `cd website && npm run test:e2e` — the full e2e suite still green
-- [ ] manual check at 1440 px and at 400 px on `/archetypes/nekroz/`: the photo starts at the
+- [x] `cd website && npx vitest run tests/unit/archetype.test.ts` — green
+- [x] `cd website && npm run build` — exits 0, CSP hardening included
+- [x] `cd website && npx playwright test tests/e2e/archetype-background.spec.ts` — 5 passed
+- [x] `cd website && npm run test:e2e` — the full e2e suite still green
+- [x] manual check at 1440 px and at 400 px on `/archetypes/nekroz/`: the photo starts at the
       top edge of the content column, never behind the header or the rail, and scrolls away
       with the page; no horizontal scrollbar
-- [ ] manual check on `/archetypes/burning-abyss/`: same, with its own photo
-- [ ] commit msg draft: `feat(website): scope the archetype backdrop to the content column`
+- [x] manual check on `/archetypes/burning-abyss/`: same, with its own photo
+- [x] commit msg draft: `feat(website): scope the archetype backdrop to the content column`

@@ -1,11 +1,15 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   assertLinked,
   assertMembership,
   resolveSection,
 } from '../../scripts/content/identity.mjs';
-import { catalog, sectionsBySlug } from '../../src/lib/catalog';
+import {
+  ARCHETYPE_BACKGROUND_SLUGS,
+  catalog,
+  sectionsBySlug,
+} from '../../src/lib/catalog';
 
 const content = (name: string) =>
   JSON.parse(
@@ -185,6 +189,15 @@ describe('assertLinked', () => {
 });
 
 describe('authored archetype registry', () => {
+  it('every live archetype section has a background file when configured', () => {
+    for (const slug of ARCHETYPE_BACKGROUND_SLUGS)
+      expect(
+        existsSync(
+          new URL(`../../public/backgrounds/${slug}.webp`, import.meta.url),
+        ),
+      ).toBe(true);
+  });
+
   it('gives every identity an explicit archetype and role', () => {
     const identities = content('identities.json');
     expect(identities.schemaVersion).toBe(3);

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CardGallery from '../../components/CardGallery.astro';
 import Markdown from '../../components/Markdown.astro';
 import {
+  ARCHETYPE_BACKGROUND_SLUGS,
   catalog,
   cardsById,
   formatDate,
@@ -21,8 +22,7 @@ const cards = section.cardIds.map((id: string) =>
 );
 const base = import.meta.env.BASE_URL;
 
-const BACKGROUND_SLUGS = new Set(['burning-abyss', 'nekroz']);
-const background = BACKGROUND_SLUGS.has(section.slug)
+const background = ARCHETYPE_BACKGROUND_SLUGS.has(section.slug)
   ? `backgrounds/${section.slug}.webp`
   : undefined;
 ---

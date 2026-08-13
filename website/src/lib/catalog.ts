@@ -1,5 +1,7 @@
 import catalogData from '../generated/catalog';
 
+export const ARCHETYPE_BACKGROUND_SLUGS = new Set(['burning-abyss', 'nekroz']);
+
 export type ColorLetter = 'W' | 'U' | 'B' | 'R' | 'G';
 export type CardZone = 'main' | 'extra';
 export type ArchetypeRole = 'member' | 'support' | 'staple';
