@@ -88,4 +88,4 @@
 - [x] `git status --short` → only planned source/tests/generated/plan/ADR/arch-doc paths; no unrelated surprises.
 - [ ] Manual: Burning Abyss + Nekroz backgrounds look sharp; cards/text remain legible under 60% veil.
 - [x] App functional: home/header/blog/card/archetype routes satisfy T1–T4 behavior.
-- [ ] Commit msg draft: `fix(archetypes): remove backdrop blur`
+- [x] Commit msg draft: `fix(archetypes): remove backdrop blur`
