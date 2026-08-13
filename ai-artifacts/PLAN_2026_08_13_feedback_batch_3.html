@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan · feedback batch 3</title>
+<style>
+  :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --ok:#4ade80; --dead:#6b7280; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { width:min(1040px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+  header { display:grid; gap:12px; margin-bottom:36px; }
+  .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  h1 { margin:0; font-size:clamp(2rem,5vw,3.4rem); line-height:1.06; letter-spacing:-.035em; }
+  h2 { margin:0 0 16px; font-size:1.35rem; letter-spacing:-.02em; }
+  h3 { margin:0 0 6px; font-size:1rem; }
+  p { margin:0 0 12px; }
+  .lede { max-width:72ch; color:var(--muted); }
+  section.block { margin:0 0 36px; }
+  .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+  .card { padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+  .card .big { display:block; font-size:1.9rem; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+  .card .lbl { color:var(--muted); font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; }
+  .card .sub { color:var(--muted); font-size:.85rem; }
+  .accent { color:var(--accent); } .warm { color:var(--accent-2); } .ok { color:var(--ok); } .dead { color:var(--dead); }
+  figure { margin:0 0 28px; padding:20px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+  figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+  svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+  .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-node.dead { stroke:var(--dead); }
+  .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); }
+  .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; }
+  tbody tr:hover { background:var(--panel); }
+  .tid { font-weight:800; color:var(--accent); white-space:nowrap; }
+  code { padding:1px 5px; border-radius:5px; background:#100d08; color:var(--accent-2); font-size:.85em; }
+  ul { margin:0 0 12px; padding-left:20px; color:var(--muted); } li { margin-bottom:5px; }
+  li b, ul b { color:var(--text); }
+  .split { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .note { padding:16px 20px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; background:var(--panel); color:var(--muted); font-size:.9rem; }
+  .note b { color:var(--text); }
+  .closed { border-left-color:var(--dead); }
+  footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem; }
+  @media (max-width:780px){ .grid,.split { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <span class="eyebrow">Plan · 2026-08-13 · feedback batch 3</span>
+  <h1>109 seconds, 143 000 edges, and three navigation shells</h1>
+  <p class="lede">Eight tickets. Seven feedback items: five implemented, one closed by measurement, one executed by hand. Every decision behind this plan was settled in three grill rounds; nothing here is guessed.</p>
+</header>
+
+<section class="block">
+  <h2>What was measured</h2>
+  <div class="grid">
+    <div class="card"><span class="lbl">npm run dev today</span><span class="big warm">109 s</span><span class="sub">0.3 s python · <b>107.4 s encoding</b> · 1.5 s Astro</span></div>
+    <div class="card"><span class="lbl">warm target after T1</span><span class="big ok">≈ 2.5 s</span><span class="sub">measured floor: content minus encoding is 0.66 s</span></div>
+    <div class="card"><span class="lbl">related edges at 800 cards</span><span class="big warm">143 328</span><span class="sub">CPU stays 162 ms — the payload is the problem</span></div>
+  </div>
+</section>
+
+<figure>
+  <figcaption><b>Item 1 — the whole build is one sharp call stack</b>Per card 2.44 s, ×50, serial, on 1 core of 16. AVIF is 80 % of it.</figcaption>
+  <svg viewBox="0 0 520 220" role="img" aria-labelledby="f1t f1d">
+    <title id="f1t">Build stage timings and per-card encode breakdown</title>
+    <desc id="f1d">Of 109 seconds, 107.4 is image encoding. Per card, display AVIF costs 1662 milliseconds, thumb AVIF 299, print PNG 315, display WebP 114, thumb WebP 46.</desc>
+    <text class="svg-label" x="0" y="14" font-weight="700">stage wall clock</text>
+    <rect x="0" y="24" width="5" height="16" rx="2" fill="#4b5563"/><text class="svg-note" x="14" y="37">cards:rebuild 0.3 s</text>
+    <rect x="0" y="48" width="440" height="16" rx="3" fill="#fb923c"/><text class="svg-label" x="450" y="61" font-size="11" font-weight="700">107.4 s</text>
+    <rect x="0" y="72" width="7" height="16" rx="3" fill="#a3a3a3"/><text class="svg-note" x="16" y="85">astro build 1.5 s · 152 pages</text>
+    <line class="svg-line" x1="0" y1="104" x2="520" y2="104" stroke-dasharray="4 4"/>
+    <text class="svg-label" x="0" y="126" font-weight="700">one card = 2.44 s</text>
+    <rect x="0" y="136" width="314" height="13" rx="3" fill="#fb923c"/><text class="svg-note" x="320" y="146">display.avif 1662 ms</text>
+    <rect x="0" y="154" width="56" height="13" rx="3" fill="#fbbf24"/><text class="svg-note" x="62" y="164">thumb.avif 299 ms</text>
+    <rect x="0" y="172" width="60" height="13" rx="3" fill="#a3a3a3"/><text class="svg-note" x="66" y="182">print.png 315 ms</text>
+    <rect x="0" y="190" width="22" height="13" rx="3" fill="#6b7280"/><text class="svg-note" x="28" y="200">display.webp 114 ms · thumb.webp 46 ms</text>
+  </svg>
+</figure>
+
+<section class="block">
+  <h2>Ticket graph</h2>
+  <figure>
+    <figcaption><b>Three independent chains</b>Nothing blocks anything across chains, so T1, T3, T4 and T5 can start in any order.</figcaption>
+    <svg viewBox="0 0 520 210" role="img" aria-labelledby="f2t f2d">
+      <title id="f2t">Ticket dependency graph</title>
+      <desc id="f2d">T1 leads to T2. T5 leads to T6 and to T8; T6 leads to T7. T3 and T4 are independent.</desc>
+      <rect class="svg-node active" x="0" y="10" width="150" height="34" rx="8"/><text class="svg-label" x="10" y="26" font-size="11">T1 derivative cache</text><text class="svg-note" x="10" y="38">109 s → 2.5 s</text>
+      <path class="svg-line" d="M150 27 H198" marker-end="url(#ar)"/>
+      <rect class="svg-node" x="200" y="10" width="150" height="34" rx="8"/><text class="svg-label" x="210" y="26" font-size="11">T2 cache verification</text><text class="svg-note" x="210" y="38">cold-vs-warm bytes in CI</text>
+
+      <rect class="svg-node active" x="0" y="58" width="150" height="34" rx="8"/><text class="svg-label" x="10" y="74" font-size="11">T3 quoted-name relations</text><text class="svg-note" x="10" y="86">n² → n</text>
+      <rect class="svg-node active" x="200" y="58" width="150" height="34" rx="8"/><text class="svg-label" x="210" y="74" font-size="11">T4 archetype backdrop</text><text class="svg-note" x="210" y="86">photo inside &lt;main&gt;</text>
+
+      <rect class="svg-node active" x="0" y="112" width="150" height="34" rx="8"/><text class="svg-label" x="10" y="128" font-size="11">T5 docs from folders</text><text class="svg-note" x="10" y="140">groups, labels, routes</text>
+      <path class="svg-line" d="M150 129 H198" marker-end="url(#ar)"/>
+      <rect class="svg-node" x="200" y="112" width="150" height="34" rx="8"/><text class="svg-label" x="210" y="128" font-size="11">T6 collapsible rail</text><text class="svg-note" x="210" y="140">+ switch removed</text>
+      <path class="svg-line" d="M350 129 H398" marker-end="url(#ar)"/>
+      <rect class="svg-node" x="400" y="112" width="120" height="34" rx="8"/><text class="svg-label" x="410" y="128" font-size="11">T7 blog landing</text><text class="svg-note" x="410" y="140">latest post inline</text>
+      <path class="svg-line" d="M75 146 V176 H198" marker-end="url(#ar)"/>
+      <rect class="svg-node" x="200" y="160" width="150" height="34" rx="8" stroke-dasharray="5 4"/><text class="svg-label" x="210" y="176" font-size="11">T8 docs tree migration</text><text class="svg-note" x="210" y="188">executed by Aron</text>
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="svg-arrow" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+    </svg>
+  </figure>
+
+  <table>
+    <thead><tr><th>ID</th><th>Ticket</th><th>Item</th><th>Depends</th><th>Commit outcome</th></tr></thead>
+    <tbody>
+      <tr><td class="tid">T1</td><td>Content-hash cache for image derivatives</td><td>1</td><td>—</td><td>Warm <code>npm run content</code> under 3 s, output byte-identical</td></tr>
+      <tr><td class="tid">T2</td><td>Cold-vs-warm derivative verification</td><td>1</td><td>T1</td><td><code>npm run cache:verify</code> in CI proves no stale bytes</td></tr>
+      <tr><td class="tid">T3</td><td>Quoted-name related-card model</td><td>2</td><td>—</td><td>Constraint matcher gone; references + referenced-by, linear</td></tr>
+      <tr><td class="tid">T4</td><td>Archetype backdrop on the content column</td><td>3</td><td>—</td><td>Photo inside <code>&lt;main&gt;</code>, dimmed 60 %, blurred 2 px</td></tr>
+      <tr><td class="tid">T5</td><td>Folder-derived docs content</td><td>5</td><td>—</td><td>Groups, labels, routes from the <code>docs/</code> tree</td></tr>
+      <tr><td class="tid">T6</td><td>Collapsible docs rail, switch removed</td><td>5, 7</td><td>T5</td><td>Groups collapse and persist; no Docs/Blog switch</td></tr>
+      <tr><td class="tid">T7</td><td>Blog rail shape and latest-post landing</td><td>6</td><td>T6</td><td><code>/blog/</code> renders the latest post; flat dated rail</td></tr>
+      <tr><td class="tid">T8</td><td>Docs tree migration</td><td>5</td><td>T5</td><td><code>docs/</code> numbered and foldered — Aron executes</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="block">
+  <h2>Item 4 — closed, not built</h2>
+  <div class="note closed">
+    <p><b>The premise did not survive measurement.</b> Splitting blog, docs and cards into three builds assumed a large shared rebuild cost. Astro's share of the 109 s is <b>1.5 s</b>; the entire content build with image writes skipped is <b>0.66 s</b>. After T1 there is nothing left to split, so no <code>--scope</code> flag and no second Astro config ship. Recorded in <code>docs/ADR/proposed/0039-one-astro-app.md</code>.</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Item 2 — what changes, exactly</h2>
+  <div class="split">
+    <div class="card">
+      <h3 class="dead">Deleted</h3>
+      <ul>
+        <li><code>extractClauses</code>, <code>parseConstraints</code>, <code>parseMv</code>, <code>matchesConstraints</code></li>
+        <li>the whole-corpus scan and the <code>interaction</code> field</li>
+        <li>the <b>Interacts with this card</b> block</li>
+        <li>Leviair's 41 matches, Maxx "C"'s 21, Stealth Kragen's 20</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="accent">Shipped</h3>
+      <ul>
+        <li><b>Same archetype</b> — unchanged, authored in <code>identities.json</code>. Tour Guide keeps its Burning Abyss link this way</li>
+        <li><b>References</b> — a quoted archetype name a card is not part of → one link to that archetype page with its count; a quoted card name → a direct card link</li>
+        <li><b>Referenced by</b> — the same edges, rendered from the other side</li>
+        <li>the unknown-name build guard, kept</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:14px">Corpus reality, measured: all 37 quoted tokens across all 50 cards are self-references. This ships with <b>zero live edges and zero guard failures</b>, so its tests are fixture-based. It starts paying the first time a generic staple prints <code>Search 1 “Nekroz” Creature</code>.</p>
+</section>
+
+<section class="block">
+  <h2>Decision records written with this plan</h2>
+  <ul>
+    <li><b>0038</b> — content-hash cache for image derivatives, AVIF at effort 2, identical dev and build output</li>
+    <li><b>0039</b> — one Astro app: the build split is closed by measurement</li>
+    <li><b>0040</b> — related cards derive from quoted names only (supersedes 0032, 0036)</li>
+    <li><b>0041</b> — docs navigation derives from the folder tree (supersedes the docs half of 0026)</li>
+    <li><b>0042</b> — the archetype backdrop paints the content column, not the viewport</li>
+    <li><b>0043</b> — the blog landing is the latest post; the rail is the blog index</li>
+  </ul>
+</section>
+
+<section class="block">
+  <h2>Residual risk, stated plainly</h2>
+  <div class="note">
+    <p><b>CI has no warm cache.</b> At AVIF effort 2 a cold build costs roughly 1.4 s per card, so CI stays near a minute at 50 cards and grows linearly — and T2 deliberately adds a second cold build to prove the cache is honest. Parallelising the encode across the 16 available cores is out of scope by decision, and is the obvious next lever if CI time becomes the complaint.</p>
+  </div>
+</section>
+
+<footer>
+  Index: <code>ai-artifacts/PLAN_2026_08_13_feedback_batch_3.md</code> ·
+  Tickets: <code>ai-artifacts/PLAN_2026_08_13_feedback_batch_3/T1…T8</code> ·
+  Grill: <code>ai-artifacts/GRILL_2026_08_12_feedback_batch_3/ANSWERS.md</code>
+</footer>
+</main>
+</body>
+</html>

@@ -44,6 +44,12 @@ Decision evidence lives here after rule/design review.
 - [0036 — Related lists are disjoint; the band owns the page width](proposed/0036-related-interaction-excludes-archetype.md)
 - [0037 — Markdown images scale through an authored class ladder](proposed/0037-markdown-images-with-scale-ladder.md)
 - [0032 — Related cards are derived at build time, in two categories](proposed/0032-derived-related-cards.md)
+- [0038 — Image derivatives are cached by content hash; AVIF drops to effort 2](proposed/0038-content-hash-derivative-cache.md)
+- [0039 — One Astro app: blog, docs and cards are not split](proposed/0039-one-astro-app.md)
+- [0040 — Cards relate through the names they print](proposed/0040-quoted-name-relations.md)
+- [0041 — Docs navigation derives from the docs folder tree](proposed/0041-docs-navigation-from-folders.md)
+- [0042 — The archetype backdrop paints the content column, not the viewport](proposed/0042-archetype-backdrop-in-content-column.md)
+- [0043 — The blog landing is the latest post; the rail is the index](proposed/0043-blog-landing-is-the-latest-post.md)
 
 ## Workflow
 

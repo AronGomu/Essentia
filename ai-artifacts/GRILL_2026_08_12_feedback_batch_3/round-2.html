@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two contradictions, one dead item, and the docs rename contract</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .node.done { opacity:.55; } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    .facts { margin:0 0 32px; padding:20px 24px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; background:var(--panel); }
+    .facts h2 { font-size:1rem; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .facts ul { margin:0; padding-left:20px; color:var(--muted); font-size:.9rem; }
+    .facts li { margin-bottom:7px; } .facts b { color:var(--text); }
+    .settled { display:grid; gap:6px; margin:0 0 32px; padding:18px 22px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); font-size:.88rem; }
+    .settled b { color:var(--text); }
+    .settled h2 { font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    code { padding:1px 5px; border-radius:5px; background:#100d08; color:var(--accent-2); font-size:.85em; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 2 · Conflicts, consequences, contracts</span>
+    <h1>Two contradictions, one dead item, and the docs rename contract</h1>
+    <p class="lede">Round 1 settled 9 of 11 decisions cleanly. Two answers contradict each other, one answer kills a whole feedback item, and three answers have consequences you have not chosen yet. Seven questions, then the plan gets written.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress">
+    <span class="node"><b>Feedback batch 3</b></span>
+    <span class="arrow">→</span>
+    <span class="node active">A · Encode policy</span>
+    <span class="arrow">·</span>
+    <span class="node active">B · Related teardown</span>
+    <span class="arrow">·</span>
+    <span class="node active">D · Scope flag</span>
+    <span class="arrow">·</span>
+    <span class="node active">E · Docs rename contract</span>
+    <span class="arrow">·</span>
+    <span class="node active">F · Blog rail shape</span>
+    <span class="arrow">·</span>
+    <span class="node done">C · Backdrop ✓</span>
+    <span class="arrow">·</span>
+    <span class="node done">G · Rail switch ✓</span>
+  </nav>
+
+  <section class="settled" aria-label="Settled in round 1">
+    <h2>Settled — not asked again</h2>
+    <div><b>Cache:</b> content-hash manifest, skip unchanged, prune orphans, no <code>rm -rf</code>.</div>
+    <div><b>Backdrop:</b> painted on <code>&lt;main&gt;</code>, scrolls with content, dimmed 60 %, blurred 2 px. Archetype pages only; no art = flat black, intended.</div>
+    <div><b>Docs groups:</b> derived from the <code>docs/</code> folder tree, natural filename order, numeric prefixes stripped from labels. You do the renaming.</div>
+    <div><b>Collapsing:</b> current page's group open, others collapsed, per-group state in localStorage.</div>
+    <div><b>Blog:</b> <code>/blog/</code> renders the latest post inline, <code>/blog/{slug}/</code> stays canonical, dates as <code>DD/MM/YYYY</code>.</div>
+    <div><b>Rail switch:</b> removed from desktop rail and mobile drawer both.</div>
+  </section>
+
+  <section class="facts" aria-label="New measurements">
+    <h2>Measured since round 1</h2>
+    <ul>
+      <li><b><code>npm run content:check</code> = 0.66 s.</b> That is the entire content build — MSE parse, identity checks, provenance verification, 38 docs, 2 posts, keyword registry, catalog write — with only the image writes skipped. It is the floor your warm cache converges on.</li>
+      <li><b>So the projected pipeline after the cache lands: ~1 s content + 1.5 s Astro.</b> From 109 s to under 3 s, without splitting anything.</li>
+      <li><b>Interaction teardown touches 6 files:</b> <code>scripts/content/related.mjs</code> (the whole clause/constraint machinery, 160 of 228 lines), <code>src/pages/cards/[id].astro:191-206</code>, <code>src/lib/catalog.ts</code> type, <code>tests/unit/related-graph.test.ts</code>, <code>tests/unit/related-cards.test.ts</code>, <code>tests/e2e/related-cards.spec.ts</code>.</li>
+      <li><b>One guard dies with it:</b> <code>assertKnownNames</code> fails the build when rule text quotes a card or archetype name that does not exist — a typo catcher that only runs because interaction parsing runs.</li>
+      <li><b>Today's card page already caps related lists at 12</b> with a "N more" line; removal deletes the second block, not the cap.</li>
+      <li><b>Live sections are 3:</b> <code>non-archetype</code>, <code>burning-abyss</code>, <code>nekroz</code>. Shaddoll and Spellbook are registered but have no cards, so no page. Both live archetype pages already have background art — nothing goes black today.</li>
+      <li><b>8 docs sit loose at the root of <code>docs/</code>:</b> <code>CONTEXT</code>, <code>DESIGN</code>, <code>RULES</code>, <code>KEYWORDS</code>, <code>GLOSSARY</code>, <code>MSE</code>, <code>RELEASES</code>, <code>SET_PROMOTIONS</code>, plus <code>PRESENTATION.md</code> which is special-cased to the <code>/docs/</code> route.</li>
+    </ul>
+  </section>
+
+  <section class="visuals" aria-label="Technical context">
+    <figure>
+      <figcaption><b>Where the cache lands you</b>Measured floor, not an estimate: <code>content:check</code> is the same build minus encoding.</figcaption>
+      <svg viewBox="0 0 520 250" role="img" aria-labelledby="fig1-title fig1-desc">
+        <title id="fig1-title">Projected build time before and after caching</title>
+        <desc id="fig1-desc">Today npm run dev costs 109 seconds, of which 107.4 is image encoding. With a content-hash cache, a warm run costs about 0.66 seconds of content work plus 1.5 seconds of Astro, roughly 2 seconds total. A scope flag could only remove part of the 0.66 seconds.</desc>
+
+        <text class="svg-label" x="0" y="14" font-weight="700">today · cold and warm are the same</text>
+        <rect x="0" y="24" width="6" height="18" rx="3" fill="#4b5563" stroke="none"/>
+        <rect x="6" y="24" width="440" height="18" rx="0" fill="#fb923c" stroke="none"/>
+        <rect x="446" y="24" width="7" height="18" rx="3" fill="#a3a3a3" stroke="none"/>
+        <text class="svg-label" x="462" y="38" font-size="11" font-weight="700">109 s</text>
+        <text class="svg-note" x="0" y="58">python 0.3 s · encode 107.4 s · astro 1.5 s</text>
+
+        <text class="svg-label" x="0" y="96" font-weight="700">after the cache · warm run</text>
+        <rect x="0" y="106" width="3" height="18" rx="2" fill="#4b5563" stroke="none"/>
+        <rect x="3" y="106" width="3" height="18" fill="#fb923c" stroke="none"/>
+        <rect x="6" y="106" width="4" height="18" fill="#fbbf24" stroke="none"/>
+        <rect x="10" y="106" width="7" height="18" rx="3" fill="#a3a3a3" stroke="none"/>
+        <text class="svg-accent" x="26" y="120" font-size="11" font-weight="700">≈ 2.5 s</text>
+        <text class="svg-note" x="0" y="140">python 0.3 s · cache check 0.66 s · astro 1.5 s</text>
+
+        <line class="svg-line" x1="0" y1="162" x2="520" y2="162" stroke-dasharray="4 4"/>
+        <text class="svg-label" x="0" y="184" font-weight="700">what a --scope flag could still remove</text>
+        <rect x="0" y="194" width="4" height="16" rx="2" fill="#fbbf24" stroke="none"/>
+        <text class="svg-note" x="14" y="207">part of 0.66 s — MSE parse + hash check for 50 cards</text>
+        <text class="svg-note" x="0" y="232">Item 4's premise was 107 s of shared rebuild. After the cache there is no shared cost left to split.</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>What survives the related teardown</b>Authored edges stay. Derived edges and the machinery behind them go.</figcaption>
+      <svg viewBox="0 0 520 250" role="img" aria-labelledby="fig2-title fig2-desc">
+        <title id="fig2-title">Related-card code after removing interaction relations</title>
+        <desc id="fig2-desc">The archetype relation, driven by identities.json, survives. The clause splitter, constraint parser, MV parser and whole-corpus matcher are deleted. The assertKnownNames guard, which catches misspelled card names in rule text, sits inside the deleted path and must be either rehomed or dropped.</desc>
+
+        <rect class="svg-node active" x="0" y="20" width="210" height="52" rx="10"/>
+        <text class="svg-label" x="14" y="42" font-size="12" font-weight="700">SURVIVES</text>
+        <text class="svg-note" x="14" y="58">identities.json archetype → name-pattern scan</text>
+        <text class="svg-note" x="14" y="70">"Same archetype" block, capped at 12</text>
+
+        <rect class="svg-node" x="270" y="8" width="250" height="88" rx="10" stroke="#6b7280"/>
+        <text class="svg-label" x="284" y="28" font-size="12" font-weight="700" fill="#9ca3af">DELETED</text>
+        <text class="svg-note" x="284" y="44">extractClauses · parseConstraints · parseMv</text>
+        <text class="svg-note" x="284" y="58">matchesConstraints · whole-corpus scan</text>
+        <text class="svg-note" x="284" y="72">"Interacts with this card" block</text>
+        <text class="svg-note" x="284" y="86">104 edges today · 143 k at 800 cards</text>
+
+        <rect class="svg-node active" x="120" y="126" width="280" height="58" rx="10" stroke="#facc15" stroke-dasharray="5 4"/>
+        <text class="svg-label" x="134" y="148" font-size="12" font-weight="700">UNDECIDED — question 2</text>
+        <text class="svg-note" x="134" y="164">assertKnownNames: fails the build when rule text</text>
+        <text class="svg-note" x="134" y="176">quotes a card/archetype that does not exist</text>
+
+        <path class="svg-line" d="M300 96 L280 126" stroke="#6b7280" marker-end="url(#a2)"/>
+        <path class="svg-line" d="M120 72 L200 126" stroke-dasharray="4 4" marker-end="url(#a2)"/>
+        <text class="svg-note" x="0" y="212">Keeping the guard means a small standalone validator that walks rule text for quoted names —</text>
+        <text class="svg-note" x="0" y="226">roughly 30 lines and one test, with none of the matching or the edges.</text>
+
+        <defs>
+          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="svg-arrow" d="M0 0 L10 5 L0 10 z"/>
+          </marker>
+        </defs>
+      </svg>
+    </figure>
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="Q2 and Q3 contradict on AVIF: which one wins?">
+      <legend>1. Your answers 2 and 3 contradict — which wins?</legend>
+      <p class="why">Answer 2 said AVIF is generated only by <code>npm run build</code>; answer 3 said dev and build must emit identical output. One of them has to give.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Effort 2 everywhere, AVIF generated in dev and build alike — identical output wins, effort reduction keeps it cheap"/><span><b>Effort 2 everywhere, generated in both — identical output wins</b><span class="rank">Recommended</span><span class="detail">One code path, no dev/prod drift. Cold cost drops from 2.44 s to roughly 1.4 s per card, and a warm run pays nothing at all. Honours answer 3 fully and answer 2 partly.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Effort 2 and AVIF skipped in dev — build-only wins, dev output is deliberately a subset"/><span><b>Effort 2, dev skips AVIF — build-only wins</b><span class="rank">Second</span><span class="detail">Fastest cold dev run. Costs you the "identical output" guarantee: an AVIF-only regression surfaces only in <code>npm run build</code>.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep effort 4 and generate everywhere; the cache absorbs the cost entirely"/><span><b>Effort 4 everywhere, cache absorbs it</b><span class="rank">Third</span><span class="detail">Best image quality, zero policy split, but a cold CI build stays at ~2 min for 50 cards and grows linearly.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. compare file sizes at effort 2 vs 4 first and pick by result"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Does the misspelled-name build guard survive the interaction removal?">
+      <legend>2. Removing interaction relations also removes a typo guard — keep it?</legend>
+      <p class="why"><code>assertKnownNames</code> currently fails the build when a card's rule text quotes a card or archetype name that does not exist anywhere. It only runs because interaction parsing runs.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Keep the guard as a small standalone validator in the content build; delete everything else about interaction"/><span><b>Keep the guard, standalone</b><span class="rank">Recommended</span><span class="detail">~30 lines: walk rule text for quoted names, fail on an unknown one. Keeps the build honest about card-name typos with none of the quadratic matching.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Delete the guard along with the rest; rule-text names are checked by the MSE style linter instead"/><span><b>Delete it too</b><span class="rank">Second</span><span class="detail">Smallest possible codebase. A typo like <code>&quot;Burning Abbys&quot;</code> then ships silently until a human reads the card.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. also rename the surviving heading from 'Same archetype' to something else"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Given the warm build is 0.66s, do you still want the --scope flag?">
+      <legend>3. The warm build is 0.66 s — do you still want a <code>--scope</code> flag?</legend>
+      <p class="why">You answered "skip the split, add a scope flag". The measurement landed after: the entire content build minus encoding is 0.66 s, so the flag's whole addressable budget is under a second.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Drop the scope flag; the cache alone closes item 4. Add a --check-free fast path only if a future measurement shows it is needed"/><span><b>Drop the flag — item 4 is closed by the cache</b><span class="rank">Recommended</span><span class="detail">No new flag, no new code path, no risk of a scoped run writing a partial <code>catalog.ts</code>. Item 4 is answered with evidence rather than architecture.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Add the flag anyway: --scope=docs|blog reuses the existing catalog.ts on disk and regenerates only docs/blog content"/><span><b>Add it anyway, reusing the on-disk catalog</b><span class="rank">Second</span><span class="detail">Shaves the last ~0.6 s. Cost: a second code path that can leave <code>catalog.ts</code> stale, and every "why is my card missing" question later starts with "were you scoped?".</span></span></label>
+        <label class="choice"><input type="checkbox" value="Revisit after the cache ships: measure again with a realistic corpus, then decide"/><span><b>Defer — remeasure at 200+ cards</b><span class="rank">Third</span><span class="detail">Honest, but leaves item 4 formally open in the plan.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder=""></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Docs rename: what does the build do with .md files left at the root of docs/?">
+      <legend>4. Docs rename — what does the build do with root-level <code>.md</code> files?</legend>
+      <p class="why">Folder-derived grouping needs every doc inside a numbered folder, but 8 docs sit loose at the root of <code>docs/</code> right now, and you are doing the moves yourself.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Build fails loudly on any .md at the root of docs/ except PRESENTATION.md; the ticket ships after I finish the moves"/><span><b>Fail loudly on any loose root doc</b><span class="rank">Recommended</span><span class="detail">Matches how the repo already treats unlisted docs. The plan gets a first ticket that is yours: move and number the files, with the exact target tree written out. Then the code ticket lands green.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Loose root docs land in a synthetic first group so nothing ever breaks"/><span><b>Auto-group loose docs into a synthetic group</b><span class="rank">Second</span><span class="detail">Never breaks, never nags. Also means a doc you forgot to file stays invisible-but-published forever.</span></span></label>
+        <label class="choice"><input type="checkbox" value="I will finish the renaming before any code ticket starts; the code can simply assume the new tree"/><span><b>Renaming happens first; code assumes the new tree</b><span class="rank">Third</span><span class="detail">Simplest code, but the repo is broken between your move and my commit.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. I want the plan to spell out the exact target docs/ tree for me to execute"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What URL shape do numbered docs folders produce?">
+      <legend>5. What URL do the numbered folders produce?</legend>
+      <p class="why">You are numbering folders and files for ordering. Those numbers either stay in the URL forever or get stripped — and stripping means every existing docs URL changes exactly once.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Strip numeric prefixes from routes: docs/02_rules/03_ZONES.md becomes /docs/rules/zones/. Numbers order only"/><span><b>Strip them — <code>/docs/rules/zones/</code></b><span class="rank">Recommended</span><span class="detail">URLs stay clean and stable when you renumber later; reordering never breaks a link. Identical to today's <code>/docs/rules/zones/</code> for anything already in a folder.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep numbers in the URL: /docs/02-rules/03-zones/"/><span><b>Keep them — <code>/docs/02-rules/03-zones/</code></b><span class="rank">Second</span><span class="detail">URL mirrors disk exactly, so a file is trivially findable from a link. Every renumber breaks every link to that page.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. PRESENTATION.md stays at /docs/ even if I move it into 00_essentia/"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Blog rail shape once /blog/ no longer lists posts">
+      <legend>6. Blog rail shape — it becomes the only index</legend>
+      <p class="why">With the post list gone from <code>/blog/</code>, the rail is the only place a visitor sees every post. You asked for full-width titles and numeric dates; this decides the structure around them.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Flat list, newest first, no group heading; title full width with the date on its own line beneath"/><span><b>Flat list, newest first, date under the title</b><span class="rank">Recommended</span><span class="detail">Drops the single "All posts" heading that currently labels nothing, and <code>reading-order.json</code>'s blog section with it. Title gets the full rail width; <code>08/08/2026</code> sits under it in muted type.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Flat list, newest first, date on its own line, but keep the authored blog groups from reading-order.json for future series"/><span><b>Same, but keep authored groups for future series</b><span class="rank">Second</span><span class="detail">Lets you group posts into named series later without new code. Costs one heading over two posts today.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Group posts by year, newest year first"/><span><b>Group by year</b><span class="rank">Third</span><span class="detail">Scales nicely to hundreds of posts; over-engineered for two.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. mark the latest post in the rail since /blog/ shows it"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How is cache correctness proven in CI?">
+      <legend>7. How do we prove the cache never serves stale bytes?</legend>
+      <p class="why">A caching bug does not crash — it silently publishes yesterday's card image. This is the one risk the whole item-1 fix introduces.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="CI job rebuilds cold into a temp dir and byte-compares against the cached output; any drift fails the build"/><span><b>Cold-vs-warm byte comparison in CI</b><span class="rank">Recommended</span><span class="detail">The only check that actually proves it. Runs the slow path once per CI run, compares sha256 per file, fails loudly on a single differing byte.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Unit tests on the cache-key function plus a test that an edited render changes the key"/><span><b>Unit tests on the key function only</b><span class="rank">Second</span><span class="detail">Fast and cheap; proves the key changes when inputs change, not that the written bytes match a cold build.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Both: unit tests on the key, plus the cold-vs-warm comparison behind an explicit npm script rather than in every CI run"/><span><b>Both, with the byte comparison as an on-demand script</b><span class="rank">Third</span><span class="detail">Keeps CI fast; the real proof only runs when someone remembers to run it.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder=""></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 2 · Conflicts, consequences, contracts — Two contradictions, one dead item, and the docs rename contract\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

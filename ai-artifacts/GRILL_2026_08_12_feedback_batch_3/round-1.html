@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build speed, related-card explosion, and the docs/blog/archetype shells</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    .facts { margin:0 0 32px; padding:20px 24px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; background:var(--panel); }
+    .facts h2 { font-size:1rem; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .facts ul { margin:0; padding-left:20px; color:var(--muted); font-size:.9rem; }
+    .facts li { margin-bottom:7px; } .facts b { color:var(--text); }
+    code { padding:1px 5px; border-radius:5px; background:#100d08; color:var(--accent-2); font-size:.85em; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 1 · Whole frontier (7 feedback items)</span>
+    <h1>Build speed, related-card explosion, and the docs/blog/archetype shells</h1>
+    <p class="lede">Items 1 and 2 are already measured — the numbers are below, so those questions are about which fix to take, not what the problem is. Items 3–7 are design calls only you can make. Answer everything, then hit <b>Copy answer summary</b>.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress">
+    <span class="node active"><b>Feedback batch 3</b></span>
+    <span class="arrow">→</span>
+    <span class="node active">A · Build speed</span>
+    <span class="arrow">·</span>
+    <span class="node active">B · Related cards</span>
+    <span class="arrow">·</span>
+    <span class="node active">C · Archetype backdrop</span>
+    <span class="arrow">·</span>
+    <span class="node active">D · Split builds</span>
+    <span class="arrow">·</span>
+    <span class="node active">E · Docs nav</span>
+    <span class="arrow">·</span>
+    <span class="node active">F · Blog nav</span>
+    <span class="arrow">·</span>
+    <span class="node active">G · Rail switch</span>
+  </nav>
+
+  <section class="facts" aria-label="Measured facts">
+    <h2>Measured on this machine, tonight</h2>
+    <ul>
+      <li><b><code>npm run dev</code> = 109 s before Astro even starts.</b> Split: <code>cards:rebuild</code> <b>0.3 s</b> (already cached), <code>build-content</code> <b>107.4 s</b>, <code>astro build</code> of all 152 pages <b>1.5 s</b>. Astro is not the problem. Vite is not the problem.</li>
+      <li><b>All 107 s is image encoding.</b> <code>orchestrator.mjs</code> does <code>rm -rf public/generated</code> on every run, then re-encodes 5 derivatives × 50 cards = 250 files (63 MB) from scratch, one card at a time, on 1 of your 16 cores.</li>
+      <li><b>Per card: 2.44 s.</b> <code>display.avif</code> 1662 ms · <code>thumb.avif</code> 299 ms · <code>print.png</code> 315 ms · <code>display.webp</code> 114 ms · <code>thumb.webp</code> 46 ms. <b>AVIF alone is 80 % of your whole build.</b></li>
+      <li><b>Scaling is linear and brutal:</b> 2.1 s/card × 500 cards = <b>17 min</b> per <code>npm run dev</code>.</li>
+      <li><b>The cache key already exists.</b> <code>packages.mjs</code> computes <code>renderHash</code>, <code>visualSourceHash</code> and <code>artworkHash</code> per card and verifies them against <code>render-provenance.json</code>, right before it re-encodes everything anyway. <code>public/generated/</code> is git-ignored, so a local cache is free.</li>
+      <li><b>Tour Guide's Burning Abyss link is hand-authored, not derived.</b> <code>content/identities.json</code> gives it <code>archetype: "burning-abyss", role: "support"</code> with no <code>linked: true</code> — so it <i>sits</i> in the non-archetype section but <i>relates</i> to all 13 BA cards.</li>
+      <li><b>The second relation kind is derived from rule text and it is the one that explodes.</b> <code>related.mjs</code> splits the oracle text on <code>. ; — \n</code>, keeps clauses carrying an action keyword, extracts constraints (subtype / quoted name / colour / supertype / MV) and scans every other card. Leviair matches <b>41 of 49</b> cards. Maxx "C" 21. Stealth Kragen 20.</li>
+      <li><b>Graph CPU is a non-issue; graph <i>payload</i> is.</b> Benchmarked: 50 cards → 5 ms / 528 edges · 200 → 15 ms / 8 856 · 800 → <b>162 ms / 143 328 edges</b>. Edges are quadratic; they land in <code>catalog.ts</code> and in every card page's HTML.</li>
+    </ul>
+  </section>
+
+  <section class="visuals" aria-label="Technical context">
+    <figure>
+      <figcaption><b>Where the 109 seconds go</b>Every bar is measured wall clock. The middle bar is one <code>sharp</code> call stack.</figcaption>
+      <svg viewBox="0 0 520 300" role="img" aria-labelledby="fig1-title fig1-desc">
+        <title id="fig1-title">Build stage timings for npm run dev</title>
+        <desc id="fig1-desc">cards rebuild takes 0.3 seconds, build-content takes 107.4 seconds, astro build takes 1.5 seconds. Within build-content, per card, display AVIF takes 1662 milliseconds, thumb AVIF 299, print PNG 315, display WebP 114, thumb WebP 46.</desc>
+
+        <text class="svg-label" x="0" y="14" font-weight="700">npm run dev — stage wall clock</text>
+        <text class="svg-note" x="0" y="36">cards:rebuild (python, cached)</text>
+        <rect class="svg-node" x="0" y="42" width="4" height="16" rx="3"/>
+        <text class="svg-accent" x="12" y="55" font-size="11">0.3 s</text>
+
+        <text class="svg-note" x="0" y="80">build-content (sharp derivatives)</text>
+        <rect x="0" y="86" width="460" height="16" rx="3" fill="#fb923c" stroke="none"/>
+        <text class="svg-label" x="466" y="99" font-size="11" font-weight="700">107.4 s</text>
+
+        <text class="svg-note" x="0" y="124">astro build · 152 pages</text>
+        <rect class="svg-node" x="0" y="130" width="7" height="16" rx="3"/>
+        <text class="svg-accent" x="15" y="143" font-size="11">1.5 s</text>
+
+        <line class="svg-line" x1="0" y1="168" x2="520" y2="168" stroke-dasharray="4 4"/>
+        <text class="svg-label" x="0" y="190" font-weight="700">inside build-content — one card = 2.44 s</text>
+
+        <rect x="0" y="202" width="314" height="14" rx="3" fill="#fb923c" stroke="none"/>
+        <text class="svg-note" x="320" y="213">display.avif · 1662 ms</text>
+        <rect x="0" y="222" width="56" height="14" rx="3" fill="#fbbf24" stroke="none"/>
+        <text class="svg-note" x="62" y="233">thumb.avif · 299 ms</text>
+        <rect x="0" y="242" width="60" height="14" rx="3" fill="#a3a3a3" stroke="none"/>
+        <text class="svg-note" x="66" y="253">print.png · 315 ms</text>
+        <rect x="0" y="262" width="22" height="14" rx="3" fill="#6b7280" stroke="none"/>
+        <text class="svg-note" x="28" y="273">display.webp · 114 ms</text>
+        <rect x="0" y="282" width="9" height="14" rx="3" fill="#4b5563" stroke="none"/>
+        <text class="svg-note" x="15" y="293">thumb.webp · 46 ms · ×50 cards, serial, 1 core of 16</text>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>Two kinds of relation, one of them quadratic</b>Authored links stay small. Text-derived links grow as cards × cards.</figcaption>
+      <svg viewBox="0 0 520 300" role="img" aria-labelledby="fig2-title fig2-desc">
+        <title id="fig2-title">Related-card model and edge growth</title>
+        <desc id="fig2-desc">Tour Guide gets its Burning Abyss relations from an authored archetype field in identities.json. Interaction relations are parsed from rule text and matched against every other card. Measured edge totals: 50 cards 528 edges, 100 cards 2180, 200 cards 8856, 400 cards 35696, 800 cards 143328.</desc>
+
+        <text class="svg-label" x="0" y="14" font-weight="700">1 · authored — identities.json</text>
+        <rect class="svg-node active" x="0" y="24" width="150" height="34" rx="8"/>
+        <text class="svg-label" x="10" y="40" font-size="11">Tour Guide</text>
+        <text class="svg-note" x="10" y="52">archetype: burning-abyss</text>
+        <path class="svg-line" d="M150 41 H210" marker-end="url(#a1)"/>
+        <rect class="svg-node" x="212" y="24" width="140" height="34" rx="8"/>
+        <text class="svg-label" x="222" y="40" font-size="11">13 BA cards</text>
+        <text class="svg-note" x="222" y="52">"Same archetype" block</text>
+        <text class="svg-note" x="360" y="45">O(n) · human-sized</text>
+
+        <text class="svg-label" x="0" y="86" font-weight="700">2 · derived — related.mjs clause scan</text>
+        <rect class="svg-node" x="0" y="96" width="150" height="34" rx="8"/>
+        <text class="svg-label" x="10" y="112" font-size="11">Leviair rule text</text>
+        <text class="svg-note" x="10" y="124">"Summon … MV 4 or less"</text>
+        <path class="svg-line" d="M150 113 H210" marker-end="url(#a1)"/>
+        <rect class="svg-node" x="212" y="96" width="140" height="34" rx="8"/>
+        <text class="svg-label" x="222" y="112" font-size="11">41 of 49 cards</text>
+        <text class="svg-note" x="222" y="124">"Interacts with" block</text>
+        <text class="svg-note" x="360" y="117">O(n²) · page-sized</text>
+
+        <line class="svg-line" x1="0" y1="150" x2="520" y2="150" stroke-dasharray="4 4"/>
+        <text class="svg-label" x="0" y="172" font-weight="700">measured total edges vs corpus size</text>
+
+        <polyline class="svg-line" stroke="#fb923c" points="30,272 130,268 230,255 330,208 430,178"/>
+        <circle cx="30" cy="272" r="4" fill="#fbbf24"/><text class="svg-note" x="14" y="288">50 → 528</text>
+        <circle cx="130" cy="268" r="4" fill="#fbbf24"/><text class="svg-note" x="108" y="288">100 → 2.2k</text>
+        <circle cx="230" cy="255" r="4" fill="#fbbf24"/><text class="svg-note" x="208" y="288">200 → 8.9k</text>
+        <circle cx="330" cy="208" r="4" fill="#fbbf24"/><text class="svg-note" x="308" y="288">400 → 36k</text>
+        <circle cx="430" cy="178" r="4" fill="#fb923c"/><text class="svg-note" x="404" y="288">800 → 143k</text>
+        <text class="svg-note" x="0" y="196">CPU stays cheap (162 ms at 800). The bytes do not.</text>
+
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="svg-arrow" d="M0 0 L10 5 L0 10 z"/>
+          </marker>
+        </defs>
+      </svg>
+    </figure>
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="Image derivative caching: how do we stop re-encoding 250 files every run?">
+      <legend>1. Image derivative caching — how do we stop re-encoding 250 files every run?</legend>
+      <p class="why">This single change is worth ~105 s of the 109 s, and it is what makes 500 cards survivable.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Content-hash manifest: skip re-encode when source hash + tier params match, prune orphans, no rm -rf"/><span><b>Content-hash manifest, skip unchanged, prune orphans</b><span class="rank">Recommended</span><span class="detail">Write <code>public/generated/.manifest.json</code> keyed by <code>renderHash + tier + format + encoder settings</code>; drop the <code>rm -rf</code> and delete only files no longer claimed. Cold run unchanged, warm run ≈ 1 s. Changing an encoder setting busts the key automatically.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Cache by mtime instead of content hash"/><span><b>Cache by file mtime</b><span class="rank">Second</span><span class="detail">Simpler, but a <code>git checkout</code> or clone rewrites mtimes and re-encodes everything, and an edited-then-reverted render silently keeps a stale image.</span></span></label>
+        <label class="choice"><input type="checkbox" value="No cache; parallelise across all cores instead"/><span><b>No cache, just use all 16 cores</b><span class="rank">Third</span><span class="detail">107 s → ~10 s today, but still linear: 500 cards = 100 s every single run, forever.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Leave as is"/><span><b>Leave it</b><span class="rank">Fourth</span><span class="detail">Only defensible if you plan to stay at 50 cards.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. cache must be provably correct — add a CI job that rebuilds cold and byte-compares"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="AVIF is 80% of encode time: keep, cheapen, or drop it?">
+      <legend>2. AVIF is 80 % of encode time — keep, cheapen, or drop?</legend>
+      <p class="why">Even with a warm cache, every new card pays 1.96 s for AVIF; a cold CI build pays it 500 times.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Keep AVIF but drop effort from 4 to 2 and generate it only on npm run build"/><span><b>Keep AVIF, cheaper effort, build-only</b><span class="rank">Recommended</span><span class="detail"><code>effort: 4 → 2</code> roughly halves it; skipping AVIF in <code>npm run dev</code> costs nothing visually because <code>&lt;picture&gt;</code> falls back to WebP.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep AVIF exactly as is; the cache makes it a one-time cost per card"/><span><b>Keep as is, let the cache absorb it</b><span class="rank">Second</span><span class="detail">Best image quality per byte, and with caching you pay 2.4 s once per new card. Cold CI builds stay slow.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Drop AVIF entirely; ship WebP only"/><span><b>Drop AVIF entirely</b><span class="rank">Third</span><span class="detail">Build cost collapses to ~0.5 s/card; pages get roughly 40 % heavier images. WebP is universally supported.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. also drop the print.png tier from dev runs"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Should npm run dev generate a reduced set of image tiers?">
+      <legend>3. Should <code>npm run dev</code> generate fewer tiers than <code>npm run build</code>?</legend>
+      <p class="why">Determines whether local dev output is byte-identical to production or deliberately cheaper.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Dev generates thumb+display WebP only; build generates every tier"/><span><b>Dev = WebP tiers only; build = everything</b><span class="rank">Recommended</span><span class="detail">Fastest first-run experience. Risk: an AVIF- or print-only bug is invisible until <code>npm run build</code> — which CI runs anyway.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Identical output in dev and build; rely purely on the cache for speed"/><span><b>Identical everywhere, cache does the work</b><span class="rank">Second</span><span class="detail">One code path, zero drift, no "works in dev" class of bug. Cold first run stays ~30 s even parallelised.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Dev skips image generation entirely and serves whatever is already in public/generated"/><span><b>Dev skips images entirely</b><span class="rank">Third</span><span class="detail">Instant, but a brand-new card renders as a broken image until you run a build.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder=""></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How should the derived interaction relation be constrained so it does not explode?">
+      <legend>4. Derived “Interacts with” relations — how do we keep them from exploding?</legend>
+      <p class="why">Leviair already matches 41 of 49 cards; at 800 cards the same rule produces a page listing hundreds of cards and a multi-MB catalog.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Require a specific constraint: a quoted name or a subtype. Clauses constrained only by MV/colour/supertype produce no edges"/><span><b>Require a <i>specific</i> constraint (quoted name or subtype)</b><span class="rank">Recommended</span><span class="detail">"Summon 1 <b>Fiend</b> MV 1" keeps working; "Summon a creature MV 4 or less" stops matching the whole set. Kills the explosion at the source and makes the remaining edges meaningful.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep the current matcher but cap the rendered list at N cards with a Show all disclosure"/><span><b>Keep matching, cap the display at N</b><span class="rank">Second</span><span class="detail">Fixes the page but not the payload — <code>catalog.ts</code> still carries every quadratic edge.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Drop derivation; author interaction links by hand in identities.json like Tour Guide's archetype link"/><span><b>Hand-author every interaction link</b><span class="rank">Third</span><span class="detail">Total control and tiny payload; becomes real per-card work on every new card and drifts out of date silently.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Remove the interaction block from card pages entirely; keep only Same archetype"/><span><b>Remove the interaction block entirely</b><span class="rank">Fourth</span><span class="detail">Simplest possible; loses the "what can this card fetch" answer that made you build it.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. specific constraint AND a hard cap of 12 per card"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Where exactly should the archetype background image be painted?">
+      <legend>5. Archetype backdrop — what element does it paint on?</legend>
+      <p class="why">You asked for the photo to stay inside the content area and off the header and rail; that boundary has to be one specific element.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Paint on <main>, which already excludes the header and the rail; photo scrolls with content"/><span><b>On <code>&lt;main&gt;</code></b><span class="rank">Recommended</span><span class="detail">The header and the left rail are siblings of <code>&lt;main&gt;</code>, so they are excluded structurally rather than by masking. Scrolls with the page.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Paint on <main> but keep the photo fixed so it does not scroll away"/><span><b>On <code>&lt;main&gt;</code>, fixed attachment</b><span class="rank">Second</span><span class="detail">Same boundary, cinematic feel, but <code>background-attachment: fixed</code> is a known scroll-jank source on mobile Safari.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Paint on the .page-shell / card gallery container only, so the hero panel keeps a plain backdrop"/><span><b>On the card-gallery container only</b><span class="rank">Third</span><span class="detail">Tightest reading of "where the cards are placed"; the hero panel above then sits on flat black and the seam is visible.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. dim it 60% and blur 2px so card text stays legible"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How far does removing the opaque theme go, and what do the three archetypes with no background art get?">
+      <legend>6. How far does the theme removal go — and what about the 3 archetypes with no art?</legend>
+      <p class="why">Only <code>burning-abyss</code> and <code>nekroz</code> have a background file. Shaddoll, Spellbook and Non-archetype currently rely on the gradient you want removed.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Remove atmosphere/pattern on archetype pages only; archetypes without art fall back to flat black until you supply art"/><span><b>Archetype pages only; missing art → flat black</b><span class="rank">Recommended</span><span class="detail">Home, card and docs pages keep their current look. Shaddoll/Spellbook/Non-archetype go plain until you drop files in <code>~/Downloads</code> and run <code>npm run backgrounds:art</code>.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Remove atmosphere/pattern on archetype pages only; archetypes without art keep their current gradient for now"/><span><b>Archetype pages only; missing art keeps its gradient</b><span class="rank">Second</span><span class="detail">Nothing regresses visually, but the site shows two different backdrop systems side by side until art lands.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Remove the whole --page-atmosphere / --page-pattern system site-wide, every theme"/><span><b>Rip out the whole system site-wide</b><span class="rank">Third</span><span class="detail">Deletes ~200 lines of CSS and the Spellbook rune layer and the Nekroz lattice. Cleanest code, biggest visual change, hardest to undo.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. I will generate shaddoll/spellbook/non-archetype backgrounds this week"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Given astro build is 1.5s, what does splitting blog/docs/cards actually need to achieve?">
+      <legend>7. Splitting blog / docs / cards — what is the actual target?</legend>
+      <p class="why">Your premise was that rebuilding everything is what costs you. Measured, Astro's share of that is 1.5 s; the 107 s is card images, which only the card side owns. The split may be solving an already-dead problem.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Skip the split. Fix caching (Q1) and add a scope flag so content generation can skip the card pipeline when editing docs or blog"/><span><b>No split — cache + a <code>--scope</code> flag</b><span class="rank">Recommended</span><span class="detail"><code>npm run dev -- --scope=docs</code> skips card discovery and image work entirely; one codebase, one router, cross-links keep working, no duplicated layout or CSS.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Three Astro configs sharing src/, each with its own outDir, merged into one dist by a script"/><span><b>Three Astro configs, one merged <code>dist/</code></b><span class="rank">Second</span><span class="detail">Real build isolation and invisible to visitors, but three configs, three CSP hardening passes, three <code>check-404</code> runs, and cross-section links stop being verifiable at build time.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Full split into three npm workspaces with a shared package for catalog + components"/><span><b>Three npm workspaces</b><span class="rank">Third</span><span class="detail">Maximum isolation, maximum ceremony: a shared design-system package, three dependency trees, three test suites, and a merge step at deploy.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. I still want the split even if caching fixes the time — because ..."></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Docs navigation grouping: where does the group structure come from, and who renames the files?">
+      <legend>8. Docs grouping — where do groups come from, and who renames the files?</legend>
+      <p class="why">Today groups are hand-listed in <code>content/reading-order.json</code>; you want them to follow numbered folders on disk. Also, 8 docs currently sit loose at the root of <code>docs/</code> (<code>CONTEXT</code>, <code>DESIGN</code>, <code>RULES</code>, <code>KEYWORDS</code>, <code>GLOSSARY</code>, <code>MSE</code>, <code>RELEASES</code>, <code>SET_PROMOTIONS</code>) and would need to move into a numbered folder.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Groups derive from the docs/ folder tree, sorted by natural filename order, numeric prefixes stripped from labels; I (Aron) do the renaming and moving myself"/><span><b>Folder-derived, alphabetical, prefixes stripped — <i>you</i> rename</b><span class="rank">Recommended</span><span class="detail"><code>reading-order.json</code>'s doc section is deleted; <code>docs/02_rules/03_ZONES.md</code> → group "Rules", title from the <code>#</code> heading. You control ordering entirely by naming. I ship the code that reads it.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Folder-derived as above, but I want the agent to do the renaming and moving as part of the ticket"/><span><b>Folder-derived — <i>agent</i> renames</b><span class="rank">Second</span><span class="detail">Same result, one ticket; every doc route changes at once and I have to update every cross-link, ADR citation and test path in the same commit.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Keep reading-order.json as the source of truth and only make the rail collapsible"/><span><b>Keep <code>reading-order.json</code>, just add collapsing</b><span class="rank">Third</span><span class="detail">Smallest change; you keep editing JSON every time you add a doc.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. group labels: strip the NN_ prefix and title-case the rest"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Collapsible docs sections: what is open by default and is the state remembered?">
+      <legend>9. Collapsible docs sections — default state and memory?</legend>
+      <p class="why">With one group per archetype the rail will have 8+ sections; what is open on arrival decides whether it feels navigable or empty.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Only the group containing the current page is open; state persists in localStorage per group"/><span><b>Current group open, rest collapsed, state remembered</b><span class="rank">Recommended</span><span class="detail">Matches the existing rail-collapse persistence pattern (<code>essentia.v1.catalog-rail</code>). Arriving on a Nekroz doc opens Nekroz only.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Only the current group is open; no persistence, state resets on every page load"/><span><b>Current group open, no persistence</b><span class="rank">Second</span><span class="detail">Zero client state, works with JS disabled via plain <code>&lt;details&gt;</code>. Reopening a group you keep visiting gets old.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Everything open by default; collapsing is manual only"/><span><b>All open by default</b><span class="rank">Third</span><span class="detail">Nothing is ever hidden, but that is today's problem — a very long rail.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. the general-rules group should always start open"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="What does /blog/ render once the post list is gone, and what date format does the rail use?">
+      <legend>10. <code>/blog/</code> without a list — and which date format?</legend>
+      <p class="why">Two decisions in one place: what the blog landing route serves, and "numbers with slashes or dashes" is ambiguous between <code>08/08/2026</code> and <code>2026-08-08</code>.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="/blog/ renders the latest post inline; /blog/{slug}/ stays canonical; date format DD/MM/YYYY"/><span><b><code>/blog/</code> renders the latest post inline · <code>08/08/2026</code></b><span class="rank">Recommended</span><span class="detail">No redirect, no flash, works offline. Canonical link points at the post's own URL so the duplicate never gets indexed twice. Day-first matches how you wrote the request.</span></span></label>
+        <label class="choice"><input type="checkbox" value="/blog/ renders the latest post inline; date format YYYY-MM-DD (ISO)"/><span><b>Same, but ISO <code>2026-08-08</code></b><span class="rank">Second</span><span class="detail">Sorts correctly in a list, unambiguous internationally, matches the filenames on disk.</span></span></label>
+        <label class="choice"><input type="checkbox" value="/blog/ meta-refreshes or redirects to the newest post URL"/><span><b>Redirect <code>/blog/</code> → newest post</b><span class="rank">Third</span><span class="detail">One canonical copy of the content, but a static-host redirect means a visible flash and a broken back button.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. keep the summary/author line above the post body"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Removing the Docs/Blog switch from the rail: does that include the mobile drawer?">
+      <legend>11. Removing the rail's Docs/Blog switch — mobile too?</legend>
+      <p class="why">The switch exists twice: in the desktop rail and in the mobile drawer. On a phone the header's utility nav collapses to short labels, so the drawer switch may be the only comfortable path between the two.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Remove it from both the desktop rail and the mobile drawer; the header utility nav is the only switcher"/><span><b>Remove both</b><span class="rank">Recommended</span><span class="detail">One switcher, one mental model, less code. The header keeps Learn / Blog / Decks at every width.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Remove it from the desktop rail only; keep it in the mobile drawer"/><span><b>Desktop only, keep it on mobile</b><span class="rank">Second</span><span class="detail">Honours the literal request (the rail) while keeping the phone path short; two code paths to maintain.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder=""></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 1 · Whole frontier (7 feedback items) — Build speed, related-card explosion, and the docs/blog/archetype shells\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

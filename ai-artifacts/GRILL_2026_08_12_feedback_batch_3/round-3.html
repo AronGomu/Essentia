@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The reference relation you just invented, and the docs root contract</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --focus:#facc15; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    header { display:grid; gap:12px; margin-bottom:32px; }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,p { margin:0; } h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.08; letter-spacing:-.035em; }
+    .lede { max-width:70ch; color:var(--muted); }
+    .tree { display:flex; align-items:center; gap:8px; overflow:auto; padding:16px; margin:24px 0 32px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); white-space:nowrap; }
+    .tree b { color:var(--text); } .node { padding:6px 10px; border:1px solid var(--line); border-radius:999px; } .node.active { border-color:var(--accent); color:var(--accent); } .node.done { opacity:.5; } .arrow { color:var(--line); }
+    .visuals { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:0 0 32px; }
+    figure { min-width:0; margin:0; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+    svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); } .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); } .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+    form { display:grid; gap:20px; }
+    fieldset { min-width:0; margin:0; padding:24px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    legend { max-width:100%; padding:0 8px; font-size:1.15rem; font-weight:750; }
+    .why { margin:0 0 18px; color:var(--muted); font-size:.925rem; }
+    .choices { display:grid; gap:10px; }
+    .choice { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--panel-2); cursor:pointer; }
+    .choice:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+    input { width:18px; height:18px; margin-top:3px; accent-color:var(--accent); }
+    .rank { display:inline-block; margin-left:7px; color:var(--accent-2); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .detail { display:block; margin-top:3px; color:var(--muted); font-size:.875rem; }
+    label.precision { display:block; margin-top:18px; font-size:.85rem; font-weight:700; color:var(--muted); }
+    textarea { width:100%; min-height:90px; margin-top:7px; padding:12px; resize:vertical; border:1px solid var(--line); border-radius:10px; background:#100d08; color:var(--text); font:inherit; }
+    input:focus-visible,textarea:focus-visible,button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .actions { position:sticky; bottom:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px; border:1px solid var(--line); border-radius:14px; background:rgba(19,23,28,.96); box-shadow:0 16px 40px #0008; backdrop-filter:blur(10px); }
+    button { padding:11px 16px; border:0; border-radius:9px; background:var(--accent); color:#211500; font:inherit; font-weight:800; cursor:pointer; }
+    #status { color:var(--muted); font-size:.875rem; }
+    .facts { margin:0 0 32px; padding:20px 24px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; background:var(--panel); }
+    .facts h2 { font-size:1rem; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .facts ul { margin:0; padding-left:20px; color:var(--muted); font-size:.9rem; }
+    .facts li { margin-bottom:7px; } .facts b { color:var(--text); }
+    .settled { display:grid; gap:6px; margin:0 0 32px; padding:18px 22px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--muted); font-size:.88rem; }
+    .settled b { color:var(--text); }
+    .settled h2 { font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    code { padding:1px 5px; border-radius:5px; background:#100d08; color:var(--accent-2); font-size:.85em; }
+    @media (max-width:700px) { .visuals { grid-template-columns:1fr; } }
+    @media (max-width:600px) { main { width:min(100% - 20px,960px); padding-top:28px; } fieldset { padding:18px 14px; } .actions { align-items:flex-start; flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">Grill me · Round 3 · Last frontier</span>
+    <h1>The reference relation you just invented, and the docs root contract</h1>
+    <p class="lede">Your answer 2 replaced “delete interaction” with a new, narrower relation: cards that name an archetype they do not belong to. It is a better rule — but it produces <b>zero</b> edges on today's corpus, and it needs three semantics decided. Plus two docs details. Five questions and the frontier is empty.</p>
+  </header>
+
+  <nav class="tree" aria-label="Design tree progress">
+    <span class="node"><b>Feedback batch 3</b></span>
+    <span class="arrow">→</span>
+    <span class="node active">B · Reference relation</span>
+    <span class="arrow">·</span>
+    <span class="node active">E · Docs root + labels</span>
+    <span class="arrow">·</span>
+    <span class="node done">A · Cache ✓</span>
+    <span class="arrow">·</span>
+    <span class="node done">C · Backdrop ✓</span>
+    <span class="arrow">·</span>
+    <span class="node done">D · No split ✓</span>
+    <span class="arrow">·</span>
+    <span class="node done">F · Blog ✓</span>
+    <span class="arrow">·</span>
+    <span class="node done">G · Rail switch ✓</span>
+  </nav>
+
+  <section class="settled" aria-label="Settled">
+    <h2>Settled — not asked again</h2>
+    <div><b>Encoding:</b> AVIF effort 2, generated in dev and build alike; identical output everywhere; content-hash cache; CI proves it with a cold-vs-warm byte comparison.</div>
+    <div><b>Item 4:</b> closed by measurement — no split, no scope flag.</div>
+    <div><b>Backdrop:</b> on <code>&lt;main&gt;</code>, dimmed 60 %, blurred 2 px, archetype pages only.</div>
+    <div><b>Docs:</b> folder-derived groups, numbers kept in URLs, root-level docs first in alphabetical order, current group open + persisted, you do the renaming.</div>
+    <div><b>Blog:</b> flat rail newest-first, full-width title, <code>08/08/2026</code> beneath; <code>/blog/</code> renders the latest post inline.</div>
+    <div><b>Rail switch:</b> gone from desktop and mobile both.</div>
+  </section>
+
+  <section class="facts" aria-label="Corpus measurements">
+    <h2>What the corpus actually contains</h2>
+    <ul>
+      <li><b>Archetype names in rule text are always quoted</b>, with curly quotes: <code>Search 1 “Nekroz” Creature</code>, <code>Sacrifice 2 “Burning Abyss” Creatures</code>. So a name-reference rule is precise and cheap — no fuzzy matching needed.</li>
+      <li><b>22 cards name their own archetype. Zero cards name an archetype they are not in.</b> The relation you described therefore renders <b>nothing at all</b> today; it starts paying off the first time you print a generic card that says <code>Search 1 “Nekroz” Creature</code>.</li>
+      <li><b>Tour Guide is not caught by it either.</b> Its text is <code>Summon 1 Fiend MV 1 Creature</code> — a subtype, not a name. Its Burning Abyss link stays what it already is: the authored <code>archetype: "burning-abyss"</code> field in <code>identities.json</code>.</li>
+      <li><b>Every quoted token in the corpus:</b> Ash Blossom · Barbar · Brionac · Burning Abyss · C · Catastor · Clausolas · Dante · Decisive Armor · Gungnir · Maxx · Nekroz · Rubic · Shurit · Trishula · Unicore · Valkyrus. Two are archetypes; the rest are individual card names, nearly all self-references.</li>
+      <li><b>Growth is linear, not quadratic:</b> one edge per quoted name per card, bounded by how many names you print. This is the property the old rule lacked.</li>
+    </ul>
+  </section>
+
+  <section class="visuals" aria-label="Technical context">
+    <figure>
+      <figcaption><b>Old rule vs your new rule</b>Same card, same text, different edge count.</figcaption>
+      <svg viewBox="0 0 520 250" role="img" aria-labelledby="fig1-title fig1-desc">
+        <title id="fig1-title">Comparison of the old constraint matcher and the new name-reference rule</title>
+        <desc id="fig1-desc">The old rule matched Leviair's MV 4 or less clause against every card, producing 41 edges. The new rule only creates an edge when rule text quotes a name, so Leviair produces none and a future generic searcher quoting Nekroz produces one link to the Nekroz archetype.</desc>
+
+        <text class="svg-label" x="0" y="14" font-weight="700">old · constraint matcher</text>
+        <rect class="svg-node" x="0" y="24" width="180" height="46" rx="10" stroke="#6b7280"/>
+        <text class="svg-note" x="12" y="42">Leviair: "Summon … MV 4 or less"</text>
+        <text class="svg-note" x="12" y="58">colour / MV / subtype / supertype</text>
+        <path class="svg-line" d="M180 47 H240" stroke="#6b7280" marker-end="url(#a3)"/>
+        <rect class="svg-node" x="242" y="24" width="120" height="46" rx="10" stroke="#6b7280"/>
+        <text class="svg-label" x="254" y="52" font-size="14" font-weight="700" fill="#9ca3af">41 edges</text>
+        <text class="svg-note" x="372" y="51">grows as n²</text>
+
+        <line class="svg-line" x1="0" y1="92" x2="520" y2="92" stroke-dasharray="4 4"/>
+
+        <text class="svg-label" x="0" y="116" font-weight="700">new · quoted-name reference</text>
+        <rect class="svg-node active" x="0" y="126" width="180" height="46" rx="10"/>
+        <text class="svg-note" x="12" y="144">Leviair: no quoted name</text>
+        <text class="svg-note" x="12" y="160">→ no edge</text>
+        <path class="svg-line" d="M180 149 H240" marker-end="url(#a3)"/>
+        <rect class="svg-node active" x="242" y="126" width="120" height="46" rx="10"/>
+        <text class="svg-accent" x="254" y="154" font-size="14" font-weight="700">0 edges</text>
+
+        <rect class="svg-node active" x="0" y="186" width="180" height="46" rx="10"/>
+        <text class="svg-note" x="12" y="204">future staple: Search 1 “Nekroz”</text>
+        <text class="svg-note" x="12" y="220">→ 1 reference</text>
+        <path class="svg-line" d="M180 209 H240" marker-end="url(#a3)"/>
+        <rect class="svg-node active" x="242" y="186" width="120" height="46" rx="10"/>
+        <text class="svg-accent" x="254" y="214" font-size="14" font-weight="700">1 edge</text>
+        <text class="svg-note" x="372" y="213">grows as n</text>
+
+        <defs>
+          <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="svg-arrow" d="M0 0 L10 5 L0 10 z"/>
+          </marker>
+        </defs>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption><b>The docs tree the rail will read</b>Root files first, alphabetical; then numbered folders. Numbers survive into URLs.</figcaption>
+      <svg viewBox="0 0 520 250" role="img" aria-labelledby="fig2-title fig2-desc">
+        <title id="fig2-title">Planned docs folder structure and resulting navigation</title>
+        <desc id="fig2-desc">Root level markdown files appear first in alphabetical order and are ungrouped. Numbered folders such as 01 general rules and 02 burning abyss become collapsible groups, in natural filename order, with numeric prefixes stripped from the visible labels but kept in the URLs.</desc>
+
+        <text class="svg-label" x="0" y="16" font-weight="700">docs/ on disk</text>
+        <text class="svg-note" x="8" y="38">PRESENTATION.md</text>
+        <text class="svg-note" x="8" y="54">01_general_rules/</text>
+        <text class="svg-note" x="20" y="70">01_ZONES.md</text>
+        <text class="svg-note" x="20" y="86">02_SUMMONING.md</text>
+        <text class="svg-note" x="8" y="102">02_burning_abyss/</text>
+        <text class="svg-note" x="20" y="118">01_CONTEXT.md</text>
+
+        <path class="svg-line" d="M170 76 H215" marker-end="url(#a4)"/>
+
+        <text class="svg-label" x="240" y="16" font-weight="700">rail</text>
+        <rect class="svg-node active" x="240" y="26" width="260" height="24" rx="6"/>
+        <text class="svg-note" x="252" y="42">Essentia · ungrouped, first, alphabetical</text>
+        <rect class="svg-node" x="240" y="56" width="260" height="24" rx="6"/>
+        <text class="svg-note" x="252" y="72">▾ General rules   (open on a rules page)</text>
+        <rect class="svg-node" x="252" y="84" width="248" height="20" rx="5" stroke="none" fill="#100d08"/>
+        <text class="svg-note" x="264" y="98">Zones · Summoning</text>
+        <rect class="svg-node" x="240" y="110" width="260" height="24" rx="6"/>
+        <text class="svg-note" x="252" y="126">▸ Burning Abyss   (collapsed)</text>
+
+        <line class="svg-line" x1="0" y1="156" x2="520" y2="156" stroke-dasharray="4 4"/>
+        <text class="svg-label" x="0" y="178" font-weight="700">URL, per your answer 5</text>
+        <text class="svg-note" x="8" y="198">docs/01_general_rules/01_ZONES.md  →  /docs/01-general-rules/01-zones/</text>
+        <text class="svg-note" x="8" y="216">label shown in the rail: “Zones” — from the file's own # heading</text>
+        <text class="svg-note" x="8" y="234">group label: “General rules” — question 5 decides exactly how</text>
+
+        <defs>
+          <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="svg-arrow" d="M0 0 L10 5 L0 10 z"/>
+          </marker>
+        </defs>
+      </svg>
+    </figure>
+  </section>
+
+  <form id="questions">
+
+    <fieldset data-question="A card names an archetype it is not in: does it link to the archetype page or to every member card?">
+      <legend>1. A card names an archetype it is not in — link to the archetype, or to every member?</legend>
+      <p class="why">A card saying <code>Search 1 “Nekroz” Creature</code> can produce one tile pointing at the Nekroz page, or 22 card tiles. This is the decision that keeps the new relation linear.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="One entry per referenced archetype, linking to the archetype page, with its card count"/><span><b>One entry per archetype, linking to the archetype page</b><span class="rank">Recommended</span><span class="detail">A card that touches three archetypes shows three links, forever — the block cannot grow with the corpus. The archetype page is one click away and already lists every member.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Every member card of the referenced archetype as its own tile, capped at 12 with a View all link"/><span><b>Every member card, capped at 12</b><span class="rank">Second</span><span class="detail">Visually richer and consistent with the “Same archetype” block. Payload grows with archetype size; a 60-card archetype means 60 stored ids per referencing card.</span></span></label>
+        <label class="choice"><input type="checkbox" value="The archetype's iconic card as a single representative tile, linking to the archetype page"/><span><b>Iconic card as one representative tile</b><span class="rank">Third</span><span class="detail">Keeps the visual language of card tiles at constant cost; slightly misleading, since the tile is a card but the link is a page.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. heading text for this block"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Is the reference relation shown on the referenced side too?">
+      <legend>2. Does the referenced side show it back?</legend>
+      <p class="why">A Nekroz player looking at a Nekroz card arguably wants to know “what outside cards can fetch this”. That is the reverse edge, and it is where most of the value sits.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Both directions: the referencing card shows what it names, and each named archetype's card pages list the outside cards that name it"/><span><b>Both directions</b><span class="rank">Recommended</span><span class="detail">Same data, rendered twice — no extra derivation. The reverse block on member pages is capped at 12 like the others. This is what makes the feature useful to a deck builder.</span></span></label>
+        <label class="choice"><input type="checkbox" value="One direction only: the referencing card lists what it names; archetype cards say nothing"/><span><b>One direction only</b><span class="rank">Second</span><span class="detail">Half the UI, half the value. A Nekroz card page never reveals that an outside staple fetches it.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Reverse direction only on the archetype page itself, not on individual member cards"/><span><b>Reverse only on the archetype page</b><span class="rank">Third</span><span class="detail">One clean “Cards that support this archetype” band on <code>/archetypes/nekroz/</code>; member card pages stay untouched.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder=""></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="Do quoted individual card names create relations too, or only archetype names?">
+      <legend>3. Quoted <i>card</i> names — do they create relations too?</legend>
+      <p class="why">The corpus quotes 15 individual card names, nearly all self-references (<code>Discard “Trishula”</code>). A card naming <i>another</i> specific card is currently rare but entirely legal.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Yes: a quoted name matching another card creates a direct card-to-card relation; self-references are ignored"/><span><b>Yes, minus self-references</b><span class="rank">Recommended</span><span class="detail">Exactly the same rule and cost as archetype names. The day you print a card that names another card, the link appears with no extra work.</span></span></label>
+        <label class="choice"><input type="checkbox" value="No: only archetype names create relations; individual card names are ignored entirely"/><span><b>Archetype names only</b><span class="rank">Second</span><span class="detail">Narrowest possible rule, least to test. A future “Discard ‘Dante’” on an outside card would show nothing.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. keep the build guard failing on a quoted name that matches nothing"></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How do root-level docs and the /docs/ landing route behave?">
+      <legend>4. Root-level docs and the <code>/docs/</code> landing page</legend>
+      <p class="why">You said root docs come first, alphabetically. Today <code>docs/PRESENTATION.md</code> is special-cased to be the <code>/docs/</code> page itself; with numbers now in URLs that special case has to be re-decided.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Root docs render as ungrouped links at the top of the rail, no heading; the alphabetically first root doc also serves as the /docs/ landing page"/><span><b>Ungrouped links on top; first root doc is also <code>/docs/</code></b><span class="rank">Recommended</span><span class="detail">No heading over the loose files, and no separate landing page to maintain. Name it <code>00_PRESENTATION.md</code> and it is both the first rail entry and <code>/docs/</code>. Its own URL stays <code>/docs/</code>, not <code>/docs/00-presentation/</code>.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Root docs render under a heading such as General, and /docs/ stays hardwired to PRESENTATION.md by filename"/><span><b>Heading over root docs; <code>/docs/</code> hardwired to <code>PRESENTATION.md</code></b><span class="rank">Second</span><span class="detail">Explicit and stable, but keeps a filename hardcoded in the build and gives loose files a group name you did not choose.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Root docs are ungrouped links; /docs/ becomes a generated index page listing every group"/><span><b>Ungrouped links; <code>/docs/</code> becomes a generated index</b><span class="rank">Third</span><span class="detail">A real table of contents at <code>/docs/</code>. New page to design, and it duplicates the rail that is already on screen.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder=""></textarea></label>
+    </fieldset>
+
+    <fieldset data-question="How is a folder's visible group label derived from its folder name?">
+      <legend>5. How is a group's visible label derived from its folder name?</legend>
+      <p class="why">The rail says “General rules”; the disk says <code>01_general_rules</code>. One deterministic rule has to turn one into the other, with no per-folder config, or you are back to editing JSON.</p>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" value="Strip the numeric prefix, replace underscores with spaces, capitalise the first word only: 01_general_rules to General rules"/><span><b>Strip number, underscores → spaces, sentence case</b><span class="rank">Recommended</span><span class="detail"><code>01_general_rules</code> → “General rules”. Matches the repo's existing prose style. Proper nouns like <code>02_burning_abyss</code> come out “Burning abyss”, which is wrong — see the next option.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Strip the numeric prefix, replace underscores with spaces, capitalise every word: 02_burning_abyss to Burning Abyss"/><span><b>Strip number, underscores → spaces, Title Case</b><span class="rank">Second</span><span class="detail"><code>02_burning_abyss</code> → “Burning Abyss” correctly; <code>01_general_rules</code> → “General Rules”, which is louder than the rest of the site's typography.</span></span></label>
+        <label class="choice"><input type="checkbox" value="Title Case by default, but an optional _folder.md in the directory can override the label and add an intro"/><span><b>Title Case, with an optional per-folder override file</b><span class="rank">Third</span><span class="detail">Always correct, at the cost of one more file convention to remember and code to support.</span></span></label>
+      </div>
+      <label class="precision">Precision or custom answer<textarea placeholder="e.g. archetype folders should reuse the label already in content/sections.json"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <span id="status" role="status">Selections stay in this page until copied.</span>
+      <button type="button" id="copy-summary">Copy answer summary</button>
+    </div>
+  </form>
+</main>
+<script>
+  const button = document.querySelector('#copy-summary');
+  const status = document.querySelector('#status');
+
+  function buildSummary() {
+    const sections = [...document.querySelectorAll('fieldset[data-question]')].map((field, index) => {
+      const question = field.dataset.question;
+      const selected = [...field.querySelectorAll('input[type="checkbox"]:checked')].map(input => `- ${input.value}`);
+      const precision = field.querySelector('textarea').value.trim();
+      const answers = selected.length ? selected.join('\n') : '- No recommended answer selected';
+      return `${index + 1}. ${question}\n${answers}${precision ? `\nPrecision: ${precision}` : ''}`;
+    });
+    return `Round 3 · Last frontier — The reference relation you just invented, and the docs root contract\n\n${sections.join('\n\n')}`;
+  }
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummary());
+      status.textContent = 'Summary copied to clipboard.';
+    } catch (_) {
+      const fallback = document.createElement('textarea');
+      fallback.value = buildSummary();
+      document.body.appendChild(fallback);
+      fallback.select();
+      document.execCommand('copy');
+      fallback.remove();
+      status.textContent = 'Summary copied to clipboard.';
+    }
+  });
+</script>
+</body>
+</html>

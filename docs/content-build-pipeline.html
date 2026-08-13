@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content build pipeline — Essentia</title>
+<style>
+  :root { color-scheme: dark; --bg:#0b0a08; --panel:#17130d; --panel-2:#1f190f; --text:#fff7ed; --muted:#c9b99f; --line:#4a3b25; --accent:#fbbf24; --accent-2:#fb923c; --ok:#4ade80; --dead:#6b7280; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { width:min(1040px,calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+  header { display:grid; gap:12px; margin-bottom:36px; }
+  .eyebrow { color:var(--accent); font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  h1 { margin:0; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.07; letter-spacing:-.035em; }
+  h2 { margin:36px 0 14px; font-size:1.3rem; letter-spacing:-.02em; }
+  h3 { margin:0 0 6px; font-size:1rem; }
+  p { margin:0 0 12px; } .lede { max-width:74ch; color:var(--muted); }
+  figure { margin:0 0 24px; padding:20px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+  figcaption { margin-bottom:14px; color:var(--muted); font-size:.85rem; } figcaption b { display:block; color:var(--text); font-size:1rem; }
+  svg { display:block; width:100%; height:auto; } svg text { font-family:ui-sans-serif,system-ui,sans-serif; }
+  .svg-node { fill:var(--panel-2); stroke:var(--line); stroke-width:2; } .svg-node.active { stroke:var(--accent); }
+  .svg-line { fill:none; stroke:var(--line); stroke-width:2; } .svg-arrow { fill:var(--line); }
+  .svg-label { fill:var(--text); font-size:12px; } .svg-note { fill:var(--muted); font-size:10px; } .svg-accent { fill:var(--accent); }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; margin-bottom:20px; }
+  th,td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; }
+  code { padding:1px 5px; border-radius:5px; background:#100d08; color:var(--accent-2); font-size:.85em; }
+  ul { margin:0 0 14px; padding-left:20px; color:var(--muted); } li { margin-bottom:5px; } li b { color:var(--text); }
+  .note { padding:16px 20px; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; background:var(--panel); color:var(--muted); font-size:.9rem; margin-bottom:20px; }
+  .note b { color:var(--text); }
+  .planned { border-left-color:var(--ok); }
+  .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:20px; }
+  .card { padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+  .card .big { display:block; font-size:1.7rem; font-weight:800; letter-spacing:-.03em; }
+  .card .lbl { color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; }
+  .warm { color:var(--accent-2); } .ok { color:var(--ok); } .accent { color:var(--accent); }
+  footer { margin-top:44px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem; }
+  @media (max-width:780px){ .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <span class="eyebrow">Architecture · website</span>
+  <h1>Content build pipeline</h1>
+  <p class="lede">What actually happens between typing <code>npm run dev</code> and getting a page, where the time goes, and which stage owns which artefact. Measured 2026-08-13 on a 50-card corpus, 16 cores.</p>
+</header>
+
+<h2>Stages</h2>
+<figure>
+  <figcaption><b>Three processes, one artefact chain</b>Python rebuilds packages, Node builds the catalog and the images, Astro renders pages.</figcaption>
+  <svg viewBox="0 0 520 250" role="img" aria-labelledby="t1 d1">
+    <title id="t1">Content build stages and their outputs</title>
+    <desc id="d1">rebuild_open_packages.py regenerates MSE packages. build-content.mjs parses packages, verifies provenance, encodes image derivatives and writes catalog.ts. Astro reads catalog.ts and emits dist.</desc>
+
+    <rect class="svg-node" x="0" y="14" width="150" height="46" rx="9"/>
+    <text class="svg-label" x="12" y="34" font-size="11">1 · cards:rebuild</text>
+    <text class="svg-note" x="12" y="48">.script/rebuild_open_packages.py</text>
+    <path class="svg-line" d="M150 37 H196" marker-end="url(#a)"/>
+    <rect class="svg-node active" x="198" y="14" width="164" height="46" rx="9"/>
+    <text class="svg-label" x="210" y="34" font-size="11">2 · build-content.mjs</text>
+    <text class="svg-note" x="210" y="48">scripts/content/orchestrator.mjs</text>
+    <path class="svg-line" d="M362 37 H408" marker-end="url(#a)"/>
+    <rect class="svg-node" x="410" y="14" width="110" height="46" rx="9"/>
+    <text class="svg-label" x="422" y="34" font-size="11">3 · astro</text>
+    <text class="svg-note" x="422" y="48">dev or build</text>
+
+    <text class="svg-note" x="12" y="80">cards_mse/**</text>
+    <text class="svg-note" x="210" y="80">src/generated/catalog.ts · public/generated/**</text>
+    <text class="svg-note" x="422" y="80">dist/</text>
+
+    <line class="svg-line" x1="0" y1="98" x2="520" y2="98" stroke-dasharray="4 4"/>
+    <text class="svg-label" x="0" y="120" font-weight="700">inside stage 2</text>
+
+    <rect class="svg-node" x="0" y="132" width="118" height="38" rx="8"/>
+    <text class="svg-note" x="10" y="150">identity.mjs</text><text class="svg-note" x="10" y="163">sections, membership</text>
+    <rect class="svg-node" x="126" y="132" width="118" height="38" rx="8"/>
+    <text class="svg-note" x="136" y="150">packages.mjs</text><text class="svg-note" x="136" y="163">parse, provenance</text>
+    <rect class="svg-node active" x="252" y="132" width="118" height="38" rx="8"/>
+    <text class="svg-note" x="262" y="150">images.mjs</text><text class="svg-accent" x="262" y="163" font-size="10">98 % of the time</text>
+    <rect class="svg-node" x="378" y="132" width="142" height="38" rx="8"/>
+    <text class="svg-note" x="388" y="150">docs · blog · keywords</text><text class="svg-note" x="388" y="163">related.mjs, then write</text>
+
+    <text class="svg-note" x="0" y="196">Every stage is all-or-nothing per run: there is no partial catalog and no per-page invalidation.</text>
+    <text class="svg-note" x="0" y="212">`--check` skips every write and is the CI gate (`npm run content:check`).</text>
+    <text class="svg-note" x="0" y="228">`src/generated/` and `public/generated/` are git-ignored: both are reproducible from `cards_mse/`.</text>
+    <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="svg-arrow" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+  </svg>
+</figure>
+
+<h2>Measured cost, 50 cards</h2>
+<div class="grid">
+  <div class="card"><span class="lbl">stage 1 · python</span><span class="big">0.3 s</span></div>
+  <div class="card"><span class="lbl">stage 2 · content</span><span class="big warm">107.4 s</span></div>
+  <div class="card"><span class="lbl">stage 3 · astro, 152 pages</span><span class="big">1.5 s</span></div>
+</div>
+
+<table>
+  <thead><tr><th>Measurement</th><th>Command</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>Full content build</td><td><code>npm run content</code></td><td>107.4 s</td></tr>
+    <tr><td>Content build without image writes</td><td><code>npm run content:check</code></td><td><b>0.66 s</b></td></tr>
+    <tr><td>Static render of every page</td><td><code>npx astro build</code></td><td>1.56 s</td></tr>
+    <tr><td>One card's five derivatives</td><td>sharp, measured directly</td><td>2.44 s — AVIF 1.96 s of it</td></tr>
+    <tr><td>Output volume</td><td><code>public/generated</code></td><td>250 files · 63 MB</td></tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <p><b>The whole build is one bottleneck.</b> 107.4 of 109.2 s is <code>sharp</code> encoding image derivatives, and 0.66 s is everything else the content build does. Any conversation about build speed that is not about image encoding is about 1.8 % of the problem.</p>
+</div>
+
+<h2>Derivative tiers</h2>
+<table>
+  <thead><tr><th>Tier</th><th>Width</th><th>Formats</th><th>Source</th><th>Cost per card</th></tr></thead>
+  <tbody>
+    <tr><td><code>thumb</code></td><td>240 px</td><td>avif, webp</td><td>print master, else 1× render</td><td>345 ms</td></tr>
+    <tr><td><code>display</code></td><td>750 px</td><td>avif, webp</td><td>print master, else 1× render</td><td>1 776 ms</td></tr>
+    <tr><td><code>print</code></td><td>1500 × 2092, 600 DPI</td><td>png</td><td>print master, else upscaled render</td><td>315 ms</td></tr>
+  </tbody>
+</table>
+<p class="lede">A card with no <code>renders_print/</code> master is flagged <code>draftResolution</code> and the print tier is upscaled from the 1× render. The content build prints a warning naming how many cards are in that state.</p>
+
+<h2>Planned change — content-hash cache</h2>
+<div class="note planned">
+  <p><b>Status: planned, not yet implemented.</b> See <code>docs/ADR/proposed/0038-content-hash-derivative-cache.md</code> and <code>ai-artifacts/PLAN_2026_08_13_feedback_batch_3.md</code> tickets T1 and T2.</p>
+</div>
+<ul>
+  <li>The <code>rm -rf public/generated</code> at build start is deleted; a manifest at <code>public/generated/.derivative-manifest.json</code> maps each output to a key over <code>{ sourceHash, tier, format, width, rev, options }</code>.</li>
+  <li>A derivative is re-encoded only when its key changes or its file is missing. Files no longer claimed by any card are pruned explicitly.</li>
+  <li>AVIF drops from <code>effort: 4</code> to <code>effort: 2</code>; dev and build keep emitting identical bytes.</li>
+  <li><code>npm run cache:verify</code> rebuilds cold into a temp directory via <code>GENERATED_PUBLIC_DIR</code> and byte-compares against the cached tree; it runs in <code>npm run ci</code>.</li>
+  <li>Expected warm cost: <b>≈ 2.5 s</b> for <code>npm run dev</code>, converging on the measured 0.66 s content floor.</li>
+</ul>
+
+<h2>What this pipeline deliberately does not do</h2>
+<ul>
+  <li><b>No incremental catalog.</b> Every run reparses every package. At 0.66 s that is not worth changing.</li>
+  <li><b>No parallel encoding.</b> Encoding is serial on one core of sixteen. The cache removes the repeat cost; the cold cost stays linear, and CI pays it.</li>
+  <li><b>No split builds.</b> Blog, docs and cards share one Astro app — see <code>docs/ADR/proposed/0039-one-astro-app.md</code>.</li>
+  <li><b>No request-time work.</b> The site is fully static; "cache it" always means "compute it in the content build".</li>
+</ul>
+
+<footer>
+  Measured 2026-08-13 · corpus: 1 release, 3 sections, 50 cards, 82 keywords, 38 docs, 2 posts ·
+  sources: <code>website/scripts/content/orchestrator.mjs</code>, <code>images.mjs</code>, <code>packages.mjs</code>
+</footer>
+</main>
+</body>
+</html>
