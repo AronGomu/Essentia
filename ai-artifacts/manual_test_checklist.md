@@ -358,3 +358,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Delete the PNGs inside an open package's `renders/` (keep the directory) and run the rebuild: it rebuilds rather than treating the empty directory as a finished output.
 - [ ] `grep -rn '/home/' website/content/art-provenance.json` prints nothing: the two archetype-background entries now record `owner-supplied (outside repo): <file>.png`. The source images themselves still live outside the repo, under `~/Downloads`.
 - [ ] Read the T1 lint-perf line above: it no longer asks anyone to verify byte-identical lint output. The true expectation is 248 findings with one changed MSE008 message on `card nekroz - shurit:19`.
+
+## T1 derivative cache
+
+- [ ] `cd website && rm -rf public/generated && npm run content`: output reports 1 release, 3 sections, 50 current cards; `public/generated/.derivative-manifest.json` exists with 250 entries.
+- [ ] Immediately rerun `cd website && time npm run content`: output stays identical; real time remains under 3 seconds.
+- [ ] Compare derivative hashes before and after warm run: all 250 derivative bytes remain unchanged.
+- [ ] Delete one derivative, rerun `npm run content`: missing file returns; unrelated derivative mtimes remain unchanged.
+- [ ] Open `/`, `/archetypes/burning-abyss/`, `/cards/burning-abyss-dante/`: card images load at thumb/display tiers; print link still resolves.

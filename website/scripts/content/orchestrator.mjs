@@ -4,7 +4,6 @@ import {
   readFile,
   readdir,
   rename,
-  rm,
   writeFile,
 } from 'node:fs/promises';
 import path from 'node:path';
@@ -30,6 +29,11 @@ import { loadSectionIntros, sectionIntroSummary } from './section-intros.mjs';
 import { loadReadingOrder, postGroups } from './reading-order.mjs';
 import { discover } from './packages.mjs';
 import { buildRelatedGraph } from './related.mjs';
+import {
+  loadDerivativeManifest,
+  pruneOrphans,
+  writeDerivativeManifest,
+} from './images.mjs';
 
 export const CATALOG_SCHEMA_VERSION = 11;
 
@@ -80,18 +84,27 @@ export async function build({ checkOnly }) {
   const posts = await loadPosts();
   const groupedPosts = postGroups(readingOrder.blog, posts);
 
-  if (!checkOnly) {
-    await rm(GENERATED_PUBLIC, { recursive: true, force: true });
-    await mkdir(GENERATED_PUBLIC, { recursive: true });
-  }
+  if (!checkOnly) await mkdir(GENERATED_PUBLIC, { recursive: true });
   // Keep generated modules importable while Astro/Vite watches this directory.
   // Removing it first creates a window where SSR imports fail, then Vite caches
   // the missing-module error until its dev server restarts.
   await mkdir(GENERATED_SOURCE, { recursive: true });
 
+  const cache = checkOnly
+    ? null
+    : { previous: await loadDerivativeManifest(), next: new Map() };
   const { packages, versions, rights, seenIds, draftResolutionCount } =
-    await discover(registry, { checkOnly, colorOverrides, keywordRegistry });
+    await discover(registry, {
+      checkOnly,
+      colorOverrides,
+      keywordRegistry,
+      cache,
+    });
   assertOverridesResolved(colorOverrides, seenIds);
+  if (cache) {
+    await pruneOrphans(new Set(cache.next.keys()));
+    await writeDerivativeManifest(cache.next);
+  }
 
   const versionsById = new Map();
   for (const version of versions) {

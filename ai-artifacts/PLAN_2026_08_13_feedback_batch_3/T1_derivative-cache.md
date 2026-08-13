@@ -72,55 +72,64 @@ Run: `cd website && npx vitest run tests/unit/image-cache.test.ts`
 
 ## Impl steps
 
-- [ ] 1. In `website/scripts/content/images.mjs`, add
+- [x] 1. In `website/scripts/content/images.mjs`, add
       `export const ENCODER_REVISION = 1;` and named option constants
       `export const AVIF_OPTIONS = { quality: 60, effort: 2 };`,
       `export const WEBP_OPTIONS = { quality: 86, effort: 5 };`,
       `export const PNG_OPTIONS = { compressionLevel: 9, adaptiveFiltering: true };`.
-- [ ] 2. Rewrite `writeDerivative(input, output, format, width)` to read its options from
-      those three constants instead of the inline literals.
-- [ ] 3. Add `export function derivativeKeyInput({ sourceHash, tier, format, width })`
+      Verify: focused Vitest options test passes.
+- [x] 2. Rewrite `writeDerivative(input, output, format, width)` to read its options from
+      those three constants instead of the inline literals. Verify: `grep -n "\.avif\|\.webp\|\.png" website/scripts/content/images.mjs` shows constant-backed calls.
+- [x] 3. Add `export function derivativeKeyInput({ sourceHash, tier, format, width })`
       returning `{ sourceHash, tier, format, width, rev: ENCODER_REVISION, options }`,
       where `options` is `AVIF_OPTIONS` / `WEBP_OPTIONS` / `PNG_OPTIONS` by format.
-- [ ] 4. Add `export function derivativeKey(input)` returning
+      Verify: focused Vitest key-input test passes.
+- [x] 4. Add `export function derivativeKey(input)` returning
       `sha(JSON.stringify(derivativeKeyInput(input)))`, importing `sha` from `./shared.mjs`.
-- [ ] 5. Add `export const MANIFEST_PATH = path.join(GENERATED_PUBLIC, '.derivative-manifest.json');`
-      and `export const MANIFEST_SCHEMA_VERSION = 1;`.
-- [ ] 6. Add `export async function loadDerivativeManifest()`: read `MANIFEST_PATH`, return
+      Verify: focused Vitest source-hash key test passes.
+- [x] 5. Add `export const MANIFEST_PATH = path.join(GENERATED_PUBLIC, '.derivative-manifest.json');`
+      and `export const MANIFEST_SCHEMA_VERSION = 1;`. Verify: exports exist in `website/scripts/content/images.mjs`.
+- [x] 6. Add `export async function loadDerivativeManifest()`: read `MANIFEST_PATH`, return
       `new Map(Object.entries(parsed.entries))` when `parsed.schemaVersion === MANIFEST_SCHEMA_VERSION`,
-      and an empty `Map` on any error or version mismatch.
-- [ ] 7. Add `export async function writeDerivativeManifest(entries)`: write
+      and an empty `Map` on any error or version mismatch. Verify: warm `npm run content` loads manifest successfully.
+- [x] 7. Add `export async function writeDerivativeManifest(entries)`: write
       `{ schemaVersion: MANIFEST_SCHEMA_VERSION, entries: Object.fromEntries([...entries].sort()) }`
       to `MANIFEST_PATH` with `JSON.stringify(value, null, 2)` plus a trailing newline.
-- [ ] 8. Add `export async function pruneOrphans(claimed)`: walk `GENERATED_PUBLIC`
+      Verify: cold `npm run content` creates valid `public/generated/.derivative-manifest.json`.
+- [x] 8. Add `export async function pruneOrphans(claimed)`: walk `GENERATED_PUBLIC`
       recursively, delete every file whose `GENERATED_PUBLIC`-relative POSIX path is absent
       from the `claimed` set, ignoring `.derivative-manifest.json`; then remove directories
-      left empty.
-- [ ] 9. Change the signature to
+      left empty. Verify: focused Vitest orphan-prune test passes.
+- [x] 9. Change the signature to
       `buildCardImages({ id, assetRoot, canonical, printMaster, width, height, checkOnly, cache })`
       where `cache` is `{ previous: Map<string,string>, next: Map<string,string> }` or
-      `null` when `checkOnly` is true.
-- [ ] 10. Inside `buildCardImages`, compute `const sourceHash = sha(await readFile(source));`
+      `null` when `checkOnly` is true. Verify: focused Vitest builds with cache object.
+- [x] 10. Inside `buildCardImages`, compute `const sourceHash = sha(await readFile(source));`
       once, before the tier loop (`source` is already `printMaster ?? canonical`).
-- [ ] 11. For each derivative, compute `relative = \`${assetRoot}/${id}-${tier}.${format}\``
+      Verify: focused Vitest source-change test passes.
+- [x] 11. For each derivative, compute `relative = \`${assetRoot}/${id}-${tier}.${format}\``
       and `key = derivativeKey({ sourceHash, tier, format, width: outputWidth })`. Set
       `cache.next.set(relative, key)`. Encode only when
       `cache.previous.get(relative) !== key || !existsSync(absoluteTarget)`.
-- [ ] 12. Apply the same three lines to the `print.png` derivative
-      (`tier: 'print'`, `format: 'png'`).
-- [ ] 13. In `website/scripts/content/orchestrator.mjs`, delete the
+      Verify: focused Vitest skip + source-change tests pass.
+- [x] 12. Apply the same three lines to the `print.png` derivative
+      (`tier: 'print'`, `format: 'png'`). Verify: focused Vitest confirms every output mtime is stable then increases.
+- [x] 13. In `website/scripts/content/orchestrator.mjs`, delete the
       `await rm(GENERATED_PUBLIC, { recursive: true, force: true });` call and the now-unused
-      `rm` import; keep the `mkdir`.
-- [ ] 14. In the same file, before `discover(...)`, add
+      `rm` import; keep the `mkdir`. Verify: `grep -n "rm(GENERATED_PUBLIC" website/scripts/content/orchestrator.mjs` returns no match.
+- [x] 14. In the same file, before `discover(...)`, add
       `const cache = checkOnly ? null : { previous: await loadDerivativeManifest(), next: new Map() };`
-      and pass `cache` through the `discover` options object.
-- [ ] 15. After `discover(...)` returns and before the catalog is written, add
+      and pass `cache` through the `discover` options object. Verify: warm `npm run content` completes under 3 s.
+- [x] 15. After `discover(...)` returns and before the catalog is written, add
       `if (cache) { await pruneOrphans(new Set(cache.next.keys())); await writeDerivativeManifest(cache.next); }`.
-- [ ] 16. In `website/scripts/content/packages.mjs`, accept `cache` in the `discover`
+      Verify: cold content run writes manifest; focused orphan test passes.
+- [x] 16. In `website/scripts/content/packages.mjs`, accept `cache` in the `discover`
       options object and forward it into every `buildCardImages({ … , cache })` call.
-- [ ] 17. Write `website/tests/unit/image-cache.test.ts` per the test plan.
-- [ ] 18. `grep -rn "effort" docs/render-resolution-pipeline.html` and, if it states AVIF
-      effort 4, update it to 2 in the same commit.
+      Verify: `npm run content` exits 0 with 50 cards.
+- [x] 17. Write `website/tests/unit/image-cache.test.ts` per the test plan.
+      Verify: initial focused run fails on missing exports; post-impl focused run reports 5 passed.
+- [x] 18. `grep -rn "effort" docs/render-resolution-pipeline.html` and, if it states AVIF
+      effort 4, update it to 2 in the same commit. Verify: grep contains no stale AVIF effort 4 claim.
 
 ## Outputs
 
@@ -133,12 +142,12 @@ Run: `cd website && npx vitest run tests/unit/image-cache.test.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run tests/unit/image-cache.test.ts` — 5 passed
-- [ ] `cd website && rm -rf public/generated && time npm run content` — prints
-      `content: 1 releases, 3 sections, 50 current cards, …`; record the cold time
-- [ ] `cd website && time npm run content` — same line, **real under 3 s**
-- [ ] `cd website && npm run content && npm run build` — exits 0
-- [ ] `cd website && npx vitest run` — whole unit suite green
-- [ ] `ls website/public/generated/releases/alpha-LOTA-0001-Alpha-0-1 | wc -l` — 250
-- [ ] app functional — `npm run preview` and load `/`, one archetype page, one card page
-- [ ] commit msg draft: `perf(website): cache image derivatives by content hash`
+- [x] `cd website && npx vitest run tests/unit/image-cache.test.ts` — criterion: exactly 5 tests passed
+- [x] `cd website && rm -rf public/generated && time npm run content` — criterion: prints
+      `content: 1 releases, 3 sections, 50 current cards, …`; cold real time recorded
+- [x] `cd website && time npm run content` — criterion: same summary line, real under 3 s
+- [x] `cd website && npm run content && npm run build` — criterion: exits 0
+- [x] `cd website && npx vitest run` — criterion: no new failures vs 776-pass + 1 owner-gated baseline
+- [x] `ls website/public/generated/releases/alpha-LOTA-0001-Alpha-0-1 | wc -l` — criterion: stdout is `250`
+- [x] app functional — criterion: `npm run preview` serves `/`, one archetype page, one card page with HTTP 200
+- [x] commit msg draft: `perf(website): cache image derivatives by content hash` — criterion: `git log -1 --format=%s` matches exactly

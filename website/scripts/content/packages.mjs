@@ -320,7 +320,7 @@ async function parseProject(projectRoot, marker) {
 }
 
 export async function discover(registry, options) {
-  const { checkOnly, colorOverrides, keywordRegistry } = options;
+  const { checkOnly, colorOverrides, keywordRegistry, cache } = options;
   const packages = [];
   const versions = [];
   const rights = [];
@@ -456,6 +456,7 @@ export async function discover(registry, options) {
           width: metadata.width,
           height: metadata.height,
           checkOnly,
+          cache,
         });
 
         const parsedCost = parseCastingCost(card.castingCost, `${id} cost`);
