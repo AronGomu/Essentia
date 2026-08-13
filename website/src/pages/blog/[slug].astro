@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChapterSummary from '../../components/ChapterSummary.astro';
 import Markdown from '../../components/Markdown.astro';
 import {
   catalog,
@@ -21,6 +22,15 @@ interface Props {
 
 const { post } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const chapters = post.headings
+  .filter((heading) => heading.level === 2)
+  .map((heading) => ({
+    href: '#' + heading.id,
+    label: heading.text,
+  }));
+const shellClass = chapters.length
+  ? 'reading-shell'
+  : 'reading-shell reading-shell--no-toc';
 ---
 
 <BaseLayout
@@ -33,7 +43,7 @@ const base = import.meta.env.BASE_URL;
     { label: post.title },
   ]}
 >
-  <div class="reading-shell reading-shell--no-toc">
+  <div class={shellClass}>
     <article class="reading-body post-body">
       <h1>{post.title}</h1>
       <p class="post-meta">
@@ -41,5 +51,6 @@ const base = import.meta.env.BASE_URL;
       </p>
       <Markdown value={post.body} />
     </article>
+    {chapters.length > 0 && <ChapterSummary items={chapters} />}
   </div>
 </BaseLayout>

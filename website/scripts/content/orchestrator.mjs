@@ -34,7 +34,7 @@ import {
   writeDerivativeManifest,
 } from './images.mjs';
 
-export const CATALOG_SCHEMA_VERSION = 11;
+export const CATALOG_SCHEMA_VERSION = 12;
 
 export async function writeAtomic(target, content) {
   const temporary = `${target}.${process.pid}.tmp`;

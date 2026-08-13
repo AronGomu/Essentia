@@ -16,11 +16,16 @@ const PAGE_SOURCES = [
 const pageSources = PAGE_SOURCES.map((relative) =>
   readFileSync(new URL(relative, import.meta.url), 'utf-8'),
 );
+const blogPageSources = pageSources.slice(2);
 
 describe('docs and blog reading shell', () => {
   it('docs and blog use the same shell class', () => {
-    for (const source of pageSources) {
+    for (const source of pageSources.slice(0, 2)) {
       expect(source).toContain('class="reading-shell');
+    }
+    for (const source of blogPageSources) {
+      expect(source).toContain("? 'reading-shell'");
+      expect(source).toContain('class={shellClass}');
     }
   });
 
@@ -60,6 +65,28 @@ describe('docs and blog reading shell', () => {
       expect(source).not.toContain('DocsRail');
       expect(source).not.toContain('BlogRail');
     }
+  });
+
+  it('both blog routes render ChapterSummary when chapters exist', () => {
+    for (const source of blogPageSources) {
+      expect(source).toContain(
+        "import ChapterSummary from '../../components/ChapterSummary.astro';",
+      );
+      expect(source).toMatch(
+        /headings\s*\.filter\(\(heading\) => heading\.level === 2\)\s*\.map\(\(heading\) => \(\{\s*href: '#' \+ heading\.id,\s*label: heading\.text,\s*\}\)\)/,
+      );
+      expect(source).toContain('<ChapterSummary items={chapters} />');
+      expect(source).toMatch(/chapters\.length\s*\?\s*'reading-shell'/);
+      expect(source).toContain("'reading-shell reading-shell--no-toc'");
+      expect(source).toContain('class={shellClass}');
+      expect(source).toContain('chapters.length > 0 &&');
+    }
+  });
+
+  it('shared reading headings clear the sticky header for native fragments', () => {
+    expect(globalCss).toMatch(
+      /\.reading-body :is\(h2, h3, h4\)\s*\{\s*scroll-margin-top:\s*calc\(var\(--header\) \+ 1rem\);\s*\}/,
+    );
   });
 
   it('the prose column caps its measure', () => {

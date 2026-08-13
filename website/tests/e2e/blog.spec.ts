@@ -1,4 +1,47 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function expectChapterNavigation(page: Page, route: string) {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(route);
+
+  const article = page.locator('.reading-body');
+  const summary = page.locator('.chapter-summary');
+  const articleBox = await article.boundingBox();
+  const summaryBox = await summary.boundingBox();
+  expect(articleBox).not.toBeNull();
+  expect(summaryBox).not.toBeNull();
+  expect(summaryBox!.x).toBeGreaterThanOrEqual(
+    articleBox!.x + articleBox!.width,
+  );
+
+  await summary.getByRole('link', { name: 'Archetypes', exact: true }).click();
+  await expect(page).toHaveURL(/#archetypes$/);
+
+  let settledOffset: number | null = null;
+  await expect
+    .poll(
+      async () => {
+        const headerBox = await page.locator('.site-header').boundingBox();
+        const targetBox = await page.locator('#archetypes').boundingBox();
+        if (!headerBox || !targetBox) return false;
+        settledOffset = targetBox.y - (headerBox.y + headerBox.height);
+        return settledOffset >= 0 && settledOffset <= 32;
+      },
+      { intervals: [16] },
+    )
+    .toBe(true);
+  expect(settledOffset).not.toBeNull();
+  expect(settledOffset!).toBeGreaterThanOrEqual(0);
+  expect(settledOffset!).toBeLessThanOrEqual(32);
+
+  const headerBox = await page.locator('.site-header').boundingBox();
+  const targetBox = await page.locator('#archetypes').boundingBox();
+  expect(headerBox).not.toBeNull();
+  expect(targetBox).not.toBeNull();
+  expect(targetBox!.y - (headerBox!.y + headerBox!.height)).toBeLessThanOrEqual(
+    32,
+  );
+}
 
 test.describe('blog landing', () => {
   test('/blog/ renders the latest post body', async ({ page }) => {
@@ -41,6 +84,31 @@ test.describe('blog landing', () => {
     expect(canonicalHref).not.toBeNull();
     expect(new URL(canonicalHref!).pathname).toBe(
       '/blog/lota-alpha-v0-1-presentation/',
+    );
+  });
+
+  test('blog landing chapter links scroll to their sections', async ({
+    page,
+  }) => {
+    await expectChapterNavigation(page, '/blog/');
+  });
+
+  test('blog post chapter links scroll to their sections', async ({ page }) => {
+    await expectChapterNavigation(page, '/blog/lota-alpha-v0-1-presentation/');
+  });
+
+  test('blog chapter summary moves above prose below 64rem', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 900, height: 900 });
+    await page.goto('/blog/lota-alpha-v0-1-presentation/');
+
+    const summaryBox = await page.locator('.chapter-summary').boundingBox();
+    const articleBox = await page.locator('.reading-body').boundingBox();
+    expect(summaryBox).not.toBeNull();
+    expect(articleBox).not.toBeNull();
+    expect(summaryBox!.y + summaryBox!.height).toBeLessThanOrEqual(
+      articleBox!.y,
     );
   });
 

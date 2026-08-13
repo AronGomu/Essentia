@@ -1,10 +1,21 @@
 ---
+import ChapterSummary from '../../components/ChapterSummary.astro';
 import Markdown from '../../components/Markdown.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { catalog, formatDate, latestPost, withBase } from '../../lib/catalog';
 
 const base = import.meta.env.BASE_URL;
 const post = latestPost(catalog);
+const chapters =
+  post?.headings
+    .filter((heading) => heading.level === 2)
+    .map((heading) => ({
+      href: '#' + heading.id,
+      label: heading.text,
+    })) ?? [];
+const shellClass = chapters.length
+  ? 'reading-shell'
+  : 'reading-shell reading-shell--no-toc';
 ---
 
 <BaseLayout
@@ -15,7 +26,7 @@ const post = latestPost(catalog);
   accent="relic"
   breadcrumb={[{ label: 'Archive', href: base }, { label: 'Blog' }]}
 >
-  <div class="reading-shell reading-shell--no-toc">
+  <div class={shellClass}>
     <article class="reading-body post-body">
       {
         post ? (
@@ -31,5 +42,6 @@ const post = latestPost(catalog);
         )
       }
     </article>
+    {chapters.length > 0 && <ChapterSummary items={chapters} />}
   </div>
 </BaseLayout>

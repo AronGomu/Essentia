@@ -9,3 +9,11 @@
 - [x] Publication rights: exact generated inventory approved — 100 records total, 50 display + 50 print; no render byte diffs.
 
 Evidence: focused Vitest 138/138; focused Chromium Playwright 26/26; base-path build exit 0; `npm run ci` 74 files + 780 tests pass.
+
+## T2 — Blog chapter summary
+
+- [ ] Desktop `/blog/` and `/blog/lota-alpha-v0-1-presentation/`: chapter summary appears right of prose.
+- [ ] 900 px blog post: chapter summary appears above prose.
+- [ ] Click several chapter links: URL hash matches heading and target clears sticky header.
+- [ ] Blog canonical URLs: `/blog/` points to latest post; post route stays self-canonical.
+- [ ] Post without H2: one-column shell appears with no empty chapter summary.

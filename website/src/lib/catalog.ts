@@ -205,10 +205,11 @@ export interface CatalogPost {
   summary: string;
   tags: string[];
   body: string;
+  headings: Array<{ id: string; text: string; level: number }>;
 }
 
 export interface Catalog {
-  schemaVersion: 11;
+  schemaVersion: 12;
   generatedAt: string;
   heroSectionSlug: string;
   sections: CatalogSection[];

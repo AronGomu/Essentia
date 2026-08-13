@@ -1,5 +1,6 @@
 import { lstat, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
+import { headingSlug } from '../../src/lib/markdown.ts';
 import { ROOT, fail, validDate } from './shared.mjs';
 
 const BLOG_ROOT = path.join(ROOT, 'blog');
@@ -109,6 +110,13 @@ export async function loadPosts(blogRoot = BLOG_ROOT) {
     if (/<\/?[A-Za-z][^>]*>/.test(body))
       fail(`post ${slug}: raw HTML is not allowed`);
 
+    const headings = [];
+    for (const match of body.matchAll(/^(#{2,4})\s+(.+)$/gm)) {
+      const level = match[1].length;
+      const text = match[2].trim();
+      headings.push({ id: headingSlug(text), text, level });
+    }
+
     if (seenSlugs.has(slug)) fail(`post ${slug}: duplicate slug`);
     seenSlugs.add(slug);
 
@@ -128,6 +136,7 @@ export async function loadPosts(blogRoot = BLOG_ROOT) {
             .filter(Boolean)
         : [],
       body,
+      headings,
     });
   }
 

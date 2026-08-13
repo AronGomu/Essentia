@@ -11,6 +11,7 @@ import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { parseFrontMatter, loadPosts } from '../../scripts/content/blog.mjs';
 import { ROOT } from '../../scripts/content/shared.mjs';
+import { renderSafeMarkdown } from '../../src/lib/markdown';
 
 /** The repository's own posts — read, never written. */
 const BLOG_ROOT = path.join(ROOT, 'blog');
@@ -106,6 +107,39 @@ describe('loadPosts', () => {
     expect(post.route).toBe('/blog/fixture-one/');
     expect(post.title).toBe('Fixture One');
     expect(post.body).toBe('body');
+  });
+
+  it('extracts renderer-matching H2-H4 metadata', async () => {
+    const body = [
+      '## Opening',
+      '',
+      '### Details',
+      '',
+      '#### Deep note',
+      '',
+      '## Open/locked lifecycle (v2)',
+    ].join('\n');
+    await writeFixturePost(
+      '2026-02-02-heading-fixture.md',
+      `---\ntitle: Heading Fixture\ndate: 2026-02-02\nauthor: A\nsummary: s\n---\n${body}`,
+    );
+
+    const [post] = await loadPosts(fixtureRoot);
+    expect(post.headings).toEqual([
+      { id: 'opening', text: 'Opening', level: 2 },
+      { id: 'details', text: 'Details', level: 3 },
+      { id: 'deep-note', text: 'Deep note', level: 4 },
+      {
+        id: 'open-locked-lifecycle-v2',
+        text: 'Open/locked lifecycle (v2)',
+        level: 2,
+      },
+    ]);
+
+    const rendered = renderSafeMarkdown(post.body);
+    for (const heading of post.headings) {
+      expect(rendered).toContain(`id="${heading.id}"`);
+    }
   });
 
   it('ignores directories inside blog/', async () => {

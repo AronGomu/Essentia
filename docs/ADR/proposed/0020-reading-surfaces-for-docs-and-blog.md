@@ -2,7 +2,7 @@
 
 - Date: 2026-08-07
 - Status: Proposed — accepted for implementation by `ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass-2.md` (T1 defines the tokens, T9 builds the surface)
-- Scope: website design system, docs pages, blog pages
+- Scope: website design system, docs pages, blog pages, blog heading metadata
 
 ## Context
 
@@ -33,6 +33,7 @@ Three concrete defects sit behind that.
 6. Values are a design decision, not an implementation detail: T1 freezes them with the user through the `impeccable` skill before any page consumes them, and a unit test pins the token names so a later restyle cannot silently rename the contract.
 7. Below `64rem` the shell collapses to one column and the rails become static and move above the prose, matching the behaviour `.chapter-summary` already has.
 8. **The Lit Room Rule.** Only the prose panel and its own rails take `--reading-surface`. The site header, the catalog rail and the page gutter stay on `--blackfoil`. A reading page is one lit room inside the same dark archive, not a second site — this is what keeps the chosen lift from severing docs and blog from `/archetypes/` and the card pages.
+9. **Blog chapter parity (2026-08-13 amendment).** `blog.mjs` stores H2-H4 metadata using the same `headingSlug()` as Markdown rendering. `/blog/` and `/blog/{slug}/` show H2 entries through `ChapterSummary.astro` in the right column. Links are native fragments; no client JS. Posts without H2 use the one-column shell and render no empty summary. Heading scroll margin clears the sticky header.
 
 ## Consequences
 
@@ -40,4 +41,4 @@ Three concrete defects sit behind that.
 - The Neutral Night Rule now has one written exception rather than an undocumented drift. Any future reviewer sees the boundary — `.reading-*` and nothing else.
 - Eight new tokens enter the system. Because they are asserted by name in `website/tests/unit/reading-tokens.test.ts`, renaming one breaks the build rather than silently un-styling half the site.
 - The blog rail grows linearly with the archive. At the current single article this is free; past roughly fifty posts it will need grouping by year, which is a later ticket, not a blocker now.
-- `.chapter-summary` and `.page-toc` keep their existing styles and are reused unchanged, so the docs right-hand column is untouched by this change.
+- `.chapter-summary` and `.page-toc` stay shared by docs and blog. Desktop places them right of prose; below 64rem they move above prose.

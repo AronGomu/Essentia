@@ -1730,6 +1730,9 @@ html[data-theme='nekroz'] .render-column picture {
 .reading-body h1 {
   margin-top: 0;
 }
+.reading-body :is(h2, h3, h4) {
+  scroll-margin-top: calc(var(--header) + 1rem);
+}
 .reading-body table {
   width: 100%;
   border-collapse: collapse;
