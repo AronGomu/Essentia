@@ -473,6 +473,19 @@ html[data-page='archetype'] body::after {
   .mobile-drawer small {
     color: var(--silver-ink);
   }
+  .desktop-catalog li a.reading-nav-item,
+  .mobile-drawer li a.reading-nav-item {
+    display: block;
+  }
+  .nav-item-title {
+    display: block;
+    width: 100%;
+  }
+  .nav-item-meta {
+    display: block;
+    color: var(--silver-ink);
+    font-size: 0.78rem;
+  }
   .nav-label {
     color: var(--silver-ink);
     font-size: 0.85rem;
@@ -1996,16 +2009,6 @@ html[data-catalog='collapsed'] .desktop-catalog {
   }
 }
 
-.post-list {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: var(--space-4);
-}
-.post-list li + li {
-  border-top: 1px solid var(--reading-rule);
-  padding-top: var(--space-4);
-}
 .post-meta {
   color: var(--reading-ink-muted);
   margin: 0.2rem 0 0.6rem;

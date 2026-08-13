@@ -228,12 +228,6 @@ export interface Catalog {
   }>;
   docs: CatalogDoc[];
   posts: CatalogPost[];
-  /** Blog sections, in reading-order.json order; every slug resolves to a post. */
-  postGroups: ReadonlyArray<{
-    key: string;
-    label: string;
-    slugs: readonly string[];
-  }>;
   publicationDiagnostics: Array<{
     sectionSlug: string;
     sourceFile: string;
@@ -370,4 +364,17 @@ export function formatDate(value: string): string {
   return new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(
     new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])),
   );
+}
+
+export function formatDateNumeric(value: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) throw new Error(`Invalid local date: ${value}`);
+  const [, year, month, day] = match;
+  return `${day}/${month}/${year}`;
+}
+
+export function latestPost(source: {
+  posts: readonly CatalogPost[];
+}): CatalogPost | undefined {
+  return source.posts[0];
 }

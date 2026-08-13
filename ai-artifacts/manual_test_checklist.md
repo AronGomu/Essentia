@@ -395,3 +395,9 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [x] `/docs/` shows the Essentia presentation page.
 - [x] `/docs/rules/zones/` still resolves.
 - [x] Docs rail renders one heading per folder-derived group; root docs stay ungrouped first.
+
+## T7 blog landing
+
+- [x] `/blog/` shows the 2026-08-08 post in full and has no `.post-list`; its canonical points to that post's `/blog/{slug}/` route.
+- [x] Desktop rail and mobile drawer show both posts newest first, each full-width title above `08/08/2026` or `01/08/2026`, with no blog group heading.
+- [x] `/blog/lota-alpha-v0-1-presentation/` still renders and declares itself canonical.

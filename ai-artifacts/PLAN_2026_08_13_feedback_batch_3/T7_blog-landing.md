@@ -109,42 +109,42 @@ then `cd website && npm run build && npx playwright test tests/e2e/blog.spec.ts`
 
 ## Impl steps
 
-- [ ] 1. In `website/src/lib/catalog.ts`, add
+- [x] 1. In `website/src/lib/catalog.ts`, add
       `export function formatDateNumeric(value: string): string` returning
       `` `${day}/${month}/${year}` `` from a `/^(\d{4})-(\d{2})-(\d{2})$/` match, throwing
       `new Error(\`Invalid local date: ${value}\`)` otherwise. Leave `formatDate` alone.
-- [ ] 2. In `website/src/lib/catalog.ts`, add
+- [x] 2. In `website/src/lib/catalog.ts`, add
       `export function latestPost(source: { posts: readonly CatalogPost[] }): CatalogPost | undefined`
       returning `source.posts[0]` (the catalog is already sorted newest first).
-- [ ] 3. In `website/src/lib/reading-nav.ts`, replace the blog branch with a single group
+- [x] 3. In `website/src/lib/reading-nav.ts`, replace the blog branch with a single group
       `{ key: 'posts', label: '', items: source.posts.map((post) => ({ route: post.route, title: post.title, meta: formatDateNumeric(post.date) })) }`,
       returning `[]` when there are no posts. Drop `postGroups` from `ReadingNavSource`.
-- [ ] 4. In `website/src/components/Navigation.svelte`, render a reading item as
+- [x] 4. In `website/src/components/Navigation.svelte`, render a reading item as
       `<a …><span class="nav-item-title">{item.title}</span>{#if item.meta}<span class="nav-item-meta">{item.meta}</span>{/if}</a>`
       in both the desktop rail and the drawer, replacing the inline `<small>`.
-- [ ] 5. In `website/src/styles/global.css`, style `.nav-item-title` as
+- [x] 5. In `website/src/styles/global.css`, style `.nav-item-title` as
       `display: block;` with the rail's existing link typography, and `.nav-item-meta` as
       `display: block; font-size: .78rem; color: var(--muted-ish);` matching the current
       `small` colour. Keep the docs rail unaffected — docs items have no `meta`.
-- [ ] 6. Rewrite `website/src/pages/blog/index.astro` to read
+- [x] 6. Rewrite `website/src/pages/blog/index.astro` to read
       `const post = latestPost(catalog);`, render the same markup as
       `blog/[slug].astro` when a post exists, and `<p>No posts published yet.</p>` otherwise.
-- [ ] 7. Add `canonicalPath?: string | undefined` to `BaseLayout.astro`'s `Props`, default
+- [x] 7. Add `canonicalPath?: string | undefined` to `BaseLayout.astro`'s `Props`, default
       `undefined`, and forward it: `<Seo {title} {description} {image} {canonicalPath} />`.
-- [ ] 8. In `blog/index.astro`, pass `canonicalPath={withBase(base, post.route)}` so the
+- [x] 8. In `blog/index.astro`, pass `canonicalPath={withBase(base, post.route)}` so the
       landing page points at `/blog/{slug}/`.
-- [ ] 9. In `website/scripts/content/orchestrator.mjs`, drop `postGroups` from the catalog
+- [x] 9. In `website/scripts/content/orchestrator.mjs`, drop `postGroups` from the catalog
       object and its import; delete `postGroups` from
       `website/scripts/content/reading-order.mjs`. If nothing else imports that module,
       delete `website/scripts/content/reading-order.mjs`,
       `website/content/reading-order.json` and
       `website/tests/unit/reading-order.test.ts`, and remove the `loadReadingOrder` call
       from the orchestrator.
-- [ ] 10. In `website/src/lib/catalog.ts`, remove `postGroups` from the catalog type.
-- [ ] 11. Remove the now-unused `.post-list` rules from `global.css` if nothing else uses
+- [x] 10. In `website/src/lib/catalog.ts`, remove `postGroups` from the catalog type.
+- [x] 11. Remove the now-unused `.post-list` rules from `global.css` if nothing else uses
       them (`grep -rn "post-list" src/`).
-- [ ] 12. Write the test files per the test plan.
-- [ ] 13. Update `docs/website-information-architecture.html`: `/blog/` is the latest post;
+- [x] 12. Write the test files per the test plan.
+- [x] 13. Update `docs/website-information-architecture.html`: `/blog/` is the latest post;
       the rail is the blog index. Cite
       `docs/ADR/proposed/0043-blog-landing-is-the-latest-post.md`.
 
@@ -161,13 +161,13 @@ then `cd website && npm run build && npx playwright test tests/e2e/blog.spec.ts`
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — whole unit suite green
-- [ ] `cd website && npm run content` — exits 0, still prints `… 2 posts`
-- [ ] `cd website && npm run check` — no type error from the removed `postGroups`
-- [ ] `cd website && npm run build && npm run test:e2e` — green, including the new spec
-- [ ] `cd website && npm run links:check` — exits 0; nothing links to a removed list page
-- [ ] manual check: `/blog/` shows the 2026-08-08 post in full; the rail shows both posts,
+- [x] `cd website && npx vitest run` — whole unit suite green
+- [x] `cd website && npm run content` — exits 0, still prints `… 2 posts`
+- [x] `cd website && npm run check` — no type error from the removed `postGroups`
+- [x] `cd website && npm run build && npm run test:e2e` — green, including the new spec
+- [x] `cd website && npm run links:check` — exits 0; nothing links to a removed list page
+- [x] manual check: `/blog/` shows the 2026-08-08 post in full; the rail shows both posts,
       each title on its own line with `08/08/2026` and `01/08/2026` beneath
-- [ ] manual check: `/blog/lota-alpha-v0-1-presentation/` still renders and its canonical is
+- [x] manual check: `/blog/lota-alpha-v0-1-presentation/` still renders and its canonical is
       itself (post routes are `/blog/{slug}/`, with the date prefix stripped from the filename)
-- [ ] commit msg draft: `feat(website): land the blog on its latest post`
+- [x] commit msg draft: `feat(website): land the blog on its latest post`

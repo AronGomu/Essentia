@@ -97,10 +97,7 @@ describe('immutable publication graph', () => {
     );
   });
 
-  it('exposes post groups', () => {
-    expect(Array.isArray(catalog.postGroups)).toBe(true);
-    const slugs = new Set(catalog.posts.map((post) => post.slug));
-    for (const group of catalog.postGroups)
-      for (const slug of group.slugs) expect(slugs.has(slug)).toBe(true);
+  it('does not expose post groups', () => {
+    expect('postGroups' in catalog).toBe(false);
   });
 });

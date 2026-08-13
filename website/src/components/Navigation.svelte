@@ -226,8 +226,13 @@
           <ul>
             {#each group.items as item (item.route)}
               <li>
-                <a href={href(item.route)} aria-current={current(item.route)}
-                  >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
+                <a
+                  class="reading-nav-item"
+                  href={href(item.route)}
+                  aria-current={current(item.route)}
+                  ><span class="nav-item-title">{item.title}</span
+                  >{#if item.meta}<span class="nav-item-meta">{item.meta}</span
+                    >{/if}</a
                 >
               </li>
             {/each}
@@ -241,8 +246,13 @@
             <ul>
               {#each group.items as item (item.route)}
                 <li>
-                  <a href={href(item.route)} aria-current={current(item.route)}
-                    >{item.title}{#if item.meta}<small>{item.meta}</small
+                  <a
+                    class="reading-nav-item"
+                    href={href(item.route)}
+                    aria-current={current(item.route)}
+                    ><span class="nav-item-title">{item.title}</span
+                    >{#if item.meta}<span class="nav-item-meta"
+                        >{item.meta}</span
                       >{/if}</a
                   >
                 </li>
@@ -251,12 +261,17 @@
           </details>
         {/if}
       {:else}
-        <p class="nav-label">{group.label}</p>
+        {#if group.label}<p class="nav-label">{group.label}</p>{/if}
         <ul>
           {#each group.items as item (item.route)}
             <li>
-              <a href={href(item.route)} aria-current={current(item.route)}
-                >{item.title}{#if item.meta}<small>{item.meta}</small>{/if}</a
+              <a
+                class="reading-nav-item"
+                href={href(item.route)}
+                aria-current={current(item.route)}
+                ><span class="nav-item-title">{item.title}</span
+                >{#if item.meta}<span class="nav-item-meta">{item.meta}</span
+                  >{/if}</a
               >
             </li>
           {/each}
@@ -314,9 +329,12 @@
               <ul>
                 {#each group.items as item (item.route)}<li>
                     <a
+                      class="reading-nav-item"
                       href={href(item.route)}
                       aria-current={current(item.route)}
-                      >{item.title}{#if item.meta}<small>{item.meta}</small
+                      ><span class="nav-item-title">{item.title}</span
+                      >{#if item.meta}<span class="nav-item-meta"
+                          >{item.meta}</span
                         >{/if}</a
                     >
                   </li>{/each}
@@ -330,9 +348,12 @@
                 <ul>
                   {#each group.items as item (item.route)}<li>
                       <a
+                        class="reading-nav-item"
                         href={href(item.route)}
                         aria-current={current(item.route)}
-                        >{item.title}{#if item.meta}<small>{item.meta}</small
+                        ><span class="nav-item-title">{item.title}</span
+                        >{#if item.meta}<span class="nav-item-meta"
+                            >{item.meta}</span
                           >{/if}</a
                       >
                     </li>{/each}
@@ -340,11 +361,16 @@
               </details>
             {/if}
           {:else}
-            <p class="nav-label">{group.label}</p>
+            {#if group.label}<p class="nav-label">{group.label}</p>{/if}
             <ul>
               {#each group.items as item (item.route)}<li>
-                  <a href={href(item.route)} aria-current={current(item.route)}
-                    >{item.title}{#if item.meta}<small>{item.meta}</small
+                  <a
+                    class="reading-nav-item"
+                    href={href(item.route)}
+                    aria-current={current(item.route)}
+                    ><span class="nav-item-title">{item.title}</span
+                    >{#if item.meta}<span class="nav-item-meta"
+                        >{item.meta}</span
                       >{/if}</a
                   >
                 </li>{/each}

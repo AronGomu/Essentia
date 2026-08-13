@@ -159,7 +159,7 @@ test('docs pages navigate from the catalog rail', async ({ page }) => {
   // The in-page rail is gone: the article owns the freed column.
   await expect(page.locator('.reading-rail')).toHaveCount(0);
 
-  const zones = rail.getByRole('link', { name: 'Zones', exact: true });
+  const zones = rail.locator('a[href$="/docs/rules/zones/"]');
   await zones.evaluate((link) =>
     link.closest('details')?.setAttribute('open', ''),
   );

@@ -68,7 +68,7 @@
             <tr><td class="route">/</td><td>Entry point for every visitor: hero, new cards, archetype tiles</td><td class="src">src/pages/index.astro</td><td>hover preview only</td></tr>
             <tr><td class="route">/docs/</td><td>Project presentation — the alphabetically first root doc</td><td class="src">docs/00_PRESENTATION.md</td><td>none</td></tr>
             <tr><td class="route">/docs/&lt;path&gt;/</td><td>Every other published repo doc, left rail + chapter summary</td><td class="src">docs/**/*.md except docs/ADR/** and ruling files</td><td>none</td></tr>
-            <tr><td class="route">/blog/</td><td>Post index, grouped by reading order</td><td class="src">blog/&lt;date&gt;-&lt;slug&gt;.md</td><td>none</td></tr>
+            <tr><td class="route">/blog/</td><td>Latest post inline; canonical remains <code>/blog/&lt;slug&gt;/</code></td><td class="src">blog/&lt;date&gt;-&lt;slug&gt;.md</td><td>none</td></tr>
             <tr><td class="route">/blog/&lt;slug&gt;/</td><td>One post</td><td class="src">same</td><td>none</td></tr>
             <tr><td class="route">/decks/</td><td>Browser-local decklist manager</td><td class="src">localStorage essentia.v1.decks</td><td>required</td></tr>
             <tr><td class="route">/archetypes/&lt;slug&gt;/</td><td>Archetype gallery, alphabetical, NEW badges</td><td class="src">catalog.sections (kind archetype)</td><td>hover preview only</td></tr>
@@ -88,7 +88,7 @@
       <div class="grid">
         <div class="card">
           <h4>Left rail — one surface, two modes</h4>
-          <p><code>Navigation.svelte</code>, prop <code>mode</code>. <b>Catalog</b> on every page but the reading ones: one flat list, one entry per section in authored order (Non-archetype first, then the archetypes), each with its published count and, for archetypes, a wash of its own accent. <b>Reading</b> on <code>/docs/…</code> and <code>/blog/…</code>: a two-link <code>Docs | Blog</code> switcher (<code>.reading-switch</code>) followed by the article groups, and no section or archetype links. There is no second in-page rail; the article body takes the freed width. See <a href="website-shell-chrome.html">shell chrome</a> and ADR 0028.</p>
+          <p><code>Navigation.svelte</code>, prop <code>mode</code>. <b>Catalog</b> on every page but the reading ones: one flat list, one entry per section in authored order (Non-archetype first, then the archetypes), each with its published count and, for archetypes, a wash of its own accent. <b>Reading</b> on <code>/docs/…</code> and <code>/blog/…</code>: docs use folder-derived disclosure groups; blog uses one flat newest-first list with numeric dates below full-width titles. Blog's rail is its index while <code>/blog/</code> renders the latest post. There is no second in-page rail; the article body takes the freed width. See <a href="website-shell-chrome.html">shell chrome</a>, ADR 0028 and <code>docs/ADR/proposed/0043-blog-landing-is-the-latest-post.md</code>.</p>
         </div>
         <div class="card">
           <h4>Rail toggle — one square, bottom-right</h4>
@@ -142,7 +142,7 @@
         <div class="flowline">↓</div>
         <div class="stage"><b>4 · Images</b><p><code>images.mjs</code> derives the <code>thumb</code> and <code>display</code> tiers plus the print master with sharp. Hero art is committed, never derived here.</p></div>
         <div class="flowline">↓</div>
-        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target. Docs groups, labels, order, and routes derive from the <code>docs/</code> folder tree and numeric filename prefixes; root docs come first and remain ungrouped. <code>reading-order.mjs</code> supplies blog groups only. See <code>docs/ADR/proposed/0041-docs-navigation-from-folders.md</code>.</p></div>
+        <div class="stage"><b>5 · Docs &amp; posts</b><p><code>docs.mjs</code> and <code>blog.mjs</code> load repo Markdown, rewrite internal links to site routes, and fail on an unpublished target. Docs groups, labels, order, and routes derive from the <code>docs/</code> folder tree and numeric filename prefixes; root docs come first and remain ungrouped. Posts are sorted newest first; no authored blog reading-order file remains. See <code>docs/ADR/proposed/0041-docs-navigation-from-folders.md</code> and <code>docs/ADR/proposed/0043-blog-landing-is-the-latest-post.md</code>.</p></div>
         <div class="flowline">↓</div>
         <div class="stage"><b>6 · Catalog</b><p><code>orchestrator.mjs</code> selects the current version per card, builds sections, updates and releases, and writes <code>src/generated/catalog.ts</code> plus the rights inventory.</p></div>
         <div class="flowline">↓</div>
@@ -241,14 +241,14 @@
             <tr>
               <td>Reading order</td>
               <td><code>DOC_GROUPS</code> hardcoded in build code; the blog had no grouping</td>
-              <td><code>website/content/reading-order.json</code> drives blog groups; docs now derive from their folder tree and raw prefixed names</td>
-              <td>T9 · ADR 0026, docs half superseded by ADR 0041</td>
+              <td>Docs derive from their folder tree; blog posts use publication order directly with no <code>reading-order.json</code></td>
+              <td>T9 · ADR 0026, superseded by ADR 0041 and ADR 0043</td>
             </tr>
             <tr>
               <td>Reading navigation</td>
               <td>Catalog rail and a second in-page reading rail side by side</td>
-              <td>One rail: the catalog switches to <code>Docs | Blog</code> plus the article list. <code>DocsRail.astro</code>, <code>BlogRail.astro</code> and every <code>.reading-rail</code> rule are gone; check-chrome requires <code>class="reading-switch"</code></td>
-              <td>T10 · ADR 0025</td>
+              <td>One rail: docs use folder disclosures; blog uses a flat newest-first post index with numeric dates. <code>/blog/</code> renders the latest post while each <code>/blog/&lt;slug&gt;/</code> stays canonical</td>
+              <td>T10 · ADR 0025 · ADR 0043</td>
             </tr>
             <tr>
               <td>Back to top</td>
@@ -340,6 +340,7 @@
         <code>website/DESIGN.md</code> ·
         <code>docs/ADR/proposed/0015</code>–<code>0026</code> ·
         <code>docs/ADR/proposed/0041-docs-navigation-from-folders.md</code> ·
+        <code>docs/ADR/proposed/0043-blog-landing-is-the-latest-post.md</code> ·
         <code>ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass.md</code> ·
         <code>ai-artifacts/archive/PLAN_2026_08_07_website-feedback-pass-2.md</code> ·
         <code>ai-artifacts/archive/PLAN_2026_08_08_website-feedback-pass-2/</code>

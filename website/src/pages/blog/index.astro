@@ -1,37 +1,33 @@
 ---
+import Markdown from '../../components/Markdown.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { catalog, formatDate, withBase } from '../../lib/catalog';
+import { catalog, formatDate, latestPost, withBase } from '../../lib/catalog';
 
 const base = import.meta.env.BASE_URL;
-const posts = catalog.posts;
+const post = latestPost(catalog);
 ---
 
 <BaseLayout
-  title="Blog — Essentia"
-  description="Announcements and design notes from the Essentia project."
+  title={post ? `${post.title} — Essentia` : 'Blog — Essentia'}
+  description={post?.summary ??
+    'Announcements and design notes from the Essentia project.'}
+  canonicalPath={post ? withBase(base, post.route) : undefined}
   accent="relic"
   breadcrumb={[{ label: 'Archive', href: base }, { label: 'Blog' }]}
 >
   <div class="reading-shell reading-shell--no-toc">
-    <article class="reading-body">
-      <h1>Blog</h1>
+    <article class="reading-body post-body">
       {
-        posts.length === 0 ? (
-          <p>No posts published yet.</p>
+        post ? (
+          <>
+            <h1>{post.title}</h1>
+            <p class="post-meta">
+              {formatDate(post.date)} · {post.author}
+            </p>
+            <Markdown value={post.body} />
+          </>
         ) : (
-          <ul class="post-list">
-            {posts.map((post) => (
-              <li>
-                <a href={withBase(base, post.route)}>
-                  <h2>{post.title}</h2>
-                </a>
-                <p class="post-meta">
-                  {formatDate(post.date)} · {post.author}
-                </p>
-                <p>{post.summary}</p>
-              </li>
-            ))}
-          </ul>
+          <p>No posts published yet.</p>
         )
       }
     </article>

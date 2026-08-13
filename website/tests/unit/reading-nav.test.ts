@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { catalog, formatDate } from '../../src/lib/catalog';
+import { catalog, formatDateNumeric } from '../../src/lib/catalog';
 import { docsRailGroups } from '../../src/lib/docs';
 import {
   readingKindFor,
@@ -20,18 +20,12 @@ const post = (slug: string, date: string, title: string) => ({
   date,
 });
 
-/** Two authored groups, one of them empty, plus a slug nothing resolves. */
 const blogSource: ReadingNavSource = {
   docs: [],
   posts: [
+    post('latest', '2026-03-03', 'Latest post'),
     post('second', '2026-02-02', 'Second post'),
     post('first', '2026-01-01', 'First post'),
-    post('unlisted', '2026-03-03', 'Unlisted post'),
-  ],
-  postGroups: [
-    { key: 'announcements', label: 'Announcements', slugs: ['second'] },
-    { key: 'empty', label: 'Empty', slugs: [] },
-    { key: 'notes', label: 'Design notes', slugs: ['first', 'missing'] },
   ],
 };
 
@@ -52,38 +46,28 @@ describe('readingNavGroups', () => {
     expect(navGroups.length).toBeGreaterThan(1);
   });
 
-  it('builds blog groups from postGroups', () => {
+  it('builds one newest-first blog group', () => {
     const groups = readingNavGroups('blog', blogSource);
 
-    // One group per *non-empty* authored entry, in authored order — not the
-    // newest-first flat list the old blog rail produced.
-    expect(groups.map((group) => group.key)).toEqual([
-      'announcements',
-      'notes',
-    ]);
-    expect(groups.map((group) => group.label)).toEqual([
-      'Announcements',
-      'Design notes',
-    ]);
+    expect(groups.map((group) => group.key)).toEqual(['posts']);
+    expect(groups.map((group) => group.label)).toEqual(['']);
     expect(groups[0]?.items).toEqual([
+      {
+        route: '/blog/latest/',
+        title: 'Latest post',
+        meta: formatDateNumeric('2026-03-03'),
+      },
       {
         route: '/blog/second/',
         title: 'Second post',
-        meta: formatDate('2026-02-02'),
+        meta: formatDateNumeric('2026-02-02'),
       },
-    ]);
-    // A slug with no post is dropped rather than rendered as a dead link.
-    expect(groups[1]?.items).toEqual([
       {
         route: '/blog/first/',
         title: 'First post',
-        meta: formatDate('2026-01-01'),
+        meta: formatDateNumeric('2026-01-01'),
       },
     ]);
-    // A post outside every authored group never reaches the nav.
-    expect(
-      groups.flatMap((group) => group.items).map((item) => item.route),
-    ).not.toContain('/blog/unlisted/');
   });
 
   it('builds the real blog groups from the catalog', () => {

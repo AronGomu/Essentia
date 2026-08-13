@@ -15,6 +15,7 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  canonicalPath?: string | undefined;
   accent?: string;
   theme?: string;
   breadcrumb?: Array<{ label: string; href?: string }>;
@@ -25,6 +26,7 @@ const {
   title,
   description,
   image,
+  canonicalPath = undefined,
   accent = 'relic',
   theme = 'archive',
   breadcrumb,
@@ -129,7 +131,7 @@ const keywordRulingsJson = JSON.stringify(keywordRulings).replaceAll(
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-src 'none'; manifest-src 'self'"
     />
-    <Seo {title} {description} {image} />
+    <Seo {title} {description} {image} {canonicalPath} />
     {
       background && (
         <style

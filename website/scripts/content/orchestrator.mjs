@@ -26,7 +26,6 @@ import { loadDocs } from './docs.mjs';
 import { loadPosts } from './blog.mjs';
 import { loadKeywordRegistry } from './keywords.mjs';
 import { loadSectionIntros, sectionIntroSummary } from './section-intros.mjs';
-import { loadReadingOrder, postGroups } from './reading-order.mjs';
 import { discover } from './packages.mjs';
 import { buildRelatedGraph } from './related.mjs';
 import {
@@ -79,10 +78,8 @@ export async function build({ checkOnly }) {
   const sectionIntros = await loadSectionIntros(
     new Set([...registry.sections.values()].map((section) => section.slug)),
   );
-  const { blog } = await loadReadingOrder();
   const docs = await loadDocs();
   const posts = await loadPosts();
-  const groupedPosts = postGroups(blog, posts);
 
   if (!checkOnly) await mkdir(GENERATED_PUBLIC, { recursive: true });
   // Keep generated modules importable while Astro/Vite watches this directory.
@@ -244,7 +241,6 @@ export async function build({ checkOnly }) {
     updates,
     docs,
     posts,
-    postGroups: groupedPosts,
     publicationDiagnostics: [],
   };
 
