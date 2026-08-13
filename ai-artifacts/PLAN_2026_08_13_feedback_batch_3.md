@@ -46,6 +46,8 @@ T4 --> T9
 T5 --> T9
 T6 --> T9
 T7 --> T9
+T9 --> T10[T10: security re-review fixes]
+T10 --> T11[T11: cache proof tests]
 ```
 
 ## Ticket order
@@ -61,6 +63,8 @@ T7 --> T9
 | T7  | Blog rail shape and latest-post landing   | T6      | `/blog/` renders the latest post; rail is a flat dated list                 | `PLAN_2026_08_13_feedback_batch_3/T7_blog-landing.md`              |
 | T8  | Docs tree migration (Aron executes)       | T5      | `docs/` is numbered and foldered; navigation order matches the intended reading order | `PLAN_2026_08_13_feedback_batch_3/T8_docs-tree-migration.md` |
 | T9  | Close deep-review blockers                | T1,T3,T4,T5,T6,T7 | Derivative cache is type-clean, mutation-covered, and symlink-safe | `PLAN_2026_08_13_feedback_batch_3/T9_review-fixes.md` |
+| T10 | Close derivative-cache security re-review | T9 | Cache rejects ancestry escapes and uses no-follow writes | `PLAN_2026_08_13_feedback_batch_3/T10_security-review-fixes.md` |
+| T11 | Make cache guarantees mutation-sensitive | T10 | Tests prove no-follow manifest writes and byte equality | `PLAN_2026_08_13_feedback_batch_3/T11_cache-proof-tests.md` |
 
 ## Tickets
 
@@ -73,6 +77,8 @@ T7 --> T9
 - [T7: Blog rail shape and latest-post landing](PLAN_2026_08_13_feedback_batch_3/T7_blog-landing.md) — depends: T6
 - [T8: Docs tree migration (Aron executes)](PLAN_2026_08_13_feedback_batch_3/T8_docs-tree-migration.md) — depends: T5
 - [T9: Close deep-review blockers](PLAN_2026_08_13_feedback_batch_3/T9_review-fixes.md) — depends: T1, T3, T4, T5, T6, T7
+- [T10: Close derivative-cache security re-review](PLAN_2026_08_13_feedback_batch_3/T10_security-review-fixes.md) — depends: T9
+- [T11: Make cache guarantees mutation-sensitive](PLAN_2026_08_13_feedback_batch_3/T11_cache-proof-tests.md) — depends: T10
 
 ## Decision records written with this plan
 
