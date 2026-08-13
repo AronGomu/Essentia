@@ -40,6 +40,12 @@ T4[T4: archetype backdrop on main]
 T5[T5: folder-derived docs content] --> T6[T6: collapsible rail, switch removed]
 T6 --> T7[T7: blog rail + latest-post landing]
 T5 --> T8[T8: docs tree migration by Aron]
+T1 --> T9[T9: review fixes]
+T3 --> T9
+T4 --> T9
+T5 --> T9
+T6 --> T9
+T7 --> T9
 ```
 
 ## Ticket order
@@ -54,6 +60,7 @@ T5 --> T8[T8: docs tree migration by Aron]
 | T6  | Collapsible docs rail, switch removed     | T5      | Rail groups collapse and persist; the Docs/Blog switch is gone from both navs | `PLAN_2026_08_13_feedback_batch_3/T6_collapsible-rail.md`        |
 | T7  | Blog rail shape and latest-post landing   | T6      | `/blog/` renders the latest post; rail is a flat dated list                 | `PLAN_2026_08_13_feedback_batch_3/T7_blog-landing.md`              |
 | T8  | Docs tree migration (Aron executes)       | T5      | `docs/` is numbered and foldered; navigation order matches the intended reading order | `PLAN_2026_08_13_feedback_batch_3/T8_docs-tree-migration.md` |
+| T9  | Close deep-review blockers                | T1,T3,T4,T5,T6,T7 | Derivative cache is type-clean, mutation-covered, and symlink-safe | `PLAN_2026_08_13_feedback_batch_3/T9_review-fixes.md` |
 
 ## Tickets
 
@@ -65,6 +72,7 @@ T5 --> T8[T8: docs tree migration by Aron]
 - [T6: Collapsible docs rail, switch removed](PLAN_2026_08_13_feedback_batch_3/T6_collapsible-rail.md) — depends: T5
 - [T7: Blog rail shape and latest-post landing](PLAN_2026_08_13_feedback_batch_3/T7_blog-landing.md) — depends: T6
 - [T8: Docs tree migration (Aron executes)](PLAN_2026_08_13_feedback_batch_3/T8_docs-tree-migration.md) — depends: T5
+- [T9: Close deep-review blockers](PLAN_2026_08_13_feedback_batch_3/T9_review-fixes.md) — depends: T1, T3, T4, T5, T6, T7
 
 ## Decision records written with this plan
 

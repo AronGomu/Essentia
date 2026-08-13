@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import {
+  lstat,
   mkdir,
   readFile,
   readdir,
@@ -60,6 +61,36 @@ export function derivativeKey(input) {
   return sha(JSON.stringify(derivativeKeyInput(input)));
 }
 
+async function assertGeneratedPathSafe(target = GENERATED_PUBLIC) {
+  const relative = path.relative(GENERATED_PUBLIC, target);
+  if (
+    relative.startsWith(`..${path.sep}`) ||
+    relative === '..' ||
+    path.isAbsolute(relative)
+  )
+    fail(`generated path escape ${target}`);
+
+  const segments = relative ? relative.split(path.sep) : [];
+  let cursor = GENERATED_PUBLIC;
+  for (let index = 0; index <= segments.length; index += 1) {
+    try {
+      const info = await lstat(cursor);
+      if (info.isSymbolicLink())
+        fail(
+          index === 0
+            ? 'linked generated root forbidden'
+            : `linked generated path forbidden ${relative}`,
+        );
+      if (index < segments.length && !info.isDirectory())
+        fail(`invalid generated path ${relative}`);
+    } catch (error) {
+      if (error?.code === 'ENOENT') return;
+      throw error;
+    }
+    cursor = path.join(cursor, segments[index] ?? '');
+  }
+}
+
 export async function loadDerivativeManifest() {
   try {
     const parsed = JSON.parse(await readFile(MANIFEST_PATH, 'utf8'));
@@ -71,6 +102,7 @@ export async function loadDerivativeManifest() {
 }
 
 export async function writeDerivativeManifest(entries) {
+  await assertGeneratedPathSafe(MANIFEST_PATH);
   const value = {
     schemaVersion: MANIFEST_SCHEMA_VERSION,
     entries: Object.fromEntries([...entries].sort()),
@@ -97,11 +129,14 @@ async function pruneDirectory(directory, claimed) {
 }
 
 export async function pruneOrphans(claimed) {
+  await assertGeneratedPathSafe();
   await pruneDirectory(GENERATED_PUBLIC, claimed);
 }
 
 async function writeDerivative(input, output, format, width) {
+  await assertGeneratedPathSafe(output);
   await mkdir(path.dirname(output), { recursive: true });
+  await assertGeneratedPathSafe(output);
   const pipeline = sharp(input, {
     limitInputPixels: 80_000_000,
     failOn: 'warning',
@@ -158,6 +193,7 @@ export async function buildCardImages({
       const absoluteTarget = path.join(GENERATED_PUBLIC, relative);
       record[format] = publicRelative;
       if (!checkOnly) {
+        await assertGeneratedPathSafe(absoluteTarget);
         const key = derivativeKey({
           sourceHash,
           tier: tier.name,
@@ -183,6 +219,7 @@ export async function buildCardImages({
   const printRelative = `/generated/${printCacheRelative}`;
   const printTarget = path.join(GENERATED_PUBLIC, printCacheRelative);
   if (!checkOnly) {
+    await assertGeneratedPathSafe(printTarget);
     const key = derivativeKey({
       sourceHash,
       tier: 'print',
