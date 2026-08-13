@@ -366,3 +366,11 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] Compare derivative hashes before and after warm run: all 250 derivative bytes remain unchanged.
 - [ ] Delete one derivative, rerun `npm run content`: missing file returns; unrelated derivative mtimes remain unchanged.
 - [ ] Open `/`, `/archetypes/burning-abyss/`, `/cards/burning-abyss-dante/`: card images load at thumb/display tiers; print link still resolves.
+
+## T3 quoted-name relations
+
+- [x] `cd website && npm run content`: exits 0 for 50 current cards with no `related:` guard failure.
+- [x] Built catalog sanity: all 50 cards have empty `related.references`; no `related.interaction` key remains.
+- [x] `/cards/tour-guide-from-the-underworld/` built HTML contains `Same archetype`, its 13-card overflow link, and no empty `References` heading.
+- [x] Focused `related-cards.spec.ts` passes under Chromium, Firefox, and WebKit using the authorized NixOS Playwright shim: 15 passed.
+- [x] Related galleries render without `New` badges; empty reference data renders no `References` section.

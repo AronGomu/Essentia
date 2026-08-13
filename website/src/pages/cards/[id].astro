@@ -34,7 +34,16 @@ const RELATED_CAP = 12;
 const archetypeRelated = card.related.archetype
   .map((id) => cardsById.get(id)!)
   .filter(Boolean);
-const interactionRelated = card.related.interaction
+const references = card.related.references;
+const visibleReferences = references.slice(0, RELATED_CAP);
+const archetypeReferences = visibleReferences.filter(
+  (reference) => reference.kind === 'archetype',
+);
+const referencedCards = visibleReferences
+  .filter((reference) => reference.kind === 'card')
+  .map((reference) => cardsById.get(reference.id)!)
+  .filter(Boolean);
+const referencedBy = card.related.referencedBy
   .map((id) => cardsById.get(id)!)
   .filter(Boolean);
 const rules = previewKeywordsFor(card);
@@ -166,7 +175,9 @@ const versions = catalog.cardVersions
       </div>
     </div>
     {
-      (archetypeRelated.length > 0 || interactionRelated.length > 0) && (
+      (archetypeRelated.length > 0 ||
+        references.length > 0 ||
+        referencedBy.length > 0) && (
         <section class="related-band" aria-label="Related cards">
           <div class="page-shell related-band-inner">
             {archetypeRelated.length > 0 && (
@@ -188,19 +199,45 @@ const versions = catalog.cardVersions
                 )}
               </section>
             )}
-            {interactionRelated.length > 0 && (
-              <section aria-labelledby="related-interaction">
-                <h2 id="related-interaction">Interacts with this card</h2>
+            {references.length > 0 && (
+              <section aria-labelledby="related-references">
+                <h2 id="related-references">References</h2>
+                {archetypeReferences.length > 0 && (
+                  <ul>
+                    {archetypeReferences.map((reference) => (
+                      <li>
+                        <a href={withBase(base, reference.route)}>
+                          {reference.label} ({reference.count} cards)
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {referencedCards.length > 0 && (
+                  <CardGallery
+                    cards={referencedCards.map(toGalleryCard)}
+                    base={base}
+                    showNewBadge={false}
+                  />
+                )}
+                {references.length > RELATED_CAP && (
+                  <p class="related-more">
+                    {references.length - RELATED_CAP} more
+                  </p>
+                )}
+              </section>
+            )}
+            {referencedBy.length > 0 && (
+              <section aria-labelledby="related-referenced-by">
+                <h2 id="related-referenced-by">Referenced by</h2>
                 <CardGallery
-                  cards={interactionRelated
-                    .slice(0, RELATED_CAP)
-                    .map(toGalleryCard)}
+                  cards={referencedBy.slice(0, RELATED_CAP).map(toGalleryCard)}
                   base={base}
                   showNewBadge={false}
                 />
-                {interactionRelated.length > RELATED_CAP && (
+                {referencedBy.length > RELATED_CAP && (
                   <p class="related-more">
-                    {interactionRelated.length - RELATED_CAP} more
+                    {referencedBy.length - RELATED_CAP} more
                   </p>
                 )}
               </section>

@@ -1,252 +1,148 @@
 import { describe, expect, it } from 'vitest';
-import { catalog, cardsById } from '../../src/lib/catalog';
 
-const { extractClauses, parseConstraints, buildRelatedGraph } =
+const { quotedNames, buildRelatedGraph } =
   await import('../../scripts/content/related.mjs');
 
-const keywordRegistry = new Map(
-  catalog.keywords.map((entry) => [entry.term, entry]),
-);
+type FixtureCard = {
+  id: string;
+  name: string;
+  archetype: string | null;
+  ruleText: string;
+  ruleTextPlain: string;
+};
 
-describe('extractClauses', () => {
-  it('splits on sentence punctuation and ability newlines', () => {
-    expect(extractClauses('A — b. c; d\ne')).toEqual(['A', 'b', 'c', 'd', 'e']);
-  });
-});
+type FixtureSection = {
+  slug: string;
+  label: string;
+  namePattern: string;
+  route: string;
+  cardIds: string[];
+};
 
-describe('parseConstraints', () => {
-  const vocab = new Set(['Fiend']);
+function card(
+  id: string,
+  name: string,
+  ruleText = '',
+  archetype: string | null = null,
+): FixtureCard {
+  return { id, name, archetype, ruleText, ruleTextPlain: ruleText };
+}
 
-  it('reads a subtype and an MV', () => {
+function section(
+  slug: string,
+  label: string,
+  namePattern: string,
+  cardIds: string[],
+): FixtureSection {
+  return {
+    slug,
+    label,
+    namePattern,
+    route: `/archetypes/${slug}/`,
+    cardIds,
+  };
+}
+
+describe('quotedNames', () => {
+  it('extracts curly and straight quoted tokens once', () => {
     expect(
-      parseConstraints('Summon 1 Fiend MV 1 Creature from Deck', vocab),
-    ).toEqual({
-      subtypes: ['Fiend'],
-      names: [],
-      colors: [],
-      supertypes: [],
-      mv: { op: '=', value: 1 },
-    });
-  });
-
-  it('accepts "MV 2 or less"', () => {
-    const result = parseConstraints(
-      'Search 1 Ritual Creature MV 2 or less',
-      new Set(),
-    );
-    expect(result.mv).toEqual({ op: '<=', value: 2 });
-    expect(result.supertypes).toEqual(['Ritual']);
-  });
-
-  it('leaves "MV meets" alone', () => {
-    const result = parseConstraints(
-      'sacrifice a creature whose MV meets its Ritual cost',
-      new Set(),
-    );
-    expect(result.mv).toBeNull();
-  });
-
-  it('throws on malformed MV', () => {
-    expect(() =>
-      parseConstraints('Summon 1 Creature MV soon', new Set()),
-    ).toThrow(/MV/);
+      quotedNames('Search 1 “Nekroz” Creature; Discard “Nekroz”.'),
+    ).toEqual(['Nekroz']);
   });
 });
 
-describe('buildRelatedGraph — fixtures', () => {
-  it('fails the build on an unknown quoted reference', () => {
-    const cards = [
-      {
-        id: 'a',
-        name: 'A',
-        archetype: null,
-        subType: 'Fiend',
-        colors: [],
-        supertypes: [],
-        manaValue: 1,
-        keywords: ['Summon'],
-        ruleTextPlain: 'Summon 1 “Zorblax” Creature from Deck.',
-      },
-      {
-        id: 'b',
-        name: 'B',
-        archetype: null,
-        subType: 'Fiend',
-        colors: [],
-        supertypes: [],
-        manaValue: 1,
-        keywords: [],
-        ruleTextPlain: '',
-      },
-    ];
-    expect(() => buildRelatedGraph(cards, [], keywordRegistry)).toThrow(
-      /Zorblax/,
-    );
-  });
-
-  it('automatically uses a new action from the supplied registry', () => {
-    const cards = [
-      {
-        id: 'source',
-        name: 'Source',
-        archetype: null,
-        subType: 'Wizard',
-        colors: [],
-        supertypes: [],
-        manaValue: 2,
-        keywords: ['Befriend'],
-        ruleTextPlain: 'Befriend 1 Fiend MV 1 Creature.',
-      },
-      {
-        id: 'target',
-        name: 'Target',
-        archetype: null,
-        subType: 'Fiend',
-        colors: [],
-        supertypes: [],
-        manaValue: 1,
-        keywords: [],
-        ruleTextPlain: '',
-      },
-    ];
-    const registry = new Map([
-      ['Befriend', { term: 'Befriend', category: 'action' }],
-    ]);
-
-    expect(
-      buildRelatedGraph(cards, [], registry).get('source')!.interaction,
-    ).toEqual(['target']);
-  });
-
-  it('interaction never repeats an archetype relation', () => {
-    const cards = [
-      {
-        id: 'a',
-        name: 'Burning Abyss - A',
-        archetype: 'burning-abyss',
-        subType: 'Fiend',
-        colors: [],
-        supertypes: [],
-        manaValue: 1,
-        keywords: ['Search'],
-        ruleTextPlain: 'Search 1 "Burning Abyss" Creature from Deck.',
-      },
-      {
-        id: 'b',
-        name: 'Burning Abyss - B',
-        archetype: 'burning-abyss',
-        subType: 'Fiend',
-        colors: [],
-        supertypes: [],
-        manaValue: 1,
-        keywords: [],
-        ruleTextPlain: '',
-      },
-      {
-        id: 'c',
-        name: 'Burning Abyss - C',
-        archetype: 'burning-abyss',
-        subType: 'Fiend',
-        colors: [],
-        supertypes: [],
-        manaValue: 1,
-        keywords: [],
-        ruleTextPlain: '',
-      },
-    ];
-    const sections = [{ slug: 'burning-abyss', namePattern: 'Burning Abyss' }];
-    const registry = new Map([
-      ['Search', { term: 'Search', category: 'action' }],
-    ]);
-
-    const graph = buildRelatedGraph(cards, sections, registry);
-    expect(graph.get('a')!.archetype).toEqual(
-      expect.arrayContaining(['b', 'c']),
-    );
-    expect(graph.get('a')!.interaction).not.toContain('b');
-    expect(graph.get('a')!.interaction).not.toContain('c');
-  });
-});
-
-describe('buildRelatedGraph — real catalog', () => {
-  const related = buildRelatedGraph(
-    catalog.cards,
-    catalog.sections,
-    keywordRegistry,
+describe('buildRelatedGraph', () => {
+  const nekrozCards = [
+    card('unicore', 'Nekroz of Unicore'),
+    card('brionac', 'Nekroz of Brionac'),
+    card('clausolas', 'Nekroz of Clausolas'),
+  ];
+  const nekroz = section(
+    'nekroz',
+    'Nekroz',
+    'Nekroz',
+    nekrozCards.map(({ id }) => id),
   );
 
-  it('relates archetype members by printed name', () => {
-    const graff = related.get('burning-abyss-graff')!;
-    expect(graff.archetype.length).toBeGreaterThan(0);
-    for (const id of graff.archetype) {
-      const other = cardsById.get(id)!;
-      expect(other.name).toContain('Burning Abyss');
-    }
-    expect(graff.archetype).not.toContain('burning-abyss-graff');
+  it('a foreign archetype name produces one archetype reference', () => {
+    const cards = [
+      card('staple', 'Staple', 'Search 1 “Nekroz” Creature'),
+      ...nekrozCards,
+    ];
+
+    expect(
+      buildRelatedGraph(cards, [nekroz]).get('staple')!.references,
+    ).toEqual([
+      {
+        kind: 'archetype',
+        slug: 'nekroz',
+        label: 'Nekroz',
+        route: '/archetypes/nekroz/',
+        count: 3,
+      },
+    ]);
   });
 
-  it('relates Tour Guide to the eligible Fiend MV-1 targets outside its archetype', () => {
-    const entry = related.get('tour-guide-from-the-underworld')!;
-    const archetypeIds = new Set(entry.archetype);
-    const eligible = catalog.cards
-      .filter(
-        (card) =>
-          card.id !== 'tour-guide-from-the-underworld' &&
-          card.manaValue === 1 &&
-          card.subType.split(/\s+/).includes('Fiend'),
-      )
-      .map((card) => card.id);
-    expect(eligible.length).toBeGreaterThan(2);
-    const expected = eligible
-      .filter((id) => !archetypeIds.has(id))
-      .sort((a, b) =>
-        cardsById.get(a)!.name.localeCompare(cardsById.get(b)!.name),
-      );
-    expect(entry.interaction).toEqual(expected);
+  it('every member of the referenced archetype is referenced back', () => {
+    const cards = [
+      card('staple', 'Staple', 'Search 1 “Nekroz” Creature'),
+      ...nekrozCards,
+    ];
+    const graph = buildRelatedGraph(cards, [nekroz]);
+
+    for (const member of nekrozCards)
+      expect(graph.get(member.id)!.referencedBy).toEqual(['staple']);
   });
 
-  it('does not attach Gagaga Cowboy material constraints to Detach', () => {
-    expect(related.get('gagaga-cowboy')!.interaction).toEqual([]);
+  it('a card naming its own archetype produces no reference', () => {
+    const cards = [
+      card('unicore', 'Nekroz Unicore', 'Search 1 “Nekroz” Creature', 'nekroz'),
+    ];
+    const ownSection = section('nekroz', 'Nekroz', 'Nekroz', ['unicore']);
+
+    expect(
+      buildRelatedGraph(cards, [ownSection]).get('unicore')!.references,
+    ).toEqual([]);
   });
 
-  it('does not relate a material line to every MV-1 creature', () => {
-    const downerd = related.get('downerd-magician')!;
-    const vanillaMv1NonXyz = catalog.cards.find(
-      (card) =>
-        card.manaValue === 1 &&
-        !card.supertypes.includes('Xyz') &&
-        card.id !== 'downerd-magician',
-    );
-    expect(vanillaMv1NonXyz).toBeDefined();
-    expect(downerd.interaction).not.toContain(vanillaMv1NonXyz!.id);
+  it('a self-name reference produces no edge', () => {
+    const cards = [
+      card('maxx-c', 'Maxx "C"', 'Discard “C”.'),
+      card('catastor', 'Catastor'),
+    ];
+    const graph = buildRelatedGraph(cards, []);
+
+    expect(graph.get('maxx-c')!.references).toEqual([]);
+    expect(graph.get('catastor')!.referencedBy).toEqual([]);
   });
 
-  it('never relates a card to itself', () => {
-    for (const card of catalog.cards) {
-      const entry = related.get(card.id)!;
-      expect(entry.archetype).not.toContain(card.id);
-      expect(entry.interaction).not.toContain(card.id);
-    }
+  it('a foreign card name produces a card reference both ways', () => {
+    const cards = [card('a', 'Tutor', 'Search “Dante”.'), card('b', 'Dante')];
+    const graph = buildRelatedGraph(cards, []);
+
+    expect(graph.get('a')!.references).toEqual([{ kind: 'card', id: 'b' }]);
+    expect(graph.get('b')!.referencedBy).toEqual(['a']);
   });
 
-  it('interaction never repeats an archetype relation (real catalog)', () => {
-    for (const card of catalog.cards) {
-      const entry = related.get(card.id)!;
-      const archetypeSet = new Set(entry.archetype);
-      const overlap = entry.interaction.filter((id: string) =>
-        archetypeSet.has(id),
-      );
-      expect(overlap).toEqual([]);
-    }
+  it('an unknown quoted name fails the build', () => {
+    const cards = [card('a', 'Tutor', 'Search “Nonesuch”.')];
+
+    expect(() => buildRelatedGraph(cards, [])).toThrow(/Nonesuch/);
   });
 
-  it("Tour Guide's Burning Abyss targets live in the archetype list only", () => {
-    const entry = related.get('tour-guide-from-the-underworld')!;
-    expect(entry.archetype).toContain('burning-abyss-graff');
-    expect(entry.interaction).not.toContain('burning-abyss-graff');
-  });
+  it('references are sorted archetype-first then by label', () => {
+    const cards = [
+      card('source', 'Source', 'Use “Zulu”. “Nekroz”. “Alpha”.'),
+      card('zulu', 'Zulu'),
+      card('alpha', 'Alpha'),
+      ...nekrozCards,
+    ];
+    const graph = buildRelatedGraph(cards, [nekroz]);
 
-  it('schema version is 11', () => {
-    expect(catalog.schemaVersion).toBe(11);
+    expect(graph.get('source')!.references).toEqual([
+      expect.objectContaining({ kind: 'archetype', label: 'Nekroz' }),
+      { kind: 'card', id: 'alpha' },
+      { kind: 'card', id: 'zulu' },
+    ]);
   });
 });

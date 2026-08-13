@@ -8,47 +8,31 @@ const RELATED_CAP = 12;
 const truncatedArchetypeCard = catalog.cards.find(
   (card) => card.related.archetype.length > RELATED_CAP,
 );
-const truncatedInteractionCard = catalog.cards.find(
-  (card) => card.related.interaction.length > RELATED_CAP,
-);
-const noRelationsCard = catalog.cards.find(
-  (card) =>
-    card.related.archetype.length === 0 &&
-    card.related.interaction.length === 0,
-);
-// The two lists are disjoint, so a card that still fills both is the only one
-// whose page renders both sections at once.
-const bothCategoriesCard = catalog.cards.find(
-  (card) =>
-    card.related.archetype.length > 0 && card.related.interaction.length > 0,
+const noReferencesCard = catalog.cards.find(
+  (card) => card.related.references.length === 0,
 );
 
-test('both categories render linked thumbnail card galleries', async ({
+test('archetype category renders a linked thumbnail card gallery', async ({
   page,
 }) => {
-  // Not `test.skip`: a catalog with no such card means this spec covers nothing,
-  // which has to be a failure rather than a silent pass.
-  expect(bothCategoriesCard).toBeDefined();
-  await page.goto(urlFor(`/cards/${bothCategoriesCard!.id}/`));
-  for (const heading of ['related-archetype', 'related-interaction']) {
-    const section = page.locator(`section:has(#${heading})`);
-    await expect(section.locator(`#${heading}`)).toBeVisible();
-    const cards = section.locator('a.gallery-card[href*="/cards/"]:has(img)');
-    expect(await cards.count()).toBeGreaterThan(0);
-    await expect(cards.first()).toBeVisible();
-  }
+  const card = catalog.cards.find(
+    (candidate) => candidate.related.archetype.length,
+  );
+  expect(card).toBeDefined();
+  await page.goto(urlFor(`/cards/${card!.id}/`));
+  const section = page.locator('section:has(#related-archetype)');
+  await expect(section.locator('#related-archetype')).toBeVisible();
+  const cards = section.locator('a.gallery-card[href*="/cards/"]:has(img)');
+  expect(await cards.count()).toBeGreaterThan(0);
+  await expect(cards.first()).toBeVisible();
 });
 
-test('each category shows at most 12 cards', async ({ page }) => {
+test('archetype category shows at most 12 cards', async ({ page }) => {
   await page.goto(urlFor('/cards/burning-abyss-graff/'));
   const archetypeCount = await page
     .locator('section:has(#related-archetype) .gallery-card')
     .count();
-  const interactionCount = await page
-    .locator('section:has(#related-interaction) .gallery-card')
-    .count();
   expect(archetypeCount).toBeLessThanOrEqual(RELATED_CAP);
-  expect(interactionCount).toBeLessThanOrEqual(RELATED_CAP);
 });
 
 test('truncated archetype category links to its section', async ({ page }) => {
@@ -67,39 +51,17 @@ test('truncated archetype category links to its section', async ({ page }) => {
   expect(href).toMatch(new RegExp(`${section.route.replace(/\/$/, '')}/?$`));
 });
 
-test('truncated interaction category shows a count, not a link', async ({
+test('a card with no references renders no references section', async ({
   page,
 }) => {
-  test.skip(
-    !truncatedInteractionCard,
-    'no card has more than 12 interaction relations',
-  );
-  const card = truncatedInteractionCard!;
-  await page.goto(urlFor(`/cards/${card.id}/`));
-  const more = page.locator('section:has(#related-interaction) .related-more');
-  await expect(more).toBeVisible();
-  await expect(more.locator('a')).toHaveCount(0);
-  const text = (await more.textContent())?.trim();
-  expect(text).toMatch(/^\d+ more$/);
+  expect(noReferencesCard).toBeDefined();
+  await page.goto(urlFor(`/cards/${noReferencesCard!.id}/`));
+  await expect(page.locator('#related-references')).toHaveCount(0);
 });
 
-test('a card with no relations renders no related section', async ({
-  page,
-}) => {
-  test.skip(!noRelationsCard, 'every card currently has at least one relation');
-  await page.goto(urlFor(`/cards/${noRelationsCard!.id}/`));
-  await expect(page.locator('#related-archetype')).toHaveCount(0);
-});
-
-test('related galleries carry no New badge', async ({ page }) => {
-  expect(bothCategoriesCard).toBeDefined();
-  for (const id of ['burning-abyss-graff', bothCategoriesCard!.id]) {
-    await page.goto(urlFor(`/cards/${id}/`));
-    await expect(
-      page.locator('section:has(#related-archetype) .tile-badge'),
-    ).toHaveCount(0);
-    await expect(
-      page.locator('section:has(#related-interaction) .tile-badge'),
-    ).toHaveCount(0);
-  }
+test('related archetype gallery carries no New badge', async ({ page }) => {
+  await page.goto(urlFor('/cards/burning-abyss-graff/'));
+  await expect(
+    page.locator('section:has(#related-archetype) .tile-badge'),
+  ).toHaveCount(0);
 });

@@ -102,6 +102,16 @@ export interface CardVersion {
   releaseRoute: string;
 }
 
+export type CardReference =
+  | {
+      kind: 'archetype';
+      slug: string;
+      label: string;
+      route: string;
+      count: number;
+    }
+  | { kind: 'card'; id: string };
+
 export interface CatalogCard extends CardVersion {
   matchNames: string[];
   formerFilenames: string[];
@@ -109,7 +119,11 @@ export interface CatalogCard extends CardVersion {
   retired: boolean;
   route: string;
   versionIds: string[];
-  related: { archetype: string[]; interaction: string[] };
+  related: {
+    archetype: string[];
+    references: CardReference[];
+    referencedBy: string[];
+  };
 }
 
 export type GalleryCard = Pick<

@@ -53,120 +53,97 @@
     <div class="wrap">
       <h1>Related cards derivation</h1>
       <p class="sub">
-        How <code>website/scripts/content/related.mjs</code> turns rule text into two
-        related-card lists at build time. Companion to
-        <a href="ADR/proposed/0032-derived-related-cards.md">ADR 0032</a>.
+        How <code>website/scripts/content/related.mjs</code> derives explicit,
+        bidirectional quoted-name relations at build time.
+      </p>
+      <p>
+        This model supersedes the constraint-matching designs in ADR 0032 and ADR
+        0036. See <a href="ADR/proposed/0040-quoted-name-relations.md">ADR 0040:
+        quoted-name relations</a>.
       </p>
 
-      <h2>Worked example</h2>
-      <pre>Tour Guide From the Underworld — Fiend, MV 1
-
-(1 - Triggered Hard) On Enter — Summon 1 Fiend MV 1 Creature from Hand or Deck.
-It loses its abilities on Field.</pre>
-      <figure>
-        <figcaption>One card's rule text, clause by clause, to a list of ids.</figcaption>
-        <svg viewBox="0 0 900 210" role="img" aria-labelledby="t1 d1">
-          <title id="t1">Derivation pipeline for one card</title>
-          <desc id="d1">Rule text is split into clauses; a clause is kept only when it names an action keyword; constraints are read from the kept clause; candidate cards must satisfy every constraint kind present; the surviving ids become the interaction list.</desc>
-          <rect class="n" x="6" y="70" width="150" height="60" rx="8" />
-          <text class="lab" x="18" y="94">ruleTextPlain</text>
-          <text class="note" x="18" y="110">split on . ; —</text>
-          <path class="l" d="M156 100 H206" />
-          <rect class="n" x="206" y="40" width="160" height="52" rx="8" />
-          <text class="lab" x="218" y="62">clause 1 ✓</text>
-          <text class="note" x="218" y="78">holds action “Summon”</text>
-          <rect class="n warn" x="206" y="108" width="160" height="52" rx="8" />
-          <text class="lab" x="218" y="130">clause 2 ✗</text>
-          <text class="note" x="218" y="146">no action keyword → dropped</text>
-          <path class="l" d="M366 66 H416" />
-          <rect class="n" x="416" y="40" width="170" height="60" rx="8" />
-          <text class="lab" x="428" y="62">constraints</text>
-          <text class="note" x="428" y="78">subtype = Fiend</text>
-          <text class="note" x="428" y="92">mv = 1</text>
-          <path class="l" d="M586 70 H636" />
-          <rect class="n" x="636" y="40" width="160" height="60" rx="8" />
-          <text class="lab" x="648" y="62">match all kinds</text>
-          <text class="note" x="648" y="78">candidate.subType ∋ Fiend</text>
-          <text class="note" x="648" y="92">candidate.manaValue = 1</text>
-          <path class="l" d="M716 100 V140 H796" />
-          <rect class="n ok" x="600" y="140" width="290" height="52" rx="8" />
-          <text class="lab" x="614" y="162">related.interaction</text>
-          <text class="note" x="614" y="178">burning-abyss-graff, -cir, -scarm, …</text>
-        </svg>
-      </figure>
-
-      <h2>The two categories</h2>
+      <h2>Catalog shape</h2>
+      <pre>related: {
+  archetype: string[],
+  references: Reference[],
+  referencedBy: string[]
+}</pre>
       <div class="grid">
         <div class="card">
-          <h4>1 · Same archetype</h4>
-          <p>Every other card whose <code>name</code> contains the archetype's
-          <code>namePattern</code> from <code>website/content/sections.json</code>,
-          quote-normalised and case-insensitive.</p>
-          <p>Printed name, not the <code>archetype</code> field — a support card that
-          does not print the name is not in this list, even though it carries the
-          field.</p>
+          <h4>Same archetype</h4>
+          <p><code>archetype</code> remains the sorted list of other cards whose
+          printed name contains the section's <code>namePattern</code>.</p>
         </div>
         <div class="card">
-          <h4>2 · Interacts with this card</h4>
-          <p>Union over clauses that name one of the card's own <code>action</code> or
-          <code>cost-procedure</code> keywords. A candidate must satisfy every
-          constraint kind present in the clause.</p>
-          <p>The action-keyword gate is what keeps <code>2 Creatures MV 1</code> —
-          an Xyz material line — from relating every MV-1 creature to every Xyz
-          card.</p>
+          <h4>References</h4>
+          <p><code>references</code> records each foreign archetype or card explicitly
+          named inside double quotes in this card's rule text.</p>
+        </div>
+        <div class="card">
+          <h4>Referenced by</h4>
+          <p><code>referencedBy</code> is the reverse edge: cards whose quoted rule text
+          resolved to this card or to this card's archetype section.</p>
         </div>
       </div>
-      <p>The two lists are disjoint by construction. <code>archetype</code> is
-      computed first, and its ids are subtracted from <code>interaction</code>
-      once that pass runs — an archetype member that fetches its own archetype
-      would otherwise print the same gallery twice.</p>
 
-      <h2>Closed vocabularies</h2>
-      <div class="scroll">
-        <table>
-          <thead><tr><th>Kind</th><th>Vocabulary source</th><th>Matched against</th></tr></thead>
-          <tbody>
-            <tr><td>subtype</td><td class="mono">every card's own <code>subType</code></td><td class="mono">candidate.subType</td></tr>
-            <tr><td>name</td><td class="mono">any <code>“…”</code> run in the clause</td><td class="mono">candidate.name (substring) or section namePattern</td></tr>
-            <tr><td>color</td><td class="mono">white blue black red green</td><td class="mono">candidate.colors</td></tr>
-            <tr><td>supertype</td><td class="mono">Ritual Xyz Fusion Synchro Link Trap</td><td class="mono">candidate.supertypes</td></tr>
-            <tr><td>mv</td><td class="mono">MV &lt;int&gt; | MV X, ± “or less” / “or more”</td><td class="mono">candidate.manaValue</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>The subtype vocabulary is read from the catalog, never hardcoded: the cube
-      currently prints <code>Aqua, Bird, Dragon, Fairy, Fiend, Human, Insect, Machine,
-      Psychic, Rock, Warrior, Wizard, Wyrm, Zombie</code>, and a fifteenth race must
-      not need a code change to be seen.</p>
+      <h2>Quoted-name pipeline</h2>
+      <figure>
+        <figcaption>Each distinct quoted token resolves once. First match wins.</figcaption>
+        <svg viewBox="0 0 900 170" role="img" aria-labelledby="t1 d1">
+          <title id="t1">Quoted-name relation pipeline</title>
+          <desc id="d1">Normalize quotes and strip tags, extract distinct double-quoted tokens, ignore self references, resolve an archetype or card, then add forward and reverse edges. Unknown tokens fail the build.</desc>
+          <rect class="n" x="5" y="55" width="150" height="60" rx="8" />
+          <text class="lab" x="17" y="79">rule text</text>
+          <text class="note" x="17" y="96">normalize quotes + tags</text>
+          <path class="l" d="M155 85 H190" />
+          <rect class="n" x="190" y="55" width="150" height="60" rx="8" />
+          <text class="lab" x="202" y="79">quotedNames</text>
+          <text class="note" x="202" y="96">distinct, first-seen</text>
+          <path class="l" d="M340 85 H375" />
+          <rect class="n" x="375" y="55" width="150" height="60" rx="8" />
+          <text class="lab" x="387" y="79">resolve token</text>
+          <text class="note" x="387" y="96">self → section → card</text>
+          <path class="l" d="M525 85 H560" />
+          <rect class="n ok" x="560" y="20" width="160" height="52" rx="8" />
+          <text class="lab" x="572" y="43">references</text>
+          <text class="note" x="572" y="59">forward edge</text>
+          <rect class="n ok" x="560" y="98" width="160" height="52" rx="8" />
+          <text class="lab" x="572" y="121">referencedBy</text>
+          <text class="note" x="572" y="137">reverse edge</text>
+        </svg>
+      </figure>
+      <ol>
+        <li>If the token occurs inside the card's own printed name, it is a self-reference and creates no edge.</li>
+        <li>If it equals a section <code>namePattern</code>, case-insensitively, it creates an archetype reference unless that section is the card's own archetype.</li>
+        <li>Otherwise, if it matches another printed card name on a word boundary, it creates a card reference.</li>
+        <li>If nothing matches, <code>fail()</code> stops the content build.</li>
+      </ol>
+      <p>Curly quotes become straight quotes through shared
+      <code>normalizeQuotes</code>. HTML tags are removed before extraction.</p>
 
-      <h2>What fails the build</h2>
+      <h2>Edges, order, and display</h2>
       <ul>
-        <li class="fail">A quoted run matching neither a section
-          <code>namePattern</code> nor any card <code>name</code> as a substring.
-          Today's quoted runs include archetype names (<code>“Burning Abyss”</code>,
-          <code>“Nekroz”</code>) and card-name fragments (<code>“Dante”</code>,
-          <code>“Barbar”</code>, <code>“Maxx”</code>) — both resolve.</li>
-        <li class="fail">An <code>MV</code> token followed by anything other than an
-          integer, <code>X</code>, or the word <code>meets</code>.
-          <code>whose MV meets its Ritual cost</code> is prose in three Nekroz ritual
-          cards and stays legal.</li>
+        <li>An archetype reference adds the source card id to every section member's <code>referencedBy</code>.</li>
+        <li>A card reference adds the source id to only the target card's <code>referencedBy</code>.</li>
+        <li>References sort archetypes before cards, then by section label or card name.</li>
+        <li>Reverse edges sort by source-card name. Duplicate edges are removed.</li>
+        <li>Card pages render <strong>References</strong> and <strong>Referenced by</strong>, each capped at 12 entries.</li>
       </ul>
-      <p>A reference that resolves to <em>zero cards</em> does not fail: an archetype
-      may have no printed member yet.</p>
+      <p>Work now scales with quoted tokens instead of comparing every rule-text
+      constraint against every card. Current live quoted tokens are self-references,
+      so the catalog has no reference edges today; fixtures exercise all edge types.</p>
+
+      <h2>Build guard</h2>
+      <p class="fail">Any non-self quoted token that matches neither a section name
+      pattern nor another printed card name fails with
+      <code>related: &lt;id&gt; references unknown card/archetype &lt;token&gt;</code>.</p>
 
       <h2>Where it lives</h2>
       <ol>
-        <li><code>website/scripts/content/related.mjs</code> — <code>extractClauses</code>,
-          <code>parseConstraints</code>, <code>buildRelatedGraph</code>.</li>
-        <li><code>website/scripts/content/orchestrator.mjs</code> attaches
-          <code>related</code> to every card before writing
-          <code>src/generated/catalog.ts</code>. Schema version 11.</li>
-        <li><code>website/src/pages/cards/[id].astro</code> renders two
-          <code>CardGallery</code> grids, 12 cards each.</li>
+        <li><code>website/scripts/content/related.mjs</code> extracts tokens and builds both directions.</li>
+        <li><code>website/scripts/content/orchestrator.mjs</code> attaches the result before writing <code>src/generated/catalog.ts</code>.</li>
+        <li><code>website/src/pages/cards/[id].astro</code> renders the three conditional related-card blocks.</li>
       </ol>
-      <p>There is no separate cache file and nothing is computed at runtime: the site
-      is statically built, so the content build <em>is</em> the cache, invalidated by
-      the same card source hashes as everything else in the catalog.</p>
     </div>
   </body>
 </html>

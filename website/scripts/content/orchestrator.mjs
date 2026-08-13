@@ -174,9 +174,13 @@ export async function build({ checkOnly }) {
     });
   }
 
-  const related = buildRelatedGraph(cards, sections, keywordRegistry);
+  const related = buildRelatedGraph(cards, sections);
   for (const card of cards)
-    card.related = related.get(card.id) ?? { archetype: [], interaction: [] };
+    card.related = related.get(card.id) ?? {
+      archetype: [],
+      references: [],
+      referencedBy: [],
+    };
 
   const stageDateProblems = stageDateIssues(packages);
   if (stageDateProblems.length) fail(stageDateProblems.join('; '));

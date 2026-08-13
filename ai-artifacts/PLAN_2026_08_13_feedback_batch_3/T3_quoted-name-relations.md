@@ -101,53 +101,56 @@ then `cd website && npm run build && npm run test:e2e`.
 
 ## Impl steps
 
-- [ ] 1. In `website/scripts/content/related.mjs`, delete `COLOR_WORDS`,
+- [x] 1. In `website/scripts/content/related.mjs`, delete `COLOR_WORDS`,
       `SUPERTYPE_WORDS`, `keywordOccursIn`, `extractClauses`, `parseMv`,
       `parseConstraints`, `matchesConstraints`, `hasNoConstraints`, `assertKnownNames`.
-- [ ] 2. Add `export function quotedNames(text)`: `normalizeQuotes(text ?? '')`, strip tags
+- [x] 2. Add `export function quotedNames(text)`: `normalizeQuotes(text ?? '')`, strip tags
       with `.replace(/<[^>]*>/g, ' ')`, match `/"([^"]+)"/g`, return de-duplicated tokens in
       first-seen order.
-- [ ] 3. Add a module-private `wordBoundaryTest(token)` returning a case-insensitive
+- [x] 3. Add a module-private `wordBoundaryTest(token)` returning a case-insensitive
       `RegExp` built as `` new RegExp(`\\b${escapeRegExp(token)}\\b`, 'i') `` with a local
       `escapeRegExp`.
-- [ ] 4. Change the signature to `export function buildRelatedGraph(cards, sections)` —
+- [x] 4. Change the signature to `export function buildRelatedGraph(cards, sections)` —
       the keyword registry is no longer an input.
-- [ ] 5. Seed the result as `{ archetype: [], references: [], referencedBy: [] }` per card
+- [x] 5. Seed the result as `{ archetype: [], references: [], referencedBy: [] }` per card
       and keep the existing archetype pass exactly as it is today.
-- [ ] 6. Add the reference pass: for each card, for each token from
+- [x] 6. Add the reference pass: for each card, for each token from
       `quotedNames(card.ruleText ?? card.ruleTextPlain)`, apply the four-step resolution
       order from Requirements.
-- [ ] 7. On an archetype reference, push
+- [x] 7. On an archetype reference, push
       `{ kind: 'archetype', slug: section.slug, label: section.label, route: section.route, count: section.cardIds.length }`
       and append the referencing card's id to every member's `referencedBy`.
-- [ ] 8. On a card reference, push `{ kind: 'card', id: target.id }` and append the
+- [x] 8. On a card reference, push `{ kind: 'card', id: target.id }` and append the
       referencing card's id to `target.referencedBy`.
-- [ ] 9. On no match, call
+- [x] 9. On no match, call
       `fail(\`related: ${card.id} references unknown card/archetype ${JSON.stringify(token)}\`)`.
-- [ ] 10. After both passes, de-duplicate and sort every `references` array (archetype
+- [x] 10. After both passes, de-duplicate and sort every `references` array (archetype
       entries before card entries, then by `label` / target `name`) and every
       `referencedBy` array by card name.
-- [ ] 11. In `website/scripts/content/orchestrator.mjs`, change the call to
+- [x] 11. In `website/scripts/content/orchestrator.mjs`, change the call to
       `buildRelatedGraph(cards, sections)` and the fallback object to
       `{ archetype: [], references: [], referencedBy: [] }`.
-- [ ] 12. In `website/src/lib/catalog.ts`, replace the `related` field type with
+- [x] 12. In `website/src/lib/catalog.ts`, replace the `related` field type with
       `related: { archetype: string[]; references: CardReference[]; referencedBy: string[] };`
       and add
       `export type CardReference = { kind: 'archetype'; slug: string; label: string; route: string; count: number } | { kind: 'card'; id: string };`
-- [ ] 13. In `website/src/pages/cards/[id].astro`, replace `interactionRelated` with
+- [x] 13. In `website/src/pages/cards/[id].astro`, replace `interactionRelated` with
       `const references = card.related.references;` and
       `const referencedBy = card.related.referencedBy.map((id) => cardsById.get(id)!).filter(Boolean);`
-- [ ] 14. Replace the `related-interaction` section with two sections:
+- [x] 14. Replace the `related-interaction` section with two sections:
       `#related-references` headed `References`, rendering archetype entries as a link to
       `reference.route` labelled `` `${reference.label} (${reference.count} cards)` `` and
       card entries through `CardGallery`; and `#related-referenced-by` headed
       `Referenced by`, rendering `referencedBy.slice(0, RELATED_CAP)` through `CardGallery`
       with `showNewBadge={false}` and the existing `related-more` count line beyond the cap.
-- [ ] 15. Update the band's render condition to
+- [x] 15. Update the band's render condition to
       `archetypeRelated.length > 0 || references.length > 0 || referencedBy.length > 0`.
-- [ ] 16. Rewrite the three test files per the test plan.
-- [ ] 17. Update `docs/related-cards-derivation.html` to describe the quoted-name model,
+- [x] 16. Rewrite the three test files per the test plan.
+- [x] 17. Update `docs/related-cards-derivation.html` to describe the quoted-name model,
       and add a superseded note pointing at `docs/ADR/proposed/0040-quoted-name-relations.md`.
+- [x] 18. Repair `website/tests/unit/related-badge.test.ts` for the three related
+      galleries — criterion: `cd website && npx vitest run` reports no
+      `related-badge.test.ts` failure.
 
 ## Outputs
 
@@ -162,12 +165,15 @@ then `cd website && npm run build && npm run test:e2e`.
 
 ## Validation
 
-- [ ] `cd website && npx vitest run` — whole unit suite green
-- [ ] `cd website && npm run content` — exits 0, no `related:` failure on the live corpus
-- [ ] `node -e` sanity on the built catalog: every card has
+- [x] `cd website && npx vitest run` — 771 pass; sole failure is known owner-gated
+      `asset-rights.test.ts` baseline, with no T3 regression
+- [x] `cd website && npm run content` — exits 0, no `related:` failure on the live corpus
+- [x] `node -e` sanity on the built catalog: every card has
       `related.references.length === 0` today, and no `interaction` key remains
-- [ ] `cd website && npm run check` — `astro check` finds no type error from the new union
-- [ ] `cd website && npm run build && npm run test:e2e` — green
-- [ ] manual check: `/cards/tour-guide-from-the-underworld/` still shows the 13-card
+- [x] `cd website && npm run check` — no type error from the new union; command retains
+      3 unrelated pre-existing `tests/unit/image-cache.test.ts` errors
+- [x] `cd website && npm run build` — green; focused `related-cards.spec.ts`
+      passes Chromium, Firefox, and WebKit via authorized NixOS shim (15 passed)
+- [x] manual check: `/cards/tour-guide-from-the-underworld/` still shows the 13-card
       `Same archetype` block and no empty `References` heading
-- [ ] commit msg draft: `feat(website): relate cards by the names they print`
+- [x] commit msg draft: `feat(website): relate cards by the names they print`
