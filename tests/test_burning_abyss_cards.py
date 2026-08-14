@@ -49,7 +49,7 @@ class BurningAbyssCardTests(unittest.TestCase):
                 "<b>Send</b> 1 Creature with MV 1 from Deck to Grave",
             ),
             "card burning abyss - dante pilgrim": (
-                "<b><kw-a><nospellcheck><key>Hexproof</key></nospellcheck></kw-a></b>",
+                "<b><kw-a>Hexproof</kw-a></b>",
                 "<b>On Destroy</b>",
                 "they <b>Discard</b> 1 at random",
             ),
@@ -93,7 +93,7 @@ class BurningAbyssCardTests(unittest.TestCase):
             ),
             ROOT
             / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set"
-            / "card aa zeus sky thunder": (
+            / "card aa-zeus - sky thunder": (
                 "<i>2 Creatures MV 4</i>",
                 "Xyz Alternative Cost",
             ),

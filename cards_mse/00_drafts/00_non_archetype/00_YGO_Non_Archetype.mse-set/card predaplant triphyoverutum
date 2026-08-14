@@ -20,7 +20,7 @@ card:
 	rarity: rare
 	rule_text:
 		<i>3 black Creatures</i>
-		<i-auto>(1 - Static)</i-auto> “Triphyoverutum” gains +1/+1 for each Creature with a Predator counter.
+		<i-auto>(1 - Static)</i-auto> <i-auto>“Triphyoverutum”</i-auto> gains +1/+1 for each Creature with a Predator counter.
 		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Target</b> 1 Creature Spell cast from Sideboard; <b>Counter</b> it.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7

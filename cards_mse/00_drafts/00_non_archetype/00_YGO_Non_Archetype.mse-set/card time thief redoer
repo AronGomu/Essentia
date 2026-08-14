@@ -17,9 +17,9 @@ card:
 	rarity: rare
 	rule_text:
 		<i>2 Creatures MV 1</i>
-		<i-auto>(1 - Triggered)</i-auto> At the start of each upkeep, <b>Attach</b> the top card of 1 opponent’s Deck to “Redoer”.
-		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Detach X</b> from “Redoer”; for each card type detached this way, apply the corresponding effect:
-		— Creature: <b>Exile</b> “Redoer” to end turn;
+		<i-auto>(1 - Triggered)</i-auto> At the start of each upkeep, <b>Attach</b> the top card of 1 opponent’s Deck to <i-auto>“Redoer”</i-auto>.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Hard)</i-auto> <b>Detach X</b> from <i-auto>“Redoer”</i-auto>; for each card type detached this way, apply the corresponding effect:
+		— Creature: <b>Exile</b> <i-auto>“Redoer”</i-auto> to end turn;
 		— non-Creature Spell: <b>Draw</b> 1 or put 1 target nonland permanent on top of its owner’s Deck.
 	flavor_text: <i-flavor></i-flavor>
 	power: 6

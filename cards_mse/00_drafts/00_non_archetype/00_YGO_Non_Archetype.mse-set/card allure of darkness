@@ -15,7 +15,7 @@ card:
 	super_type: <word-list-type-en>Sorcery</word-list-type-en>
 	sub_type: <word-list-spell></word-list-spell>
 	rarity: common
-	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Draw</b> 2 then <b>Exile</b> 1 black card from Hand. If you can’t then <b>Discard </b>all Hand.
+	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Draw</b> 2 then <b>Exile</b> 1 black card from Hand. If you can’t then <b>Discard</b> your entire Hand.
 	flavor_text: <i-flavor></i-flavor>
 	card_code_text: 003/075 C
 	card_code_text_2: 003/075 C

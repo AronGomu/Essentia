@@ -19,7 +19,7 @@ card:
 		<i>2 Creatures MV 4</i>
 		<b>Xyz Alternative Cost</b> — 1 Xyz Creature that attacked this turn. Its materials are transferred.
 		<i-auto>(1 - Activated <kw-a>Flash</kw-a>)</i-auto> <b>Detach 2</b>; put all other nonland permanents on Field into their owners’ Graves.
-		<i-auto>(2 - Triggered)</i-auto> If another card you control is destroyed, <b>Attach</b> 1 card from Hand, Field, or Sideboard to “ZEUS”.
+		<i-auto>(2 - Triggered)</i-auto> If another card you control is destroyed, <b>Attach</b> 1 card from Hand, Field, or Sideboard to <i-auto>“ZEUS”</i-auto>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7
 	toughness: 7

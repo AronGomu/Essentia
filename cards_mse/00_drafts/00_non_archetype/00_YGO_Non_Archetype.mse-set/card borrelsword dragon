@@ -17,9 +17,9 @@ card:
 	rarity: rare
 	rule_text:
 		<i>3+ Creatures</i>
-		<i-auto>(1 - Static)</i-auto> Prevent all combat damage that would be dealt to “Borrelsword”.
-		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Target</b> 1 Creature; tap the target and “Borrelsword” gains <b>Double strike</b> to end turn. This ability cannot be countered.
-		<i-auto>(3 - Triggered)</i-auto> <b>On Blocked</b> — <b>Target</b> 1 Creature blocking “Borrelsword”; “Borrelsword” gains +X/+X and the target gains -X/-X to end turn, where X is half the target’s power, rounded down.
+		<i-auto>(1 - Static)</i-auto> Prevent all combat damage that would be dealt to <i-auto>“Borrelsword”</i-auto>.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Target</b> 1 Creature; tap the target and <i-auto>“Borrelsword”</i-auto> gains <b>Double strike</b> to end turn. This ability cannot be countered.
+		<i-auto>(3 - Triggered)</i-auto> <b>On Blocked</b> — <b>Target</b> 1 Creature blocking <i-auto>“Borrelsword”</i-auto>; <i-auto>“Borrelsword”</i-auto> gains +X/+X and the target gains -X/-X to end turn, where X is half the target’s power, rounded down.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7
 	toughness: 6

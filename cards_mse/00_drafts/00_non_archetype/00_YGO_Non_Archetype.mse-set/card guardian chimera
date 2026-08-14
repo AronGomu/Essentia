@@ -21,7 +21,7 @@ card:
 	rule_text:
 		<i>3 Creatures with different names, including at least 1 material from Field and 1 from Hand</i>
 		<i-auto>(1 - Triggered Hard)</i-auto> <b>On Enter</b> — <b>Draw</b> X cards then <b>Destroy</b> X non-Creature permanents your opponent controls, X being the number of materials from Hand.
-		<i-auto>(2 - Static)</i-auto> If “Polymerization” is in Grave, “Guardian” gains <b>Hexproof</b>.
+		<i-auto>(2 - Static)</i-auto> If <i-auto>“Polymerization”</i-auto> is in Grave, <i-auto>“Guardian”</i-auto> gains <b>Hexproof</b>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 8
 	toughness: 8
