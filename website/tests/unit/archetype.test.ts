@@ -265,8 +265,7 @@ describe('authored archetype registry', () => {
     );
     for (const card of catalog.cards) {
       const identity = byId.get(card.id) as
-        | { role: string; linked?: boolean }
-        | undefined;
+        { role: string; linked?: boolean } | undefined;
       const inArchetype =
         identity?.role === 'member' || identity?.linked === true;
       expect(card.sectionSlug).toBe(
@@ -287,8 +286,7 @@ describe('authored archetype registry', () => {
       if (section.kind !== 'archetype') continue;
       for (const cardId of section.cardIds) {
         const identity = byId.get(cardId) as
-          | { role: string; linked?: boolean }
-          | undefined;
+          { role: string; linked?: boolean } | undefined;
         expect(identity?.role === 'member' || identity?.linked === true).toBe(
           true,
         );

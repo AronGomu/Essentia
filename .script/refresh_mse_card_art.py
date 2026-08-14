@@ -8,9 +8,9 @@ from pathlib import Path
 
 from PIL import Image
 
-from ensure_original_images import NAME_MAP
 from fix_mse_project_images import resize_cover
 from mse_content import load_manifest
+from original_card_names import NAME_MAP
 from original_image_assets import REPO_ROOT, card_filename, card_type_folder
 from release_package import package_is_locked
 

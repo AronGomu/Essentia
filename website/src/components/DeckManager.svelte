@@ -258,8 +258,7 @@
       <textarea
         id="deck-export"
         readonly
-        value={selected ? exportDeck(selected) : ''}
-      ></textarea>
+        value={selected ? exportDeck(selected) : ''}></textarea>
       <button disabled={!selected} on:click={copyExport}>Copy</button>
       <label for="deck-import">Paste a deck JSON to import it</label>
       <textarea id="deck-import" bind:value={importText}></textarea>

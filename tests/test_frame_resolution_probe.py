@@ -98,7 +98,11 @@ class DirtyTreeGuardTests(unittest.TestCase):
             stdout=" M MSE/manifest.json\n",
             stderr="",
         )
-        with mock.patch.object(probe_module.subprocess, "run", return_value=completed) as run:
+        with mock.patch.object(
+            probe_module, "validated_pack_path", return_value=Path("frame-pack")
+        ), mock.patch.object(
+            probe_module.subprocess, "run", return_value=completed
+        ) as run:
             with self.assertRaises(RuntimeError) as raised:
                 probe_module.probe("magic-sevenhalf.mse-style", "Burning Abyss - Graff")
         self.assertIn("MSE/manifest.json", str(raised.exception))

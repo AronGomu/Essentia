@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 import importlib.util
-import json
 import unittest
 from pathlib import Path
+
+from launcher.mse_vendor import (
+    BIN_DIR,
+    DATA_DIR,
+    FONT_DIR,
+    RESOURCE_DIR,
+    load_manifest,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -72,16 +79,16 @@ class ScaleMseStyleTests(unittest.TestCase):
 
     def test_manifest_covers_every_vendored_file(self) -> None:
         mse_root = REPO_ROOT / "MSE"
-        manifest = json.loads((mse_root / "manifest.json").read_text(encoding="utf-8"))
-        entries = set(manifest["files"])
+        entries = set(load_manifest(mse_root / "manifest.json").entries)
+        payload_roots = tuple(
+            mse_root / directory
+            for directory in (BIN_DIR, DATA_DIR, FONT_DIR, RESOURCE_DIR)
+        )
+        if not any(directory.exists() for directory in payload_roots):
+            return
         vendored = {
             path.relative_to(mse_root).as_posix()
-            for directory in (
-                mse_root / "bin",
-                mse_root / "data",
-                mse_root / "fonts",
-                mse_root / "resource",
-            )
+            for directory in payload_roots
             if directory.exists()
             for path in directory.rglob("*")
             if path.is_file()

@@ -158,7 +158,6 @@ function renderUnorderedList(lines: string[], base: string): string {
     if (nestedOpen) {
       html += '</ul></li>';
       nestedOpen = false;
-      topItemOpen = false;
     } else if (topItemOpen) {
       html += '</li>';
     }
