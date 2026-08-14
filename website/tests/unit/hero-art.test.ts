@@ -19,9 +19,11 @@ const always = () => true;
 describe('hero art', () => {
   it('keeps the home crop at the image top', () => {
     expect(resolve(css, '.hero-art', 'object-position', 1440)).toBe(
-      'center 0%',
+      'center top',
     );
-    expect(resolve(css, '.hero-art', 'object-position', 400)).toBe('center 0%');
+    expect(resolve(css, '.hero-art', 'object-position', 400)).toBe(
+      'center top',
+    );
   });
 });
 

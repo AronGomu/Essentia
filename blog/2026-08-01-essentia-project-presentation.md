@@ -4,6 +4,7 @@ date: 2026-08-01
 author: Aron Gomu
 summary: Presentation of the Essentia project and its first set Legent of the Alpha.
 tags: release, alpha
+cover: /art/essentia-hero.webp
 ---
 
 ## Opening

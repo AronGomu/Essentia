@@ -20,6 +20,8 @@ One word, one part of the project. Say the word, the agent knows the file.
 | rail      | left sidebar: card catalog, or docs/blog nav on reading pages | `website/src/components/Navigation.svelte`, `src/lib/reading-nav.ts` |
 | picker    | deck building UI and its state                | `website/src/components/DeckManager.svelte`, `src/lib/deck-picker.ts` |
 | intro     | markdown prose printed above a section grid   | `website/content/section-intros/{slug}.md`, `catalog.sections[].introMarkdown` |
+| mention   | `[[Card Name]]` in docs/blog: card link plus hover preview | `website/src/lib/card-mentions.ts`, `website/src/lib/markdown.ts` |
+| decklist  | fenced card list whose every entry is a mention | `website/src/lib/markdown.ts`, `docs/rules/DECKLISTS_ALPHA_0.1.md` |
 | reading-order | manual order and grouping of docs and blog posts | `website/content/reading-order.json`, `catalog.postGroups` |
 | reading-nav | docs/blog navigation model the rail renders | `website/src/lib/reading-nav.ts`, `Navigation.svelte` |
 | back-to-top | scroll-to-top control on every page but 404  | `website/src/components/BackToTop.astro`, `src/lib/back-to-top.ts` |

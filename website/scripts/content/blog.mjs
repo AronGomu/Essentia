@@ -22,7 +22,10 @@ export const ALLOWED_POST_KEYS = new Set([
   'summary',
   'tags',
   'draft',
+  'cover',
 ]);
+
+const COVER_RE = /^\/art\/[a-z0-9-]+(?:-hero)?\.webp$/;
 
 /** @returns {{ data: Record<string,string>, body: string }} */
 export function parseFrontMatter(text, source) {
@@ -122,6 +125,15 @@ export async function loadPosts(blogRoot = BLOG_ROOT) {
 
     if (data.draft === 'true') continue;
 
+    let cover;
+    if (data.cover !== undefined) {
+      if (!COVER_RE.test(data.cover))
+        fail(
+          `post ${slug}: cover must be /art/<name>.webp (got ${data.cover})`,
+        );
+      cover = data.cover;
+    }
+
     posts.push({
       slug,
       route: `/blog/${slug}/`,
@@ -135,6 +147,7 @@ export async function loadPosts(blogRoot = BLOG_ROOT) {
             .map((tag) => tag.trim())
             .filter(Boolean)
         : [],
+      ...(cover ? { cover } : {}),
       body,
       headings,
     });

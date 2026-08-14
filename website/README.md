@@ -40,6 +40,33 @@ The pipeline reads, besides the packages themselves:
 
 `npm run dev` and `npm run build` already run it first, so you only need it explicitly when you want to refresh data without starting a server. `npm run content:check` verifies the generated output is up to date without writing.
 
+## Linking cards from prose
+
+Write `[[Card Name]]` in any doc, blog post, section intro or design note. It renders as a link to the card page carrying the gallery hover preview, so pointing at the name shows the render and its rulings without leaving the page.
+
+- `[[Nekroz - Trishula]]` → the printed name.
+- `[[Nekroz - Trishula|the finisher]]` → your own words, same link and preview.
+- `[[Trishula]]` → archetype cards resolve by title alone, unless two archetypes print that title.
+- Case, straight/typed quotes and dash style do not matter: `[[maxx "c"]]` finds `Maxx “C”`.
+- Historical names keep working — a renamed card still resolves through its former name.
+
+An unknown or ambiguous name **fails the build** rather than rendering as plain text, so a mention can never quietly lose its link.
+
+Decklists use a fence instead, and link every entry:
+
+````text
+```decklist
+Main Deck (40 cards)
+2 Burning Abyss - Graff
+14 Swamp
+
+Sideboard (10 cards)
+2 Burning Abyss - Dante
+```
+````
+
+Every line is `quantity name`. Any other line must be a zone label — `Main Deck`, `Deck`, `Sideboard`, `Extra Deck`, `Extra`, `Flex`, optionally with a `(40 cards)` count. A card name without a quantity is an error, so nothing drops out of a list unnoticed. Basic lands are the one entry that stays unlinked.
+
 ## Checks
 
 ```bash

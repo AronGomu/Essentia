@@ -207,7 +207,9 @@
       "retired": false,
       "role": "member",
       "routeAliases": [],
-      "sources": ["01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - cagna"],
+      "sources": [
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - cagna"
+      ],
       "stableId": "burning-abyss-cagna",
       "withdrawn": false
     },
@@ -332,7 +334,9 @@
       "retired": false,
       "role": "member",
       "routeAliases": [],
-      "sources": ["01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - libic"],
+      "sources": [
+        "01_YGO_Legend_of_the_Alpha.mse-set/card burning abyss - libic"
+      ],
       "stableId": "burning-abyss-libic",
       "withdrawn": false
     },
@@ -1092,7 +1096,9 @@
       "retired": false,
       "role": "staple",
       "routeAliases": [],
-      "sources": ["01_YGO_Legend_of_the_Alpha.mse-set/card phoenix wing wind blast"],
+      "sources": [
+        "01_YGO_Legend_of_the_Alpha.mse-set/card phoenix wing wind blast"
+      ],
       "stableId": "phoenix-wing-wind-blast",
       "withdrawn": false
     },

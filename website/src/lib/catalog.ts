@@ -1,4 +1,10 @@
 import catalogData from '../generated/catalog';
+import {
+  buildCardMentionIndex,
+  lookupCardMention,
+  type CardMention,
+  type CardMentionIndex,
+} from './card-mentions';
 
 export const ARCHETYPE_BACKGROUND_SLUGS = new Set(['burning-abyss', 'nekroz']);
 
@@ -204,6 +210,8 @@ export interface CatalogPost {
   author: string;
   summary: string;
   tags: string[];
+  /** Optional public path, e.g. /art/essentia-hero.webp */
+  cover?: string;
   body: string;
   headings: Array<{ id: string; text: string; level: number }>;
 }
@@ -212,6 +220,8 @@ export interface Catalog {
   schemaVersion: 12;
   generatedAt: string;
   heroSectionSlug: string;
+  /** Site-wide presentation hero (home, docs landing, cover posts). */
+  projectHeroImage: string;
   sections: CatalogSection[];
   cards: CatalogCard[];
   cardVersions: CardVersion[];
@@ -352,6 +362,38 @@ export function previewDefinitions(): Map<string, string> {
       .filter((keyword) => keyword.preview)
       .map((keyword) => [keyword.term, keyword.definition]),
   );
+}
+
+const mentionIndexes = new Map<string, CardMentionIndex>();
+
+/**
+ * Index of every name authored prose may use for a card, per deployment base.
+ * Built once per base: every docs and blog page renders mentions, and the
+ * index is derived only from the catalog, which never changes at runtime.
+ */
+export function cardMentionIndex(base: string): CardMentionIndex {
+  const cached = mentionIndexes.get(base);
+  if (cached) return cached;
+  const index = buildCardMentionIndex(
+    catalog.cards.map((card) => ({
+      name: card.name,
+      matchNames: card.matchNames,
+      route: card.route,
+      previewImage: previewImage(card),
+      previewKeywords: previewKeywordsFor(card).map((entry) => entry.term),
+    })),
+    base,
+  );
+  mentionIndexes.set(base, index);
+  return index;
+}
+
+/** Resolver for the Markdown renderer: throws on an unknown or ambiguous name. */
+export function cardMentionResolver(
+  base: string,
+): (name: string) => CardMention {
+  const index = cardMentionIndex(base);
+  return (name) => lookupCardMention(index, name);
 }
 
 /** The image a hover preview or social card should point at. */

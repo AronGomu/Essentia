@@ -74,7 +74,7 @@ ${railChrome}
   </nav>
   ${findTrigger}
 </header>
-<img class="hero-art" src="${base}art/nekroz-hero.webp" alt="" />
+<img class="hero-art" src="${base}art/essentia-hero.webp" alt="" />
 <h1>The Yu-Gi-Oh! Feel.<br />With Magic Rules.</h1>
 <p>Explore the Essentia project. Discover the best Yu-Gi-Oh has to offer within MTG game system.</p>
 <div class="hero-actions">
@@ -214,7 +214,7 @@ describe('chromeIssues', () => {
 
   it('flags a thumb-tier hero image', () => {
     const html = compliantHomeHtml.replace(
-      'src="/art/nekroz-hero.webp"',
+      'src="/art/essentia-hero.webp"',
       'src="/generated/releases/nekroz-thumb.webp"',
     );
     const issues = chromeIssues('index.html', html, '/');

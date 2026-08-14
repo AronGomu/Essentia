@@ -18,12 +18,10 @@ const latest = catalog.updates
   .map((update) => ({ ...update, card: cardsById.get(update.cardId)! }));
 const newCardCount = latest.length;
 const newCards = latest.slice(0, 10);
-const heroSection =
-  catalog.sections.find(
-    (section) => section.slug === catalog.heroSectionSlug,
-  ) ?? catalog.sections[0];
-const heroImage = heroSection?.heroImage;
-const hasPublication = Boolean(heroSection && catalog.releases.length);
+const heroImage = catalog.projectHeroImage;
+const hasPublication = Boolean(
+  catalog.sections.length && catalog.releases.length,
+);
 ---
 
 <BaseLayout
@@ -39,21 +37,21 @@ const hasPublication = Boolean(heroSection && catalog.releases.length);
         <section class="hero">
           <img
             class="hero-art"
-            src={withBase(base, heroImage ?? '')}
+            src={withBase(base, heroImage)}
             alt=""
-            width="624"
-            height="624"
+            width="1672"
+            height="941"
             fetchpriority="high"
           />
           <div class="hero-content">
             <h1>
-              The Yu-Gi-Oh! Feel.
+              The <span class="hero-accent-ygo">Yu-Gi-Oh!</span> Feel.
               <br />
-              With Magic Rules.
+              With <span class="hero-accent-mtg">Magic</span>{' '}
+              <span class="hero-underline">Rules.</span>
             </h1>
             <p>
-              Explore the Essentia project. Discover the best Yu-Gi-Oh has to
-              offer within MTG game system.
+              Discover the best Yu-Gi-Oh has to offer within MTG game system.
             </p>
             <div class="hero-actions">
               <a class="primary-link" href={withBase(base, '/docs/')}>

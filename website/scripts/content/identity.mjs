@@ -28,6 +28,22 @@ export function assertHeroImage(section, provenanceKeys, exists) {
     );
 }
 
+/** Project-level home / docs / blog cover hero (not a section tile). */
+export function assertProjectHeroImage(image, provenanceKeys, exists) {
+  if (
+    typeof image !== 'string' ||
+    !/^\/art\/[a-z0-9-]+-hero\.webp$/.test(image)
+  )
+    fail('section registry: hero.projectImage must be /art/<slug>-hero.webp');
+  const file = image.replace(/^\//, '');
+  if (!exists(file))
+    fail(`content: hero.projectImage file public${image} is missing`);
+  if (!provenanceKeys.has(image))
+    fail(
+      'content: hero.projectImage has no entry in content/art-provenance.json',
+    );
+}
+
 const ROLES = new Set(['member', 'support', 'staple']);
 
 /** Fails when `linked` is present on a card that is not an authored support card. */
@@ -107,6 +123,9 @@ export async function loadRegistries() {
   )
     fail('section registry: hero.sectionSlug must name a known section');
 
+  const projectHeroImage = sectionData.hero?.projectImage;
+  assertProjectHeroImage(projectHeroImage, provenanceKeys, publicExists);
+
   const bySource = new Map();
   const byId = new Map();
   const aliases = new Set();
@@ -173,6 +192,7 @@ export async function loadRegistries() {
     bySource,
     byId,
     heroSectionSlug,
+    projectHeroImage,
   };
 }
 

@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { headingSlug, renderSafeMarkdown } from '../../src/lib/markdown';
+import {
+  buildCardMentionIndex,
+  lookupCardMention,
+} from '../../src/lib/card-mentions';
 
 describe('authored Markdown renderer', () => {
   it('escapes HTML while rendering supported prose', () => {
@@ -209,5 +213,143 @@ describe('authored Markdown renderer', () => {
     const html = renderSafeMarkdown('Wow! [link](/a/)');
     expect(html).toContain('<a href="/a/">link</a>');
     expect(html).toContain('Wow!');
+  });
+});
+
+describe('card mentions in authored Markdown', () => {
+  const cards = buildCardMentionIndex([
+    {
+      name: 'Burning Abyss - Graff',
+      matchNames: ['Burning Abyss - Graff'],
+      route: '/cards/burning-abyss-graff/',
+      previewImage: '/generated/graff.webp',
+      previewKeywords: ['Discard', 'Mill 1-4'],
+    },
+    {
+      name: 'Ash Blossom & Joyous Spring',
+      matchNames: ['Ash Blossom & Joyous Spring'],
+      route: '/cards/ash-blossom-and-joyous-spring/',
+      previewImage: '/generated/ash.webp',
+      previewKeywords: [],
+    },
+  ]);
+  const options = {
+    resolveCard: (name: string) => lookupCardMention(cards, name),
+  };
+  const render = (value: string, base = '/') =>
+    renderSafeMarkdown(value, base, options);
+
+  it('links a mention with the gallery hover attributes', () => {
+    const html = render('Open on [[Burning Abyss - Graff]] every game.');
+    expect(html).toContain('href="/cards/burning-abyss-graff/"');
+    expect(html).toContain('data-card-preview="/generated/graff.webp"');
+    expect(html).toContain('data-card-keywords="Discard,Mill 1-4"');
+    expect(html).toContain('class="card-mention"');
+    expect(html).toContain('>Burning Abyss - Graff</a>');
+  });
+
+  it('resolves a mention written as the archetype title', () => {
+    expect(render('[[Graff]]')).toContain('>Burning Abyss - Graff</a>');
+  });
+
+  it('prints the author’s display text after a pipe', () => {
+    const html = render('[[Burning Abyss - Graff|the recruiter]]');
+    expect(html).toContain('href="/cards/burning-abyss-graff/"');
+    expect(html).toContain('>the recruiter</a>');
+  });
+
+  it('matches a name carrying an ampersand', () => {
+    const html = render('[[Ash Blossom & Joyous Spring]]');
+    expect(html).toContain('href="/cards/ash-blossom-and-joyous-spring/"');
+    expect(html).toContain('>Ash Blossom &amp; Joyous Spring</a>');
+  });
+
+  it('prefixes mention URLs for repository-base deployments', () => {
+    const based = buildCardMentionIndex(
+      [
+        {
+          name: 'Burning Abyss - Graff',
+          matchNames: ['Burning Abyss - Graff'],
+          route: '/cards/burning-abyss-graff/',
+          previewImage: '/generated/graff.webp',
+          previewKeywords: [],
+        },
+      ],
+      '/YGO-x-MTG/',
+    );
+    const html = renderSafeMarkdown('[[Graff]]', '/YGO-x-MTG/', {
+      resolveCard: (name: string) => lookupCardMention(based, name),
+    });
+    expect(html).toContain('href="/YGO-x-MTG/cards/burning-abyss-graff/"');
+    expect(html).toContain(
+      'data-card-preview="/YGO-x-MTG/generated/graff.webp"',
+    );
+  });
+
+  it('keeps a mention literal inside a code span', () => {
+    const html = render('Write `[[Graff]]` to link a card.');
+    expect(html).toContain('<code>[[Graff]]</code>');
+    expect(html).not.toContain('<a');
+  });
+
+  it('fails the build on an unknown mention', () => {
+    expect(() => render('[[Blue-Eyes]]')).toThrow(
+      'Unknown card mention: Blue-Eyes',
+    );
+  });
+
+  it('refuses a mention when no resolver is wired', () => {
+    expect(() => renderSafeMarkdown('[[Graff]]')).toThrow(
+      'Card mentions need a resolveCard option',
+    );
+  });
+
+  it('links every card of a decklist fence', () => {
+    const html = render(
+      '```decklist\n2 Graff\n1 Ash Blossom & Joyous Spring\n14 Swamp\n\nSideboard\n2 Burning Abyss - Graff\n```',
+    );
+    expect(html).toContain('<div class="decklist">');
+    expect(html).toContain(
+      '<li><span class="decklist-count">2</span> <a class="card-mention" href="/cards/burning-abyss-graff/"',
+    );
+    expect(html).toContain(
+      '<span class="decklist-count">14</span> <span class="decklist-land">Swamp</span>',
+    );
+    expect(html).toContain('<p class="decklist-zone">Sideboard</p>');
+    expect(html.match(/class="card-mention"/g)).toHaveLength(3);
+  });
+
+  it('fails a decklist entry that lost its quantity', () => {
+    expect(() =>
+      render('```decklist\n2 Graff\nBurning Abyss - Graff\n```'),
+    ).toThrow('Decklist entry needs a quantity: Burning Abyss - Graff');
+    expect(() => render('```decklist\nSwamp\n```')).toThrow(
+      'Decklist entry needs a quantity: Swamp',
+    );
+  });
+
+  it('fails a decklist line that is neither an entry nor a zone', () => {
+    expect(() => render('```decklist\n2 Graff\nAsh Blosom\n```')).toThrow(
+      'Unknown decklist line: Ash Blosom',
+    );
+  });
+
+  it('accepts the zone labels a list is written with', () => {
+    const html = render(
+      '```decklist\nMain Deck (40 cards)\n2 Graff\n\nExtra Deck\n1 Graff\n```',
+    );
+    expect(html).toContain('<p class="decklist-zone">Main Deck (40 cards)</p>');
+    expect(html).toContain('<p class="decklist-zone">Extra Deck</p>');
+  });
+
+  it('fails an unknown card inside a decklist', () => {
+    expect(() => render('```decklist\n2 Blue-Eyes\n```')).toThrow(
+      'Unknown card mention: Blue-Eyes',
+    );
+  });
+
+  it('still renders a plain fence as code', () => {
+    const html = render('```text\n2 Graff\n```');
+    expect(html).toBe('<pre><code>2 Graff</code></pre>');
   });
 });

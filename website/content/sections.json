@@ -1,6 +1,9 @@
 {
   "schemaVersion": 2,
-  "hero": { "sectionSlug": "nekroz" },
+  "hero": {
+    "sectionSlug": "nekroz",
+    "projectImage": "/art/essentia-hero.webp"
+  },
   "sections": [
     {
       "group": "00_non_archetype",

@@ -232,6 +232,7 @@ export async function build({ checkOnly }) {
     schemaVersion: CATALOG_SCHEMA_VERSION,
     generatedAt,
     heroSectionSlug: registry.heroSectionSlug,
+    projectHeroImage: registry.projectHeroImage,
     sections,
     cards,
     cardVersions: versions,

@@ -36,6 +36,7 @@ const shellClass = chapters.length
 <BaseLayout
   title={`${post.title} — Essentia`}
   description={post.summary}
+  {...post.cover ? { image: post.cover } : {}}
   accent="relic"
   breadcrumb={[
     { label: 'Archive', href: base },
@@ -45,6 +46,18 @@ const shellClass = chapters.length
 >
   <div class={shellClass}>
     <article class="reading-body post-body">
+      {
+        post.cover ? (
+          <img
+            class="reading-cover"
+            src={withBase(base, post.cover)}
+            alt=""
+            width="1672"
+            height="941"
+            fetchpriority="high"
+          />
+        ) : null
+      }
       <h1>{post.title}</h1>
       <p class="post-meta">
         {formatDate(post.date)} · {post.author}

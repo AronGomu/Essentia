@@ -12,7 +12,7 @@ Playtest pair for this batch. Format matches MTGGoldfish condensed export: quant
 
 ### Burning Abyss
 
-```text
+```decklist
 2 Burning Abyss - Graff
 2 Burning Abyss - Cir
 2 Burning Abyss - Scarm
@@ -48,7 +48,7 @@ Flex
 
 ### Nekroz
 
-```text
+```decklist
 2 Manju of the Ten Thousand Hands
 2 Senju of the Thousand Hands
 2 Preparation of Rites

@@ -1,3 +1,7 @@
+// Explicit extension: the content build imports this module through Node's
+// type stripping, which resolves no extensions of its own.
+import { BASIC_LANDS, mentionKey, type CardMention } from './card-mentions.ts';
+
 function escapeHtml(value: string): string {
   return value
     .replaceAll('&', '&amp;')
@@ -5,6 +9,59 @@ function escapeHtml(value: string): string {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+/**
+ * Card names are matched against the catalog, which holds them unescaped:
+ * `Ash Blossom & Joyous Spring` reaches the mention rule as
+ * `Ash Blossom &amp; Joyous Spring` because escaping runs first.
+ */
+function unescapeHtml(value: string): string {
+  return value
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+    .replaceAll('&amp;', '&');
+}
+
+/**
+ * Resolves an authored card name to its page and hover-preview attributes.
+ * Supplied by the component that owns the catalog; this module stays free of
+ * catalog data so it can render any authored corpus in isolation.
+ */
+export type CardMentionResolver = (name: string) => CardMention;
+
+export interface MarkdownOptions {
+  resolveCard?: CardMentionResolver;
+}
+
+function requireResolver(
+  options: MarkdownOptions | undefined,
+): CardMentionResolver {
+  if (!options?.resolveCard)
+    throw new Error('Card mentions need a resolveCard option');
+  return options.resolveCard;
+}
+
+/** Whether a name is a card, without the resolver's authoring error. */
+function findsCard(resolve: CardMentionResolver, name: string): boolean {
+  try {
+    resolve(name);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** The attribute set a gallery tile publishes, so one hover overlay serves both. */
+function cardAnchor(mention: CardMention, label: string): string {
+  return (
+    `<a class="card-mention" href="${escapeHtml(mention.href)}"` +
+    ` data-card-preview="${escapeHtml(mention.preview)}"` +
+    ` data-card-keywords="${escapeHtml(mention.keywords.join(','))}">` +
+    `${escapeHtml(label)}</a>`
+  );
 }
 
 /**
@@ -35,7 +92,11 @@ function imageScale(token: string | undefined): number {
   return value;
 }
 
-function inline(value: string, base: string): string {
+function inline(
+  value: string,
+  base: string,
+  options?: MarkdownOptions,
+): string {
   const parked: string[] = [];
   const park = (fragment: string): string => {
     parked.push(fragment);
@@ -43,6 +104,13 @@ function inline(value: string, base: string): string {
   };
 
   let html = escapeHtml(value).replaceAll(PARK, '');
+
+  // Code spans park before every other rule: their content is literal, so a
+  // `[[Card]]` or `[x](y)` printed inside backticks — as the authoring docs
+  // do — must survive as text rather than become markup.
+  html = html.replace(/`([^`]+)`/g, (_match, code: string) =>
+    park(`<code>${code}</code>`),
+  );
 
   html = html.replace(
     /!\[([^\]|]*)(?:\|(\d{1,3})%)?\]\(([^)\s]+)\)/g,
@@ -57,6 +125,18 @@ function inline(value: string, base: string): string {
       return park(
         `<img class="md-image md-image-scale-${scale}" src="${src}" alt="${alt}" loading="lazy" decoding="async">`,
       );
+    },
+  );
+
+  // `[[Name]]` and `[[Name|display text]]`. Runs before the link rule so a
+  // mention can never be read as a link with a bracketed label.
+  html = html.replace(
+    /\[\[([^\]|]+)(?:\|([^\]|]+))?\]\]/g,
+    (_match, rawName: string, rawLabel: string | undefined) => {
+      const mention = requireResolver(options)(unescapeHtml(rawName.trim()));
+      const label =
+        rawLabel === undefined ? mention.name : unescapeHtml(rawLabel.trim());
+      return park(cardAnchor(mention, label));
     },
   );
 
@@ -77,10 +157,6 @@ function inline(value: string, base: string): string {
       // `&amp;amp;` and resolved to the wrong URL.
       return `${park(`<a href="${href}"${external}>`)}${label}${park('</a>')}`;
     },
-  );
-
-  html = html.replace(/`([^`]+)`/g, (_match, code: string) =>
-    park(`<code>${code}</code>`),
   );
 
   html = html
@@ -133,15 +209,23 @@ function splitBlocks(value: string): string[] {
   return blocks;
 }
 
-function renderOrderedList(lines: string[], base: string): string {
+function renderOrderedList(
+  lines: string[],
+  base: string,
+  options?: MarkdownOptions,
+): string {
   const items = lines
-    .map((line) => inline(line.replace(/^\d+\.\s+/, ''), base))
+    .map((line) => inline(line.replace(/^\d+\.\s+/, ''), base, options))
     .map((item) => `<li>${item}</li>`)
     .join('');
   return `<ol>${items}</ol>`;
 }
 
-function renderUnorderedList(lines: string[], base: string): string {
+function renderUnorderedList(
+  lines: string[],
+  base: string,
+  options?: MarkdownOptions,
+): string {
   let html = '<ul>';
   let nestedOpen = false;
   let topItemOpen = false;
@@ -152,7 +236,7 @@ function renderUnorderedList(lines: string[], base: string): string {
         html += '<ul>';
         nestedOpen = true;
       }
-      html += `<li>${inline(nestedMatch[1]!, base)}</li>`;
+      html += `<li>${inline(nestedMatch[1]!, base, options)}</li>`;
       continue;
     }
     if (nestedOpen) {
@@ -162,7 +246,7 @@ function renderUnorderedList(lines: string[], base: string): string {
       html += '</li>';
     }
     const text = line.replace(/^-\s+/, '');
-    html += `<li>${inline(text, base)}`;
+    html += `<li>${inline(text, base, options)}`;
     topItemOpen = true;
   }
   if (nestedOpen) html += '</ul></li>';
@@ -171,7 +255,11 @@ function renderUnorderedList(lines: string[], base: string): string {
   return html;
 }
 
-function renderTable(lines: string[], base: string): string {
+function renderTable(
+  lines: string[],
+  base: string,
+  options?: MarkdownOptions,
+): string {
   const parseRow = (line: string): string[] =>
     line
       .trim()
@@ -184,14 +272,14 @@ function renderTable(lines: string[], base: string): string {
   const rows = lines.slice(2).map(parseRow);
 
   const headHtml = `<thead><tr>${header
-    .map((cell) => `<th>${inline(cell, base)}</th>`)
+    .map((cell) => `<th>${inline(cell, base, options)}</th>`)
     .join('')}</tr></thead>`;
 
   const bodyHtml = `<tbody>${rows
     .map((row) => {
       const padded = header.map((_, i) => row[i] ?? '');
       return `<tr>${padded
-        .map((cell) => `<td>${inline(cell, base)}</td>`)
+        .map((cell) => `<td>${inline(cell, base, options)}</td>`)
         .join('')}</tr>`;
     })
     .join('')}</tbody>`;
@@ -199,29 +287,103 @@ function renderTable(lines: string[], base: string): string {
   return `<table>${headHtml}${bodyHtml}</table>`;
 }
 
-function block(text: string, base: string): string {
+/**
+ * A ```decklist fence. Each entry is `quantity name`; any other non-empty line
+ * is a zone label (`Sideboard`, `Flex`). Every named card is linked and gains
+ * the hover preview, so a list stays a list to write and becomes a browsable
+ * one to read. Unknown names throw — the whole point is that no card in a
+ * published list is left unlinked by a typo.
+ */
+/**
+ * The only lines a decklist may carry beside its entries. An allowlist, not a
+ * fallback: any other unquantified line is a card whose quantity or spelling
+ * is wrong, and reading it as a zone heading would hide the card instead.
+ */
+const DECKLIST_ZONES = new Set([
+  'main',
+  'main deck',
+  'deck',
+  'sideboard',
+  'extra',
+  'extra deck',
+  'flex',
+]);
+
+function renderDecklist(body: string, options?: MarkdownOptions): string {
+  const resolve = requireResolver(options);
+  let html = '<div class="decklist">';
+  let listOpen = false;
+
+  const closeList = () => {
+    if (listOpen) html += '</ul>';
+    listOpen = false;
+  };
+
+  for (const raw of body.split('\n')) {
+    const line = raw.trim();
+    if (line === '') continue;
+
+    const entry = /^(\d+)\s+(.+)$/.exec(line);
+    if (!entry) {
+      const zone = mentionKey(line.replace(/\(.*\)/, '').replace(/:$/, ''));
+      if (!DECKLIST_ZONES.has(zone)) {
+        if (BASIC_LANDS.has(zone) || findsCard(resolve, line))
+          throw new Error(`Decklist entry needs a quantity: ${line}`);
+        throw new Error(`Unknown decklist line: ${line}`);
+      }
+      closeList();
+      html += `<p class="decklist-zone">${escapeHtml(line)}</p>`;
+      continue;
+    }
+
+    if (!listOpen) {
+      html += '<ul class="decklist-lines">';
+      listOpen = true;
+    }
+    const count = `<span class="decklist-count">${entry[1]!}</span>`;
+    const name = entry[2]!.trim();
+    let printed: string;
+    if (BASIC_LANDS.has(mentionKey(name))) {
+      printed = `<span class="decklist-land">${escapeHtml(name)}</span>`;
+    } else {
+      // The printed name comes from the catalog, so a list written with a
+      // nickname or sloppy case still reads as the card's real name.
+      const mention = resolve(name);
+      printed = cardAnchor(mention, mention.name);
+    }
+    html += `<li>${count} ${printed}</li>`;
+  }
+
+  closeList();
+  return `${html}</div>`;
+}
+
+function block(text: string, base: string, options?: MarkdownOptions): string {
   const lines = text.split('\n');
 
   if (lines.every((line) => /^-\s+|^\s{2,}-\s+/.test(line)))
-    return renderUnorderedList(lines, base);
+    return renderUnorderedList(lines, base, options);
 
   if (lines.every((line) => /^\d+\.\s+/.test(line)))
-    return renderOrderedList(lines, base);
+    return renderOrderedList(lines, base, options);
 
-  const fence = /^```.*\n([\s\S]*)\n```$/.exec(text);
-  if (fence) return `<pre><code>${escapeHtml(fence[1]!)}</code></pre>`;
+  const fence = /^```(\S*)[^\n]*\n([\s\S]*)\n```$/.exec(text);
+  if (fence) {
+    if (fence[1] === 'decklist') return renderDecklist(fence[2]!, options);
+    return `<pre><code>${escapeHtml(fence[2]!)}</code></pre>`;
+  }
 
   const heading = /^(#{1,4})\s+(.+)$/.exec(text);
   if (heading) {
     const level = heading[1]!.length;
     const label = heading[2]!;
     const id = headingSlug(label);
-    return `<h${level} id="${id}">${inline(label, base)}</h${level}>`;
+    return `<h${level} id="${id}">${inline(label, base, options)}</h${level}>`;
   }
 
   if (lines.every((line) => /^>\s?/.test(line))) {
     const inner = lines.map((line) => line.replace(/^>\s?/, '')).join(' ');
-    return `<blockquote><p>${inline(inner, base)}</p></blockquote>`;
+    return `<blockquote><p>${inline(inner, base, options)}</p></blockquote>`;
   }
 
   if (
@@ -229,15 +391,19 @@ function block(text: string, base: string): string {
     /^\|.*\|$/.test(lines[0]!.trim()) &&
     /^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?$/.test(lines[1]!.trim())
   )
-    return renderTable(lines, base);
+    return renderTable(lines, base, options);
 
   if (text.trim() === '---') return '<hr>';
 
-  return `<p>${lines.map((line) => inline(line, base)).join('<br>')}</p>`;
+  return `<p>${lines.map((line) => inline(line, base, options)).join('<br>')}</p>`;
 }
 
-export function renderSafeMarkdown(value: string, base = '/'): string {
+export function renderSafeMarkdown(
+  value: string,
+  base = '/',
+  options?: MarkdownOptions,
+): string {
   return splitBlocks(value)
-    .map((text) => block(text, base))
+    .map((text) => block(text, base, options))
     .join('');
 }

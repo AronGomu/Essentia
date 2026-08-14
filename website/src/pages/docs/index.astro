@@ -2,12 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Markdown from '../../components/Markdown.astro';
 import ChapterSummary from '../../components/ChapterSummary.astro';
-import { catalog } from '../../lib/catalog';
+import { catalog, withBase } from '../../lib/catalog';
 
 const doc = catalog.docs.find((entry) => entry.route === '/docs/');
 if (!doc) throw new Error('docs: PRESENTATION.md is missing');
 
 const base = import.meta.env.BASE_URL;
+const cover = catalog.projectHeroImage;
 const chapters = doc.headings
   .filter((heading) => heading.level === 2)
   .map((heading) => ({ href: `#${heading.id}`, label: heading.text }));
@@ -16,11 +17,20 @@ const chapters = doc.headings
 <BaseLayout
   title="Essentia — the project"
   description="What Essentia is: Yu-Gi-Oh! identities rebuilt as Magic cards."
+  image={cover}
   accent="relic"
   breadcrumb={[{ label: 'Archive', href: base }, { label: 'Docs' }]}
 >
   <div class="reading-shell">
     <article class="reading-body docs-body">
+      <img
+        class="reading-cover"
+        src={withBase(base, cover)}
+        alt=""
+        width="1672"
+        height="941"
+        fetchpriority="high"
+      />
       <h1>{doc.title}</h1>
       <Markdown value={doc.body} />
     </article>

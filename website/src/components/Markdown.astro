@@ -1,11 +1,15 @@
 ---
 import { renderSafeMarkdown } from '../lib/markdown';
+import { cardMentionResolver } from '../lib/catalog';
 interface Props {
   value: string;
   class?: string;
 }
 const { value, class: className } = Astro.props;
-const html = renderSafeMarkdown(value, import.meta.env.BASE_URL);
+const base = import.meta.env.BASE_URL;
+const html = renderSafeMarkdown(value, base, {
+  resolveCard: cardMentionResolver(base),
+});
 ---
 
 <div class={className} set:html={html} />

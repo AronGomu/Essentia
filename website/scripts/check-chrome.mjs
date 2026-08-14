@@ -155,17 +155,26 @@ export function chromeIssues(file, html, base, keywords = null) {
   }
 
   if (file === 'index.html') {
+    const heroHeadlineText = (
+      html.match(/<h1[^>]*>[\s\S]*?<\/h1>/)?.[0] ?? ''
+    ).replace(/<[^>]+>/g, '');
     if (
-      !html.includes('The Yu-Gi-Oh! Feel.') ||
-      !html.includes('With Magic Rules.')
+      !heroHeadlineText.includes('The Yu-Gi-Oh! Feel.') ||
+      !heroHeadlineText.includes('With Magic Rules.')
     ) {
       problems.push(`${file}: hero headline copy changed`);
     }
 
+    const heroLeadMatch = [...html.matchAll(/<p[^>]*>[\s\S]*?<\/p>/g)].find(
+      (match) => match[0].includes('Discover the best Yu-Gi-Oh'),
+    );
+    const heroLeadText = (heroLeadMatch?.[0] ?? '').replace(/<[^>]+>/g, ' ');
     if (
-      !html.includes(
-        'Explore the Essentia project. Discover the best Yu-Gi-Oh has to offer within MTG game system.',
-      )
+      !heroLeadText
+        .replace(/\s+/g, ' ')
+        .includes(
+          'Discover the best Yu-Gi-Oh has to offer within MTG game system.',
+        )
     ) {
       problems.push(`${file}: hero lead copy changed`);
     }
