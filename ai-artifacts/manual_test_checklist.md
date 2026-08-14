@@ -421,3 +421,28 @@ Superseded by feedback-batch T3. **Do not run this section:** it targets deleted
 - [ ] On a filesystem supporting symlinks, replace the manifest no-follow write temporarily with a direct `writeFile`, run `cd website && npx vitest run tests/unit/image-cache.test.ts -t 'refuses a symlinked manifest without changing its external target'`, and confirm it fails; revert the mutation.
 - [ ] Temporarily append one byte to each encoded derivative before writing, run `cd website && npx vitest run tests/unit/image-cache.test.ts -t 'emits bytes identical to direct Sharp encoding'`, and confirm the AVIF byte comparison fails; revert the mutation.
 - [ ] Run the unmodified focused suite and confirm all 17 tests pass, including external sentinel preservation and direct Sharp byte equivalence for AVIF, WebP, and PNG derivatives.
+
+## Website audit T1 exact install-script trust
+
+- [ ] Change a copied trust ledger's `node_modules/esbuild` integrity, run `npm run install-scripts:check`, and confirm it fails before any native rebuild.
+- [ ] Confirm CI logs show exact install-script trust check before `npm rebuild esbuild`, with no `sharp` rebuild.
+
+## Website audit T2 print-master dimensions
+
+- [ ] Place a disposable wrong-sized `Test Card.png` in a temp package's `renders_print/`; confirm content discovery reports actual dimensions plus expected 1500×2092 and does not alter tracked assets.
+- [ ] Confirm a package without `renders_print/` still uses draft-resolution fallback.
+
+## Website audit T3 repo-base links
+
+- [ ] Serve repo-base build, open home at 400px, follow first archetype tile, and confirm gallery images load under `/YGO-x-MTG/` with no failed same-origin requests.
+- [ ] View generated HTML and confirm `source[srcset]` card candidates include repo base.
+
+## Website audit T4 sitemap completeness
+
+- [ ] Open root and repo-base `sitemap.xml`; confirm docs, blog posts, `/docs/`, `/blog/`, and `/decks/` appear once with correct base prefix.
+
+## Website audit T5 docs responsive reflow
+
+- [ ] At 320×800, open `/docs/releases/`; table plus long inline code stay inside reading body with no page-level horizontal scrollbar; code blocks retain their own horizontal scroll.
+- [ ] At 320×800, open `/docs/mse/`; long inline paths/commands wrap inside reading body without changing preformatted blocks.
+- [ ] At 320×800, open `/docs/context/`; page has no horizontal overflow and reading layout remains legible.
