@@ -43,7 +43,9 @@
     --reading-rule: oklch(0.44 0.01 80);
     --reading-measure: 70ch;
     --reading-toc: 15rem;
-    --header: 4.5rem;
+    /* The real header measures ~94px: its nav buttons outgrow the old 4.5rem
+       token, so anchors offset by `--header` landed *under* the sticky bar. */
+    --header: 6rem;
     --z-sticky: 20;
     --z-backdrop: 40;
     --z-dialog: 50;

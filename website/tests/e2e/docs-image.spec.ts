@@ -8,8 +8,10 @@ test('docs index shows the scaled card image', async ({ page }) => {
   const image = page.locator('img.md-image');
   await expect(image).toBeVisible();
   await expect(image).toHaveClass(/md-image-scale-60/);
-  // The image is `loading="lazy" decoding="async"`, so `naturalWidth` is 0
-  // until the decode lands. Poll instead of reading it once.
+  // The image is `loading="lazy" decoding="async"` and sits below the fold, so
+  // Firefox and WebKit only fetch it once it is scrolled near the viewport, and
+  // `naturalWidth` stays 0 until the decode lands. Scroll first, then poll.
+  await image.scrollIntoViewIfNeeded();
   await expect
     .poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
     .toBeGreaterThan(0);
