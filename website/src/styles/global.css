@@ -1312,6 +1312,17 @@ html[data-page='archetype'] body::after {
 }
 
 @media (max-width: 44rem) {
+  .reading-body table {
+    table-layout: fixed;
+  }
+  .reading-body th,
+  .reading-body td {
+    overflow-wrap: anywhere;
+  }
+  .reading-body code:not(pre code) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
   /* The letter mark is square (64×64), so both axes are stated outright. */
   .compact-brand img {
     height: 2rem;
