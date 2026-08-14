@@ -49,9 +49,12 @@ jobs:
           cache-dependency-path: website/package-lock.json
       - working-directory: website
         run: npm ci --ignore-scripts
+      - name: Verify reviewed native tools
+        working-directory: website
+        run: npm run install-scripts:check
       - name: Rebuild reviewed native tools only
         working-directory: website
-        run: npm rebuild esbuild sharp
+        run: npm rebuild esbuild
       - working-directory: website
         run: npm run audit:deps
       - working-directory: website

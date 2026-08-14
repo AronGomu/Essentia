@@ -1,9 +1,21 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "reviewedBy": "AronGomu",
   "packages": {
-    "esbuild": "Downloads/verifies platform-specific compiler binary required by Astro/Vite.",
-    "sharp": "Verifies platform-specific libvips binary used only by build-time image generation.",
-    "fsevents": "Optional macOS filesystem watcher native rebuild; never shipped to browser or Linux Pages runtime."
+    "node_modules/esbuild": {
+      "version": "0.28.1",
+      "integrity": "sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==",
+      "reason": "Downloads and verifies the platform-specific compiler binary required by Astro and Vite."
+    },
+    "node_modules/fsevents": {
+      "version": "2.3.2",
+      "integrity": "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==",
+      "reason": "Builds the optional macOS filesystem watcher; it is not shipped to the browser or Linux Pages runtime."
+    },
+    "node_modules/vite/node_modules/fsevents": {
+      "version": "2.3.3",
+      "integrity": "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==",
+      "reason": "Builds Vite's nested optional macOS filesystem watcher; it is not shipped to the browser or Linux Pages runtime."
+    }
   }
 }
