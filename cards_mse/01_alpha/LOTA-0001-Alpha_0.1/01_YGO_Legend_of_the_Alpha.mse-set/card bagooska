@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: m15-spellbook
 	stylesheet_version: 2024-09-01
@@ -23,6 +23,6 @@ card:
 	flavor_text: <i-flavor></i-flavor>
 	power: 5
 	toughness: 5
-	card_code_text: 002/050 C
-	card_code_text_2: 002/050 C
-	card_code_text_3: 002/050 C
+	card_code_text: 002/054 C
+	card_code_text_2: 002/054 C
+	card_code_text_3: 002/054 C

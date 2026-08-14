@@ -19,6 +19,6 @@ card:
 		<i-auto>(1 - Resolution)</i-auto> Target Creature loses all its abilities to end turn.
 		<i-auto>(2 - Static)</i-auto> You may <b>Cast</b> this card from Grave. If you do, <b>Exile</b> it when it leaves Stack.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 012/077 C
-	card_code_text_2: 012/077 C
-	card_code_text_3: 012/077 C
+	card_code_text: 012/075 C
+	card_code_text_2: 012/075 C
+	card_code_text_3: 012/075 C

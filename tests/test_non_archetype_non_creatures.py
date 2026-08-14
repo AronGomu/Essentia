@@ -19,12 +19,10 @@ DRAFT_EXPECTED = {
     "card instant fusion": ("Pay 3 LP", "MV 1 or less", "ignoring summoning restrictions"),
     "card monster reborn": ("in 1 Grave", "<b>Reanimate</b> it"),
     "card mystical space typhoon": ("<b>Target</b> 1 nonland non-Creature permanent; <b>Destroy</b> the target",),
-    "card phoenix wing wind blast": ("<b>Discard</b> 1", "<b>Target</b> 1 nonland permanent", "on top of Deck"),
     "card raigeki": ("<b>Destroy</b> all Creatures your opponents control",),
     "card super polymerization": ("<b>Fusion Summon</b>",),
     "card torrential tribute": ("<b>Cast</b> this Spell only if 1 Creature has entered", "<b>Destroy</b> all Creatures"),
     "card twin twisters": ("<b>Discard</b> 1", "<b>Target</b> 0–2 nonland non-Creature permanents; <b>Destroy</b> the targets"),
-    "card upstart goblin": ("<b>Draw</b> 1", "Alternative Cost"),
 }
 
 ACTIVE_EXPECTED = {
@@ -36,6 +34,12 @@ ACTIVE_EXPECTED = {
     "card dark hole": ("<b>Destroy</b> all Creatures",),
     "card foolish burial": ("<b>Send</b> 1 Creature from Deck to Grave",),
     "card karma cut": ("<b>Discard</b> 1", "<b>Target</b> 1 Creature", "<b>Exile</b> it"),
+    "card phoenix wing wind blast": (
+        "<b>Discard</b> 1",
+        "<b>Target</b> 1 nonland permanent",
+        "on top of Deck",
+    ),
+    "card upstart goblin": ("<b>Draw</b> 1", "Alternative Cost"),
 }
 
 

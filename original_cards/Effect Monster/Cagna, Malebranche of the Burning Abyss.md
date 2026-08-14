@@ -18,4 +18,4 @@ If you control a monster that is not a "Burning Abyss" monster, destroy this car
 
 - [Official Yu-Gi-Oh! Neuron card database](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=11634&request_locale=en)
 - **Database CID:** 11634
-- **Retrieved:** 2026-07-12
+- **Retrieved:** 2026-08-14

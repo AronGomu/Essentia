@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: m15-showcase-praetor
 	stylesheet_version: 2024-09-01
@@ -21,6 +21,6 @@ card:
 	flavor_text: <i-flavor></i-flavor>
 	power: 3
 	toughness: 5
-	card_code_text: 032/050 C
-	card_code_text_2: 032/050 C
-	card_code_text_3: 032/050 C
+	card_code_text: 034/054 C
+	card_code_text_2: 034/054 C
+	card_code_text_3: 034/054 C

@@ -19,6 +19,6 @@ card:
 		You may <b>Cast</b> this Spell only if 1 Creature has entered Field this turn.
 		<i-auto>(1 - Resolution)</i-auto> <b>Destroy</b> all Creatures.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 068/077 C
-	card_code_text_2: 068/077 C
-	card_code_text_3: 068/077 C
+	card_code_text: 067/075 C
+	card_code_text_2: 067/075 C
+	card_code_text_3: 067/075 C

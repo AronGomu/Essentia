@@ -20,8 +20,8 @@ class BurningAbyssCardTests(unittest.TestCase):
         cls.includes = re.findall(r"(?m)^include_file:\s*(.+)$", cls.set_text)
 
     def test_manifest_has_complete_unique_card_graph(self) -> None:
-        self.assertEqual(len(self.includes), 13)
-        self.assertEqual(len(set(self.includes)), 13)
+        self.assertEqual(len(self.includes), 11)
+        self.assertEqual(len(set(self.includes)), 11)
         self.assertEqual({path.name for path in PROJECT.glob("card *")}, set(self.includes))
         self.assertIn("title: Essentia -- Burning Abyss", self.set_text)
         self.assertIn("set_language: EN", self.set_text)
@@ -38,7 +38,7 @@ class BurningAbyssCardTests(unittest.TestCase):
                 codes = re.findall(r"(?m)^\tcard_code_text(?:_\d+)?:\s*(.+)$", text)
                 self.assertTrue(codes)
                 for code in codes:
-                    self.assertRegex(code, rf"^{index:03d}/013 [CURM]$")
+                    self.assertRegex(code, rf"^{index:03d}/011 [CURM]$")
 
     def test_representative_card_mechanics_are_preserved(self) -> None:
         expected = {
@@ -78,6 +78,14 @@ class BurningAbyssCardTests(unittest.TestCase):
             ),
             ACTIVE / "card burning abyss - draghig": (
                 "<b>On Send Grave</b> — <b>Discard</b>",
+            ),
+            ACTIVE / "card burning abyss - cagna": (
+                "name: Burning Abyss - Cagna",
+                "<b>Send</b> 1 <i-auto>“Burning Abyss”</i-auto> from Deck to Grave",
+            ),
+            ACTIVE / "card burning abyss - libic": (
+                "name: Burning Abyss - Libic",
+                "<b>Summon</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature from Hand",
             ),
             ACTIVE / "card leviair the sea dragon": (
                 "<b>Target</b> 1 exiled",

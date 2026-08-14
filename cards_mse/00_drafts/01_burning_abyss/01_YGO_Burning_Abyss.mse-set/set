@@ -56,11 +56,9 @@ styling:
 		text_box_mana_symbols: magic-mana-small.mse-symbol-font
 include_file: card absolute king back jack
 include_file: card beatrice lady of the eternal
-include_file: card burning abyss - cagna
 include_file: card burning abyss - cherubini
 include_file: card burning abyss - dante pilgrim
 include_file: card burning abyss - good  evil
-include_file: card burning abyss - libic
 include_file: card burning abyss - malacoda
 include_file: card burning abyss - terminus
 include_file: card crane crane

@@ -21,11 +21,11 @@ card:
 	rule_text:
 		<i>1 Tuner + 1+ non-Tuner</i>
 		<b>Flying</b>
-		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Sacrifice</b> <i-auto>Stardust Dragon</i-auto> and <b>Target</b> 1 Spell or ability that would <b>Destroy</b> 1 or more cards; <b>Negate & Destroy</b>. At the start of the next end step, <b>Reanimate</b> this card.
+		<i-auto>(1 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> <b>Sacrifice</b> Stardust Dragon and <b>Target</b> 1 Spell or ability that would <b>Destroy</b> 1 or more cards; <b>Negate & Destroy</b>. At the start of the next end step, <b>Reanimate</b> this card.
 	flavor_text: <i-flavor></i-flavor>
 	power: 6
 	toughness: 5
-	card_code_text: 060/077 R
-	card_code_text_2: 060/077 R
-	card_code_text_3: 060/077 R
+	card_code_text: 059/075 R
+	card_code_text_2: 059/075 R
+	card_code_text_3: 059/075 R
 	copyright: 

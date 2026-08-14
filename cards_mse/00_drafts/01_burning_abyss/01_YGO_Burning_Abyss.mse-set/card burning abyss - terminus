@@ -1,4 +1,4 @@
-mse_version: 2.5.8
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -16,15 +16,15 @@ card:
 	super_type_2: <word-list-type-en></word-list-type-en>
 	super_type_3: <word-list-type-en></word-list-type-en>
 	super_type_4: <word-list-type-en></word-list-type-en>
-	sub_type: 
+	sub_type: <word-list-spell></word-list-spell>
 	sub_type_2: 
 	sub_type_3: 
 	sub_type_4: 
 	rarity: common
 	rule_text:
-		<i-auto>(1 - Resolution)</i-auto> <b>Fusion Summon</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature using Creatures from Hand or Field as materials.
-		<i-auto>(2 - Activated Sorcery Soft)</i-auto> <b>Exile from Grave</b> and <b>Target</b> 1 <i-auto>“Burning Abyss”</i-auto> Creature; the target gains +2/+2 until the end of the opponent’s next turn.
+		<i-auto>(1 - Resolution)</i-auto> <b>Fusion Summon</b> 1 “Burning Abyss” Creature using Creatures from Hand or Field as materials.
+		<i-auto>(2 - Activated Sorcery Soft)</i-auto> <b>Exile from Grave</b> and <b>Target</b> 1 “Burning Abyss” Creature; the target gains +2/+2 until the end of the opponent’s next turn.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 009/013 C
-	card_code_text_2: 009/013 C
-	card_code_text_3: 009/013 C
+	card_code_text: 007/011 C
+	card_code_text_2: 007/011 C
+	card_code_text_3: 007/011 C

@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> Choose any number of <i-auto>“Burning Abyss”</i-auto> Creatures sent to Grave this turn. <b>Reanimate</b> them.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 015/050 C
-	card_code_text_2: 015/050 C
-	card_code_text_3: 015/050 C
+	card_code_text: 017/054 C
+	card_code_text_2: 017/054 C
+	card_code_text_3: 017/054 C

@@ -21,11 +21,11 @@ card:
 	rule_text:
 		<i>1 Tuner + 1+ white or black non-Tuner</i>
 		<i-auto>(1 - Triggered)</i-auto> <b>On Enter</b> — <b>Target</b> 1 nonland permanent; <b>Exile</b> it.
-		<i-auto>(2 - Static)</i-auto> If 1 black material was used, <i-auto>Chaos Angel</i-auto> gains <b><kw-a>Indestructible</kw-a></b>. If 1 white material was used, it gains <b>Protection from everything</b>.
+		<i-auto>(2 - Static)</i-auto> If 1 black material was used, Chaos Angel gains <b><kw-a>Indestructible</kw-a></b>. If 1 white material was used, it gains <b>Protection from everything</b>.
 	flavor_text: <i-flavor></i-flavor>
 	power: 8
 	toughness: 7
-	card_code_text: 014/077 R
-	card_code_text_2: 014/077 R
-	card_code_text_3: 014/077 R
+	card_code_text: 014/075 R
+	card_code_text_2: 014/075 R
+	card_code_text_3: 014/075 R
 	copyright: 

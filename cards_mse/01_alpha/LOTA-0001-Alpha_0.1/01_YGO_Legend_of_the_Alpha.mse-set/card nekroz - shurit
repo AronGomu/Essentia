@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -21,6 +21,6 @@ card:
 	flavor_text: <i-flavor></i-flavor>
 	power: 0
 	toughness: 4
-	card_code_text: 041/050 C
-	card_code_text_2: 041/050 C
-	card_code_text_3: 041/050 C
+	card_code_text: 043/054 C
+	card_code_text_2: 043/054 C
+	card_code_text_3: 043/054 C

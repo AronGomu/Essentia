@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Discard</b> 1; <b>Fusion Summon</b> 1 Fusion Creature using Creatures on Field controlled by any player as materials.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 063/077 C
-	card_code_text_2: 063/077 C
-	card_code_text_3: 063/077 C
+	card_code_text: 062/075 C
+	card_code_text_2: 062/075 C
+	card_code_text_3: 062/075 C

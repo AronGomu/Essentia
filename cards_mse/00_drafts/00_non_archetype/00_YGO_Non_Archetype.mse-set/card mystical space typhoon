@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Target</b> 1 nonland non-Creature permanent; <b>Destroy</b> the target.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 045/077 C
-	card_code_text_2: 045/077 C
-	card_code_text_3: 045/077 C
+	card_code_text: 045/075 C
+	card_code_text_2: 045/075 C
+	card_code_text_3: 045/075 C

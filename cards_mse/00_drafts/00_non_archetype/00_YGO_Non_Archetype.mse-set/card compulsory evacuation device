@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Target</b> 1 nonland permanent; <b>Bounce</b> the target.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 015/077 C
-	card_code_text_2: 015/077 C
-	card_code_text_3: 015/077 C
+	card_code_text: 015/075 C
+	card_code_text_2: 015/075 C
+	card_code_text_3: 015/075 C

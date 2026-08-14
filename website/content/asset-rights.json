@@ -3,608 +3,656 @@
   "publicationStatus": "approved",
   "scope": "Canonical standard renders and print masters underlying public card-image publication",
   "policy": "Public deployment requires owner approval for exact canonical display-render and print-master hashes. Approval of one tier never covers drift in the other.",
-  "approvedAt": "2026-08-13",
+  "approvedAt": "2026-08-14",
   "approvedBy": "AronGomu",
   "assets": [
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:ash-blossom-and-joyous-spring:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "6ce733d7053ba7e448bc0244a7fc0cff2055ad7d3c3a6051ef4124cf4aae7603"
+      "sha256": "eccf207786bbe4219d7d0d51465b433985f129d32e53368c4e369724a0018dd2"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:ash-blossom-and-joyous-spring:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "bb66ccdbc1a4571db76c98a399e4b554e8bc38fac1c3fc16aa170a7fdd46efc3"
+      "sha256": "26e93df9f1a10607e264a5843da99760bef97033f0d69e6a025f0ef2a92bc2fe"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:bagooska:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "393c2fc8c7409e8464523dc94d812bbf29b7e33bda455c69441672e21cb5822d"
+      "sha256": "94198ee5b943b98b1ebaabf5624d7712a21997ef9ccbb9fae5539922f609dc62"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:bagooska:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "54663f3bb6d5e3588b8135ca92f87c00e90dcc1ea2a0851c121a10eb0e0fd7c2"
+      "sha256": "ae2cd0e9da2a073db0dc9a056c333d9f2671c1834210974934e40622c8ff82ca"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:book-of-moon:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "83e38c610533df3f9a7984e9709976ab6af89b675eb7d1e665672007f045a149"
+      "sha256": "0385f9f307136edbe710f91ce5eb352955458f96f5a6f96c417919929dd10018"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:book-of-moon:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "35df228d4144fd071ad83d0c863c62d9a27715075dab912aa5c83558cc1ce067"
+      "sha256": "fa202cedaf1d5ad31092a2ab613baac896a21ed46c6bc782f978996ef79101f8"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-alich:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "056829fc74cf304bcf2987eb4577a90fa4c04fafd7ba94369eaf0faddaf776bb"
+      "sha256": "37d043db067e1de865aa42e665937a23cab7a3e34e2e4e71e90a15b30cef465a"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-alich:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "1ee53b0a485c6296426de01d321c7d174bc7e2b51c6b747ee121ec676501b960"
+      "sha256": "ecd77b6ae9cfdd78c6067b1567729efffc12f21b1eaa4e34af40be3a00406539"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-barbar:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "2b67bd78f95f55bdb51623fedea251734c6c8aa7f905de09ac885b563b0ee6b5"
+      "sha256": "9e2c8b5a30beb07b0460cd7e7b6835c937003eec5b075b6586ebdbd3a1d8c97d"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-barbar:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "e8cae9c8dd5efc2a03c0be1d79166e128697a09c365c4e0e2d7ea3fa11d5af54"
+      "sha256": "7c60a97eca8fa4fd9f28d43293f6ad2c49eadee311d8d574d74bf7265bd14432"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-cagna:display-source",
+      "tier": "display",
+      "source": "canonical-render",
+      "sha256": "eae5e07c24314ac6fb59e54feb06fca49a409c03fcfb67759999f7076b6c105f"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-cagna:print-source",
+      "tier": "print",
+      "source": "print-master",
+      "sha256": "0db770a6c6babdadb881bda5cd72bf0c245b06355162a0bbd15e7e5f81f33e48"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-calcab:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "b5679ce6a42b65d8b390bff906b8e5c0dcc764af58a152b923946686e81645ad"
+      "sha256": "de2da4f4d5e78b6a48078216ab019c22a8ac370bb9b2923322de8c04810b04dc"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-calcab:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "903e4dff1a19d1f373f792774f58bd07051be34d0ab3f544cee374b41526abc7"
+      "sha256": "e34952bc00f34aee0557d3a1b244456a97f96f9ac9fb8c1b7497d540c668a5b3"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-cir:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "f574973a865769f615025c34cf324d6a723b0d632f8c73d65cbc0e9bd36c5aa4"
+      "sha256": "9f49ed54214a279ebf07244dee42209b0d83abe0330d414547f335cc1c1f6e2f"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-cir:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "d3f035ce01a0a617990b8ad1dbbfcacef439c7561ca3a16fa7b1e87cf9c7c069"
+      "sha256": "c3b6ae9996490103389623d9f50cc2d5c6a22515d1eea8b16eb332b527744808"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-dante:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "8be3620f877ded7efa5c80b241c0db231fa290db6bb9a393d56156d9e1f4beb5"
+      "sha256": "e206489df899abcc2adc47013aa09a7c2a006ac065ed543f16f7afde9aec5f91"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-dante:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "f8f499abaace085e1b361d2e07e812fc7c251a0427ba747e894b068c98325dd5"
+      "sha256": "b411f07ffe1c4110f784773de65ab3f4bb6d802a725698ab51283f566b244038"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-draghig:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "87c2bfa5a5d1ac37e25ad5bb5562b00731911f8268149e3ff2ead4dc150a5c17"
+      "sha256": "a35056651e5b1d66d514d79e52ac12043fdcc1669f0b2007b0ddc373d4e24a68"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-draghig:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "e3a957b0d4464033cf1347cd447c25335d0c3163c2cd099fee0b3de455dd55f3"
+      "sha256": "7cdc90af29f51140dfb78f0344f057d63236c80919ed5776999e64ab0b75823f"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-farfa:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "53de04d12f6e86b779268316e7e62ac4c856ef4e06b1688e56ba8625bdf5bf8e"
+      "sha256": "fa65058a91f4a60db3efbbcf6ee544457166c5a4fbd0bb9e8a07879bb4f27545"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-farfa:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "0f43f9af51506157f766a0b4cba340cb27b45145db9d27f56523636cf685b28f"
+      "sha256": "601336dde75531016b0375ff5c389f8d78899a8b0f3bfa4ecdf5b494517bad00"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-fire-lake:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "bea551c239fd1694a1bc27a9a2750652e9f24c3a2e1f8fc7eeda1c64d5769393"
+      "sha256": "602ec540ddda98ca3279660f2e2f475a734c6d6da0529ed96bad0dac3a5b1154"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-fire-lake:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "533d8ae2d06acfac0983813e6c3095d3f96736d1466c1035cbe10a1c07f2e917"
+      "sha256": "5392feaad1083b21af75313e477a11442e26e962a3528263182026812cdee7f6"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-graff:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "52ee4df4df859315e3cd1c42e3e474f367c6905d707cc9dd43fb9ab4168e1dbf"
+      "sha256": "7a6fc71ff3a3c5a7ae91c67e55d50283b2ed2cad31714b1eb0ec15f2f646e27c"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-graff:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "4e7b8064ed3f606a9d0cfd029825ee204e0c0cc50c6834079fd9c6e083e662e5"
+      "sha256": "35a6656ae1d6c3ad48b7ce9aaeeec2c377fedb70581177c140357e1b2392cc88"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-libic:display-source",
+      "tier": "display",
+      "source": "canonical-render",
+      "sha256": "22f429ea95c985feeed07f0e500c728ab5c8171c7e13987f1b3de857e743f154"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-libic:print-source",
+      "tier": "print",
+      "source": "print-master",
+      "sha256": "f72e82670ab175838f27f93259c49d25ca192ff00ebe6eb52cd610818400bb7e"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-rubic:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "d0978f0774a5c2d19afd36276185dc042769f4187ae955f29af922953f8ee1df"
+      "sha256": "776aa8604f5523a7cb27cec6f29ee8c44706ce07600262a286b0f5b9ccac06d9"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-rubic:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "fd37e8e5ea371dc6a4c9fecc33a709a78740104bf33174886097fc0935831739"
+      "sha256": "d7615dcdd889363c2095cee338098797d6b8d77385cbaa3a48b490d0b2334b79"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-scarm:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "8e95e11f1f98b5bd539d57619855ba6b21c9c0fac2ce6acbf0cf052ec7511e01"
+      "sha256": "d564fdde65b2402389183cabfccf7753ab4db1616f847a539bcb88240e70b273"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-scarm:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "fcd67e9d4474cdcaf7b436a20a5473a34d0b7db5c381b831497bb75af5812beb"
+      "sha256": "644d7ceeaab8a60b12803aa012d0fe78589d7fe5277610625c11a2ceff201869"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-traveler:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "d64ffa4b593b3362fabb57fd7ee82528717239dbd741c33b67973fc6e2df3cf1"
+      "sha256": "86d56493fd461b07376f8c1a35015cab9ea51350f2b11a4269f6b872b4bef5d4"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-traveler:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "7e25cf5cb366fb37b157bc8dcac0b96cd59d10c9947bafc40dabad9d35f7de7b"
+      "sha256": "8b758f30101941180e4923f5ca89bc288bdd4bd3f019766a031fb743edcc2936"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-virgil:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "de18fab31c0308271103c1cf3963d5331295eeb6df16dc35ce7ec463ec59df71"
+      "sha256": "5f507bb6bfa776126338a0bcb9116b640f45930fedd3a435ac9d380a012b3623"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:burning-abyss-virgil:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "e0120387afeeaf8b9a783f889042056b78d3583b4e743a5998d7cccacdae6294"
+      "sha256": "cc2b22fa8ba021c2d00cc80eafc29c825fd620369ca34b8dbfaf63ccee78d3f3"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:d-d-crow:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "f6a0cb1a8fc25f01991ea4f80d8066ec08bc1fcbcc14018a26ddeec059af617a"
+      "sha256": "b4c9bf40349e7d61bbd317f9d9ff8dea2bde8a9f878b758d3d7fc9bfa277af33"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:d-d-crow:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "d439ddf2ca0b885e83e7478027403756a65563caa9748920ce24bd27627533a5"
+      "sha256": "6e0fe2b6a6fe0acdd4606e93342d7ed7d3503cfa425ef16c462168e079e402b0"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:daigusto-emeral:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "12551e2b2d08fdbbe99ff65faa28d1c83927e39254b7b1ffc80b1fe9b0c34fab"
+      "sha256": "183108efe1ad6db90323a01ef45951b04b73e1bb6c1265d2f73e5f057b20a8cc"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:daigusto-emeral:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "a00fd53d4b147a0cb4198a54bfab4f0d0c2db0a51de29b774ed9fcdac488d2e1"
+      "sha256": "2cf604c82cd6330c54004cfe5f2c8b7d3c41bb953a661bb89a75fff18cc45958"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:dark-hole:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "f8ab211aeb4612e26ddddfde0c4547a3d564c344c6610334a2e2e57f6d64e96e"
+      "sha256": "83b03c9e62372e298094cce831479276a2f22ff836105281e115cdd2adb13eab"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:dark-hole:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "197b9152ae6995d57be7af164d79e93d408b1dcfca3af37dbc0132d83e594e4c"
+      "sha256": "37fe11ac72218de2a7ca74a7f2f42a6f0820ff644e517003c1f4f51d4bfe3c84"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:downerd-magician:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "54dad37e34995303f82de5543942eb49a6bfa5ef6ada3e58cbe589bf674de492"
+      "sha256": "c292dce036d44c44f7765281ed4d69d061316b9654b6ec009d9c1c6e08d54a61"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:downerd-magician:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "97db8a3859b0c946bbaafe69719834776fce32525979d6f011f6c40dcab69c1b"
+      "sha256": "0eb7e2616f40e9ef7582aaf23d96c49ed0009b9e96feb6924f88fb54fd8a70fd"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:effect-veiler:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "cba20e5086e77594bb48d24b075dc4c51b905af4515f2b5f097d2f1267d007ca"
+      "sha256": "2153782f3c81bfa872ea42488f6498b338fc2366a136ea4a76622191bd9b7473"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:effect-veiler:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "61db764fb96b93086d420e2ac2ce25376c9a181ca3d95cd22df3293e7c2968ab"
+      "sha256": "cd38f96a915e6889fb7af0aad25d85a1b178baf32031c108d3c83c07cf12115e"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:evilswarm-exciton-knight:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "dc35d83ae748059eac61a6a7ca8db69a4ed4ab0cc94740084d94e70d43cfd695"
+      "sha256": "26323ba71df3be8b48e82c28f305b788a39d2906148b3569c52cec1504c84bae"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:evilswarm-exciton-knight:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "9f5b2c7d83b705a7b3859ec60f9a95b3a3bb452dbb7d4e811df9f814d1069c12"
+      "sha256": "6800cb739e45e4840d9b65642c588fdae40ea03157aa6c8ab427a9aa0f8b02f0"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:foolish-burial:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "1955407cc5110209f5cb395ee54e8d1319bb2b987b8afcb3ff64caf444f345cf"
+      "sha256": "b9be8fd49bb8559f22c17dc3abd82b2be981e21d607dae244521f652b7cf3a8c"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:foolish-burial:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "e401e047f606cb6ff4bce12b2885e3f4e5e1485ee691524e847fec700ae266f8"
+      "sha256": "019f4e5052377921536cd5e2387406e7feb8b9a48f2fff3fecdd82637cd3814d"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:gagaga-cowboy:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "0c7ea84e04b0a6ec23cea481346c7df4dde26dd5c5ca48bb880c270e94aae7ff"
+      "sha256": "473d042ee99bae3752ef859d4f4278d094cddd3ec7ae44b84d760c89cf4717f0"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:gagaga-cowboy:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "3535b6dc23faebbba8caf4ebbf3729746d1dad10ccf9309e9791060389cabd02"
+      "sha256": "af33c76b963dcdca2249f36bf4d5675ed9a35d375ef91aed74ec561bef830d29"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:herald-of-the-arc-light:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "f651eda35a81995abe4a2e5d5ba9b112883656bf8e19a4f247047ee897a3fdce"
+      "sha256": "400356b5c6c2059eb98ebdc96df0127c362f4bb29e36c3e670ae4b9d5b0a1ef5"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:herald-of-the-arc-light:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "024cdb8099872820080d35ce6ac4e5e8aea431eed7d102eee93fd5664bdd51b4"
+      "sha256": "68ddc41de714aabe7cd487d9a63214a6ce04d2c03ba5e103041dbc89b93b2926"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:karma-cut:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "49be488c5973451f5d441b398e7b4933d735d05f4316c2f2ebffbc6166c6d39e"
+      "sha256": "08d6ad3d849b19a9628822a2ee1ff067bfc874ba218d29914a26ec5059fdc815"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:karma-cut:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "53554bdaa6b1f3801585c0ece078e34b0b9e1c8c6579e635e9d8640f4efa6613"
+      "sha256": "e51f9fd4403792755409ca5c5ff150130a8e170c634150f38737944ea8c6e5b0"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:leviair-the-sea-dragon:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "440e5bae85da956f2188cf9640c8b8e99eb8b3bfd06f0930dfc8bbba8bc39eb5"
+      "sha256": "b4139c4d6539c236bdd759eeaf04e1263df7d956478bc9f66dc6d1319d753ccd"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:leviair-the-sea-dragon:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "248bbb3108fffb97852c845efde0169da41196714467e4dfeecf57fdbf398444"
+      "sha256": "202a760af989229041e9f16ff56111be9de1a13954aba2d39b3e2b6f61748310"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:manju-of-the-ten-thousand-hands:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "a5cff9002afb7c71b8ba27b07b47029c7b6a6d4b8e1e65a64fea366e3475bc3c"
+      "sha256": "756a68c5db1e7eeb802a87496e1b722fed7ef46b669e443ea528ada89ea9a4f8"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:manju-of-the-ten-thousand-hands:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "c39bced998a84c15b16a0910da77c08b42e52269b1feec3b0efb064e4165a9f9"
+      "sha256": "6c08d86025df24560844c5b68c8ea380a4928eb4be5db2525e88eeb775e4ca5e"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:maxx-c:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "e7e2b53c6c7c5d9dc6a49fd23380379621418a64a56e5f7c249c475058455ef8"
+      "sha256": "f75a9de9d2c58401cb3a7ca681c5e7e62c1ec5862797d1609bc25cd69fd2044f"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:maxx-c:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "84976ab14eecf3a08116ca8a724b6a9ae6197c3f239c0dda0e1deb132a4360ed"
+      "sha256": "6ca1750d66165a3a0d6f6fad80f9ef4a604270753a78b7d5353e3c59029c1c50"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-brionac:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "2e95d3e9dd39c801b93f48a74c316278600516d3aba2c4ea00a42501a028fa5e"
+      "sha256": "952223baadf8f57d1be2cfd04c9268d90749c20ed89d50c07d9f46b7c5af54ef"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-brionac:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "5e344e96be5e2c9f7a5c200145a8aecfc84211a74bbb4c369390cd49ac0f04a7"
+      "sha256": "313df800a7c280c1711ef416cca461c39fb6dc4d1b2006522b0a413762bb051e"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-catastor:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "9dfaf425d9e3c37dc64044d17bb35af7d3e85f0b68f378704629935bbe12c834"
+      "sha256": "f846b5f3fa10503243ae54d4b3ae3229778e94608b813d10b05aa05751843fa8"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-catastor:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "b0925917c4f871b75681517a64f96a9b0951752d90b68988862f95e69ef77672"
+      "sha256": "c387c9909cb252e51b38c0047af392545461ba5c70419cdd9046b1e1b54cb9b2"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-clausolas:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "8522aee9a3c1a6ade0aade24bfda4a69e9fdd716cccd91b0cf05b2c47b5ce16b"
+      "sha256": "af898855ebe6581d6ff9e9a244bbc3e6474bf8dddd0c8e251f2a5d1705672ce2"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-clausolas:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "36974cb7e854b09376f005fca8b2c95962b34cd0380afc5985507e6b82ba3e9a"
+      "sha256": "2b319e72744187f6910b48639161376b149997ca06f566410e115eb380641612"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-cycle:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "3ef2bc1a70c7488300d23ac4162ac2980274db27e3dc2e13f2e119bb51a26109"
+      "sha256": "72ad2dfb643555c63eb502c39c795410b00cf4410cbedf1808c7bf359eda5bc5"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-cycle:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "395b972bf54004050ab18c3040c84f38ef76e6cf7d949ad7ea6f3a97499f090d"
+      "sha256": "bb7e54f469ed9d99f9c89688ff13b67d7aee1bd3f288e5fab66a00c2fb39f885"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-dance-princess:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "04d132a644695abd2b622d9116fba0311fb973b175777217ca7cd0ad0a08c1c5"
+      "sha256": "d48f30cfb13d25c2f7ea86a300a5c0ac72d5e427b49b14c7a8e2d5a847dff0be"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-dance-princess:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "9e89a0af0f1e345ed12cf3fee8b2fac96463ddbd167a000290684534edd1db13"
+      "sha256": "69588ab5b6a0cb6016ecbc66b316f5e693734e4b390c217b8325f7858ed8ecb6"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-decisive-armor:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "80ba1c10fe1b23a04bf76ec9fb3b012507a007fa9f03c668fd4328ed85260a52"
+      "sha256": "e9d699688f76a99f994fb85095dd3ba19211b2788d06b4fe13d56cbe269cb140"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-decisive-armor:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "9f980f91aed16e6f9eae6ca376886a45ba7d1408f4c91b5cfc86821b69f4be2a"
+      "sha256": "b2868c62742c3bd17687f76f4e564a260dadf5f80114c37e193c5f0a4a93213f"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-exa:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "4c03446d7e3f2529181cab4f2ad614c223b2836e5f4ed0441d7ff1410802a9e3"
+      "sha256": "ce3b77e155ab17cbdae91c3e04e05f60f5aa76959083320c9537d7a4a2d858cf"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-exa:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "5d0123e29f70e0c7a5df1899c6a27d79dde0c3f6d4df152e50c4c2ee0e6adee5"
+      "sha256": "656dfdf20dd6d981f10c2928c03b49b3949ccb277cb21fda6c6204e590e233ad"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-great-sorcerer:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "90ddb6810993d3430033b4c7fbf3b5c829272178c955743529dc5ed9e97b25bb"
+      "sha256": "2c183c81eda6ab0254ad11755cb7773f90348fb8992fc166a2d93e69546468d5"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-great-sorcerer:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "d5e06da8ad5205760554d9460a249266f87ae8a0f5be63b48a2845f60009b834"
+      "sha256": "1dadc3166095b3ee74384f9423a023276893d6ec04e7c4f2de7e1789d5ae171e"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-gungnir:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "b4969e0f88da62f0f7fa7c2f8675f6dcd6d153171e9178f4bfc9572b4e2ae0da"
+      "sha256": "e587257588e07611e11dd4a071454729e38e300eede92a65801f663acf46bb0a"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-gungnir:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "ce52327ae714a972c9d9a80ab5f1c6fee16d7ab221945f655aa8f64d37d84e30"
+      "sha256": "eac3a95d855780aead10c3197a73070c24f29d81b1a085354d8864f448d6a32f"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-kaleidoscope:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "4a7406338e0dbb2f3a704ff153b4a10d2baf2bd884dc472d755088625e984b86"
+      "sha256": "7092c7b4ad20560a59795892bd1785c676c0409291f7fa6a8c6a67643941b923"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-kaleidoscope:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "29e7bbba414b27ab554fdcef8410f6cd0e88d67c46a281231e8c4fa470255fb1"
+      "sha256": "770f166c4088921c8e54382e9b8dd47f6ea9c37bbc2d763a2f9b260c7c866293"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-mirror:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "0dc90f48e494a8e9878bb73a7c003885250f88ead6866e30f4a9a91301b59599"
+      "sha256": "78e03865d4500ce6b17c4b8dc2f570802cef1cc20c678038ef5ed45b71c3dab6"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-mirror:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "b58c15ecd36cddf65a41b98e25139b0d0cb1b4e7c7461bd308b9d6c922c8dd79"
+      "sha256": "8a3e158aaf3c97a9053b7efcc1919413e2d4bb2440d10eb0539f899d76f20f71"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-shurit:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "c0c15dafd69475d3951b3d57f25f2e5328f68d4e757e4cf214c5a9c7f72939ff"
+      "sha256": "87bc370e580479bea36bf1465141ce6388ebba41017a42ca3094a47c4dec4e64"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-shurit:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "5192d940d2ed2e51baa7dbfa97b5f816d3236198f571ca27c135407ada53c5c8"
+      "sha256": "7c2b23d0370f910b8b9a583454088bd7dfe75efcd59abfbf691b8aa2c9cce729"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-trishula:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "bf6d58bacf963873bfc6ae8a41e6cede9518420662f99a480bea858d5ef0d5c6"
+      "sha256": "b4a9670683cc52a5db1a28ebbda6d9d53952c6dc65b276b937aaba5d88aa666f"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-trishula:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "1614c2dede8429488907ccb4560058b655f9f928d67ddadefe6967a9a20d5e7c"
+      "sha256": "414a470aa67f67360ac9506be31ad0471bb66975e3eb1d5f74a223f495e9bc7c"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-unicore:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "dda2ad6e3dda53254b168581eb9483b782550ca3e29dfaa81603002b5c16fb5a"
+      "sha256": "d196a9526dbccf404a60d4da5c7a77efe03ce8b00102120bb7241237cd42549a"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-unicore:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "a63407e5f5185da2f77882d7da5f453068500db4d5967fe6114f15746e5e61a7"
+      "sha256": "f78ff75a06edab6d15328e681dd71e90fc6cfaa7fec2f75f631f23f5bece2781"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-valkyrus:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "66524c94015dc30e6ac437d29165a1d1d3f0237a507b1de1121e12e69e807591"
+      "sha256": "d896c11029c216963d3f8b6a3c1ee985d20ed7cf6df8f5ed1bba0665ec4439b2"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:nekroz-valkyrus:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "ec1a6b0b9fcdb8afbddbf7cd58b3102c682257e4a6d0aa779e16e92cf685461e"
+      "sha256": "0d35b2bd1d87fa2d61f7b095277c408d30aaf3cdeb4796edcab56e736d932d18"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:phoenix-wing-wind-blast:display-source",
+      "tier": "display",
+      "source": "canonical-render",
+      "sha256": "fb40a82ae75a7e0a9883635fc372904c91ea50b3bdd7e626ab32cdf0ec565e2d"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:phoenix-wing-wind-blast:print-source",
+      "tier": "print",
+      "source": "print-master",
+      "sha256": "4112f3642c0f807f5b34132cea7d72d7335bb648df948630a2bb4d6b8bdcfea1"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:preparation-of-rites:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "2c97081115f83ceab03f9f8e56522c2516e27aae8f8f4514610709bb86cf2f23"
+      "sha256": "70d8db238bd3620e2554313cba27ba04bac9943c2ca74d289bc3c158fd8670f1"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:preparation-of-rites:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "68bd7386027e33c96f7033c2358ea0c02750d6551f6299b322da718f2ff5a871"
+      "sha256": "7732fe75ef25b1b3d9edf6adee15304e2e9c906f13e3f276ea3df6ecd5b4d147"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:senju-of-the-thousand-hands:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "045c483d76d6fe6ab553deafa8411e7f9ebb4e3f66a02d9ed40e84dd552247b0"
+      "sha256": "57c7f99082e8d2cd3cce9594bce8730d145f839ddee06008abd97289f5d54e79"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:senju-of-the-thousand-hands:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "297e7a1603257c5a168071c0ada665f46ebc22d37ca022005015917b2bf9a4b9"
+      "sha256": "48d9c34d051f4ee3f47fec45f4b7569b5766046783a024b034daf4e5b44b3dba"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:silent-honor-ark:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "43a9851d4298708cc9b7b2bd79863a582990e0012aaa11e9e7ec6f58fe091f11"
+      "sha256": "a7094d710a07c6870ead1908949b53d350f39eda1481b21abc4a4746fc402ed1"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:silent-honor-ark:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "67abb9abce66ecdf2a79624b263a1f779b8d024337720662b93a7b77d50735f9"
+      "sha256": "e2d6bb1fc2052a01e8e6ddd24b143fa6391431df691c09bf87004b490e54c0df"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:stealth-kragen:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "c25883516252ab142b86092f85ad2fab111de44f40c1c7283affeaf84ec77405"
+      "sha256": "5fb810069144d91c328a3f95dc83b0ebe2c319543b0e2bfc3f33bb84a2eca5bf"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:stealth-kragen:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "d28a3860134d61eb021534d0b05d03e34793b6b9244b79109b7e1df8b9c114d3"
+      "sha256": "d6ca0611b187665da677415efa476dcb9aa40905608ed5a84d074ce1395b1846"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:tornado-dragon:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "ca4431be71c317991d013dca9d4d6883b42a4ee0d4a15163bcf7b08cab0df2ef"
+      "sha256": "7e8d915785ddfe0c6cee6b5f6a25b4b0cb9b8816fc7bb50be17d9734497c4db1"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:tornado-dragon:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "43fed970394ab53e1787806d25ed48d10208c3f6798ce8a946f87ab8ab45dea4"
+      "sha256": "976802b705c636dcf1b574d7c086fb42a96e5c2d2477b9ca20c44905fd881858"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:tour-guide-from-the-underworld:display-source",
       "tier": "display",
       "source": "canonical-render",
-      "sha256": "5702b076c04e625315727365d173db05f17e06c5b08ea61734e86993808d47bc"
+      "sha256": "97b41af245efc7f4fd62ce1036c9df5d8b25f52b02db6f352bb449712e542042"
     },
     {
       "key": "release:alpha-LOTA-0001-Alpha-0-1:tour-guide-from-the-underworld:print-source",
       "tier": "print",
       "source": "print-master",
-      "sha256": "1ddd33b8035452c7eae2d74248fc74a8de17ef99193beead1934c12fc84bcce1"
+      "sha256": "2a853a13d0f97c91d4c2b1300ccee638b1502a3d19cc69f56657b400cd9c0ec5"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:upstart-goblin:display-source",
+      "tier": "display",
+      "source": "canonical-render",
+      "sha256": "f11cc6449add9d9b61ea47027fe024c65b35eb399b95a3b815d4db692f0b1989"
+    },
+    {
+      "key": "release:alpha-LOTA-0001-Alpha-0-1:upstart-goblin:print-source",
+      "tier": "print",
+      "source": "print-master",
+      "sha256": "5764b1bd81f18ee9c859d5fa9f2265b0006cc8bf8249c4ec12bf11d5a1499437"
     }
   ]
 }

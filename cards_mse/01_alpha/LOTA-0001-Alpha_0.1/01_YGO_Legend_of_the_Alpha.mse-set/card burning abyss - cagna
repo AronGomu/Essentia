@@ -1,0 +1,27 @@
+mse_version: 2.1.2
+card:
+	stylesheet: sevenhalf
+	stylesheet_version: 2024-05-30
+	has_styling: false
+	notes: Source: cards_mse/00_drafts/01_burning_abyss/01_YGO_Burning_Abyss.mse-set/card burning abyss - cagna
+	time_created: 2026-07-11 01:36:28
+	time_modified: 2026-08-14 13:05:55
+	name: Burning Abyss - Cagna
+	casting_cost: B
+	image: image9
+	image_2: 
+	mainframe_image: 
+	mainframe_image_2: 
+	super_type: <word-list-type-en>Creature</word-list-type-en>
+	sub_type: <word-list-race-en>Fiend</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
+	rarity: common
+	rule_text:
+		<i-auto>(1 - Static)</i-auto> <b>Abyssal Curse</b>
+		<i-auto>(2 - Activated Hard Linked)</i-auto> <b>Descent</b>
+		<i-auto>(3 - Triggered Hard Linked)</i-auto> <b>On Send Grave</b> — <b>Send</b> 1 <i-auto>“Burning Abyss”</i-auto> from Deck to Grave.
+	flavor_text: <i-flavor></i-flavor>
+	power: 3
+	toughness: 1
+	card_code_text: 006/054 C
+	card_code_text_2: 006/054 C
+	card_code_text_3: 006/054 C

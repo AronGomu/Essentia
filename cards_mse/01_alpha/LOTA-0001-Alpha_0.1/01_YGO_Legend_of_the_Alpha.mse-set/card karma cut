@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Discard</b> 1 and <b>Target</b> 1 Creature; <b>Exile</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 026/050 C
-	card_code_text_2: 026/050 C
-	card_code_text_3: 026/050 C
+	card_code_text: 028/054 C
+	card_code_text_2: 028/054 C
+	card_code_text_3: 028/054 C

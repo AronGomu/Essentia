@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -19,6 +19,6 @@ card:
 		<i-auto>(1 - Resolution)</i-auto> <b>Ritual Summon</b> 1 Ritual <i-auto>“Nekroz”</i-auto> Creature from Hand by exiling Creatures from Grave or by sacrificing Creatures from Hand or Field whose total MV meets its Ritual cost.
 		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Nekroz Recovery</b>
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 040/050 C
-	card_code_text_2: 040/050 C
-	card_code_text_3: 040/050 C
+	card_code_text: 042/054 C
+	card_code_text_2: 042/054 C
+	card_code_text_3: 042/054 C

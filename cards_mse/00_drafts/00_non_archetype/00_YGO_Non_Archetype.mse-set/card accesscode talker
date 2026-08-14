@@ -18,12 +18,12 @@ card:
 	rule_text:
 		<i>2+ Creatures</i>
 		<b>Haste</b>
-		<i-auto>(1 - Static)</i-auto> Your opponents cannot respond to <i-auto>Accesscode Talker</i-auto>’s abilities.
-		<i-auto>(2 - Triggered)</i-auto> <b>On Link Summon</b> — <i-auto>“Accesscode”</i-auto> gains +X/+0 to end turn, where X is 2 times the Link Lvl of a Link Creature from Grave.
+		<i-auto>(1 - Static)</i-auto> Your opponents cannot respond to Accesscode Talker’s abilities.
+		<i-auto>(2 - Triggered)</i-auto> <b>On Link Summon</b> — “Accesscode” gains +X/+0 to end turn, where X is 2 times the Link Lvl of a Link Creature from Grave.
 		<i-auto>(3 - Activated Sorcery Hard)</i-auto> <b>Exile</b> 1 Link Creature from your Field or Grave and <b>Target</b> 1 card; <b>Destroy</b> the target.
 	flavor_text: <i-flavor></i-flavor>
 	power: 5
 	toughness: 4
-	card_code_text: 002/077 R
-	card_code_text_2: 002/077 R
-	card_code_text_3: 002/077 R
+	card_code_text: 002/075 R
+	card_code_text_2: 002/075 R
+	card_code_text_3: 002/075 R

@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -19,6 +19,6 @@ card:
 		<i-auto>(1 - Resolution)</i-auto> <b>Ritual Summon</b> 1 Ritual <i-auto>“Nekroz”</i-auto> Creature from Hand by sending 1 Creature from Sideboard to Grave whose MV meets its Ritual cost OR by sacrificing Creatures from Hand or Field whose total MV meets its Ritual cost.
 		<i-auto>(2 - Activated Sorcery Hard)</i-auto> <b>Nekroz Recovery</b>
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 039/050 C
-	card_code_text_2: 039/050 C
-	card_code_text_3: 039/050 C
+	card_code_text: 041/054 C
+	card_code_text_2: 041/054 C
+	card_code_text_3: 041/054 C

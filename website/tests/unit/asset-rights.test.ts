@@ -16,21 +16,21 @@ const inventory = JSON.parse(
 );
 
 describe('asset rights', () => {
-  it('binds 50 display sources and 50 print masters independently', () => {
+  it('binds 54 display sources and 54 print masters independently', () => {
     expect(inventory.scope).toBe(RIGHTS_SCOPE);
-    expect(inventory.assets).toHaveLength(100);
+    expect(inventory.assets).toHaveLength(108);
     expect(
       inventory.assets.filter(
         (asset: { tier: string }) => asset.tier === 'display',
       ),
-    ).toHaveLength(50);
+    ).toHaveLength(54);
     expect(
       inventory.assets.filter(
         (asset: { tier: string }) => asset.tier === 'print',
       ),
-    ).toHaveLength(50);
+    ).toHaveLength(54);
     expect(checkRights(approval, inventory)).toBe(
-      'rights: 100 approved assets',
+      'rights: 108 approved assets',
     );
   });
 

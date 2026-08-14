@@ -69,7 +69,7 @@ class NonArchetypeCreatureTests(unittest.TestCase):
             for line in set_text.splitlines()
             if line.startswith("include_file: ")
         }
-        self.assertEqual(len(includes), 77)
+        self.assertEqual(len(includes), 75)
         self.assertTrue(set(DRAFT_EXPECTED_CARDS).issubset(includes))
         self.assertTrue(set(ACTIVE_EXPECTED_CARDS).isdisjoint(includes))
         self.assertIn("set_language: EN", set_text)

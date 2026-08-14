@@ -1,4 +1,4 @@
-﻿mse_version: 2.1.2
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Search</b> 1 Ritual Creature MV 2 or less. You may <b>Salvage</b> 1 non-Creature <b>Ritual Summon</b>.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 045/050 C
-	card_code_text_2: 045/050 C
-	card_code_text_3: 045/050 C
+	card_code_text: 048/054 C
+	card_code_text_2: 048/054 C
+	card_code_text_3: 048/054 C

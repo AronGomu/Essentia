@@ -11,6 +11,7 @@ Hard-lock history. Set name + cards only.
   - Book of Moon
   - Burning Abyss - Alich
   - Burning Abyss - Barbar
+  - Burning Abyss - Cagna
   - Burning Abyss - Calcab
   - Burning Abyss - Cir
   - Burning Abyss - Dante
@@ -18,6 +19,7 @@ Hard-lock history. Set name + cards only.
   - Burning Abyss - Farfa
   - Burning Abyss - Fire Lake
   - Burning Abyss - Graff
+  - Burning Abyss - Libic
   - Burning Abyss - Rubic
   - Burning Abyss - Scarm
   - Burning Abyss - Traveler
@@ -50,9 +52,21 @@ Hard-lock history. Set name + cards only.
   - Nekroz - Trishula
   - Nekroz - Unicore
   - Nekroz - Valkyrus
+  - Phoenix Wing Wind Blast
   - Preparation of Rites
   - Senju of the Thousand Hands
   - Silent Honor ARK
   - Stealth Kragen
   - Tornado Dragon
   - Tour Guide From the Underworld
+  - Upstart Goblin
+
+## 2026-08-14 — Legend of the Alpha Alpha_0.1 card add + lock
+
+- Package: `cards_mse/01_alpha/LOTA-0001-Alpha_0.1/`
+- Status: `locked`
+- Added from draft:
+  - Burning Abyss - Cagna
+  - Burning Abyss - Libic
+  - Phoenix Wing Wind Blast
+  - Upstart Goblin

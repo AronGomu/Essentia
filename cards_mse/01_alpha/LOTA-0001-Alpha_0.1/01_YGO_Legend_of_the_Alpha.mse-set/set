@@ -1,4 +1,4 @@
-﻿mse_version: 2.0.2
+mse_version: 2.0.2
 game: magic
 game_version: 2025-06-14
 stylesheet: sevenhalf
@@ -59,6 +59,7 @@ include_file: card bagooska
 include_file: card book of moon
 include_file: card burning abyss - alich
 include_file: card burning abyss - barbar
+include_file: card burning abyss - cagna
 include_file: card burning abyss - calcab
 include_file: card burning abyss - cir
 include_file: card burning abyss - dante
@@ -66,6 +67,7 @@ include_file: card burning abyss - draghig
 include_file: card burning abyss - farfa
 include_file: card burning abyss - fire lake
 include_file: card burning abyss - graff
+include_file: card burning abyss - libic
 include_file: card burning abyss - rubic
 include_file: card burning abyss - scarm
 include_file: card burning abyss - traveler
@@ -98,12 +100,14 @@ include_file: card nekroz - shurit
 include_file: card nekroz - trishula
 include_file: card nekroz - unicore
 include_file: card nekroz - valkyrus
+include_file: card phoenix wing wind blast
 include_file: card preparation of rites
 include_file: card senju of the thousand hands
 include_file: card silent honor ark
 include_file: card stealth kragen
 include_file: card tornado dragon
 include_file: card tour guide from the underworld
+include_file: card upstart goblin
 version_control:
 	type: none
 apprentice_code: 

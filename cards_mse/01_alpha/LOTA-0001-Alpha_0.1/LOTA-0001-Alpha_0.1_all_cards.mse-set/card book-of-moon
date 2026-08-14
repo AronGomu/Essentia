@@ -19,6 +19,6 @@ card:
 		<b>Alternative Cost</b> — If you control no Creature: You may <b>Cast</b> <i-auto>Book of Moon</i-auto> for free.
 		<i-auto>(1 - Resolution)</i-auto> <b>Target</b> 1 Creature; turn it face down.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 003/050 C
-	card_code_text_2: 003/050 C
-	card_code_text_3: 003/050 C
+	card_code_text: 003/054 C
+	card_code_text_2: 003/054 C
+	card_code_text_3: 003/054 C

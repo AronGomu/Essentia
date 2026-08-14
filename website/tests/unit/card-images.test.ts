@@ -18,7 +18,7 @@ const stableId = (value: string) => value.replace(/^card /, '');
 
 describe('generated card images', () => {
   it('catalog reports native display and print tiers', () => {
-    expect(catalog.cards).toHaveLength(50);
+    expect(catalog.cards).toHaveLength(54);
     for (const card of catalog.cards) {
       expect(card.images.width).toBe(750);
       expect(card.images.height).toBe(1046);
@@ -29,12 +29,12 @@ describe('generated card images', () => {
     }
   });
 
-  it('inspects all 50 display binaries, ids, dimensions, provenance hashes', async () => {
+  it('inspects all 54 display binaries, ids, dimensions, provenance hashes', async () => {
     const files = (await readdir(path.join(packageRoot, 'renders'))).filter(
       (file) => file.endsWith('.png'),
     );
-    expect(files).toHaveLength(50);
-    expect(provenance.cards).toHaveLength(50);
+    expect(files).toHaveLength(54);
+    expect(provenance.cards).toHaveLength(54);
     expect(
       new Set(
         provenance.cards.map((entry: { id: string }) => stableId(entry.id)),
@@ -49,12 +49,12 @@ describe('generated card images', () => {
     }
   });
 
-  it('inspects all 50 print binaries, ids, dimensions, provenance hashes', async () => {
+  it('inspects all 54 print binaries, ids, dimensions, provenance hashes', async () => {
     const files = (
       await readdir(path.join(packageRoot, 'renders_print'))
     ).filter((file) => file.endsWith('.png'));
-    expect(files).toHaveLength(50);
-    expect(provenance.print.cards).toHaveLength(50);
+    expect(files).toHaveLength(54);
+    expect(provenance.print.cards).toHaveLength(54);
     expect(
       new Set(
         provenance.print.cards.map((entry: { id: string }) =>

@@ -47,7 +47,7 @@ class NecrozCardTests(unittest.TestCase):
         includes = re.findall(r"(?m)^include_file:\s*(.+)$", set_text)
         for filename in INCLUDED:
             self.assertIn(filename, includes)
-        self.assertEqual(len(includes), 50)
+        self.assertEqual(len(includes), 54)
 
     def test_included_cards_clean_and_images_resolve(self) -> None:
         stale = ("graveyard", "GYD", "library", "mana value", "error-spelling")

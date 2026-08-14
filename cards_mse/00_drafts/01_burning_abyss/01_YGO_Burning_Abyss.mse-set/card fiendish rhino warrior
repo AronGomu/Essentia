@@ -1,4 +1,4 @@
-mse_version: 2.5.8
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -16,11 +16,11 @@ card:
 	sub_type: <word-list-race-en>Fiend</word-list-race-en><soft><atom-sep> </atom-sep></soft><word-list-class-en></word-list-class-en>
 	rarity: uncommon
 	rule_text:
-		<i-auto>(1 - Static)</i-auto> Other Fiend Creatures you control are <b><kw-a><nospellcheck><key>Indestructible</key></nospellcheck></kw-a></b>.
+		<i-auto>(1 - Static)</i-auto> Other Fiend Creatures you control are <b><kw-a>Indestructible</kw-a></b>.
 		<i-auto>(2 - Triggered Hard)</i-auto> <b>On Send Grave</b> — <b>Send</b> 1 Fiend Creature from Deck to Grave.
 	flavor_text: <i-flavor></i-flavor>
 	power: 3
 	toughness: 2
-	card_code_text: 012/013 U
-	card_code_text_2: 012/013 U
-	card_code_text_3: 012/013 U
+	card_code_text: 010/011 U
+	card_code_text_2: 010/011 U
+	card_code_text_3: 010/011 U

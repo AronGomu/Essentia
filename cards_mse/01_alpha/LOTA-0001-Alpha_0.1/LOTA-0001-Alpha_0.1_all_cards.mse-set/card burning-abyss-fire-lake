@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Sacrifice</b> 2 <i-auto>“Burning Abyss”</i-auto> Creatures and <b>Target</b> 0–3 nonland permanents; <b>Destroy</b> them.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 011/050 C
-	card_code_text_2: 011/050 C
-	card_code_text_3: 011/050 C
+	card_code_text: 012/054 C
+	card_code_text_2: 012/054 C
+	card_code_text_3: 012/054 C

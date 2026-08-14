@@ -17,10 +17,10 @@ card:
 	rarity: rare
 	rule_text:
 		<i>2 Creatures MV 3</i>
-		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 1 Creature; gain control of the target as long as you control <i-auto>Big Eye</i-auto>. <i-auto>Big Eye</i-auto> cannot attack this turn.
+		<i-auto>(1 - Activated Sorcery Soft)</i-auto> <b>Detach 1</b> and <b>Target</b> 1 Creature; gain control of the target as long as you control Big Eye. Big Eye cannot attack this turn.
 	flavor_text: <i-flavor></i-flavor>
 	power: 6
 	toughness: 5
-	card_code_text: 007/077 R
-	card_code_text_2: 007/077 R
-	card_code_text_3: 007/077 R
+	card_code_text: 007/075 R
+	card_code_text_2: 007/075 R
+	card_code_text_3: 007/075 R

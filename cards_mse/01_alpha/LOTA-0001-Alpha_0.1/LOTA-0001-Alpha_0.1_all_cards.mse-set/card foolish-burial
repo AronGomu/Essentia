@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Send</b> 1 Creature from Deck to Grave.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 023/050 C
-	card_code_text_2: 023/050 C
-	card_code_text_3: 023/050 C
+	card_code_text: 025/054 C
+	card_code_text_2: 025/054 C
+	card_code_text_3: 025/054 C

@@ -12,7 +12,7 @@ TRAP_CARDS = (
     ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card breakthrough skill",
     ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card compulsory evacuation device",
     ACTIVE / "card karma cut",
-    ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card phoenix wing wind blast",
+    ACTIVE / "card phoenix wing wind blast",
     ROOT / "cards_mse/00_drafts/00_non_archetype/00_YGO_Non_Archetype.mse-set/card torrential tribute",
     ACTIVE / "card burning abyss - fire lake",
     ACTIVE / "card burning abyss - traveler",

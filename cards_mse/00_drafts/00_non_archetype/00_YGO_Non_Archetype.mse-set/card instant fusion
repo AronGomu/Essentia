@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> Pay 3 LP; <b>Summon</b> 1 Fusion Creature MV 1 or less from your Sideboard ignoring summoning restrictions. <b>On End Step</b> — <b>Sacrifice</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 034/077 C
-	card_code_text_2: 034/077 C
-	card_code_text_3: 034/077 C
+	card_code_text: 034/075 C
+	card_code_text_2: 034/075 C
+	card_code_text_3: 034/075 C

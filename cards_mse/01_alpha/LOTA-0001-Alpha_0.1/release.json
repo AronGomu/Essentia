@@ -78,6 +78,6 @@
   "setId": "LOTA-0001",
   "setName": "Legend of the Alpha",
   "stage": "alpha",
-  "status": "open",
+  "status": "locked",
   "version": "Alpha_0.1"
 }

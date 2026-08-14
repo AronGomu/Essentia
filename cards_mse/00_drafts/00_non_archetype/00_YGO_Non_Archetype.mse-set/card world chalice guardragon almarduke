@@ -21,12 +21,12 @@ card:
 	rule_text:
 		<i>3 Link Creatures</i>
 		<b><kw-a>Vigilance</kw-a></b>, <b>Protection from Creatures</b>
-		<i-auto>(1 - Static)</i-auto> All opposing Creatures must block <i-auto>“Almarduke”</i-auto>.
-		<i-auto>(2 - Triggered)</i-auto> If a Link Creature blocks <i-auto>“Almarduke”</i-auto>, <b>Destroy</b> it, then deal X damage to its controller, where X is the power of the destroyed Creature.
+		<i-auto>(1 - Static)</i-auto> All opposing Creatures must block “Almarduke”.
+		<i-auto>(2 - Triggered)</i-auto> If a Link Creature blocks “Almarduke”, <b>Destroy</b> it, then deal X damage to its controller, where X is the power of the destroyed Creature.
 	flavor_text: <i-flavor></i-flavor>
 	power: 7
 	toughness: 6
-	card_code_text: 077/077 R
-	card_code_text_2: 077/077 R
-	card_code_text_3: 077/077 R
+	card_code_text: 075/075 R
+	card_code_text_2: 075/075 R
+	card_code_text_3: 075/075 R
 	copyright: 

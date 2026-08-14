@@ -23,6 +23,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> Turn all Creatures face down. Their controllers cannot turn them face up until the start of their next turn. This restriction does not apply if a combat effect or rule turns them face-up.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 010/077 C
-	card_code_text_2: 010/077 C
-	card_code_text_3: 010/077 C
+	card_code_text: 010/075 C
+	card_code_text_2: 010/075 C
+	card_code_text_3: 010/075 C

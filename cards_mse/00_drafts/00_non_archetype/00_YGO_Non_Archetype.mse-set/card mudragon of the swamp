@@ -21,11 +21,11 @@ card:
 	rule_text:
 		<i>2 Creatures with the same color but different types</i>
 		<i-auto>(1 - Static)</i-auto> Choose 1 color. Creatures you control of the chosen color have <b><kw-a>Ward 3</kw-a></b>.
-		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> Choose a color; <i-auto>“Mudragon”</i-auto> becomes that color to end turn.
+		<i-auto>(2 - Activated <kw-a>Flash</kw-a> Soft)</i-auto> Choose a color; “Mudragon” becomes that color to end turn.
 	flavor_text: <i-flavor></i-flavor>
 	power: 4
 	toughness: 4
-	card_code_text: 043/077 R
-	card_code_text_2: 043/077 R
-	card_code_text_3: 043/077 R
+	card_code_text: 043/075 R
+	card_code_text_2: 043/075 R
+	card_code_text_3: 043/075 R
 	copyright: 

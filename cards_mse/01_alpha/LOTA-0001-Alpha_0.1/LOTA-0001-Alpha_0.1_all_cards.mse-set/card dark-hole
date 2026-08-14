@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Destroy</b> all Creatures.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 019/050 C
-	card_code_text_2: 019/050 C
-	card_code_text_3: 019/050 C
+	card_code_text: 021/054 C
+	card_code_text_2: 021/054 C
+	card_code_text_3: 021/054 C

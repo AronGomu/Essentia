@@ -59,7 +59,7 @@ styling:
 		overlay: 
 	magic-sevenhalf:
 		text_box_mana_symbols: magic-mana-small.mse-symbol-font
-include_file: card aa zeus sky thunder
+include_file: card aa-zeus - sky thunder
 include_file: card accesscode talker
 include_file: card allure of darkness
 include_file: card ancient fairy dragon
@@ -77,7 +77,7 @@ include_file: card compulsory evacuation device
 include_file: card constellar pleiades
 include_file: card coordius the triphasic dealmon
 include_file: card coral dragon
-include_file: card cross sheep
+include_file: card cross-sheep
 include_file: card crystron halqifibrax
 include_file: card dharc the dark charmer gloomy
 include_file: card dugares the timeless
@@ -91,7 +91,7 @@ include_file: card hieratic seal of the heavenly spheres
 include_file: card hiita the fire charmer ablaze
 include_file: card hope harbinger dragon
 include_file: card hot red dragon archfiend abyss
-include_file: card i p masquerena
+include_file: card ip masquerena
 include_file: card instant fusion
 include_file: card isolde two tales of the noble knights
 include_file: card knightmare cerberus
@@ -99,20 +99,19 @@ include_file: card knightmare phoenix
 include_file: card knightmare unicorn
 include_file: card linkuriboh
 include_file: card lyrilusc - assembled nightingale
-include_file: card mekk knight crusadia avramax
+include_file: card mekk-knight crusadia avramax
 include_file: card monster reborn
 include_file: card mudragon of the swamp
 include_file: card mysterion the dragon crown
 include_file: card mystical space typhoon
 include_file: card panzer dragon
-include_file: card phoenix wing wind blast
 include_file: card predaplant dragostapelia
 include_file: card predaplant triphyoverutum
 include_file: card predaplant verte anaconda
 include_file: card raigeki
 include_file: card red supernova dragon
 include_file: card relinquished anima
-include_file: card s p little knight
+include_file: card sp little knight
 include_file: card salamangreat almiraj
 include_file: card scarlight red dragon archfiend
 include_file: card sea monster of theseus
@@ -128,13 +127,12 @@ include_file: card topologic bomber dragon
 include_file: card topologic zeroboros
 include_file: card torrential tribute
 include_file: card traptrix rafflesia
-include_file: card tri brigade ferrijit the barren blossom
-include_file: card tri brigade shuraig the ominous omen
+include_file: card tri-brigade ferrijit the barren blossom
+include_file: card tri-brigade shuraig the ominous omen
 include_file: card trishula dragon of the ice barrier
 include_file: card twin twisters
 include_file: card underworld goddess of the closed world
 include_file: card union carrier
-include_file: card upstart goblin
 include_file: card world chalice guardragon almarduke
 version_control:
 	type: none

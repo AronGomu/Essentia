@@ -17,6 +17,6 @@ card:
 	rarity: common
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Target</b> 1 Creature card in 1 Grave; <b>Reanimate</b> it.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 042/077 C
-	card_code_text_2: 042/077 C
-	card_code_text_3: 042/077 C
+	card_code_text: 042/075 C
+	card_code_text_2: 042/075 C
+	card_code_text_3: 042/075 C

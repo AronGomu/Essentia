@@ -1,4 +1,4 @@
-mse_version: 2.5.8
+mse_version: 2.1.2
 card:
 	stylesheet: sevenhalf
 	stylesheet_version: 2024-05-30
@@ -13,10 +13,10 @@ card:
 	mainframe_image: 
 	mainframe_image_2: 
 	super_type: <word-list-type-en>Trap Instant</word-list-type-en>
-	sub_type: 
+	sub_type: <word-list-spell></word-list-spell>
 	rarity: uncommon
 	rule_text: <i-auto>(1 - Resolution)</i-auto> <b>Target</b> 1 Creature in your opponent’s Grave; <b>Shuffle</b> it, then you may <b>Send</b> 1 Fiend Creature from Deck to Grave.
 	flavor_text: <i-flavor></i-flavor>
-	card_code_text: 011/013 U
-	card_code_text_2: 011/013 U
-	card_code_text_3: 011/013 U
+	card_code_text: 009/011 U
+	card_code_text_2: 009/011 U
+	card_code_text_3: 009/011 U
