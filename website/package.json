@@ -26,7 +26,8 @@
     "immutability:check": "\"${PYTHON:-python}\" ../.script/check_immutable_stages.py",
     "links:check": "node scripts/check-links.mjs",
     "budgets:check": "node scripts/check-budgets.mjs",
-    "audit:deps": "npm audit --audit-level=high && npm run licenses:check",
+    "audit:deps": "npm audit --audit-level=high && npm run install-scripts:check && npm run licenses:check",
+    "install-scripts:check": "node scripts/check-install-scripts.mjs",
     "licenses:check": "node scripts/check-licenses.mjs",
     "rights:check": "node scripts/check-rights.mjs",
     "ci": "npm run format:check && npm run lint && npm run check && npm run test && npm run build"
