@@ -80,6 +80,66 @@ async function build(source: string, assetRoot: string, previous = new Map()) {
   return cache.next;
 }
 
+describe('print master discovery', () => {
+  it('findPrintMaster rejects a wrong-sized existing master', async () => {
+    const packageRoot = await mkdtemp(path.join(testRoot, 'print-master-'));
+    const directory = path.join(packageRoot, 'renders_print');
+    await mkdir(directory);
+    await sourceImage(path.join(directory, 'Test Card.png'), '#402010');
+
+    await expect(
+      images.findPrintMaster(packageRoot, 'Test Card'),
+    ).rejects.toThrow(
+      'content: print master for Test Card is 60×84, expected 1500×2092',
+    );
+  });
+
+  it('assertPrintMasterDimensions accepts 1500×2092', () => {
+    expect(() =>
+      images.assertPrintMasterDimensions(
+        { width: 1500, height: 2092 },
+        'Test Card',
+      ),
+    ).not.toThrow();
+  });
+
+  it('findPrintMaster retains absent-directory behavior', async () => {
+    const packageRoot = await mkdtemp(path.join(testRoot, 'missing-master-'));
+    await expect(
+      images.findPrintMaster(packageRoot, 'Test Card'),
+    ).resolves.toBeNull();
+  });
+
+  it('findPrintMaster retains non-directory and missing-file behavior', async () => {
+    const nonDirectoryRoot = await mkdtemp(
+      path.join(testRoot, 'non-directory-master-'),
+    );
+    await writeFile(path.join(nonDirectoryRoot, 'renders_print'), 'not a dir');
+    await expect(
+      images.findPrintMaster(nonDirectoryRoot, 'Test Card'),
+    ).resolves.toBeNull();
+
+    const missingFileRoot = await mkdtemp(
+      path.join(testRoot, 'missing-file-master-'),
+    );
+    await mkdir(path.join(missingFileRoot, 'renders_print'));
+    await expect(
+      images.findPrintMaster(missingFileRoot, 'Test Card'),
+    ).resolves.toBeNull();
+  });
+
+  it('findPrintMaster retains unsafe-filename behavior', async () => {
+    const packageRoot = await mkdtemp(path.join(testRoot, 'unsafe-master-'));
+    const directory = path.join(packageRoot, 'renders_print');
+    await mkdir(directory);
+    await sourceImage(path.join(directory, '.. - Escape.png'), '#402010');
+
+    await expect(
+      images.findPrintMaster(packageRoot, '../Escape'),
+    ).resolves.toBeNull();
+  });
+});
+
 describe('image derivative cache', () => {
   const keyInput = {
     sourceHash: 'source-a',

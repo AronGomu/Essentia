@@ -255,11 +255,17 @@ export async function findPrintMaster(packageRoot, cardName) {
   } catch {
     return null;
   }
+  let printMaster;
   try {
-    return await safeFile(directory, renderName(cardName), LIMITS.image);
+    printMaster = await safeFile(directory, renderName(cardName), LIMITS.image);
   } catch {
     return null;
   }
+  const metadata = await sharp(printMaster, {
+    limitInputPixels: 80_000_000,
+  }).metadata();
+  assertPrintMasterDimensions(metadata, cardName);
+  return printMaster;
 }
 
 /**
