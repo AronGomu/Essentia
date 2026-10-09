@@ -3,7 +3,7 @@
 - Date: 2026-08-12
 - Status: Proposed
 - Scope: `.script/release_package.py` `rebuild()`, `.script/export_mse_renders.py` output, `.script/rebuild_open_packages.py`
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q2, Q3
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q2, Q3
 
 ## Context
 

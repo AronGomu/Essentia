@@ -3,7 +3,7 @@
 - Date: 2026-08-12
 - Status: Proposed
 - Scope: `website/src/lib/hover-placement.ts`, `CardHoverPreview.astro`, card detail render column
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q4, Q5
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q4, Q5
 
 ## Context
 

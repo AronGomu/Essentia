@@ -3,7 +3,7 @@
 - Date: 2026-08-13
 - Status: Proposed
 - Scope: `website/src/pages/blog/index.astro`, `website/src/lib/reading-nav.ts`, `website/src/lib/catalog.ts`, `website/src/components/Navigation.svelte`, `website/content/reading-order.json`
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q10, `round-2.html` Q6; revises the blog half of ADR 0025 and ADR 0026
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q10, `round-2.html` Q6; revises the blog half of ADR 0025 and ADR 0026
 
 ## Context
 

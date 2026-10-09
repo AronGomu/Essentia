@@ -3,7 +3,7 @@
 - Date: 2026-08-12
 - Status: Proposed
 - Scope: `.script/lint_mse_card_style.py` performance, finding determinism
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q1
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q1
 
 ## Context
 

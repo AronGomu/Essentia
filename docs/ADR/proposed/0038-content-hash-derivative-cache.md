@@ -3,7 +3,7 @@
 - Date: 2026-08-13
 - Status: Proposed
 - Scope: `website/scripts/content/images.mjs`, `website/scripts/content/orchestrator.mjs`, `website/scripts/content/packages.mjs`, `website/scripts/content/shared.mjs`, `website/scripts/check-derivatives.mjs`
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q1-Q3, `round-2.html` Q1, Q7
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q1-Q3, `round-2.html` Q1, Q7
 
 ## Context
 

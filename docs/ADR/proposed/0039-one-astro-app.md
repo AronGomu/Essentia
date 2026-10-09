@@ -3,7 +3,7 @@
 - Date: 2026-08-13
 - Status: Proposed
 - Scope: `website/astro.config.mjs`, `website/package.json`, `website/scripts/content/**`
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q7, `round-2.html` Q3
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q7, `round-2.html` Q3
 
 ## Context
 

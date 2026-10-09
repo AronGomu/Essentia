@@ -2,7 +2,7 @@
 
 - Date: 2026-08-09
 - Amended: 2026-08-13
-- Status: Proposed — amendment accepted for implementation by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T1)
+- Status: Proposed — amendment accepted for implementation by `artifacts/PLAN_2026_08_13_feedback_follow_up.md` (T1)
 - Scope: `website/src/layouts/BaseLayout.astro`, `website/src/styles/global.css`, `website/shared/header-row.mjs`, `website/scripts/check-{chrome,header-row}.mjs`
 
 ## Context

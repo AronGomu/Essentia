@@ -1,9 +1,9 @@
 # ADR 0036 — Related lists are disjoint; the band owns the page width
 
 - Date: 2026-08-12
-- Status: Proposed — superseded for implementation by ADR 0040; target-card example amended by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T3)
+- Status: Proposed — superseded for implementation by ADR 0040; target-card example amended by `artifacts/PLAN_2026_08_13_feedback_follow_up.md` (T3)
 - Scope: `website/scripts/content/related.mjs`, `CardGallery.astro`, card detail layout
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q6; extends ADR 0032
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q6; extends ADR 0032
 
 ## Context
 

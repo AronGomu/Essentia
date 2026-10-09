@@ -66,6 +66,6 @@ French archive content was intentionally removed. No French counterpart or archi
 - Proposed decision → `docs/ADR/proposed/`.
 - Accepted decision evidence → `docs/ADR/accepted/`.
 - Repository restructuring decision → superseded; see `docs/ADR/accepted/` for the decisions it produced.
-- Website feature or phase → `ai-artifacts/PLAN_{date}_{title}.md` (current planning convention). [`WEBSITE_V2_SPEC.md`](../WEBSITE_V2_SPEC.md) is superseded, kept only as decision-evidence for `docs/ADR/proposed/0015, 0017, 0019`.
+- Website feature or phase → `artifacts/PLAN_{date}_{title}.md` (current planning convention). [`WEBSITE_V2_SPEC.md`](../WEBSITE_V2_SPEC.md) is superseded, kept only as decision-evidence for `docs/ADR/proposed/0015, 0017, 0019`.
 
 Create an archetype `CHANGELOG.md` only after a released archetype changes. Do not create empty changelogs.

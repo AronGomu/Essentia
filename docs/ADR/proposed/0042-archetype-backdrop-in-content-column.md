@@ -1,9 +1,9 @@
 # ADR 0042 — The archetype backdrop paints the content column, not the viewport
 
 - Date: 2026-08-13
-- Status: Proposed — blur clause amended by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T4)
+- Status: Proposed — blur clause amended by `artifacts/PLAN_2026_08_13_feedback_follow_up.md` (T4)
 - Scope: `website/src/styles/global.css`, `website/src/layouts/BaseLayout.astro`, `website/src/pages/archetypes/[slug].astro`
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q5-Q6; revises the backdrop half of feedback batch 2
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q5-Q6; revises the backdrop half of feedback batch 2
 
 ## Context
 

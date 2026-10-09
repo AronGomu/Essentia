@@ -1,9 +1,9 @@
 # ADR 0040 — Cards relate through the names they print
 
 - Date: 2026-08-13
-- Status: Proposed — authored-affinity example amended by `ai_artefacts/PLAN_2026_08_13_feedback_follow_up.md` (T3)
+- Status: Proposed — authored-affinity example amended by `artifacts/PLAN_2026_08_13_feedback_follow_up.md` (T3)
 - Scope: `website/scripts/content/related.mjs`, `website/scripts/content/orchestrator.mjs`, `website/src/lib/catalog.ts`, `website/src/pages/cards/[id].astro`
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q4, `round-2.html` Q2, `round-3.html` Q1-Q3; supersedes ADR 0032 and ADR 0036
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q4, `round-2.html` Q2, `round-3.html` Q1-Q3; supersedes ADR 0032 and ADR 0036
 
 ## Context
 

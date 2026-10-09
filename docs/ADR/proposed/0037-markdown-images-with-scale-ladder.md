@@ -3,7 +3,7 @@
 - Date: 2026-08-12
 - Status: Proposed
 - Scope: `website/src/lib/markdown.ts`, `global.css`, docs/blog corpus; page backgrounds provenance
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q7, Q8
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_2/round-1.html` Q7, Q8
 
 ## Context
 

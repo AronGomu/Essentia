@@ -3,7 +3,7 @@
 - Date: 2026-08-13
 - Status: Proposed
 - Scope: `website/scripts/content/docs.mjs`, `website/scripts/content/reading-order.mjs`, `website/content/reading-order.json`, `website/src/lib/docs.ts`, `website/src/components/Navigation.svelte`, the `docs/` tree layout
-- Review: `ai-artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q8-Q9, `round-2.html` Q4-Q5, `round-3.html` Q4-Q5; supersedes the docs half of ADR 0026
+- Review: `artifacts/GRILL_2026_08_12_feedback_batch_3/round-1.html` Q8-Q9, `round-2.html` Q4-Q5, `round-3.html` Q4-Q5; supersedes the docs half of ADR 0026
 
 ## Context
 

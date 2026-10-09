@@ -52,7 +52,7 @@ One word, one part of the project. Say the word, the agent knows the file.
 | identity  | archetype/card identity registry               | `load_identity_registry()`                         |
 | adr       | architecture decision record                   | `docs/ADR/accepted/`, `docs/ADR/proposed/`         |
 | keyword   | one ruling file per keyword, `preview`/`reminder` | `docs/keywords/{id}.md`, `previewKeywordsFor()` |
-| plan      | ticketed implementation plan for a work pass   | `ai-artifacts/PLAN_<date>_<slug>/`                 |
+| plan      | ticketed implementation plan for a work pass   | `artifacts/PLAN_<date>_<slug>/`                 |
 
 ## Active development
 
